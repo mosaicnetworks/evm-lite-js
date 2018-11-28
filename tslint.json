@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "no-shadowed-variable": false,
+    "no-console": false,
+    "no-empty": false,
+    "interface-name": false,
+    "prefer-for-of": false,
+    "variable-name": false,
+    "object-literal-sort-keys": false,
+    "member-access": false,
+    "member-ordering": false
+  }
+}
