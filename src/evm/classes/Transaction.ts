@@ -1,8 +1,8 @@
 import * as JSONBig from 'json-bigint'
 
-import {TX, TXReceipt} from "./utils/Interfaces";
+import {TX, TXReceipt} from "../utils/Interfaces";
 
-import {Controller} from "../../";
+import {Controller} from "../..";
 
 
 export default class Transaction {

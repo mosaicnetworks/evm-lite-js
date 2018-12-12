@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 
-import {SentTx} from "../../";
+import {SentTx} from "..";
 
 import Directory from "./Directory";
 import Transactions from "./Transactions";

@@ -1,7 +1,7 @@
 import * as http from 'http'
 import * as JSONBig from 'json-bigint'
 
-import {BaseAccount, TXReceipt} from "./utils/Interfaces";
+import {BaseAccount, TXReceipt} from "../utils/Interfaces";
 
 
 const request = (tx: string | null, options: any): Promise<string> => {

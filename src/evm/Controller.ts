@@ -2,12 +2,12 @@ import * as fs from "fs";
 import * as JSONBig from 'json-bigint'
 import * as solidityCompiler from 'solc'
 
-import {ABI, BaseTX, SolidityCompilerOutput} from "./evm/utils/Interfaces";
+import {ABI, BaseTX, SolidityCompilerOutput} from "./utils/Interfaces";
 
-import Account from "./evm/Account"
-import Client from "./evm/Client";
-import SolidityContract from "./evm/SolidityContract";
-import Transaction from "./evm/Transaction";
+import Account from "./classes/Account"
+import SolidityContract from "./classes/SolidityContract";
+import Transaction from "./classes/Transaction";
+import Client from "./client/Client";
 
 
 interface DefaultTXOptions extends BaseTX {

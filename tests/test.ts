@@ -1,4 +1,4 @@
-import Keystore from '../src/lib/tools/Keystore';
+import Keystore from '../src/tools/Keystore';
 
 
 const keystore = new Keystore('/Users/danu/Desktop')

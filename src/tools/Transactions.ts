@@ -1,4 +1,4 @@
-import {SentTx} from "../../";
+import {SentTx} from "..";
 
 
 export default class Transactions {

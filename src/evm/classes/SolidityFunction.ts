@@ -1,10 +1,10 @@
 import * as coder from 'web3/lib/solidity/coder.js'
 import * as SolFunction from 'web3/lib/web3/function.js'
 
-import * as checks from './utils/checks'
+import * as checks from '../utils/checks'
 
-import {Controller} from "../../";
-import {ABI, Input, TX} from './utils/Interfaces'
+import {Controller} from "../..";
+import {ABI, Input, TX} from '../utils/Interfaces'
 
 import Transaction from "./Transaction";
 

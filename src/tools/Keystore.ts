@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 import * as path from "path";
 
-import {Account, BaseAccount, Controller, V3JSONKeyStore} from "../../";
+import {Account, BaseAccount, Controller, V3JSONKeyStore} from "..";
 
 
 export default class Keystore {

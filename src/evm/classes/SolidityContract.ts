@@ -1,10 +1,10 @@
 import * as Web3 from 'web3'
 import * as coder from 'web3/lib/solidity/coder.js'
 
-import * as checks from './utils/checks';
-import * as errors from "./utils/errors"
+import * as checks from '../utils/checks';
+import * as errors from "../utils/errors"
 
-import {ABI, ContractOptions, TXReceipt} from "./utils/Interfaces";
+import {ABI, ContractOptions, TXReceipt} from "../utils/Interfaces";
 
 import Controller from "../Controller";
 import SolidityFunction from "./SolidityFunction";
