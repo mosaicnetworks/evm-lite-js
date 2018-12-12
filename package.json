@@ -10,7 +10,6 @@
   "author": "Danu Kumanan",
   "license": "MIT",
   "dependencies": {
-    "@types/web3": "^1.0.14",
     "chalk": "latest",
     "js-scrypt": "^0.2.0",
     "json-bigint": "^0.3.0",
@@ -18,10 +17,10 @@
     "toml": "^2.3.3",
     "tomlify-j0.4": "^3.0.0",
     "web3": "github:ethereum/web3.js",
-    "web3-eth-accounts": "^1.0.0-beta.26",
-    "websocket": "^1.0.28"
+    "web3-eth-accounts": "^1.0.0-beta.26"
   },
   "devDependencies": {
+    "@types/web3": "^1.0.14",
     "@babel/core": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/mocha": "^5.2.5",
