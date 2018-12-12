@@ -8,7 +8,7 @@ export const requireArgsLength = (expected: number, received: number): (boolean 
     }
 };
 
-export const requireSolidityTypes = (required, received): (boolean | Error) => {
+export const requireSolidityTypes = (required: string, received: any): (boolean | Error) => {
     if (typeof received !== parseSolidityType(required)) {
         throw errors.InvalidSolidityType();
     } else {

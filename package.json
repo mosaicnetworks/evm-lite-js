@@ -10,6 +10,7 @@
   "author": "Danu Kumanan",
   "license": "MIT",
   "dependencies": {
+    "@types/web3": "^1.0.14",
     "chalk": "latest",
     "js-scrypt": "^0.2.0",
     "json-bigint": "^0.3.0",

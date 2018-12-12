@@ -1,4 +1,4 @@
-import * as Web3Accounts from 'web3-eth-accounts';
+import Web3Accounts from 'web3-eth-accounts';
 
 import {BaseAccount, V3JSONKeyStore, Web3Account} from "./utils/Interfaces";
 

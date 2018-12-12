@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as JSONBig from 'json-bigint'
-// import * as solidityCompiler from 'solc'
+import * as solidityCompiler from 'solc'
 
 import {ABI, BaseTX, SolidityCompilerOutput} from "./evm/utils/Interfaces";
 
@@ -55,14 +55,14 @@ export default class Controller {
     public ContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
         this._requireDefaultFromAddress();
 
-        // const input = fs.readFileSync(filePath).toString();
-        // const output: SolidityCompilerOutput = solidityCompiler.compile(input, 1);
-        // const byteCode = output.contracts[`:${contractName}`].bytecode;
-        // const abi = JSONBig.parse(output.contracts[`:${contractName}`].interface);
+        const input = fs.readFileSync(filePath).toString();
+        const output: SolidityCompilerOutput = solidityCompiler.compile(input, 1);
+        const byteCode = output.contracts[`:${contractName}`].bytecode;
+        const abi = JSONBig.parse(output.contracts[`:${contractName}`].interface);
 
         return new SolidityContract({
-            jsonInterface: [],
-            data: '',
+            jsonInterface: abi,
+            data: byteCode,
             gas: this._defaultTXOptions.gas || undefined,
             gasPrice: this._defaultTXOptions.gasPrice || undefined
         }, this)

@@ -7,6 +7,9 @@ import {Account, BaseAccount, Controller, V3JSONKeyStore} from "../../";
 
 export default class Keystore {
 
+    constructor(readonly path: string) {
+    }
+
     public static create(output: string, password: string): string {
         const account: Account = Account.create();
         const eAccount = account.encrypt(password);
@@ -17,9 +20,6 @@ export default class Keystore {
 
         fs.writeFileSync(path.join(output, filename), sEAccount);
         return sEAccount;
-    }
-
-    constructor(readonly path: string) {
     }
 
     public createWithPromise(password: string): Promise<string> {
@@ -38,7 +38,7 @@ export default class Keystore {
 
     public importV3JSONKeystore(data: string): Promise<string> {
         return new Promise<string>(resolve => {
-            const account = JSONBig.parse(data);
+            const account: BaseAccount = JSONBig.parse(data);
             const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
                 .replace(/"/g, '')
                 .replace(/:/g, '-');
@@ -81,17 +81,16 @@ export default class Keystore {
         return json
     }
 
-    public all(fetch: boolean = false, connection: Controller = null): Promise<any[]> {
+    public all(fetch: boolean = false, connection?: Controller): Promise<any[]> {
         return new Promise<any[]>(async (resolve) => {
-            const accounts = [];
+            const accounts: any[] = [];
             const files = this.files();
             if (files.length) {
                 for (const file of files) {
                     const address = file.address;
                     if (fetch && connection) {
                         accounts.push(await connection.api.getAccount(address));
-                    }
-                    else {
+                    } else {
                         accounts.push({
                             address,
                             balance: 0,
@@ -120,7 +119,7 @@ export default class Keystore {
         return this.files().filter((file) => file.address === address)[0] || null;
     }
 
-    public find(address: string) {
+    public find(address: string): string {
         const dir = fs.readdirSync(this.path).filter((file) => {
             return !(file.startsWith('.'));
         });
@@ -132,10 +131,13 @@ export default class Keystore {
 
         for (const filename of dir) {
             const filepath = path.join(this.path, filename);
-            if (JSONBig.parse(fs.readFileSync(filepath, 'utf8')).address === address) {
+            const account: BaseAccount = JSONBig.parse(fs.readFileSync(filepath, 'utf8'));
+            if (account.address === address) {
                 return filepath;
             }
         }
+
+        return ''
     }
 
     public async fetch(address: string, connection: Controller): Promise<BaseAccount> {
