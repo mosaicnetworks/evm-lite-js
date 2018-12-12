@@ -17,7 +17,7 @@ export default class Account {
             if (aJSON) {
                 this.account = aJSON;
             } else {
-                throw new Error('Account JSON needs to be passed to construct class');
+                throw new Error('Account AJSON needs to be passed to construct class');
             }
         }
     }
