@@ -42,7 +42,7 @@ export default class Account {
         }
     }
 
-    public signTransaction(tx: string): any {
+    public signTransaction(tx: any): any {
         return this._account.signTransaction(tx);
     }
 

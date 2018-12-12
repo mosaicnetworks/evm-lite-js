@@ -1,9 +1,12 @@
 {
   "name": "evm-lite-lib",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "A Node.js module for interacting with EVM-Lite.",
-  "main": "dist/index.js",
-  "scripts": {},
+  "main": "./lib/evm-lite-lib.min.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
   "author": "Danu Kumanan",
   "license": "MIT",
   "dependencies": {
@@ -16,16 +19,26 @@
     "web3-eth-accounts": "^1.0.0-beta.26"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/mocha": "^5.2.5",
     "@types/node": "^10.7.0",
+    "babel-loader": "^8.0.4",
     "chai": "^4.1.2",
+    "dts-bundle-webpack": "^1.0.2",
+    "file-loader": "^2.0.0",
+    "fork-ts-checker-webpack-plugin": "^0.5.1",
     "jsdoc": "^3.5.5",
     "mocha": "^5.2.0",
+    "ts-loader": "^5.3.1",
+    "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.1.6"
+    "tslint-loader": "^3.5.4",
+    "typescript": "^3.1.6",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   },
-  "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/mosaicnetworks/evm-lite-nodejs-sdk"

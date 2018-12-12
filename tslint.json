@@ -17,6 +17,7 @@
     "variable-name": false,
     "object-literal-sort-keys": false,
     "member-access": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "max-classes-per-file": false
   }
 }

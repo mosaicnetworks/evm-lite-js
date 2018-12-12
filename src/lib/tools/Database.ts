@@ -3,7 +3,7 @@ import * as JSONBig from 'json-bigint';
 
 import {SentTx} from "../../";
 
-import DataDirectory from "./DataDirectory";
+import Directory from "./Directory";
 import Transactions from "./Transactions";
 
 
@@ -23,7 +23,7 @@ export default class Database {
     public readonly data: Schema;
 
     constructor(readonly path: string) {
-        this.data = JSONBig.parse(DataDirectory.createOrReadFile(path, JSONBig.stringify(Database.initial())));
+        this.data = JSONBig.parse(Directory.createOrReadFile(path, JSONBig.stringify(Database.initial())));
         this.transactions = new Transactions(this.path, this.data.transactions);
     }
 

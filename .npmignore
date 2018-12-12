@@ -5,3 +5,7 @@ src
 docs
 tsconfig.json
 .npmignore
+dist
+.gitignore
+tslint.json
+webpack.config.js

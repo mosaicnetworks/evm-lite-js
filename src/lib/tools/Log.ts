@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import DataDirectory from "./DataDirectory";
+import Directory from "./Directory";
 
 
 export default class Log {
@@ -9,7 +9,7 @@ export default class Log {
     private log: string;
 
     constructor(readonly path: string) {
-        DataDirectory.createOrReadFile(this.path, '');
+        Directory.createOrReadFile(this.path, '');
 
         this.log = ``;
         this.command = ``;

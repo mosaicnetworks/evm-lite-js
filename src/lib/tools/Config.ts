@@ -1,13 +1,23 @@
 import * as fs from 'fs';
-import * as mkdir from 'mkdirp';
+import * as mk from 'mkdirp';
 import * as path from "path";
 import * as toml from "toml";
 import * as tomlify from 'tomlify-j0.4';
 
-import DataDirectory from "./DataDirectory";
+import Directory from "./Directory";
 import Keystore from "./Keystore";
 
 
+export interface ConfigSchema {
+    defaults: {
+        host: string,
+        port: string,
+        from: string,
+        gas: string,
+        gasprice: string,
+        keystore: string
+    }
+}
 export default class Config {
 
     public static default(datadir: string) {
@@ -37,7 +47,7 @@ export default class Config {
 
         this.path = path.join(datadir, filename);
 
-        if (DataDirectory.exists(this.path)) {
+        if (Directory.exists(this.path)) {
             const tomlData: string = fs.readFileSync(this.path, 'utf8');
 
             this.data = toml.parse(tomlData);
@@ -50,7 +60,7 @@ export default class Config {
     }
 
     public read(): any {
-        if (DataDirectory.exists(this.path)) {
+        if (Directory.exists(this.path)) {
             return new Promise<any>((resolve, reject) => {
                 fs.readFile(this.path, (err, data) => {
                     if (err) {
@@ -65,7 +75,7 @@ export default class Config {
     }
 
     public write(data: any) {
-        if (DataDirectory.exists(this.path)) {
+        if (Directory.exists(this.path)) {
             return new Promise<void>((resolve, reject) => {
                 fs.writeFile(this.path, tomlify.toToml(data), (err) => {
                     if (err) {
@@ -80,7 +90,7 @@ export default class Config {
 
     public async save(): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            if (DataDirectory.isEquivalentObjects(this.data, this.initialData)) {
+            if (Directory.isEquivalentObjects(this.data, this.initialData)) {
                 resolve(false);
             } else {
                 const list = this.path.split('/');
@@ -88,8 +98,8 @@ export default class Config {
 
                 const configFileDir = list.join('/');
 
-                if (!DataDirectory.exists(configFileDir)) {
-                    mkdir.mkdirp(configFileDir);
+                if (!Directory.exists(configFileDir)) {
+                    mk.sync(configFileDir);
                 }
 
                 fs.writeFile(this.path, this.toTOML(), (err) => {
@@ -106,7 +116,7 @@ export default class Config {
     }
 
     public getOrCreateKeystore(): Keystore {
-        DataDirectory.createDirectoryIfNotExists(this.data.defaults.keystore);
+        Directory.createDirectoryIfNotExists(this.data.defaults.keystore);
         return new Keystore(this.data.defaults.keystore);
     }
 
