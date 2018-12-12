@@ -11,12 +11,14 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "latest",
+    "js-scrypt": "^0.2.0",
     "json-bigint": "^0.3.0",
     "solc": "^0.5.0",
     "toml": "^2.3.3",
     "tomlify-j0.4": "^3.0.0",
     "web3": "github:ethereum/web3.js",
-    "web3-eth-accounts": "^1.0.0-beta.26"
+    "web3-eth-accounts": "^1.0.0-beta.26",
+    "websocket": "^1.0.28"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",

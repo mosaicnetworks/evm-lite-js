@@ -32,11 +32,19 @@ const paths = {
 };
 
 const config = {
+    externals: ["fs", "module", "path", "any-promise", "websocket", "json-bigint"],
     target: "node",
+    node: {
+    },
     resolve: {
-        extensions: ['.js', '.ts', '.json']
+        extensions: ['.js', '.ts', '.json'],
+        alias: {
+            "scrypt": "js-scrypt",
+            "websocket": path.resolve(__dirname, "../")
+        },
     },
     plugins: [
+        new Webpack.IgnorePlugin(/^(?:electron|ws)$/),
         new DtsBundleWebpack({
             name: packageName,
             main: './dist/index.d.ts',
@@ -53,12 +61,8 @@ const config = {
     performance: {
         hints: false,
     },
-    externals: {
-        fs: "commonjs fs",
-        module: "commonjs module",
-        path: "commonjs path",
-    },
     entry: {index: './src/index.ts'},
+
     mode: mode,
     output: {
         path: paths.dist,
@@ -93,7 +97,7 @@ const config = {
                             },
                         ],
                     },
-                     {
+                    {
                         exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
                         loader: require.resolve('file-loader'),
                         options: {
