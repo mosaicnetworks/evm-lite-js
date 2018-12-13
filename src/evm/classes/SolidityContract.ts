@@ -1,4 +1,6 @@
+// @ts-ignore
 import * as Web3 from 'web3'
+// @ts-ignore
 import * as coder from 'web3/lib/solidity/coder.js'
 
 import * as checks from '../utils/checks';
@@ -19,9 +21,9 @@ export default class SolidityContract {
 
     constructor(public options: ContractOptions, readonly controller: Controller) {
         const web3 = new Web3();
-
         this.options.address = options.address || '';
-        // this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
+        // @ts-ignore
+        this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
         this.receipt = undefined;
         this.methods = {};
 

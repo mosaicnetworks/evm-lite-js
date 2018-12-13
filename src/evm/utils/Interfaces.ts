@@ -1,6 +1,6 @@
 export interface BaseTX {
     gas?: number,
-    gasPrice?: number,
+    gasPrice?: string,
 }
 
 export interface BaseAccount {
@@ -51,46 +51,7 @@ export interface TXReceipt {
     status: number
 }
 
-export interface SolidityCompilerOutput {
-    contracts: {},
-    errors: string[],
-    sourceList: string[],
-    sources: {}
-}
-
-export interface Web3Account {
-    address: string,
-    privateKey: string,
-    sign: (data: string) => any,
-    encrypt: (password: string) => V3JSONKeyStore,
-    signTransaction: (tx: string) => any,
-}
-
-export interface KDFEncryption {
-    ciphertext: string,
-    ciperparams: {
-        iv: string
-    }
-    cipher: string,
-    kdf: string,
-    kdfparams: {
-        dklen: number,
-        salt: string,
-        n: number,
-        r: number,
-        p: number
-    }
-    mac: string
-}
-
-export interface V3JSONKeyStore {
-    version: number,
-    id: string,
-    address: string,
-    crypto: KDFEncryption,
-}
-
-export interface SentTx {
+export interface SentTX {
     from: string,
     to: string,
     value: number,

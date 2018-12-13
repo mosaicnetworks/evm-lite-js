@@ -1,14 +1,14 @@
 import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 
-import {SentTx} from "..";
+import {SentTX} from "../evm/utils/Interfaces";
 
 import Directory from "./Directory";
 import Transactions from "./Transactions";
 
 
 interface Schema {
-    transactions: SentTx[],
+    transactions: SentTX[],
 }
 
 export default class Database {

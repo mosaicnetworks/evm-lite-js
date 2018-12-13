@@ -1,4 +1,6 @@
+// @ts-ignore
 import * as coder from 'web3/lib/solidity/coder.js'
+// @ts-ignore
 import * as SolFunction from 'web3/lib/web3/function.js'
 
 import * as checks from '../utils/checks'
@@ -26,12 +28,12 @@ export default class SolidityFunction {
         this._inputTypes = abi.inputs.map((i: Input) => {
             return i.type;
         });
-        this._outputTypes = abi.outputs.map((i: Input) => {
+        this._outputTypes = abi.outputs && abi.outputs.map((i: Input) => {
             return i.type
-        });
+        }) || [];
     }
 
-    public generateTransaction(options: { gas?: number, gasPrice?: number }, ...funcArgs: any[]): Transaction {
+    public generateTransaction(options: { gas?: number, gasPrice?: string }, ...funcArgs: any[]): Transaction {
         this._validateArgs(funcArgs);
 
         const callData = this._solFunction.getData();
@@ -47,14 +49,14 @@ export default class SolidityFunction {
 
         tx.data = callData;
 
-        if (tx.value <= 0 && this._payable) {
+        if (tx.value && tx.value <= 0 && this._payable) {
             throw Error('Function is payable and requires `value` greater than 0.');
         }
-        else if (tx.value > 0 && !this._payable) {
+        else if (tx.value && tx.value > 0 && !this._payable) {
             throw Error('Function is not payable. Required `value` is 0.');
              }
 
-        let unpackfn: (output: string) => any;
+        let unpackfn: ((output: string) => any) | null = null;
 
         if (this._constant) {
             unpackfn = this.unpackOutput.bind(this);

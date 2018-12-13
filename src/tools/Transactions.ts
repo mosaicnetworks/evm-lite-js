@@ -1,13 +1,13 @@
-import {SentTx} from "..";
+import {SentTX} from "../evm/utils/Interfaces";
 
 
 export default class Transactions {
 
-    constructor(private dbPath: string, private transactions: SentTx[]) {
+    constructor(private dbPath: string, private transactions: SentTX[]) {
         this.sort();
     }
 
-    public all(): SentTx[] {
+    public all(): SentTX[] {
         return this.transactions;
     }
 
@@ -35,7 +35,7 @@ export default class Transactions {
     }
 
     public sort() {
-        this.transactions.sort((a, b)  => {
+        this.transactions.sort((a, b) => {
             // @ts-ignore
             return new Date(b.date) - new Date(a.date);
         });

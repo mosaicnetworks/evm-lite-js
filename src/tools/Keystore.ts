@@ -2,16 +2,16 @@ import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 import * as path from "path";
 
-import {Account, BaseAccount, Controller, V3JSONKeyStore} from "..";
+import {V3JSONKeyStore} from 'web3-eth-accounts';
+
+import {Account, Controller} from "..";
+import {BaseAccount} from '../evm/utils/Interfaces'
 
 
 export default class Keystore {
 
-    constructor(readonly path: string) {
-    }
-
     public static create(output: string, password: string): string {
-        const account: Account = Account.create();
+        const account = new Account();
         const eAccount = account.encrypt(password);
         const sEAccount = JSONBig.stringify(eAccount);
         const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
@@ -22,9 +22,12 @@ export default class Keystore {
         return sEAccount;
     }
 
+    constructor(readonly path: string) {
+    }
+
     public createWithPromise(password: string): Promise<string> {
         return new Promise<string>((resolve) => {
-            const account: Account = Account.create();
+            const account = new Account();
             const eAccount = account.encrypt(password);
             const sEAccount = JSONBig.stringify(eAccount);
             const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`

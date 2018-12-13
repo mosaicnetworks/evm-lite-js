@@ -1,7 +1,7 @@
 export {default as Controller} from './evm/Controller';
 export {default as Account} from './evm/classes/Account';
 
-export * from './evm/utils/Interfaces';
+// export * from './evm/utils/Interfaces';
 
 export {default as Config, ConfigSchema} from './tools/Config';
 export {default as Keystore} from './tools/Keystore';

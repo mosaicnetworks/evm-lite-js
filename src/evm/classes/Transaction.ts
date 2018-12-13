@@ -9,11 +9,11 @@ export default class Transaction {
 
     public receipt: TXReceipt;
 
-    constructor(private _tx: TX, readonly constant: boolean, readonly unpackfn: (output: string) => any, readonly controller: Controller) {
+    constructor(private _tx: TX, readonly constant: boolean, readonly unpackfn: ((output: string) => any) | null, readonly controller: Controller) {
         this.receipt = undefined;
 
         if (!constant) {
-            this.unpackfn = undefined;
+            this.unpackfn = null;
         }
     }
 
