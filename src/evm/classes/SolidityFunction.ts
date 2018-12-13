@@ -56,13 +56,13 @@ export default class SolidityFunction {
             throw Error('Function is not payable. Required `value` is 0.');
              }
 
-        let unpackfn: ((output: string) => any) | null = null;
+        let unpackfn: ((output: string) => any) | undefined;
 
         if (this._constant) {
             unpackfn = this.unpackOutput.bind(this);
         }
 
-        return new Transaction(tx, this._constant, unpackfn, this.controller);
+        return new Transaction(tx, this.controller.host, this.controller.port, unpackfn);
     }
 
     public unpackOutput(output: string): any {

@@ -14,15 +14,14 @@ interface DefaultTXOptions extends BaseTX {
     from: string,
 }
 
-export default class Controller {
+export default class Controller extends Client {
 
     public accounts: Account[];
-    public readonly api: Client;
 
-    constructor(readonly host: string, readonly port: number = 8080, private readonly defaultTXOptions: DefaultTXOptions) {
+    constructor(host: string, port: number, private readonly defaultTXOptions: DefaultTXOptions) {
+        super(host, port);
+
         this.accounts = [];
-        this.api = new Client(host, port);
-
         this.defaultTXOptions = {
             gas: defaultTXOptions.gas || 0,
             gasPrice: defaultTXOptions.gasPrice || '',
@@ -91,7 +90,7 @@ export default class Controller {
             value,
             gas: this.defaultTXOptions.gas,
             gasPrice: this.defaultTXOptions.gasPrice
-        }, false, () => null, this)
+        }, this.host, this.port)
     }
 
 }
