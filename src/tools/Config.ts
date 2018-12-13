@@ -97,7 +97,6 @@ export default class Config {
                 list.pop();
 
                 const configFileDir = list.join('/');
-
                 if (!Directory.exists(configFileDir)) {
                     mk.sync(configFileDir);
                 }
@@ -106,11 +105,8 @@ export default class Config {
                     if (!err) {
                         this.initialData = toml.parse(this.toTOML());
                     }
-
-
                     resolve(!err);
                 });
-
             }
         });
     }

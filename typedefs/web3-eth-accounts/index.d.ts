@@ -24,7 +24,7 @@ declare module 'web3-eth-accounts' {
         crypto: KDFEncryption,
     }
 
-    export default class Accounts {
+    class Accounts {
 
         public decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string): any;
 

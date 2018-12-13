@@ -2,10 +2,11 @@ import * as JSONBig from 'json-bigint'
 
 import {BaseAccount} from "../utils/Interfaces";
 
-import BaseClient, {request} from "./BaseClient";
+import {request} from "./BaseClient";
+import TransactionClient from "./TransactionClient";
 
 
-export default abstract class DefaultClient extends BaseClient {
+export default abstract class DefaultClient extends TransactionClient {
 
     protected constructor(host: string, port: number) {
         super(host, port)

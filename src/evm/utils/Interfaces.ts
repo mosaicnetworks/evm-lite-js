@@ -1,3 +1,5 @@
+export {V3JSONKeyStore} from 'web3-eth-accounts';
+
 export interface BaseTX {
     gas: number,
     gasPrice: number,
