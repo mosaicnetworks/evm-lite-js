@@ -1,29 +1,23 @@
-import Web3Accounts from 'web3-eth-accounts';
+import * as Accounts from 'web3-eth-accounts';
 
-import {BaseAccount, V3JSONKeyStore, Web3Account} from "../utils/Interfaces";
+import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
+
+import {BaseAccount, TX} from "../utils/Interfaces";
 
 
 export default class Account {
 
     public balance: number = 0;
     public nonce: number = 0;
+    private readonly account: Web3Account;
 
-    private account: Web3Account;
-
-    constructor(create: boolean = true, aJSON?: Web3Account) {
-        if (create) {
-            this.account = new Web3Accounts().create();
+    constructor(data?: Web3Account) {
+        if (!data) {
+            // @ts-ignore
+            this.account = new Accounts().create();
         } else {
-            if (aJSON) {
-                this.account = aJSON;
-            } else {
-                throw new Error('Account JSON needs to be passed to construct class');
-            }
+            this.account = data;
         }
-    }
-
-    get sign(): (data: string) => any {
-        return this.account.sign
     }
 
     get address(): string {
@@ -34,17 +28,18 @@ export default class Account {
         return this.account.privateKey
     }
 
-    public static create(): Account {
-        return new Account(true)
-    }
-
     public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
-        const decryptedAccount = new Web3Accounts().decrypt(v3JSONKeyStore, password);
+        // @ts-ignore
+        const decryptedAccount = new Accounts().decrypt(v3JSONKeyStore, password);
 
-        return new Account(false, decryptedAccount);
+        return new Account(decryptedAccount);
     }
 
-    public signTransaction(tx: any): any {
+    public sign(message: string): any {
+        return this.account.sign(message);
+    }
+
+    public signTransaction(tx: TX): any {
         return this.account.signTransaction(tx);
     }
 

@@ -1,4 +1,4 @@
-export {default as Controller} from './evm/Controller';
+export {default as Controller} from './evm/Connection';
 export {default as Account} from './evm/classes/Account';
 
 export * from './evm/utils/Interfaces';
@@ -9,3 +9,4 @@ export {default as Database} from './tools/Database';
 export {default as DataDirectory} from './tools/DataDirectory';
 export {default as Log} from './tools/Log';
 export {default as Directory} from './tools/Directory';
+

@@ -2,7 +2,10 @@ import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 import * as path from "path";
 
-import {Account, BaseAccount, Controller, V3JSONKeyStore} from "..";
+import {V3JSONKeyStore} from 'web3-eth-accounts';
+
+import {Account, Controller} from "..";
+import {BaseAccount} from '../evm/utils/Interfaces'
 
 
 export default class Keystore {
@@ -10,33 +13,21 @@ export default class Keystore {
     constructor(readonly path: string) {
     }
 
-    public static create(output: string, password: string): string {
-        const account: Account = Account.create();
-        const eAccount = account.encrypt(password);
-        const sEAccount = JSONBig.stringify(eAccount);
-        const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
-            .replace(/"/g, '')
-            .replace(/:/g, '-');
-
-        fs.writeFileSync(path.join(output, filename), sEAccount);
-        return sEAccount;
-    }
-
-    public createWithPromise(password: string): Promise<string> {
+    public create(password: string, output?: string): Promise<string> {
         return new Promise<string>((resolve) => {
-            const account: Account = Account.create();
+            const account = new Account();
             const eAccount = account.encrypt(password);
             const sEAccount = JSONBig.stringify(eAccount);
             const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
                 .replace(/"/g, '')
                 .replace(/:/g, '-');
 
-            fs.writeFileSync(path.join(this.path, filename), sEAccount);
+            fs.writeFileSync(path.join(output || this.path, filename), sEAccount);
             resolve(sEAccount);
         });
     }
 
-    public importV3JSONKeystore(data: string): Promise<string> {
+    public import(data: string): Promise<string> {
         return new Promise<string>(resolve => {
             const account: BaseAccount = JSONBig.parse(data);
             const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
@@ -49,7 +40,7 @@ export default class Keystore {
 
     public update(address: string, old: string, newPass: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const path = this.find(address);
+            const path = this.getFilePathForAddress(address);
             let account: Account;
 
             try {
@@ -65,31 +56,15 @@ export default class Keystore {
         });
     }
 
-    public files() {
-        const json = [];
-        const files = fs.readdirSync(this.path).filter((file) => {
-            return !(file.startsWith('.'));
-        });
-
-        for (const file of files) {
-            const filepath = path.join(this.path, file);
-            const data = fs.readFileSync(filepath, 'utf8');
-
-            json.push(JSONBig.parse(data));
-        }
-
-        return json
-    }
-
     public all(fetch: boolean = false, connection?: Controller): Promise<any[]> {
         return new Promise<any[]>(async (resolve) => {
             const accounts: any[] = [];
-            const files = this.files();
+            const files = this.allKeystoreFiles();
             if (files.length) {
                 for (const file of files) {
                     const address = file.address;
                     if (fetch && connection) {
-                        accounts.push(await connection.api.getAccount(address));
+                        accounts.push(await connection.getAccount(address));
                     } else {
                         accounts.push({
                             address,
@@ -105,21 +80,13 @@ export default class Keystore {
         })
     }
 
-    public getWithPromise(address: string): Promise<string> {
+    public get(address: string): Promise<string> {
         return new Promise<string>(resolve => {
-            resolve(JSON.stringify(this.get(address)));
+            resolve(JSON.stringify(this.getKeystoreFile(address)));
         });
     }
 
-    public get(address: string): V3JSONKeyStore {
-        if (address.startsWith('0x')) {
-            address = address.substr(2);
-        }
-        address = address.toLowerCase();
-        return this.files().filter((file) => file.address === address)[0] || null;
-    }
-
-    public find(address: string): string {
+    public getFilePathForAddress(address: string): string {
         const dir = fs.readdirSync(this.path).filter((file) => {
             return !(file.startsWith('.'));
         });
@@ -142,12 +109,36 @@ export default class Keystore {
 
     public async fetch(address: string, connection: Controller): Promise<BaseAccount> {
         return new Promise<BaseAccount>(async (resolve) => {
-            const account = await connection.api.getAccount(address);
+            const account = await connection.getAccount(address);
 
             if (account) {
                 resolve(account);
             }
         });
+    }
+
+    private allKeystoreFiles() {
+        const json = [];
+        const files = fs.readdirSync(this.path).filter((file) => {
+            return !(file.startsWith('.'));
+        });
+
+        for (const file of files) {
+            const filepath = path.join(this.path, file);
+            const data = fs.readFileSync(filepath, 'utf8');
+
+            json.push(JSONBig.parse(data));
+        }
+
+        return json
+    }
+
+    private getKeystoreFile(address: string): V3JSONKeyStore {
+        if (address.startsWith('0x')) {
+            address = address.substr(2);
+        }
+        address = address.toLowerCase();
+        return this.allKeystoreFiles().filter((file) => file.address === address)[0] || null;
     }
 
 }

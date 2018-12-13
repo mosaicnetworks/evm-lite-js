@@ -13,3 +13,4 @@ export function InvalidDataFieldInOptions() {
 export function ContractAddressFieldSetAndDeployed() {
     return new Error('Contract\'s address option is already set. Please reset to undefined to deploy.')
 }
+

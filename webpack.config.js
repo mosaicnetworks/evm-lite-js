@@ -56,6 +56,8 @@ const config = {
             tsconfigPath: paths.tsConfig,
             tslintPath: paths.tsLint,
             watch: paths.src,
+            memoryLimit: 4000,
+            workers: 2
         }),
     ],
     performance: {
