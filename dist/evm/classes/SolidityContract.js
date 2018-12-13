@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // @ts-ignore
-var coder = require("web3/lib/solidity/coder.js");
+var coder = require("web3/lib/solidity/coder");
 var checks = require("../utils/checks");
 var errors = require("../utils/errors");
 var Transaction_1 = require("./Transaction");

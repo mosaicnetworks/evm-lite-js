@@ -1,4 +1,4 @@
-import * as SolFunction from 'web3/lib/web3/function.js';
+import * as SolFunction from 'web3/lib/web3/function';
 import { EVMType } from 'evm-sol-types';
 import { ABI } from '../utils/Interfaces';
 import Transaction from "./Transaction";

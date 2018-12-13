@@ -3,16 +3,16 @@ import * as JSONBig from 'json-bigint'
 import {BaseAccount} from "../classes/Account";
 import {request} from "./BaseClient";
 
-import TransactionClient from "./TransactionClient";
+import BaseClient from "./BaseClient";
 
 
-export default abstract class DefaultClient extends TransactionClient {
+export default abstract class DefaultClient extends BaseClient {
 
     protected constructor(host: string, port: number) {
         super(host, port)
     }
 
-    public getAccount(address: string): Promise<BaseAccount | null> {
+    public getAccount(address: string): Promise<BaseAccount> {
         return request(this.options('GET', `/account/${address}`))
             .then((response: string) => {
                 const account: BaseAccount = JSONBig.parse(response);
@@ -21,16 +21,14 @@ export default abstract class DefaultClient extends TransactionClient {
                 }
                 return account
             })
-            .catch(() => null);
     }
 
-    public testConnection(): Promise<boolean | null> {
+    public testConnection(): Promise<boolean> {
         return request(this.options('GET', '/info'))
             .then(() => true)
-            .catch(() => null);
     }
 
-    public getAccounts(): Promise<BaseAccount[] | null> {
+    public getAccounts(): Promise<BaseAccount[]> {
         return request(this.options('GET', '/accounts'))
             .then((response: string) => {
                 const json: { accounts: BaseAccount[] } = JSONBig.parse(response);
@@ -45,13 +43,11 @@ export default abstract class DefaultClient extends TransactionClient {
                     return []
                 }
             })
-            .catch(() => null);
     }
 
-    public getInfo(): Promise<object | null> {
+    public getInfo(): Promise<object> {
         return request(this.options('GET', '/info'))
             .then((response: string) => JSONBig.parse(response))
-            .catch(() => null);
     }
 
 }

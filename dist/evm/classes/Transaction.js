@@ -44,9 +44,6 @@ var Transaction = /** @class */ (function (_super) {
         }
         return this.sendTX(JSONBig.stringify(this.tx))
             .then(function (res) {
-            if (!res) {
-                throw new Error('Something went wrong while submitting the transaction.');
-            }
             var response = JSONBig.parse(res);
             return response.txHash;
         })
@@ -55,9 +52,6 @@ var Transaction = /** @class */ (function (_super) {
         })
             .then(function (response) {
             _this.receipt = response;
-            if (!_this.receipt) {
-                throw new Error('Something went wrong while fetching receipt.');
-            }
             return _this.receipt;
         });
     };
@@ -78,9 +72,6 @@ var Transaction = /** @class */ (function (_super) {
         }
         return this.callTX(JSONBig.stringify(this.tx))
             .then(function (response) {
-            if (!response) {
-                throw new Error('Something went wrong while submitting the transaction.');
-            }
             return JSONBig.parse(response);
         })
             .then(function (obj) {

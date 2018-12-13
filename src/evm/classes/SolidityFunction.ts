@@ -1,7 +1,7 @@
 // @ts-ignore
-import * as coder from 'web3/lib/solidity/coder.js'
+import * as coder from 'web3/lib/solidity/coder'
 // @ts-ignore
-import * as SolFunction from 'web3/lib/web3/function.js'
+import * as SolFunction from 'web3/lib/web3/function'
 
 import * as errors from "../utils/errors";
 

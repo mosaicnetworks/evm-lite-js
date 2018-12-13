@@ -5,6 +5,6 @@ export default class Transactions {
     constructor(dbPath: string, transactions: SentTX[]);
     all(): SentTX[];
     add(tx: any): void;
-    get(hash: string): SentTX;
+    get(hash: string): any;
     sort(): void;
 }

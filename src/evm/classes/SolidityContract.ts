@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as coder from 'web3/lib/solidity/coder.js'
+import * as coder from 'web3/lib/solidity/coder'
 
 import * as checks from '../utils/checks';
 import * as errors from "../utils/errors"

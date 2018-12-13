@@ -10,27 +10,24 @@ export default abstract class TransactionClient extends BaseClient {
         super(host, port)
     }
 
-    public callTX(tx: string): Promise<string | null> {
+    public callTX(tx: string): Promise<string> {
         return request(this.options('POST', '/call'), tx)
             .then((response) => response)
-            .catch(() => null);
     }
 
-    public sendTX(tx: string): Promise<string | null> {
+    public sendTX(tx: string): Promise<string> {
         return request(this.options('POST', '/tx'), tx)
             .then((response) => response)
-            .catch(() => null);
     }
 
-    public sendRaw(tx: string): Promise<string | null> {
+    public sendRaw(tx: string): Promise<string> {
         return request(this.options('POST', '/rawtx'), tx)
             .then((response) => response)
     }
 
-    public getReceipt(txHash: string): Promise<TXReceipt | null> {
+    public getReceipt(txHash: string): Promise<TXReceipt> {
         return request(this.options('GET', `/tx/${txHash}`))
             .then((response: string) => JSONBig.parse<TXReceipt>(response))
-            .catch(() => null);
     }
 
 }

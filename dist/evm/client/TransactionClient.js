@@ -22,13 +22,11 @@ var TransactionClient = /** @class */ (function (_super) {
     }
     TransactionClient.prototype.callTX = function (tx) {
         return BaseClient_1.request(this.options('POST', '/call'), tx)
-            .then(function (response) { return response; })
-            .catch(function () { return null; });
+            .then(function (response) { return response; });
     };
     TransactionClient.prototype.sendTX = function (tx) {
         return BaseClient_1.request(this.options('POST', '/tx'), tx)
-            .then(function (response) { return response; })
-            .catch(function () { return null; });
+            .then(function (response) { return response; });
     };
     TransactionClient.prototype.sendRaw = function (tx) {
         return BaseClient_1.request(this.options('POST', '/rawtx'), tx)
@@ -36,8 +34,7 @@ var TransactionClient = /** @class */ (function (_super) {
     };
     TransactionClient.prototype.getReceipt = function (txHash) {
         return BaseClient_1.request(this.options('GET', "/tx/" + txHash))
-            .then(function (response) { return JSONBig.parse(response); })
-            .catch(function () { return null; });
+            .then(function (response) { return JSONBig.parse(response); });
     };
     return TransactionClient;
 }(BaseClient_1.default));

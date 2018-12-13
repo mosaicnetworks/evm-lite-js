@@ -1,9 +1,9 @@
 import { BaseAccount } from "../classes/Account";
-import TransactionClient from "./TransactionClient";
-export default abstract class DefaultClient extends TransactionClient {
+import BaseClient from "./BaseClient";
+export default abstract class DefaultClient extends BaseClient {
     protected constructor(host: string, port: number);
-    getAccount(address: string): Promise<BaseAccount | null>;
-    testConnection(): Promise<boolean | null>;
-    getAccounts(): Promise<BaseAccount[] | null>;
-    getInfo(): Promise<object | null>;
+    getAccount(address: string): Promise<BaseAccount>;
+    testConnection(): Promise<boolean>;
+    getAccounts(): Promise<BaseAccount[]>;
+    getInfo(): Promise<object>;
 }

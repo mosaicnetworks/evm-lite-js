@@ -70,9 +70,6 @@ export default class Transaction extends TransactionClient {
 
         return this.sendTX(JSONBig.stringify(this.tx))
             .then((res) => {
-                if (!res) {
-                    throw new Error('Something went wrong while submitting the transaction.')
-                }
                 const response: { txHash: string } = JSONBig.parse(res);
                 return response.txHash
             })
@@ -81,10 +78,6 @@ export default class Transaction extends TransactionClient {
             })
             .then((response) => {
                 this.receipt = response;
-
-                if (!this.receipt) {
-                    throw new Error('Something went wrong while fetching receipt.')
-                }
                 return this.receipt;
             })
     }
@@ -108,10 +101,6 @@ export default class Transaction extends TransactionClient {
 
         return this.callTX(JSONBig.stringify(this.tx))
             .then((response) => {
-                if (!response) {
-                    throw new Error('Something went wrong while submitting the transaction.')
-                }
-
                 return JSONBig.parse(response);
             })
             .then((obj: any) => {
