@@ -13,9 +13,9 @@ var SolidityContract = /** @class */ (function () {
         this.options = options;
         this.host = host;
         this.port = port;
-        this.options.address = options.address || '';
+        this.options.address = options.address;
         this.methods = {};
-        if (this.options.address !== undefined) {
+        if (this.options.address) {
             this.attachMethodsToContract();
         }
     }
@@ -44,7 +44,7 @@ var SolidityContract = /** @class */ (function () {
                 data: encodedData,
                 gas: this.options.gas,
                 gasPrice: this.options.gasPrice
-            }, this.host, this.port)
+            }, this.host, this.port, false)
                 .gas(this.options.gas)
                 .gasPrice(this.options.gasPrice)
                 .send()
@@ -95,15 +95,11 @@ var SolidityContract = /** @class */ (function () {
                 throw new Error('Cannot attach function');
             }
             var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address, _this.host, _this.port);
-            if (_this.options.gas !== undefined && _this.options.gasPrice !== undefined) {
-                _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
-                    gas: _this.options.gas,
-                    gasPrice: _this.options.gasPrice,
-                });
-            }
-            else {
-                _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {});
-            }
+            _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
+                gas: _this.options.gas,
+                gasPrice: _this.options.gasPrice,
+                from: _this.options.from
+            });
         });
     };
     SolidityContract.prototype.encodeConstructorParams = function (params) {

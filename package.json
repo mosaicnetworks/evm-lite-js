@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.ts",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "build": "webpack --config webpack.config.js"
   },
   "author": "Danu Kumanan",

@@ -2,9 +2,10 @@ import { TX, TXReceipt } from "../utils/Interfaces";
 import TransactionClient from "../client/TransactionClient";
 export default class Transaction extends TransactionClient {
     private tx;
+    private constant;
     private readonly unpackfn?;
     receipt?: TXReceipt;
-    constructor(tx: TX, host: string, port: number, unpackfn?: ((data: string) => any) | undefined);
+    constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     send(options?: {
         to?: string;
         from?: string;

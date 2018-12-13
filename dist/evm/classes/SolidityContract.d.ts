@@ -1,9 +1,12 @@
 import { ABI, ContractOptions, TXReceipt } from "../utils/Interfaces";
+import Transaction from "./Transaction";
 export default class SolidityContract {
     options: ContractOptions;
     private host;
     private port;
-    methods: any;
+    methods: {
+        [key: string]: () => Transaction;
+    };
     web3Contract: any;
     receipt?: TXReceipt;
     constructor(options: ContractOptions, host: string, port: number);

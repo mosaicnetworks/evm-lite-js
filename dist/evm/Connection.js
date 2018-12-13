@@ -1,7 +1,4 @@
 "use strict";
-// import * as fs from 'fs';
-// import * as JSONBig from 'json-bigint'
-// import * as solidityCompiler from 'solc'
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -16,7 +13,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-// import SolidityContract from "./classes/SolidityContract";
+var fs = require("fs");
+var JSONBig = require("json-bigint");
+var solidityCompiler = require("solc");
+var SolidityContract_1 = require("./classes/SolidityContract");
 var Transaction_1 = require("./classes/Transaction");
 var DefaultClient_1 = require("./client/DefaultClient");
 var Connection = /** @class */ (function (_super) {
@@ -63,29 +63,28 @@ var Connection = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    // public ContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
-    //     const input = fs.readFileSync(filePath).toString();
-    //     const output = solidityCompiler.compile(input, 1);
-    //     const byteCode = output.contracts[`:${contractName}`].bytecode;
-    //     const abi = JSONBig.parse<ABI[]>(output.contracts[`:${contractName}`].interface);
-    //
-    //     return new SolidityContract({
-    //         from: this.defaultTXOptions.from,
-    //         jsonInterface: abi,
-    //         data: byteCode,
-    //         gas: this.defaultTXOptions.gas,
-    //         gasPrice: this.defaultTXOptions.gasPrice
-    //     }, this.host, this.port)
-    // };
-    //
-    // public ContractFromABI(abi: ABI[]): SolidityContract {
-    //     return new SolidityContract({
-    //         from: this.defaultTXOptions.from,
-    //         jsonInterface: abi,
-    //         gas: this.defaultTXOptions.gas,
-    //         gasPrice: this.defaultTXOptions.gasPrice
-    //     }, this.host, this.port);
-    // }
+    Connection.prototype.ContractFromSolidityFile = function (contractName, filePath) {
+        var input = fs.readFileSync(filePath).toString();
+        var output = solidityCompiler.compile(input, 1);
+        var byteCode = output.contracts[":" + contractName].bytecode;
+        var abi = JSONBig.parse(output.contracts[":" + contractName].interface);
+        return new SolidityContract_1.default({
+            from: this.defaultTXOptions.from,
+            jsonInterface: abi,
+            data: byteCode,
+            gas: this.defaultTXOptions.gas,
+            gasPrice: this.defaultTXOptions.gasPrice
+        }, this.host, this.port);
+    };
+    ;
+    Connection.prototype.ContractFromABI = function (abi) {
+        return new SolidityContract_1.default({
+            from: this.defaultTXOptions.from,
+            jsonInterface: abi,
+            gas: this.defaultTXOptions.gas,
+            gasPrice: this.defaultTXOptions.gasPrice
+        }, this.host, this.port);
+    };
     Connection.prototype.prepareTransfer = function (to, value, from) {
         from = from || this.defaultFrom;
         return new Transaction_1.default({
@@ -94,7 +93,7 @@ var Connection = /** @class */ (function (_super) {
             value: value,
             gas: this.defaultGas,
             gasPrice: this.defaultGasPrice
-        }, this.host, this.port);
+        }, this.host, this.port, false);
     };
     return Connection;
 }(DefaultClient_1.default));

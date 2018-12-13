@@ -9,7 +9,7 @@ export default class Transaction extends TransactionClient {
 
     public receipt?: TXReceipt;
 
-    constructor(private tx: TX, host: string, port: number, private readonly unpackfn?: (data: string) => any) {
+    constructor(private tx: TX, host: string, port: number, private constant: boolean, private readonly unpackfn?: (data: string) => any) {
         super(host, port)
     }
 
@@ -26,7 +26,7 @@ export default class Transaction extends TransactionClient {
             throw new Error('Gas & Gas price not set');
         }
 
-        if (!this.tx.value) {
+        if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead')
         }
 
@@ -64,11 +64,11 @@ export default class Transaction extends TransactionClient {
             this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
         }
 
-        if (!this.tx.gas || !this.tx.gasPrice) {
+        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
             throw new Error('gas & gas price not set');
         }
 
-        if (this.tx.value) {
+        if (!this.constant) {
             throw new Error('Transaction mutates state. Use `send()` instead')
         }
 

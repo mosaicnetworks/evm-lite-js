@@ -43,7 +43,7 @@ export interface TXReceipt {
     gasUsed: number;
     cumulativeGasUsed: number;
     contractAddress: string;
-    logs: string[];
+    logs: [];
     logsBloom: string;
     status: number;
 }

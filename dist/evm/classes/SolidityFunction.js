@@ -4,7 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var coder = require("web3/lib/solidity/coder.js");
 // @ts-ignore
 var SolFunction = require("web3/lib/web3/function.js");
-var checks = require("../utils/checks");
+var errors = require("../utils/errors");
+var evm_sol_types_1 = require("evm-sol-types");
 var Transaction_1 = require("./Transaction");
 var SolidityFunction = /** @class */ (function () {
     function SolidityFunction(abi, contractAddress, host, port) {
@@ -12,13 +13,13 @@ var SolidityFunction = /** @class */ (function () {
         this.host = host;
         this.port = port;
         this.name = abi.name;
-        this._solFunction = new SolFunction('', abi, '');
-        this._constant = (abi.stateMutability === "view" || abi.stateMutability === "pure" || abi.constant);
-        this._payable = (abi.stateMutability === "payable" || abi.payable);
-        this._inputTypes = abi.inputs.map(function (i) {
+        this.solFunction = new SolFunction('', abi, '');
+        this.constant = (abi.stateMutability === "view" || abi.stateMutability === "pure" || abi.constant);
+        this.payable = (abi.stateMutability === "payable" || abi.payable);
+        this.inputTypes = abi.inputs.map(function (i) {
             return i.type;
         });
-        this._outputTypes = abi.outputs && abi.outputs.map(function (i) {
+        this.outputTypes = abi.outputs && abi.outputs.map(function (i) {
             return i.type;
         }) || [];
     }
@@ -28,7 +29,7 @@ var SolidityFunction = /** @class */ (function () {
             funcArgs[_i - 1] = arguments[_i];
         }
         this._validateArgs(funcArgs);
-        var callData = this._solFunction.getData();
+        var callData = this.solFunction.getData();
         var tx = {
             from: options.from,
             to: this.contractAddress,
@@ -36,30 +37,46 @@ var SolidityFunction = /** @class */ (function () {
             gasPrice: options.gasPrice,
         };
         tx.data = callData;
-        if (tx.value && tx.value <= 0 && this._payable) {
+        if (tx.value && tx.value <= 0 && this.payable) {
             throw Error('Function is payable and requires `value` greater than 0.');
         }
-        else if (tx.value && tx.value > 0 && !this._payable) {
+        else if (tx.value && tx.value > 0 && !this.payable) {
             throw Error('Function is not payable. Required `value` is 0.');
         }
         var unpackfn;
-        if (this._constant) {
+        if (this.constant) {
             unpackfn = this.unpackOutput.bind(this);
         }
-        return new Transaction_1.default(tx, this.host, this.port, unpackfn);
+        return new Transaction_1.default(tx, this.host, this.port, this.constant, unpackfn);
     };
     SolidityFunction.prototype.unpackOutput = function (output) {
         output = output.length >= 2 ? output.slice(2) : output;
-        var result = coder.decodeParams(this._outputTypes, output);
+        var result = coder.decodeParams(this.outputTypes, output);
         return result.length === 1 ? result[0] : result;
     };
     SolidityFunction.prototype._validateArgs = function (args) {
+        this.requireArgsLength(args.length);
+        this.requireSolidityTypes(args);
+    };
+    SolidityFunction.prototype.requireArgsLength = function (received) {
+        var expected = this.inputTypes.length;
+        if (expected !== received) {
+            throw errors.InvalidNumberOfSolidityArgs(expected, received);
+        }
+        else {
+            return true;
+        }
+    };
+    ;
+    SolidityFunction.prototype.requireSolidityTypes = function (args) {
         var _this = this;
-        checks.requireArgsLength(this._inputTypes.length, args.length);
         args.map(function (a, i) {
-            checks.requireSolidityTypes(_this._inputTypes[i], a);
+            if (evm_sol_types_1.default(typeof a) === _this.inputTypes[i]) {
+                throw errors.InvalidSolidityType();
+            }
         });
     };
+    ;
     return SolidityFunction;
 }());
 exports.default = SolidityFunction;

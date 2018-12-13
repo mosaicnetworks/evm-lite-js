@@ -1,10 +1,10 @@
-// import * as fs from 'fs';
-// import * as JSONBig from 'json-bigint'
-// import * as solidityCompiler from 'solc'
+import * as fs from 'fs';
+import * as JSONBig from 'json-bigint'
+import * as solidityCompiler from 'solc'
 
-import {BaseTX} from "./utils/Interfaces";
+import {ABI, BaseTX} from "./utils/Interfaces";
 
-// import SolidityContract from "./classes/SolidityContract";
+import SolidityContract from "./classes/SolidityContract";
 import Transaction from "./classes/Transaction";
 import DefaultClient from "./client/DefaultClient";
 
@@ -47,29 +47,29 @@ export default class Connection extends DefaultClient {
         this.defaultTXOptions.gasPrice = gasPrice;
     }
 
-    // public ContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
-    //     const input = fs.readFileSync(filePath).toString();
-    //     const output = solidityCompiler.compile(input, 1);
-    //     const byteCode = output.contracts[`:${contractName}`].bytecode;
-    //     const abi = JSONBig.parse<ABI[]>(output.contracts[`:${contractName}`].interface);
-    //
-    //     return new SolidityContract({
-    //         from: this.defaultTXOptions.from,
-    //         jsonInterface: abi,
-    //         data: byteCode,
-    //         gas: this.defaultTXOptions.gas,
-    //         gasPrice: this.defaultTXOptions.gasPrice
-    //     }, this.host, this.port)
-    // };
-    //
-    // public ContractFromABI(abi: ABI[]): SolidityContract {
-    //     return new SolidityContract({
-    //         from: this.defaultTXOptions.from,
-    //         jsonInterface: abi,
-    //         gas: this.defaultTXOptions.gas,
-    //         gasPrice: this.defaultTXOptions.gasPrice
-    //     }, this.host, this.port);
-    // }
+    public ContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
+        const input = fs.readFileSync(filePath).toString();
+        const output = solidityCompiler.compile(input, 1);
+        const byteCode = output.contracts[`:${contractName}`].bytecode;
+        const abi = JSONBig.parse<ABI[]>(output.contracts[`:${contractName}`].interface);
+
+        return new SolidityContract({
+            from: this.defaultTXOptions.from,
+            jsonInterface: abi,
+            data: byteCode,
+            gas: this.defaultTXOptions.gas,
+            gasPrice: this.defaultTXOptions.gasPrice
+        }, this.host, this.port)
+    };
+
+    public ContractFromABI(abi: ABI[]): SolidityContract {
+        return new SolidityContract({
+            from: this.defaultTXOptions.from,
+            jsonInterface: abi,
+            gas: this.defaultTXOptions.gas,
+            gasPrice: this.defaultTXOptions.gasPrice
+        }, this.host, this.port);
+    }
 
     public prepareTransfer(to: string, value: number, from?: string): Transaction {
         from = from || this.defaultFrom;
@@ -80,7 +80,7 @@ export default class Connection extends DefaultClient {
             value,
             gas: this.defaultGas,
             gasPrice: this.defaultGasPrice
-        }, this.host, this.port)
+        }, this.host, this.port, false)
     }
 
 }

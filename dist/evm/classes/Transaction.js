@@ -17,9 +17,10 @@ var JSONBig = require("json-bigint");
 var TransactionClient_1 = require("../client/TransactionClient");
 var Transaction = /** @class */ (function (_super) {
     __extends(Transaction, _super);
-    function Transaction(tx, host, port, unpackfn) {
+    function Transaction(tx, host, port, constant, unpackfn) {
         var _this = _super.call(this, host, port) || this;
         _this.tx = tx;
+        _this.constant = constant;
         _this.unpackfn = unpackfn;
         return _this;
     }
@@ -35,7 +36,7 @@ var Transaction = /** @class */ (function (_super) {
         if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
             throw new Error('Gas & Gas price not set');
         }
-        if (!this.tx.value) {
+        if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead');
         }
         if (!this.tx.from) {
@@ -70,10 +71,10 @@ var Transaction = /** @class */ (function (_super) {
             this.tx.value = options.value || this.tx.value;
             this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
         }
-        if (!this.tx.gas || !this.tx.gasPrice) {
+        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
             throw new Error('gas & gas price not set');
         }
-        if (this.tx.value) {
+        if (!this.constant) {
             throw new Error('Transaction mutates state. Use `send()` instead');
         }
         return this.callTX(JSONBig.stringify(this.tx))

@@ -11,7 +11,9 @@ import Transaction from "./Transaction";
 
 export default class SolidityContract {
 
-    public methods: any;
+    public methods: {
+        [key: string]: () => Transaction;
+    };
     public web3Contract: any;
     public receipt?: TXReceipt;
 
@@ -19,15 +21,15 @@ export default class SolidityContract {
         // const web3 = new Web3();
         // this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
 
-        this.options.address = options.address || '';
+        this.options.address = options.address;
         this.methods = {};
 
-        if (this.options.address !== undefined) {
+        if (this.options.address) {
             this.attachMethodsToContract();
         }
     }
 
-    public deploy(options?: { parameters?: any[], gas?: number, gasPrice?: any, data?: string }) {
+    public deploy(options?: { parameters?: any[], gas?: number, gasPrice?: any, data?: string }): Promise<this> {
         if (this.options.address) {
             throw errors.ContractAddressFieldSetAndDeployed();
         }
@@ -56,7 +58,7 @@ export default class SolidityContract {
                 data: encodedData,
                 gas: this.options.gas,
                 gasPrice: this.options.gasPrice
-            }, this.host, this.port)
+            }, this.host, this.port, false)
                 .gas(this.options.gas)
                 .gasPrice(this.options.gasPrice)
                 .send()
@@ -113,15 +115,11 @@ export default class SolidityContract {
                 }
 
                 const solFunction = new SolidityFunction(funcJSON, this.options.address, this.host, this.port);
-
-                if (this.options.gas !== undefined && this.options.gasPrice !== undefined) {
-                    this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
-                        gas: this.options.gas,
-                        gasPrice: this.options.gasPrice,
-                    });
-                } else {
-                    this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {});
-                }
+                this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
+                    gas: this.options.gas,
+                    gasPrice: this.options.gasPrice,
+                    from: this.options.from
+                });
             })
     }
 
