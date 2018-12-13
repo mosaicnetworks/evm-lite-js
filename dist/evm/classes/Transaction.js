@@ -54,13 +54,12 @@ var Transaction = /** @class */ (function (_super) {
             return _this.getReceipt(txHash);
         })
             .then(function (response) {
-            if (!response) {
+            _this.receipt = response;
+            if (!_this.receipt) {
                 throw new Error('Something went wrong while fetching receipt.');
             }
-            _this.receipt = response;
             return _this.receipt;
-        })
-            .catch(function (error) { return error; });
+        });
     };
     Transaction.prototype.call = function (options) {
         var _this = this;

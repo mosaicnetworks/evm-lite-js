@@ -1,6 +1,6 @@
-import { ABI, BaseTX } from "./utils/Interfaces";
+import Transaction, { BaseTX } from "./classes/Transaction";
+import { ABI } from "./utils/Interfaces";
 import SolidityContract from "./classes/SolidityContract";
-import Transaction from "./classes/Transaction";
 import DefaultClient from "./client/DefaultClient";
 interface DefaultTXOptions extends BaseTX {
     from: string;

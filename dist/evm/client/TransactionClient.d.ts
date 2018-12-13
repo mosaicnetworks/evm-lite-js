@@ -1,4 +1,4 @@
-import { TXReceipt } from "../utils/Interfaces";
+import { TXReceipt } from "../classes/Transaction";
 import BaseClient from "./BaseClient";
 export default abstract class TransactionClient extends BaseClient {
     protected constructor(host: string, port: number);

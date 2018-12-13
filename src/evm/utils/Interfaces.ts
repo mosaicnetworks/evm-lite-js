@@ -1,32 +1,3 @@
-export {V3JSONKeyStore} from 'web3-eth-accounts';
-
-export interface BaseTX {
-    gas: number,
-    gasPrice: number,
-}
-
-export interface BaseAccount {
-    address: string,
-    nonce: number,
-    balance: any
-}
-
-export interface TX extends BaseTX {
-    from: string,
-    to?: string,
-    value?: number,
-    data?: string
-}
-
-export interface ContractOptions {
-    gas: number,
-    gasPrice: number,
-    from: string,
-    address?: string,
-    data?: string,
-    jsonInterface: ABI[]
-}
-
 export interface Input {
     name: string,
     type: string,
@@ -40,28 +11,4 @@ export interface ABI {
     payable: any,
     stateMutability: any,
     type: any
-}
-
-export interface TXReceipt {
-    root: string,
-    transactionHash: string,
-    from: string,
-    to?: string,
-    gasUsed: number,
-    cumulativeGasUsed: number,
-    contractAddress: string,
-    logs: [],
-    logsBloom: string,
-    status: number
-}
-
-export interface SentTX {
-    from: string,
-    to: string,
-    value: number,
-    gas: number,
-    nonce: number,
-    gasPrice: number,
-    date: any,
-    txHash: string
 }

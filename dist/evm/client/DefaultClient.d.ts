@@ -1,4 +1,4 @@
-import { BaseAccount } from "../utils/Interfaces";
+import { BaseAccount } from "../classes/Account";
 import TransactionClient from "./TransactionClient";
 export default abstract class DefaultClient extends TransactionClient {
     protected constructor(host: string, port: number);

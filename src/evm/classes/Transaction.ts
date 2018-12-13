@@ -1,9 +1,43 @@
 import * as JSONBig from 'json-bigint'
 
-import {TX, TXReceipt} from "../utils/Interfaces";
-
 import TransactionClient from "../client/TransactionClient";
 
+
+export interface TXReceipt {
+    root: string,
+    transactionHash: string,
+    from: string,
+    to?: string,
+    gasUsed: number,
+    cumulativeGasUsed: number,
+    contractAddress: string,
+    logs: [],
+    logsBloom: string,
+    status: number
+}
+
+export interface SentTX {
+    from: string,
+    to: string,
+    value: number,
+    gas: number,
+    nonce: number,
+    gasPrice: number,
+    date: any,
+    txHash: string
+}
+
+export interface BaseTX {
+    gas: number,
+    gasPrice: number,
+}
+
+export interface TX extends BaseTX {
+    from: string,
+    to?: string,
+    value?: number,
+    data?: string
+}
 
 export default class Transaction extends TransactionClient {
 
@@ -46,13 +80,13 @@ export default class Transaction extends TransactionClient {
                 return this.getReceipt(txHash)
             })
             .then((response) => {
-                if (!response) {
+                this.receipt = response;
+
+                if (!this.receipt) {
                     throw new Error('Something went wrong while fetching receipt.')
                 }
-                this.receipt = response;
                 return this.receipt;
             })
-            .catch((error) => error)
     }
 
     public call(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: number }): Promise<string> {
@@ -97,30 +131,25 @@ export default class Transaction extends TransactionClient {
         return this
     }
 
-
     public to(to: string): this {
         this.tx.to = to;
         return this
     }
-
 
     public value(value: number): this {
         this.tx.value = value;
         return this
     }
 
-
     public gas(gas: number): this {
         this.tx.gas = gas;
         return this
     }
 
-
     public gasPrice(gasPrice: number): this {
         this.tx.gasPrice = gasPrice;
         return this
     }
-
 
     public data(data: string): this {
         this.tx.data = data;

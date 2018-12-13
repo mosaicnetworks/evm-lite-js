@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var coder = require("web3/lib/solidity/coder.js");
 var checks = require("../utils/checks");
 var errors = require("../utils/errors");
-var SolidityFunction_1 = require("./SolidityFunction");
 var Transaction_1 = require("./Transaction");
+var SolidityFunction_1 = require("./SolidityFunction");
 var SolidityContract = /** @class */ (function () {
     function SolidityContract(options, host, port) {
         // const web3 = new Web3();

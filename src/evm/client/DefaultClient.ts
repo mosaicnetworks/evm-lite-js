@@ -1,8 +1,8 @@
 import * as JSONBig from 'json-bigint'
 
-import {BaseAccount} from "../utils/Interfaces";
-
+import {BaseAccount} from "../classes/Account";
 import {request} from "./BaseClient";
+
 import TransactionClient from "./TransactionClient";
 
 

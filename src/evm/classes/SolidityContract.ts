@@ -4,10 +4,20 @@ import * as coder from 'web3/lib/solidity/coder.js'
 import * as checks from '../utils/checks';
 import * as errors from "../utils/errors"
 
-import {ABI, ContractOptions, TXReceipt} from "../utils/Interfaces";
-import SolidityFunction from "./SolidityFunction";
-import Transaction from "./Transaction";
+import {ABI} from "../utils/Interfaces";
+import Transaction, {TXReceipt} from "./Transaction";
 
+import SolidityFunction from "./SolidityFunction";
+
+
+export interface ContractOptions {
+    gas: number,
+    gasPrice: number,
+    from: string,
+    address?: string,
+    data?: string,
+    jsonInterface: ABI[]
+}
 
 export default class SolidityContract {
 

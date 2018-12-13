@@ -16,8 +16,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var JSONBig = require("json-bigint");
 var solidityCompiler = require("solc");
-var SolidityContract_1 = require("./classes/SolidityContract");
 var Transaction_1 = require("./classes/Transaction");
+var SolidityContract_1 = require("./classes/SolidityContract");
 var DefaultClient_1 = require("./client/DefaultClient");
 var Connection = /** @class */ (function (_super) {
     __extends(Connection, _super);

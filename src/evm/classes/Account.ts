@@ -2,23 +2,16 @@ import * as Accounts from 'web3-eth-accounts';
 
 import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
 
-import {BaseAccount, TX} from "../utils/Interfaces";
+import {TX} from './Transaction';
 
+
+export interface BaseAccount {
+    address: string,
+    nonce: number,
+    balance: any
+}
 
 export default class Account {
-
-    public balance: number = 0;
-    public nonce: number = 0;
-    private readonly account: Web3Account;
-
-    constructor(data?: Web3Account) {
-        if (!data) {
-            // @ts-ignore
-            this.account = new Accounts().create();
-        } else {
-            this.account = data;
-        }
-    }
 
     get address(): string {
         return this.account.address
@@ -33,6 +26,19 @@ export default class Account {
         const decryptedAccount = new Accounts().decrypt(v3JSONKeyStore, password);
 
         return new Account(decryptedAccount);
+    }
+
+    public balance: number = 0;
+    public nonce: number = 0;
+    private readonly account: Web3Account;
+
+    constructor(data?: Web3Account) {
+        if (!data) {
+            // @ts-ignore
+            this.account = new Accounts().create();
+        } else {
+            this.account = data;
+        }
     }
 
     public sign(message: string): any {

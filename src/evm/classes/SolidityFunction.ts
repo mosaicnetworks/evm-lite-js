@@ -7,9 +7,9 @@ import * as errors from "../utils/errors";
 
 import parseSolidityType, {EVMType} from 'evm-sol-types';
 
-import {ABI, Input, TX} from '../utils/Interfaces'
+import {ABI, Input} from '../utils/Interfaces'
 
-import Transaction from "./Transaction";
+import Transaction, {TX} from "./Transaction";
 
 
 export default class SolidityFunction {
