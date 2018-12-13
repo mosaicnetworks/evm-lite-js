@@ -1,6 +1,6 @@
 export interface BaseTX {
-    gas?: number,
-    gasPrice?: string,
+    gas: number,
+    gasPrice: number,
 }
 
 export interface BaseAccount {
@@ -16,8 +16,10 @@ export interface TX extends BaseTX {
     data?: string
 }
 
-export interface ContractOptions extends BaseTX {
-    from?: string,
+export interface ContractOptions {
+    gas: number,
+    gasPrice: number,
+    from: string,
     address?: string,
     data?: string,
     jsonInterface: ABI[]

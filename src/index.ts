@@ -1,4 +1,4 @@
-export {default as Controller} from './evm/Controller';
+export {default as Controller} from './evm/Connection';
 export {default as Account} from './evm/classes/Account';
 
 // export * from './evm/utils/Interfaces';

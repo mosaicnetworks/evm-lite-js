@@ -2,10 +2,8 @@
 import * as coder from 'web3/lib/solidity/coder.js'
 // @ts-ignore
 import * as SolFunction from 'web3/lib/web3/function.js'
-
 import * as checks from '../utils/checks'
 
-import {Controller} from "../..";
 import {ABI, Input, TX} from '../utils/Interfaces'
 
 import Transaction from "./Transaction";
@@ -20,7 +18,7 @@ export default class SolidityFunction {
     public readonly _constant: boolean;
     public readonly _payable: boolean;
 
-    constructor(abi: ABI, readonly contractAddress: string, readonly controller: Controller) {
+    constructor(abi: ABI, readonly contractAddress: string, private host: string, private port: number) {
         this.name = abi.name;
         this._solFunction = new SolFunction('', abi, '');
         this._constant = (abi.stateMutability === "view" || abi.stateMutability === "pure" || abi.constant);
@@ -33,28 +31,24 @@ export default class SolidityFunction {
         }) || [];
     }
 
-    public generateTransaction(options: { gas?: number, gasPrice?: string }, ...funcArgs: any[]): Transaction {
+    public generateTransaction(options: { from: string, gas: number, gasPrice: number }, ...funcArgs: any[]): Transaction {
         this._validateArgs(funcArgs);
 
         const callData = this._solFunction.getData();
         const tx: TX = {
-            from: this.controller.defaultOptions.from,
+            from: options.from,
             to: this.contractAddress,
+            gas: options.gas,
+            gasPrice: options.gasPrice,
         };
-
-        if (options && options.gas !== undefined && options.gasPrice !== undefined) {
-            tx.gas = options.gas;
-            tx.gasPrice = options.gasPrice;
-        }
 
         tx.data = callData;
 
         if (tx.value && tx.value <= 0 && this._payable) {
             throw Error('Function is payable and requires `value` greater than 0.');
-        }
-        else if (tx.value && tx.value > 0 && !this._payable) {
+        } else if (tx.value && tx.value > 0 && !this._payable) {
             throw Error('Function is not payable. Required `value` is 0.');
-             }
+        }
 
         let unpackfn: ((output: string) => any) | undefined;
 
@@ -62,7 +56,7 @@ export default class SolidityFunction {
             unpackfn = this.unpackOutput.bind(this);
         }
 
-        return new Transaction(tx, this.controller.host, this.controller.port, unpackfn);
+        return new Transaction(tx, this.host, this.port, unpackfn);
     }
 
     public unpackOutput(output: string): any {

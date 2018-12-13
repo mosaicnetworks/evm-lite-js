@@ -92,7 +92,7 @@ export default class Keystore {
                 for (const file of files) {
                     const address = file.address;
                     if (fetch && connection) {
-                        accounts.push(await connection.api.getAccount(address));
+                        accounts.push(await connection.getAccount(address));
                     } else {
                         accounts.push({
                             address,
@@ -145,7 +145,7 @@ export default class Keystore {
 
     public async fetch(address: string, connection: Controller): Promise<BaseAccount> {
         return new Promise<BaseAccount>(async (resolve) => {
-            const account = await connection.api.getAccount(address);
+            const account = await connection.getAccount(address);
 
             if (account) {
                 resolve(account);

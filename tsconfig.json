@@ -9,7 +9,7 @@
       "es6"
     ],
     "typeRoots": [
-      "node_modules/@types",
+      "./node_modules/@types",
       "./typedefs"
     ]
   },
@@ -21,6 +21,7 @@
     "./src/**/*.ts"
   ],
   "exclude": [
+    "tests",
     "node_modules"
   ]
 }

@@ -11,24 +11,24 @@ export default abstract class TransactionClient extends BaseClient {
     }
 
     public callTX(tx: string): Promise<string | null> {
-        return request(tx, this.options('POST', '/call'))
+        return request(this.options('POST', '/call'), tx)
             .then((response) => response)
             .catch(() => null);
     }
 
     public sendTX(tx: string): Promise<string | null> {
-        return request(tx, this.options('POST', '/tx'))
+        return request(this.options('POST', '/tx'), tx)
             .then((response) => response)
             .catch(() => null);
     }
 
     public sendRaw(tx: string): Promise<string | null> {
-        return request(tx, this.options('POST', '/rawtx'))
+        return request(this.options('POST', '/rawtx'), tx)
             .then((response) => response)
     }
 
     public getReceipt(txHash: string): Promise<TXReceipt | null> {
-        return request(null, this.options('GET', `/tx/${txHash}`))
+        return request(this.options('GET', `/tx/${txHash}`))
             .then((response: string) => JSONBig.parse<TXReceipt>(response))
             .catch(() => null);
     }

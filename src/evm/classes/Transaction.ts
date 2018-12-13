@@ -13,21 +13,25 @@ export default class Transaction extends TransactionClient {
         super(host, port)
     }
 
-    public send(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: string }): Promise<TXReceipt> {
+    public send(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: number }): Promise<TXReceipt> {
         if (options) {
             this.tx.to = options.to || this.tx.to;
             this.tx.from = options.from || this.tx.from;
             this.tx.gas = options.gas || this.tx.gas;
             this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice;
+            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
         }
 
-        if (!this.tx.gas || !this.tx.gasPrice) {
-            throw new Error('gas & gas price not set');
+        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+            throw new Error('Gas & Gas price not set');
         }
 
         if (!this.tx.value) {
             throw new Error('Transaction does not mutate state. Use `call()` instead')
+        }
+
+        if (!this.tx.from) {
+            throw new Error('Transaction does have a from address.')
         }
 
         return this.sendTX(JSONBig.stringify(this.tx))
@@ -48,15 +52,16 @@ export default class Transaction extends TransactionClient {
                 this.receipt = response;
                 return this.receipt;
             })
+            .catch((error) => error)
     }
 
-    public call(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: string }): Promise<string> {
+    public call(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: number }): Promise<string> {
         if (options) {
             this.tx.to = options.to || this.tx.to;
             this.tx.from = options.from || this.tx.from;
             this.tx.gas = options.gas || this.tx.gas;
             this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice;
+            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
         }
 
         if (!this.tx.gas || !this.tx.gasPrice) {
@@ -111,7 +116,7 @@ export default class Transaction extends TransactionClient {
     }
 
 
-    public gasPrice(gasPrice: string): this {
+    public gasPrice(gasPrice: number): this {
         this.tx.gasPrice = gasPrice;
         return this
     }

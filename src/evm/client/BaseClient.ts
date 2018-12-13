@@ -1,6 +1,6 @@
 import * as http from "http";
 
-export const request = (tx: string | null, options: any): Promise<string> => {
+export const request = (options: any, tx?: string): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
         const req = http.request(options, (response) => {
             let data = '';

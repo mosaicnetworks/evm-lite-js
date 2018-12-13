@@ -1,14 +1,10 @@
 // @ts-ignore
-import * as Web3 from 'web3'
-// @ts-ignore
 import * as coder from 'web3/lib/solidity/coder.js'
 
 import * as checks from '../utils/checks';
 import * as errors from "../utils/errors"
 
 import {ABI, ContractOptions, TXReceipt} from "../utils/Interfaces";
-
-import Controller from "../Controller";
 import SolidityFunction from "./SolidityFunction";
 import Transaction from "./Transaction";
 
@@ -17,28 +13,27 @@ export default class SolidityContract {
 
     public methods: any;
     public web3Contract: any;
-    public receipt: TXReceipt;
+    public receipt?: TXReceipt;
 
-    constructor(public options: ContractOptions, readonly controller: Controller) {
-        const web3 = new Web3();
+    constructor(public options: ContractOptions, private host: string, private port: number) {
+        // const web3 = new Web3();
+        // this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
+
         this.options.address = options.address || '';
-        // @ts-ignore
-        this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
-        this.receipt = undefined;
         this.methods = {};
 
         if (this.options.address !== undefined) {
-            this._attachMethodsToContract();
+            this.attachMethodsToContract();
         }
     }
 
     public deploy(options?: { parameters?: any[], gas?: number, gasPrice?: any, data?: string }) {
-        if (this.options.address !== '') {
+        if (this.options.address) {
             throw errors.ContractAddressFieldSetAndDeployed();
         }
 
         this.options.jsonInterface.filter((abi: ABI) => {
-            if (abi.type === "constructor" && options.parameters) {
+            if (abi.type === "constructor" && (options && options.parameters)) {
                 checks.requireArgsLength(abi.inputs.length, options.parameters.length);
             }
         });
@@ -50,19 +45,22 @@ export default class SolidityContract {
         }
 
         if (this.options.data) {
-            let encodedData: string;
+            let encodedData: string = this.options.data;
 
-            if (options.parameters) {
-                encodedData = this.options.data + this._encodeConstructorParams(options.parameters);
+            if (options && options.parameters) {
+                encodedData = encodedData + this.encodeConstructorParams(options.parameters);
             }
 
             return new Transaction({
-                from: this.controller.defaultOptions.from,
-                data: encodedData
-            }, false, undefined, this.controller)
+                from: this.options.from,
+                data: encodedData,
+                gas: this.options.gas,
+                gasPrice: this.options.gasPrice
+            }, this.host, this.port)
                 .gas(this.options.gas)
                 .gasPrice(this.options.gasPrice)
-                .send().then((receipt: TXReceipt) => {
+                .send()
+                .then((receipt: TXReceipt) => {
                     this.receipt = receipt;
                     return this.setAddressAndPopulate(this.receipt.contractAddress);
                 });
@@ -73,7 +71,7 @@ export default class SolidityContract {
 
     public setAddressAndPopulate(address: string): this {
         this.options.address = address;
-        this._attachMethodsToContract();
+        this.attachMethodsToContract();
         return this
     }
 
@@ -102,12 +100,19 @@ export default class SolidityContract {
         return this
     }
 
-    private _attachMethodsToContract(): void {
+    private attachMethodsToContract(): void {
+        if (!this.options.address) {
+            throw new Error('Cannot attach function')
+        }
         this.options.jsonInterface.filter((json) => {
             return json.type === 'function';
         })
             .map((funcJSON: ABI) => {
-                const solFunction = new SolidityFunction(funcJSON, this.options.address, this.controller);
+                if (!this.options.address) {
+                    throw new Error('Cannot attach function')
+                }
+
+                const solFunction = new SolidityFunction(funcJSON, this.options.address, this.host, this.port);
 
                 if (this.options.gas !== undefined && this.options.gasPrice !== undefined) {
                     this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
@@ -120,7 +125,7 @@ export default class SolidityContract {
             })
     }
 
-    private _encodeConstructorParams(params: any[]): any {
+    private encodeConstructorParams(params: any[]): any {
         return this.options.jsonInterface.filter((json) => {
             return json.type === 'constructor' && json.inputs.length === params.length;
         })
