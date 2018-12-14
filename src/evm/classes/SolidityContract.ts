@@ -126,7 +126,7 @@ export default class SolidityContract {
                     throw new Error('Cannot attach function')
                 }
 
-                const solFunction = new SolidityFunction(funcJSON, this.options.address.value, this.host, this.port);
+                const solFunction = new SolidityFunction(funcJSON, this.options.address, this.host, this.port);
                 this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
                     gas: this.options.gas,
                     gasPrice: this.options.gasPrice,

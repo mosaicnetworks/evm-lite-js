@@ -12,7 +12,7 @@ export default abstract class DefaultClient extends BaseClient {
         super(host, port)
     }
 
-    public getAccount(address: string): Promise<BaseAccount> {
+    public getAccount(address: string): Promise<Readonly<BaseAccount>> {
         return request(this.options('GET', `/account/${address}`))
             .then((response: string) => {
                 const account: BaseAccount = JSONBig.parse(response);
@@ -28,7 +28,7 @@ export default abstract class DefaultClient extends BaseClient {
             .then(() => true)
     }
 
-    public getAccounts(): Promise<BaseAccount[]> {
+    public getAccounts(): Promise<Readonly<BaseAccount[]>> {
         return request(this.options('GET', '/accounts'))
             .then((response: string) => {
                 const json: { accounts: BaseAccount[] } = JSONBig.parse(response);
@@ -45,7 +45,7 @@ export default abstract class DefaultClient extends BaseClient {
             })
     }
 
-    public getInfo(): Promise<object> {
+    public getInfo(): Promise<Readonly<object>> {
         return request(this.options('GET', '/info'))
             .then((response: string) => JSONBig.parse(response))
     }
