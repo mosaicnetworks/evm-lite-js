@@ -18,7 +18,7 @@ export const request = (options: any, tx?: string): Promise<string> => {
 
 export default abstract class BaseClient {
 
-    protected constructor(public readonly host: string, public readonly port: number) {
+    protected constructor(public readonly host: Readonly<string>, public readonly port: Readonly<number>) {
     }
 
     protected options(method: string, path: string) {

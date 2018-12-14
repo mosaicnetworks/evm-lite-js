@@ -22,7 +22,7 @@ export default class SolidityFunction {
     public readonly constant: boolean;
     public readonly payable: boolean;
 
-    constructor(abi: ABI, readonly contractAddress: string, private host: string, private port: number) {
+    constructor(abi: ABI, readonly contractAddress: AddressType, private host: string, private port: number) {
         this.name = abi.name;
         this.solFunction = new SolFunction('', abi, '');
         this.constant = (abi.stateMutability === "view" || abi.stateMutability === "pure" || abi.constant);
@@ -36,13 +36,13 @@ export default class SolidityFunction {
         }) || [];
     }
 
-    public generateTransaction(options: { from: string, gas: number, gasPrice: number }, ...funcArgs: any[]): Transaction {
+    public generateTransaction(options: { from: AddressType, gas: number, gasPrice: number }, ...funcArgs: any[]): Transaction {
         this._validateArgs(funcArgs);
 
         const callData = this.solFunction.getData();
         const tx: TX = {
-            from: new AddressType(options.from),
-            to: new AddressType(this.contractAddress),
+            from: options.from,
+            to: this.contractAddress,
             gas: options.gas,
             gasPrice: options.gasPrice,
         };

@@ -76,8 +76,8 @@ export default class Transaction extends TransactionClient {
             throw new Error('Transaction does not mutate state. Use `call()` instead')
         }
 
-        if (!this.tx.value) {
-            throw new Error('Transaction does have a from value to send.')
+        if (!this.tx.data && !this.tx.value) {
+            throw new Error('Transaction does have a value to send.')
         }
 
         return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
@@ -119,7 +119,7 @@ export default class Transaction extends TransactionClient {
             });
     }
 
-    public sign(account: Account): SignedTransaction {
+    public sign(account: Account): Promise<SignedTransaction> {
         return account.signTransaction(this.tx)
     }
 

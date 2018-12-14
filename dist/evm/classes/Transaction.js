@@ -32,8 +32,8 @@ var Transaction = /** @class */ (function (_super) {
         if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead');
         }
-        if (!this.tx.value) {
-            throw new Error('Transaction does have a from value to send.');
+        if (!this.tx.data && !this.tx.value) {
+            throw new Error('Transaction does have a value to send.');
         }
         return this.sendTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
             .then(function (res) {

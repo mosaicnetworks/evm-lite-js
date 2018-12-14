@@ -57,7 +57,7 @@ export default class Transaction extends TransactionClient {
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     send(options?: OverrideTXOptions): Promise<TXReceipt>;
     call(options?: OverrideTXOptions): Promise<string>;
-    sign(account: Account): SignedTransaction;
+    sign(account: Account): Promise<SignedTransaction>;
     toString(): string;
     from(from: string): this;
     to(to: string): this;

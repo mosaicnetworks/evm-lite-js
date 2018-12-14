@@ -95,7 +95,7 @@ var SolidityContract = /** @class */ (function () {
             if (!_this.options.address) {
                 throw new Error('Cannot attach function');
             }
-            var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address, _this.host, _this.port);
+            var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address.value, _this.host, _this.port);
             _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
                 gas: _this.options.gas,
                 gasPrice: _this.options.gasPrice,

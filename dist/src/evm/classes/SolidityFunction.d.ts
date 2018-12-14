@@ -1,10 +1,9 @@
 import * as SolFunction from 'web3/lib/web3/function';
 import { ABI } from '../..';
-import { AddressType } from "../types";
 import { EVMType } from '../types';
 import Transaction from "./Transaction";
 export default class SolidityFunction {
-    readonly contractAddress: AddressType;
+    readonly contractAddress: string;
     private host;
     private port;
     readonly name: string;
@@ -13,9 +12,9 @@ export default class SolidityFunction {
     readonly solFunction: SolFunction;
     readonly constant: boolean;
     readonly payable: boolean;
-    constructor(abi: ABI, contractAddress: AddressType, host: string, port: number);
+    constructor(abi: ABI, contractAddress: string, host: string, port: number);
     generateTransaction(options: {
-        from: AddressType;
+        from: string;
         gas: number;
         gasPrice: number;
     }, ...funcArgs: any[]): Transaction;
