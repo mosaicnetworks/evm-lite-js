@@ -52,11 +52,19 @@ interface OverrideTXOptions {
     gasPrice?: number
 }
 
+export interface SignedTransaction {
+    messageHash: string;
+    v: string;
+    r: string;
+    s: string;
+    rawTransaction: string;
+}
+
 export default class Transaction extends TransactionClient {
 
     public receipt?: TXReceipt;
 
-    constructor(private tx: TX, host: string, port: number, private constant: boolean, private readonly unpackfn?: (data: string) => any) {
+    constructor(public tx: TX, host: string, port: number, private constant: boolean, private readonly unpackfn?: (data: string) => any) {
         super(host, port)
     }
 
@@ -111,7 +119,7 @@ export default class Transaction extends TransactionClient {
             });
     }
 
-    public sign(account: Account): any {
+    public sign(account: Account): SignedTransaction {
         return account.signTransaction(this.tx)
     }
 

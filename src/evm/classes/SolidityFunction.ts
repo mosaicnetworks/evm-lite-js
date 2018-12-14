@@ -8,7 +8,7 @@ import * as errors from "../utils/errors";
 import {ABI, Input} from '../..'
 import {AddressType} from "../types";
 
-import parseSolidityType, {EVMType} from 'evm-sol-types';
+import {EVMType, parseSolidityTypes}from '../types';
 
 import Transaction, {TX} from "./Transaction";
 
@@ -85,7 +85,7 @@ export default class SolidityFunction {
 
     private requireSolidityTypes(args: any[]): void {
         args.map((a, i) => {
-            if (parseSolidityType(typeof a) === this.inputTypes[i]) {
+            if (parseSolidityTypes(typeof a) === this.inputTypes[i]) {
                 throw errors.InvalidSolidityType();
             }
         });

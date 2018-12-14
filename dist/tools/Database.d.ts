@@ -1,4 +1,4 @@
-import { SentTX } from "../evm/utils/Interfaces";
+import { SentTX } from "../evm/classes/Transaction";
 import Transactions from "./Transactions";
 interface Schema {
     transactions: SentTX[];

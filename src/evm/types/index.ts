@@ -27,17 +27,9 @@ export function parseSolidityTypes(raw: string) {
 };
 
 export function parseTransaction(tx: TX) {
-    const parsedTX: any = {
-        ...tx
+    return {
+        ...tx,
+        from: tx.from.value,
+        to: tx.to && tx.to.value,
     }
-
-    if (tx.from && tx.from instanceof AddressType) {
-        parsedTX.from = tx.from.value
-    }
-
-    if (tx.to && tx.to instanceof AddressType) {
-        parsedTX.to = tx.to.value
-    }
-
-    return parsedTX;
 }

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as JSONBig from 'json-bigint';
 
-import {SentTX} from "../evm/utils/Interfaces";
+import {SentTX} from "../evm/classes/Transaction";
 
 import Directory from "./Directory";
 import Transactions from "./Transactions";
