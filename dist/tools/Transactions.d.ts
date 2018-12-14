@@ -1,4 +1,4 @@
-import { SentTX } from "../evm/utils/Interfaces";
+import { SentTX } from "../evm/classes/Transaction";
 export default class Transactions {
     private dbPath;
     private transactions;

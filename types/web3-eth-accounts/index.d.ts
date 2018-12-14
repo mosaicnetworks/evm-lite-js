@@ -1,5 +1,4 @@
 declare module 'web3-eth-accounts' {
-
     export interface KDFEncryption {
         ciphertext: string,
         ciperparams: {

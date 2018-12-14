@@ -1,4 +1,4 @@
-declare class Wallet {
+declare class Accounts {
     constructor();
     add(): void;
     remove(): void;

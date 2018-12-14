@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var JSONBig = require("json-bigint");
 var BaseClient_1 = require("./BaseClient");
-var TransactionClient_1 = require("./TransactionClient");
+var BaseClient_2 = require("./BaseClient");
 var DefaultClient = /** @class */ (function (_super) {
     __extends(DefaultClient, _super);
     function DefaultClient(host, port) {
@@ -29,13 +29,11 @@ var DefaultClient = /** @class */ (function (_super) {
                 account.balance = account.balance.toFormat(0);
             }
             return account;
-        })
-            .catch(function () { return null; });
+        });
     };
     DefaultClient.prototype.testConnection = function () {
         return BaseClient_1.request(this.options('GET', '/info'))
-            .then(function () { return true; })
-            .catch(function () { return null; });
+            .then(function () { return true; });
     };
     DefaultClient.prototype.getAccounts = function () {
         return BaseClient_1.request(this.options('GET', '/accounts'))
@@ -52,14 +50,12 @@ var DefaultClient = /** @class */ (function (_super) {
             else {
                 return [];
             }
-        })
-            .catch(function () { return null; });
+        });
     };
     DefaultClient.prototype.getInfo = function () {
         return BaseClient_1.request(this.options('GET', '/info'))
-            .then(function (response) { return JSONBig.parse(response); })
-            .catch(function () { return null; });
+            .then(function (response) { return JSONBig.parse(response); });
     };
     return DefaultClient;
-}(TransactionClient_1.default));
+}(BaseClient_2.default));
 exports.default = DefaultClient;

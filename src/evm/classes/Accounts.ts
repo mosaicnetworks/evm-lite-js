@@ -1,4 +1,4 @@
-class Wallet {
+class Accounts {
 
     constructor() {
         // pass

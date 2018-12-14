@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // @ts-ignore
-var coder = require("web3/lib/solidity/coder.js");
+var coder = require("web3/lib/solidity/coder");
 // @ts-ignore
-var SolFunction = require("web3/lib/web3/function.js");
+var SolFunction = require("web3/lib/web3/function");
 var errors = require("../utils/errors");
-var evm_sol_types_1 = require("evm-sol-types");
+var types_1 = require("../types");
+var types_2 = require("../types");
 var Transaction_1 = require("./Transaction");
 var SolidityFunction = /** @class */ (function () {
     function SolidityFunction(abi, contractAddress, host, port) {
@@ -31,8 +32,8 @@ var SolidityFunction = /** @class */ (function () {
         this._validateArgs(funcArgs);
         var callData = this.solFunction.getData();
         var tx = {
-            from: options.from,
-            to: this.contractAddress,
+            from: new types_1.AddressType(options.from),
+            to: new types_1.AddressType(this.contractAddress),
             gas: options.gas,
             gasPrice: options.gasPrice,
         };
@@ -71,7 +72,7 @@ var SolidityFunction = /** @class */ (function () {
     SolidityFunction.prototype.requireSolidityTypes = function (args) {
         var _this = this;
         args.map(function (a, i) {
-            if (evm_sol_types_1.default(typeof a) === _this.inputTypes[i]) {
+            if (types_2.parseSolidityTypes(typeof a) === _this.inputTypes[i]) {
                 throw errors.InvalidSolidityType();
             }
         });

@@ -1,24 +1,17 @@
-import * as Accounts from 'web3-eth-accounts';
-
+import * as Wallet from 'web3-eth-accounts';
 import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
 
-import {BaseAccount, TX} from "../utils/Interfaces";
+import {Nonce, parseTransaction} from "../types";
+import Transaction, {SignedTransaction, TX} from './Transaction';
 
+
+export interface BaseAccount {
+    address: string,
+    nonce: Nonce,
+    balance: any
+}
 
 export default class Account {
-
-    public balance: number = 0;
-    public nonce: number = 0;
-    private readonly account: Web3Account;
-
-    constructor(data?: Web3Account) {
-        if (!data) {
-            // @ts-ignore
-            this.account = new Accounts().create();
-        } else {
-            this.account = data;
-        }
-    }
 
     get address(): string {
         return this.account.address
@@ -30,17 +23,33 @@ export default class Account {
 
     public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
         // @ts-ignore
-        const decryptedAccount = new Accounts().decrypt(v3JSONKeyStore, password);
+        const decryptedAccount = new Wallet().decrypt(v3JSONKeyStore, password);
 
         return new Account(decryptedAccount);
+    }
+
+    public balance: number = 0;
+    public nonce: number = 0;
+    private readonly account: Web3Account;
+
+    constructor(data?: Web3Account) {
+        if (!data) {
+            // @ts-ignore
+            this.account = new Wallet().create();
+        } else {
+            this.account = data;
+        }
     }
 
     public sign(message: string): any {
         return this.account.sign(message);
     }
 
-    public signTransaction(tx: TX): any {
-        return this.account.signTransaction(tx);
+    public signTransaction(tx: TX | Transaction): Promise<SignedTransaction> {
+        if (tx instanceof Transaction) {
+            return this.account.signTransaction(parseTransaction(tx.tx));
+        }
+        return this.account.signTransaction(parseTransaction(tx));
     }
 
     public encrypt(password: string): V3JSONKeyStore {
