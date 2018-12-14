@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var JSONBig = require("json-bigint");
+var types_1 = require("../types");
 var TransactionClient_1 = require("../client/TransactionClient");
 var Transaction = /** @class */ (function (_super) {
     __extends(Transaction, _super);
@@ -26,23 +27,15 @@ var Transaction = /** @class */ (function (_super) {
     }
     Transaction.prototype.send = function (options) {
         var _this = this;
-        if (options) {
-            this.tx.to = options.to || this.tx.to;
-            this.tx.from = options.from || this.tx.from;
-            this.tx.gas = options.gas || this.tx.gas;
-            this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-        }
-        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('Gas & Gas price not set');
-        }
+        this.assignTXValues(options);
+        this.checkGasAndGasPrice();
         if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead');
         }
-        if (!this.tx.from) {
-            throw new Error('Transaction does have a from address.');
+        if (!this.tx.value) {
+            throw new Error('Transaction does have a from value to send.');
         }
-        return this.sendTX(JSONBig.stringify(this.tx))
+        return this.sendTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
             .then(function (res) {
             var response = JSONBig.parse(res);
             return response.txHash;
@@ -57,20 +50,15 @@ var Transaction = /** @class */ (function (_super) {
     };
     Transaction.prototype.call = function (options) {
         var _this = this;
-        if (options) {
-            this.tx.to = options.to || this.tx.to;
-            this.tx.from = options.from || this.tx.from;
-            this.tx.gas = options.gas || this.tx.gas;
-            this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-        }
-        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('gas & gas price not set');
-        }
+        this.assignTXValues(options);
+        this.checkGasAndGasPrice();
         if (!this.constant) {
             throw new Error('Transaction mutates state. Use `send()` instead');
         }
-        return this.callTX(JSONBig.stringify(this.tx))
+        if (this.tx.value) {
+            throw new Error('Transaction cannot have value if it does not intend to mutate state.');
+        }
+        return this.callTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
             .then(function (response) {
             return JSONBig.parse(response);
         })
@@ -81,15 +69,18 @@ var Transaction = /** @class */ (function (_super) {
             return _this.unpackfn(Buffer.from(obj.data).toString());
         });
     };
+    Transaction.prototype.sign = function (account) {
+        return account.signTransaction(this.tx);
+    };
     Transaction.prototype.toString = function () {
-        return JSONBig.stringify(this.tx);
+        return JSONBig.stringify(types_1.parseTransaction(this.tx));
     };
     Transaction.prototype.from = function (from) {
-        this.tx.from = from;
+        this.tx.from = new types_1.AddressType(from);
         return this;
     };
     Transaction.prototype.to = function (to) {
-        this.tx.to = to;
+        this.tx.to = new types_1.AddressType(to);
         return this;
     };
     Transaction.prototype.value = function (value) {
@@ -107,6 +98,20 @@ var Transaction = /** @class */ (function (_super) {
     Transaction.prototype.data = function (data) {
         this.tx.data = data;
         return this;
+    };
+    Transaction.prototype.assignTXValues = function (options) {
+        if (options) {
+            this.tx.to = (options.to) ? new types_1.AddressType(options.to) : this.tx.to;
+            this.tx.from = (options.from) ? new types_1.AddressType(options.from) : this.tx.from;
+            this.tx.gas = options.gas || this.tx.gas;
+            this.tx.value = options.value || this.tx.value;
+            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
+        }
+    };
+    Transaction.prototype.checkGasAndGasPrice = function () {
+        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+            throw new Error('Gas & Gas Price not set');
+        }
     };
     return Transaction;
 }(TransactionClient_1.default));

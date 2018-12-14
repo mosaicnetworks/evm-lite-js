@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var coder = require("web3/lib/solidity/coder");
 var checks = require("../utils/checks");
 var errors = require("../utils/errors");
+var types_1 = require("../types");
 var Transaction_1 = require("./Transaction");
 var SolidityFunction_1 = require("./SolidityFunction");
 var SolidityContract = /** @class */ (function () {
@@ -58,12 +59,12 @@ var SolidityContract = /** @class */ (function () {
         }
     };
     SolidityContract.prototype.setAddressAndPopulate = function (address) {
-        this.options.address = address;
+        this.options.address = new types_1.AddressType(address);
         this.attachMethodsToContract();
         return this;
     };
     SolidityContract.prototype.address = function (address) {
-        this.options.address = address;
+        this.options.address = new types_1.AddressType(address);
         return this;
     };
     SolidityContract.prototype.gas = function (gas) {
@@ -94,7 +95,7 @@ var SolidityContract = /** @class */ (function () {
             if (!_this.options.address) {
                 throw new Error('Cannot attach function');
             }
-            var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address, _this.host, _this.port);
+            var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address.value, _this.host, _this.port);
             _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
                 gas: _this.options.gas,
                 gasPrice: _this.options.gasPrice,

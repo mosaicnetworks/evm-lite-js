@@ -1,11 +1,12 @@
-import { ABI } from "../utils/Interfaces";
+import { ABI } from "../..";
+import { Address, Data, Gas, GasPrice } from "../types";
 import Transaction, { TXReceipt } from "./Transaction";
 export interface ContractOptions {
-    gas: number;
-    gasPrice: number;
-    from: string;
-    address?: string;
-    data?: string;
+    gas: Gas;
+    gasPrice: GasPrice;
+    from: Address;
+    address?: Address;
+    data?: Data;
     jsonInterface: ABI[];
 }
 export default class SolidityContract {

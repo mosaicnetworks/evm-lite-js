@@ -1,42 +1,55 @@
 import * as JSONBig from 'json-bigint'
 
+import {Address, AddressType, ChainID, Data, Gas, GasPrice, Nonce, parseTransaction, Value} from "../types";
+
 import TransactionClient from "../client/TransactionClient";
+import Account from "./Account";
 
 
 export interface TXReceipt {
-    root: string,
-    transactionHash: string,
-    from: string,
-    to?: string,
-    gasUsed: number,
-    cumulativeGasUsed: number,
-    contractAddress: string,
-    logs: [],
-    logsBloom: string,
-    status: number
+    root: string;
+    transactionHash: string;
+    from: string;
+    to?: string;
+    gasUsed: number;
+    cumulativeGasUsed: number;
+    contractAddress: string;
+    logs: [];
+    logsBloom: string;
+    status: number;
 }
 
 export interface SentTX {
-    from: string,
-    to: string,
-    value: number,
-    gas: number,
-    nonce: number,
-    gasPrice: number,
-    date: any,
-    txHash: string
+    from: string;
+    to: string;
+    value: number;
+    gas: number;
+    nonce: number;
+    gasPrice: number;
+    date: any;
+    txHash: string;
 }
 
 export interface BaseTX {
-    gas: number,
-    gasPrice: number,
+    gas: Gas;
+    gasPrice: GasPrice;
+    nonce?: Nonce;
+    chainId?: ChainID;
 }
 
 export interface TX extends BaseTX {
-    from: string,
+    from: Address;
+    to?: Address;
+    value?: Value;
+    data?: Data;
+}
+
+interface OverrideTXOptions {
     to?: string,
+    from?: string,
     value?: number,
-    data?: string
+    gas?: number,
+    gasPrice?: number
 }
 
 export default class Transaction extends TransactionClient {
@@ -47,28 +60,19 @@ export default class Transaction extends TransactionClient {
         super(host, port)
     }
 
-    public send(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: number }): Promise<TXReceipt> {
-        if (options) {
-            this.tx.to = options.to || this.tx.to;
-            this.tx.from = options.from || this.tx.from;
-            this.tx.gas = options.gas || this.tx.gas;
-            this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-        }
-
-        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('Gas & Gas price not set');
-        }
+    public send(options?: OverrideTXOptions): Promise<TXReceipt> {
+        this.assignTXValues(options);
+        this.checkGasAndGasPrice();
 
         if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead')
         }
 
-        if (!this.tx.from) {
-            throw new Error('Transaction does have a from address.')
+        if (!this.tx.value) {
+            throw new Error('Transaction does have a from value to send.')
         }
 
-        return this.sendTX(JSONBig.stringify(this.tx))
+        return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
             .then((res) => {
                 const response: { txHash: string } = JSONBig.parse(res);
                 return response.txHash
@@ -82,24 +86,19 @@ export default class Transaction extends TransactionClient {
             })
     }
 
-    public call(options?: { to?: string, from?: string, value?: number, gas?: number, gasPrice?: number }): Promise<string> {
-        if (options) {
-            this.tx.to = options.to || this.tx.to;
-            this.tx.from = options.from || this.tx.from;
-            this.tx.gas = options.gas || this.tx.gas;
-            this.tx.value = options.value || this.tx.value;
-            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-        }
-
-        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('gas & gas price not set');
-        }
+    public call(options?: OverrideTXOptions): Promise<string> {
+        this.assignTXValues(options);
+        this.checkGasAndGasPrice();
 
         if (!this.constant) {
             throw new Error('Transaction mutates state. Use `send()` instead')
         }
 
-        return this.callTX(JSONBig.stringify(this.tx))
+        if (this.tx.value) {
+            throw new Error('Transaction cannot have value if it does not intend to mutate state.')
+        }
+
+        return this.callTX(JSONBig.stringify(parseTransaction(this.tx)))
             .then((response) => {
                 return JSONBig.parse(response);
             })
@@ -107,21 +106,26 @@ export default class Transaction extends TransactionClient {
                 if (!this.unpackfn) {
                     throw new Error('Unpacking function required.')
                 }
+
                 return this.unpackfn(Buffer.from(obj.data).toString());
             });
     }
 
+    public sign(account: Account): any {
+        return account.signTransaction(this.tx)
+    }
+
     public toString(): string {
-        return JSONBig.stringify(this.tx);
+        return JSONBig.stringify(parseTransaction(this.tx));
     }
 
     public from(from: string): this {
-        this.tx.from = from;
+        this.tx.from = new AddressType(from);
         return this
     }
 
     public to(to: string): this {
-        this.tx.to = to;
+        this.tx.to = new AddressType(to);
         return this
     }
 
@@ -143,6 +147,23 @@ export default class Transaction extends TransactionClient {
     public data(data: string): this {
         this.tx.data = data;
         return this
+    }
+
+    private assignTXValues(options?: OverrideTXOptions) {
+        if (options) {
+            this.tx.to = (options.to) ? new AddressType(options.to) : this.tx.to;
+            this.tx.from = (options.from) ? new AddressType(options.from) : this.tx.from;
+
+            this.tx.gas = options.gas || this.tx.gas;
+            this.tx.value = options.value || this.tx.value;
+            this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
+        }
+    }
+
+    private checkGasAndGasPrice() {
+        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+            throw new Error('Gas & Gas Price not set');
+        }
     }
 
 }

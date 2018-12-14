@@ -1,13 +1,14 @@
-import * as Accounts from 'web3-eth-accounts';
+import * as Wallet from 'web3-eth-accounts';
 
 import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
 
+import {Nonce} from "../types";
 import {TX} from './Transaction';
 
 
 export interface BaseAccount {
     address: string,
-    nonce: number,
+    nonce: Nonce,
     balance: any
 }
 
@@ -23,7 +24,7 @@ export default class Account {
 
     public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
         // @ts-ignore
-        const decryptedAccount = new Accounts().decrypt(v3JSONKeyStore, password);
+        const decryptedAccount = new Wallet().decrypt(v3JSONKeyStore, password);
 
         return new Account(decryptedAccount);
     }
@@ -35,7 +36,7 @@ export default class Account {
     constructor(data?: Web3Account) {
         if (!data) {
             // @ts-ignore
-            this.account = new Accounts().create();
+            this.account = new Wallet().create();
         } else {
             this.account = data;
         }

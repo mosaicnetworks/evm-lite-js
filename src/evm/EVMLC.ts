@@ -2,33 +2,46 @@ import * as fs from 'fs';
 import * as JSONBig from 'json-bigint'
 import * as solidityCompiler from 'solc'
 
-import Transaction, {BaseTX} from "./classes/Transaction";
+import {Address, AddressType} from "./types";
 import {ABI} from "./utils/Interfaces";
+
+import Transaction, {BaseTX} from "./classes/Transaction";
 
 import SolidityContract from "./classes/SolidityContract";
 import DefaultClient from "./client/DefaultClient";
 
 
-interface DefaultTXOptions extends BaseTX {
+interface UserDefinedDefaultTXOptions extends BaseTX {
     from: string,
 }
 
-export default class Connection extends DefaultClient {
+interface DefaultTXOptions extends BaseTX {
+    from: Address,
+}
 
-    constructor(host: string, port: number, private readonly defaultTXOptions: DefaultTXOptions) {
+export default class EVMLC extends DefaultClient {
+
+    private readonly defaultTXOptions: DefaultTXOptions;
+
+    constructor(host: string, port: number, private readonly userDefaultTXOptions: UserDefinedDefaultTXOptions) {
         super(host, port);
+
+        this.defaultTXOptions = {
+            ...userDefaultTXOptions,
+            from: new AddressType(userDefaultTXOptions.from)
+        }
     }
 
-    get defaultOptions(): DefaultTXOptions {
-        return this.defaultTXOptions;
+    get defaultOptions(): UserDefinedDefaultTXOptions {
+        return this.userDefaultTXOptions;
     }
 
     get defaultFrom(): string {
-        return this.defaultTXOptions.from;
+        return this.defaultTXOptions.from.value;
     }
 
     set defaultFrom(address: string) {
-        this.defaultTXOptions.from = address;
+        this.defaultTXOptions.from = new AddressType(address);
     }
 
     get defaultGas(): number {
@@ -47,7 +60,7 @@ export default class Connection extends DefaultClient {
         this.defaultTXOptions.gasPrice = gasPrice;
     }
 
-    public ContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
+    public generateContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
         const input = fs.readFileSync(filePath).toString();
         const output = solidityCompiler.compile(input, 1);
         const byteCode = output.contracts[`:${contractName}`].bytecode;
@@ -62,7 +75,7 @@ export default class Connection extends DefaultClient {
         }, this.host, this.port)
     };
 
-    public ContractFromABI(abi: ABI[]): SolidityContract {
+    public generateContractFromABI(abi: ABI[]): SolidityContract {
         return new SolidityContract({
             from: this.defaultTXOptions.from,
             jsonInterface: abi,
@@ -74,9 +87,13 @@ export default class Connection extends DefaultClient {
     public prepareTransfer(to: string, value: number, from?: string): Transaction {
         from = from || this.defaultFrom;
 
+        if (value <= 0) {
+            throw new Error('A transfer of funds must have a value greater than 0.')
+        }
+
         return new Transaction({
-            from,
-            to,
+            from: new AddressType(from),
+            to: new AddressType(to),
             value,
             gas: this.defaultGas,
             gasPrice: this.defaultGasPrice

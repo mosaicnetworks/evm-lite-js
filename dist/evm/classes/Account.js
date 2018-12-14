@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Accounts = require("web3-eth-accounts");
+var Wallet = require("web3-eth-accounts");
 var Account = /** @class */ (function () {
     function Account(data) {
         this.balance = 0;
         this.nonce = 0;
         if (!data) {
             // @ts-ignore
-            this.account = new Accounts().create();
+            this.account = new Wallet().create();
         }
         else {
             this.account = data;
@@ -29,7 +29,7 @@ var Account = /** @class */ (function () {
     });
     Account.decrypt = function (v3JSONKeyStore, password) {
         // @ts-ignore
-        var decryptedAccount = new Accounts().decrypt(v3JSONKeyStore, password);
+        var decryptedAccount = new Wallet().decrypt(v3JSONKeyStore, password);
         return new Account(decryptedAccount);
     };
     Account.prototype.sign = function (message) {

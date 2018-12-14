@@ -4,9 +4,9 @@ import {TXReceipt} from "../classes/Transaction";
 import BaseClient, {request} from "./BaseClient";
 
 
-export default abstract class TransactionClient extends BaseClient {
+export default class TransactionClient extends BaseClient {
 
-    protected constructor(host: string, port: number) {
+    constructor(host: string, port: number) {
         super(host, port)
     }
 

@@ -1,43 +1,13 @@
-import * as path from 'path';
+import {EVMLC} from 'evm-lite-lib';
 
-import {Controller as Connection} from 'evm-lite-lib';
-
-const connection = new Connection('127.0.0.1', 8080, {
+const evmlc = new EVMLC('127.0.0.1', 8080, {
     from: '0xA4a5F65Fb3752b2B6632F2729f17dd61B2aaD650',
     gas: 100000,
     gasPrice: 0
 })
 
+const transaction = evmlc.prepareTransfer('0x0ca23356310e6e1f9d79e4f2a4cd6009a51f6ea0', 0);
 
-const unDeployedContract = connection.ContractFromSolidityFile('CrowdFunding', path.resolve('tests/assets/contract.sol'));
-
-let deployedContract: any;
-
-unDeployedContract.deploy({
-    parameters: [10]
-})
-    .then((contract) => {
-        deployedContract = contract;
-
-        const transaction = contract.methods.contribute().value(11)
-        console.log(transaction.toString())
-
-        return transaction.send()
-            .then((resp) => {
-                console.log(resp);
-                return contract;
-            })
-    })
-    .then((contract) => {
-        const transaction = contract.methods.checkGoalReached();
-
-        transaction.call()
-            .then((res) => console.log(res))
-            .then(() => {
-                connection.getAccount(deployedContract.options.address)
-                    .then((account) => console.log(account))
-            })
-    })
+transaction.send()
+    .then((receipt) => console.log(receipt))
     .catch((error) => console.log(error));
-
-

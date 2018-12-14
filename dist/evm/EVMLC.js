@@ -12,38 +12,51 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var JSONBig = require("json-bigint");
 var solidityCompiler = require("solc");
+var types_1 = require("./types");
 var Transaction_1 = require("./classes/Transaction");
 var SolidityContract_1 = require("./classes/SolidityContract");
 var DefaultClient_1 = require("./client/DefaultClient");
-var Connection = /** @class */ (function (_super) {
-    __extends(Connection, _super);
-    function Connection(host, port, defaultTXOptions) {
+var EVMLC = /** @class */ (function (_super) {
+    __extends(EVMLC, _super);
+    function EVMLC(host, port, userDefaultTXOptions) {
         var _this = _super.call(this, host, port) || this;
-        _this.defaultTXOptions = defaultTXOptions;
+        _this.userDefaultTXOptions = userDefaultTXOptions;
+        _this.defaultTXOptions = __assign({}, userDefaultTXOptions, { from: new types_1.AddressType(userDefaultTXOptions.from) });
         return _this;
     }
-    Object.defineProperty(Connection.prototype, "defaultOptions", {
+    Object.defineProperty(EVMLC.prototype, "defaultOptions", {
         get: function () {
-            return this.defaultTXOptions;
+            return this.userDefaultTXOptions;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Connection.prototype, "defaultFrom", {
+    Object.defineProperty(EVMLC.prototype, "defaultFrom", {
         get: function () {
-            return this.defaultTXOptions.from;
+            return this.defaultTXOptions.from.value;
         },
         set: function (address) {
-            this.defaultTXOptions.from = address;
+            this.defaultTXOptions.from = new types_1.AddressType(address);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Connection.prototype, "defaultGas", {
+    Object.defineProperty(EVMLC.prototype, "defaultGas", {
         get: function () {
             return this.defaultTXOptions.gas;
         },
@@ -53,7 +66,7 @@ var Connection = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Connection.prototype, "defaultGasPrice", {
+    Object.defineProperty(EVMLC.prototype, "defaultGasPrice", {
         get: function () {
             return this.defaultTXOptions.gasPrice;
         },
@@ -63,7 +76,7 @@ var Connection = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Connection.prototype.ContractFromSolidityFile = function (contractName, filePath) {
+    EVMLC.prototype.generateContractFromSolidityFile = function (contractName, filePath) {
         var input = fs.readFileSync(filePath).toString();
         var output = solidityCompiler.compile(input, 1);
         var byteCode = output.contracts[":" + contractName].bytecode;
@@ -77,7 +90,7 @@ var Connection = /** @class */ (function (_super) {
         }, this.host, this.port);
     };
     ;
-    Connection.prototype.ContractFromABI = function (abi) {
+    EVMLC.prototype.generateContractFromABI = function (abi) {
         return new SolidityContract_1.default({
             from: this.defaultTXOptions.from,
             jsonInterface: abi,
@@ -85,16 +98,19 @@ var Connection = /** @class */ (function (_super) {
             gasPrice: this.defaultTXOptions.gasPrice
         }, this.host, this.port);
     };
-    Connection.prototype.prepareTransfer = function (to, value, from) {
+    EVMLC.prototype.prepareTransfer = function (to, value, from) {
         from = from || this.defaultFrom;
+        if (value <= 0) {
+            throw new Error('A transfer of funds must have a value greater than 0.');
+        }
         return new Transaction_1.default({
-            from: from,
-            to: to,
+            from: new types_1.AddressType(from),
+            to: new types_1.AddressType(to),
             value: value,
             gas: this.defaultGas,
             gasPrice: this.defaultGasPrice
         }, this.host, this.port, false);
     };
-    return Connection;
+    return EVMLC;
 }(DefaultClient_1.default));
-exports.default = Connection;
+exports.default = EVMLC;

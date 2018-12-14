@@ -4,8 +4,8 @@ import * as path from "path";
 
 import {V3JSONKeyStore} from 'web3-eth-accounts';
 
-import {Account, Controller} from "..";
-import {BaseAccount} from '../evm/utils/Interfaces'
+import {Account, EVMLC} from "..";
+import {BaseAccount} from '../evm/classes/Account'
 
 
 export default class Keystore {
@@ -56,7 +56,7 @@ export default class Keystore {
         });
     }
 
-    public all(fetch: boolean = false, connection?: Controller): Promise<any[]> {
+    public all(fetch: boolean = false, connection?: EVMLC): Promise<any[]> {
         return new Promise<any[]>(async (resolve) => {
             const accounts: any[] = [];
             const files = this.allKeystoreFiles();
@@ -107,7 +107,7 @@ export default class Keystore {
         return ''
     }
 
-    public async fetch(address: string, connection: Controller): Promise<BaseAccount> {
+    public async fetch(address: string, connection: EVMLC): Promise<BaseAccount> {
         return new Promise<BaseAccount>(async (resolve) => {
             const account = await connection.getAccount(address);
 

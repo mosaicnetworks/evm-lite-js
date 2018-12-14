@@ -4,18 +4,20 @@ import * as coder from 'web3/lib/solidity/coder'
 import * as checks from '../utils/checks';
 import * as errors from "../utils/errors"
 
-import {ABI} from "../utils/Interfaces";
+import {ABI} from "../..";
+import {Address, AddressType, Data, Gas, GasPrice} from "../types";
+
 import Transaction, {TXReceipt} from "./Transaction";
 
 import SolidityFunction from "./SolidityFunction";
 
 
 export interface ContractOptions {
-    gas: number,
-    gasPrice: number,
-    from: string,
-    address?: string,
-    data?: string,
+    gas: Gas,
+    gasPrice: GasPrice,
+    from: Address,
+    address?: Address,
+    data?: Data,
     jsonInterface: ABI[]
 }
 
@@ -57,7 +59,7 @@ export default class SolidityContract {
         }
 
         if (this.options.data) {
-            let encodedData: string = this.options.data;
+            let encodedData = this.options.data;
 
             if (options && options.parameters) {
                 encodedData = encodedData + this.encodeConstructorParams(options.parameters);
@@ -82,13 +84,13 @@ export default class SolidityContract {
     }
 
     public setAddressAndPopulate(address: string): this {
-        this.options.address = address;
+        this.options.address = new AddressType(address);
         this.attachMethodsToContract();
         return this
     }
 
     public address(address: string): this {
-        this.options.address = address;
+        this.options.address = new AddressType(address);
         return this
     }
 
@@ -124,7 +126,7 @@ export default class SolidityContract {
                     throw new Error('Cannot attach function')
                 }
 
-                const solFunction = new SolidityFunction(funcJSON, this.options.address, this.host, this.port);
+                const solFunction = new SolidityFunction(funcJSON, this.options.address.value, this.host, this.port);
                 this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
                     gas: this.options.gas,
                     gasPrice: this.options.gasPrice,

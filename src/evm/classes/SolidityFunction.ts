@@ -5,9 +5,10 @@ import * as SolFunction from 'web3/lib/web3/function'
 
 import * as errors from "../utils/errors";
 
-import parseSolidityType, {EVMType} from 'evm-sol-types';
+import {ABI, Input} from '../..'
+import {AddressType} from "../types";
 
-import {ABI, Input} from '../utils/Interfaces'
+import parseSolidityType, {EVMType} from 'evm-sol-types';
 
 import Transaction, {TX} from "./Transaction";
 
@@ -26,6 +27,7 @@ export default class SolidityFunction {
         this.solFunction = new SolFunction('', abi, '');
         this.constant = (abi.stateMutability === "view" || abi.stateMutability === "pure" || abi.constant);
         this.payable = (abi.stateMutability === "payable" || abi.payable);
+
         this.inputTypes = abi.inputs.map((i: Input) => {
             return i.type;
         });
@@ -39,8 +41,8 @@ export default class SolidityFunction {
 
         const callData = this.solFunction.getData();
         const tx: TX = {
-            from: options.from,
-            to: this.contractAddress,
+            from: new AddressType(options.from),
+            to: new AddressType(this.contractAddress),
             gas: options.gas,
             gasPrice: options.gasPrice,
         };
@@ -54,7 +56,6 @@ export default class SolidityFunction {
         }
 
         let unpackfn: ((output: string) => any) | undefined;
-
         if (this.constant) {
             unpackfn = this.unpackOutput.bind(this);
         }

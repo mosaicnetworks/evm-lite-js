@@ -5,6 +5,7 @@ var coder = require("web3/lib/solidity/coder");
 // @ts-ignore
 var SolFunction = require("web3/lib/web3/function");
 var errors = require("../utils/errors");
+var types_1 = require("../types");
 var evm_sol_types_1 = require("evm-sol-types");
 var Transaction_1 = require("./Transaction");
 var SolidityFunction = /** @class */ (function () {
@@ -31,8 +32,8 @@ var SolidityFunction = /** @class */ (function () {
         this._validateArgs(funcArgs);
         var callData = this.solFunction.getData();
         var tx = {
-            from: options.from,
-            to: this.contractAddress,
+            from: new types_1.AddressType(options.from),
+            to: new types_1.AddressType(this.contractAddress),
             gas: options.gas,
             gasPrice: options.gasPrice,
         };

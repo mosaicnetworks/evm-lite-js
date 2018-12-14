@@ -1,8 +1,9 @@
 import { Account as Web3Account, V3JSONKeyStore } from 'web3-eth-accounts';
+import { Nonce } from "../types";
 import { TX } from './Transaction';
 export interface BaseAccount {
     address: string;
-    nonce: number;
+    nonce: Nonce;
     balance: any;
 }
 export default class Account {
