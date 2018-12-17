@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var JSONBig = require("json-bigint");
 var path = require("path");
-var __1 = require("..");
+var __1 = require("../..");
 var Keystore = /** @class */ (function () {
     function Keystore(directory, name) {
         this.directory = directory;
@@ -82,11 +82,12 @@ var Keystore = /** @class */ (function () {
                 return;
             }
             var accountNew = account.encrypt(newPass);
-            fs.writeFileSync(path, JSONBig.stringify(accountNew));
-            resolve();
+            var string = JSONBig.stringify(accountNew);
+            fs.writeFileSync(path, string);
+            resolve(string);
         });
     };
-    Keystore.prototype.all = function (fetch, connection) {
+    Keystore.prototype.list = function (fetch, connection) {
         var _this = this;
         if (fetch === void 0) { fetch = false; }
         return new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
@@ -105,7 +106,7 @@ var Keystore = /** @class */ (function () {
                         address = file.address;
                         if (!(fetch && connection)) return [3 /*break*/, 3];
                         _b = (_a = accounts).push;
-                        return [4 /*yield*/, connection.getAccount(address)];
+                        return [4 /*yield*/, this.fetchBalanceAndNonce(address, connection)];
                     case 2:
                         _b.apply(_a, [_c.sent()]);
                         return [3 /*break*/, 4];
@@ -136,6 +137,23 @@ var Keystore = /** @class */ (function () {
             resolve(JSON.stringify(_this.getKeystoreFile(address)));
         });
     };
+    Keystore.prototype.fetchBalanceAndNonce = function (address, connection) {
+        var _this = this;
+        return new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+            var account;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, connection.getAccount(address)];
+                    case 1:
+                        account = _a.sent();
+                        if (account) {
+                            resolve(account);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    };
     Keystore.prototype.getFilePathForAddress = function (address) {
         var dir = fs.readdirSync(this.path).filter(function (file) {
             return !(file.startsWith('.'));
@@ -153,27 +171,6 @@ var Keystore = /** @class */ (function () {
             }
         }
         return '';
-    };
-    Keystore.prototype.fetch = function (address, connection) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                        var account;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, connection.getAccount(address)];
-                                case 1:
-                                    account = _a.sent();
-                                    if (account) {
-                                        resolve(account);
-                                    }
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); })];
-            });
-        });
     };
     Keystore.prototype.allKeystoreFiles = function () {
         var json = [];

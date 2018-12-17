@@ -1,5 +1,5 @@
-import Config from "./classes/Config";
-import Keystore from "./classes/Keystore";
+import Config from "./Config";
+import Keystore from "./Keystore";
 export default class DataDirectory {
     readonly path: string;
     readonly config: Config;

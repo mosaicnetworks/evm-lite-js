@@ -1,7 +1,7 @@
 export interface ConfigSchema {
     connection: {
         host: string;
-        port: string;
+        port: number;
     };
     defaults: {
         from: string;
@@ -15,13 +15,12 @@ export interface ConfigSchema {
 export default class Config {
     readonly directory: string;
     readonly name: string;
-    data: any;
     readonly path: string;
-    private initialData;
+    data: ConfigSchema;
     constructor(directory: string, name: string);
     defaultTOML(): string;
     default(): ConfigSchema;
     toTOML(): string;
     load(): Promise<ConfigSchema>;
-    save(): Promise<string>;
+    save(data: ConfigSchema): Promise<string>;
 }

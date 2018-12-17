@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as mkdir from "mkdirp";
 
 
-export default class Directory {
+export default class Static {
     public static exists(path: string): boolean {
         return fs.existsSync(path);
     }
@@ -12,13 +12,13 @@ export default class Directory {
     }
 
     public static createDirectoryIfNotExists(path: string): void {
-        if (!Directory.exists(path)) {
+        if (!Static.exists(path)) {
             mkdir.sync(path);
         }
     }
 
     public static createOrReadFile(path: string, data: string): string {
-        if (!Directory.exists(path)) {
+        if (!Static.exists(path)) {
             fs.writeFileSync(path, data);
 
             return data;
@@ -35,11 +35,9 @@ export default class Directory {
             return false;
         }
 
-        for (let i = 0; i < aProps.length; i++) {
-            const propName = aProps[i];
-
+        for (const propName of aProps) {
             if (typeof objectA[propName] === 'object' && typeof objectB[propName] === 'object') {
-                if (!Directory.isEquivalentObjects(objectA[propName], objectB[propName])) {
+                if (!Static.isEquivalentObjects(objectA[propName], objectB[propName])) {
                     return false;
                 }
             } else if (objectA[propName] !== objectB[propName]) {

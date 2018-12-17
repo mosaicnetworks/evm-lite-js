@@ -1,6 +1,6 @@
 import * as JSONBig from 'json-bigint'
 
-import {BaseAccount} from "../classes/Account";
+import {BaseAccount} from "../..";
 import {request} from "./BaseClient";
 
 import BaseClient from "./BaseClient";

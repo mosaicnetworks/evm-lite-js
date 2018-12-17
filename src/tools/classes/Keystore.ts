@@ -4,13 +4,15 @@ import * as path from "path";
 
 import {V3JSONKeyStore} from 'web3-eth-accounts';
 
-import {Account, EVMLC} from "..";
-import {BaseAccount} from '../evm/classes/Account'
+import {Account, BaseAccount, EVMLC} from "../..";
 
 
 export default class Keystore {
 
-    constructor(readonly path: string) {
+    public readonly path: string;
+
+    constructor(public readonly directory: string, public readonly name: string) {
+        this.path = path.join(directory, name);
     }
 
     public create(password: string, output?: string): Promise<string> {
@@ -38,8 +40,8 @@ export default class Keystore {
         })
     }
 
-    public update(address: string, old: string, newPass: string): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
+    public update(address: string, old: string, newPass: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
             const path = this.getFilePathForAddress(address);
             let account: Account;
 
@@ -51,20 +53,23 @@ export default class Keystore {
             }
 
             const accountNew = account.encrypt(newPass);
-            fs.writeFileSync(path, JSONBig.stringify(accountNew));
-            resolve()
+            const string = JSONBig.stringify(accountNew);
+
+            fs.writeFileSync(path, string);
+
+            resolve(string)
         });
     }
 
-    public all(fetch: boolean = false, connection?: EVMLC): Promise<any[]> {
-        return new Promise<any[]>(async (resolve) => {
-            const accounts: any[] = [];
+    public list(fetch: boolean = false, connection?: EVMLC): Promise<BaseAccount[]> {
+        return new Promise<BaseAccount[]>(async (resolve) => {
+            const accounts: BaseAccount[] = [];
             const files = this.allKeystoreFiles();
             if (files.length) {
                 for (const file of files) {
                     const address = file.address;
                     if (fetch && connection) {
-                        accounts.push(await connection.getAccount(address));
+                        accounts.push(await this.fetchBalanceAndNonce(address, connection));
                     } else {
                         accounts.push({
                             address,
@@ -86,7 +91,17 @@ export default class Keystore {
         });
     }
 
-    public getFilePathForAddress(address: string): string {
+    private fetchBalanceAndNonce(address: string, connection: EVMLC): Promise<BaseAccount> {
+        return new Promise<BaseAccount>(async (resolve) => {
+            const account = await connection.getAccount(address);
+
+            if (account) {
+                resolve(account);
+            }
+        });
+    }
+
+    private getFilePathForAddress(address: string): string {
         const dir = fs.readdirSync(this.path).filter((file) => {
             return !(file.startsWith('.'));
         });
@@ -105,16 +120,6 @@ export default class Keystore {
         }
 
         return ''
-    }
-
-    public async fetch(address: string, connection: EVMLC): Promise<BaseAccount> {
-        return new Promise<BaseAccount>(async (resolve) => {
-            const account = await connection.getAccount(address);
-
-            if (account) {
-                resolve(account);
-            }
-        });
     }
 
     private allKeystoreFiles() {

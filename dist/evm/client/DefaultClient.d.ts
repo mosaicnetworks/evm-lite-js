@@ -1,4 +1,4 @@
-import { BaseAccount } from "../classes/Account";
+import { BaseAccount } from "../..";
 import BaseClient from "./BaseClient";
 export default abstract class DefaultClient extends BaseClient {
     protected constructor(host: string, port: number);

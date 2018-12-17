@@ -1,8 +1,6 @@
-import * as path from 'path';
-
-import Config from "./Config";
-import Directory from "./Directory";
-import Keystore from "./Keystore";
+import Config from "./classes/Config";
+import Keystore from "./classes/Keystore";
+import Static from "./classes/Static";
 
 
 export default class DataDirectory {
@@ -11,32 +9,10 @@ export default class DataDirectory {
     public readonly keystore: Keystore;
 
     constructor(readonly path: string) {
-        Directory.createDirectoryIfNotExists(path);
+        Static.createDirectoryIfNotExists(path);
 
-        this.config = this.createAndGetConfig();
-        this.keystore = this.createAndGetKeystore();
-    }
-
-    public createAndGetConfig(): Config {
-        const configFilePath = path.join(this.path, 'config.toml');
-        Directory.createOrReadFile(configFilePath, Config.defaultTOML(this.path));
-        return new Config(this.path, 'config.toml');
-    }
-
-    public createAndGetKeystore(): Keystore {
-        const keystoreDirPath = path.join(this.path, 'keystore');
-        Directory.createDirectoryIfNotExists(keystoreDirPath);
-        return new Keystore(keystoreDirPath)
-    }
-
-    public checkInitialisation(): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            if (this.config && this.keystore) {
-                resolve();
-            } else {
-                reject();
-            }
-        });
+        this.config = new Config(this.path, 'config.toml');
+        this.keystore = new Keystore(this.path, 'keystore');
     }
 
 }

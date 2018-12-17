@@ -1,4 +1,4 @@
-import { TXReceipt } from "../classes/Transaction";
+import { TXReceipt } from "../..";
 import BaseClient from "./BaseClient";
 export default class TransactionClient extends BaseClient {
     constructor(host: string, port: number);

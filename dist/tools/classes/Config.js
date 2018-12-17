@@ -4,18 +4,16 @@ var fs = require("fs");
 var path = require("path");
 var toml = require("toml");
 var tomlify = require("tomlify-j0.4");
-var Directory_1 = require("./Directory");
+var Static_1 = require("./Static");
 var Config = /** @class */ (function () {
     function Config(directory, name) {
         this.directory = directory;
         this.name = name;
         this.data = this.default();
-        this.initialData = this.default();
         this.path = path.join(directory, name);
-        if (Directory_1.default.exists(this.path)) {
+        if (Static_1.default.exists(this.path)) {
             var tomlData = fs.readFileSync(this.path, 'utf8');
             this.data = toml.parse(tomlData);
-            this.initialData = toml.parse(tomlData);
         }
     }
     Config.prototype.defaultTOML = function () {
@@ -25,7 +23,7 @@ var Config = /** @class */ (function () {
         return {
             connection: {
                 host: '127.0.0.1',
-                port: '8080',
+                port: 8080,
             },
             defaults: {
                 from: '',
@@ -52,20 +50,23 @@ var Config = /** @class */ (function () {
             });
         });
     };
-    Config.prototype.save = function () {
+    Config.prototype.save = function (data) {
         var _this = this;
+        if (!data.defaults.gasPrice) {
+            data.defaults.gasPrice = 0;
+        }
         return new Promise(function (resolve, reject) {
-            if (Directory_1.default.isEquivalentObjects(_this.data, _this.initialData)) {
+            if (Static_1.default.isEquivalentObjects(_this.data, data)) {
                 resolve('No changes detected to config.');
             }
             else {
-                fs.writeFile(_this.path, _this.toTOML(), function (err) {
+                fs.writeFile(_this.path, tomlify.toToml(data, { spaces: 2 }), function (err) {
                     if (err) {
                         reject('Something went wrong writing the configuration.');
                         return;
                     }
-                    _this.initialData = toml.parse(_this.toTOML());
-                    resolve();
+                    _this.data = toml.parse(_this.toTOML());
+                    resolve('New configuration saved!');
                 });
             }
         });

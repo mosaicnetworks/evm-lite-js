@@ -1,6 +1,7 @@
 import * as JSONBig from "json-bigint";
 
-import {TXReceipt} from "../classes/Transaction";
+import {TXReceipt} from "../..";
+
 import BaseClient, {request} from "./BaseClient";
 
 

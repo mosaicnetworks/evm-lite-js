@@ -9,27 +9,31 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
     gasPrice: 0
 });
 
-const transaction = evmlc.prepareTransfer(to, 200);
-evmlc.getAccount(to)
-    .then ((account) => console.log('Account Before:', account, '\n\n'))
-    .then(() => transaction.send())
-    .then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
-    .then(() => evmlc.getAccount(to))
-    .then((account) => console.log('Account After:', account, '\n\n'));
-
+// const transaction = evmlc.prepareTransfer(to, 200);
+//
+// evmlc.getAccount(to)
+//     .then((account) => console.log('Account Before:', account, '\n\n'))
+//     .then(() => transaction.send())
+//     .then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
+//     .then(() => evmlc.getAccount(to))
+//     .then((account) => console.log('Account After:', account, '\n\n'))
+//     .then(() => {
+//
+//
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
 
 const unDeployedContract = evmlc.generateContractFromSolidityFile('CrowdFunding', './tests/assets/contract.sol');
-unDeployedContract.deploy({
-    parameters: [10]
-})
+unDeployedContract.deploy({parameters: [10]})
     .then((deployedContract) => {
         console.log('Contract Address', deployedContract.options.address);
-        return deployedContract.methods.contribute().value(11).send()
+        deployedContract.methods.contribute().value(7).send()
             .then((resp) => {
                 console.log('Contribute', resp);
                 return deployedContract.methods.checkGoalReached().call()
-            })
+            }).then((receipt) => {
+            console.log('Check Goal Reached: ', receipt);
+        });
     })
-    .then((receipt) => {
-        console.log('Check Goal Reached: ', receipt);
-    });

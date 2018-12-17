@@ -1,4 +1,4 @@
-import { BaseAccount, EVMLC } from "..";
+import { BaseAccount, EVMLC } from "../..";
 export default class Keystore {
     readonly directory: string;
     readonly name: string;
@@ -6,11 +6,11 @@ export default class Keystore {
     constructor(directory: string, name: string);
     create(password: string, output?: string): Promise<string>;
     import(data: string): Promise<string>;
-    update(address: string, old: string, newPass: string): Promise<void>;
-    all(fetch?: boolean, connection?: EVMLC): Promise<any[]>;
+    update(address: string, old: string, newPass: string): Promise<string>;
+    list(fetch?: boolean, connection?: EVMLC): Promise<BaseAccount[]>;
     get(address: string): Promise<string>;
-    getFilePathForAddress(address: string): string;
-    fetch(address: string, connection: EVMLC): Promise<BaseAccount>;
+    private fetchBalanceAndNonce;
+    private getFilePathForAddress;
     private allKeystoreFiles;
     private getKeystoreFile;
 }
