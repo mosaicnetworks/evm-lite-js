@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "./__dist__",
     "declaration": true,
     "strict": true,
     "lib": [
@@ -10,7 +10,7 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./types"
+      "./__types__"
     ]
   },
   "files": [

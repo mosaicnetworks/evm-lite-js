@@ -2,8 +2,8 @@
   "name": "evm-lite-lib",
   "version": "0.1.4",
   "description": "A Node.js module for interacting with EVM-Lite.",
-  "main": "./lib/evm-lite-lib.min.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./__dist__/index.js",
+  "typings": "./__dist__/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "build": "webpack --config webpack.config.js"
