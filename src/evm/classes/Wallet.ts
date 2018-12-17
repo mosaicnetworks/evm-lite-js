@@ -1,7 +1,7 @@
 import AccountClient from "../client/AccountClient";
 
 
-class Accounts extends AccountClient {
+class Wallet extends AccountClient {
 
     constructor(host: string, port: number) {
         super(host, port)

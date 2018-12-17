@@ -235,10 +235,12 @@ declare module 'evm-lite-lib/evm/utils/Interfaces' {
 
 declare module 'evm-lite-lib/tools/DataDirectory' {
     import Config from "evm-lite-lib/tools/classes/Config";
+    import Database from "evm-lite-lib/tools/classes/database/Database";
     import Keystore from "evm-lite-lib/tools/classes/Keystore";
     export default class DataDirectory {
         readonly path: string;
         readonly config: Config;
+        readonly database: Database;
         readonly keystore: Keystore;
 
         constructor(path: string);
@@ -416,6 +418,23 @@ declare module 'evm-lite-lib/evm/client/BaseClient' {
     }
 }
 
+declare module 'evm-lite-lib/tools/classes/database/Database' {
+    import {SentTX} from "evm-lite-lib/";
+    import TransactionController from 'evm-lite-lib/tools/classes/database/controllers/Transaction';
+    export type TransactionSchema = SentTX;
+
+    export interface DatabaseSchema {
+        transactions: TransactionSchema[];
+    }
+
+    export default class Database {
+        readonly path: string;
+        readonly transactions: TransactionController;
+
+        constructor(directory: string, name: string);
+    }
+}
+
 declare module 'evm-lite-lib/evm/types/lib/AddressType' {
     import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class AddressType extends EVMType {
@@ -461,6 +480,20 @@ declare module 'evm-lite-lib/evm/types/lib/StringType' {
     import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class StringType extends EVMType {
         constructor();
+    }
+}
+
+declare module 'evm-lite-lib/tools/classes/database/controllers/Transaction' {
+    import * as LowDB from "lowdb";
+    import {DatabaseSchema, TransactionSchema} from "evm-lite-lib/tools/classes/database/Database";
+    export default class Transaction {
+        constructor(database: LowDB.LowdbSync<DatabaseSchema>);
+
+        add(tx: TransactionSchema): Promise<void>;
+
+        list(): Promise<TransactionSchema[]>;
+
+        get(hash: string): Promise<TransactionSchema>;
     }
 }
 
