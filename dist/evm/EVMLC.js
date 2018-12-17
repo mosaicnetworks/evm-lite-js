@@ -24,9 +24,6 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var JSONBig = require("json-bigint");
-var solidityCompiler = require("solc");
 var types_1 = require("./types");
 var Transaction_1 = require("./classes/Transaction");
 var SolidityContract_1 = require("./classes/SolidityContract");
@@ -76,21 +73,6 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    EVMLC.prototype.generateContractFromSolidityFile = function (contractName, filePath) {
-        this.requireAddress();
-        var input = fs.readFileSync(filePath).toString();
-        var output = solidityCompiler.compile(input, 1);
-        var byteCode = output.contracts[":" + contractName].bytecode;
-        var abi = JSONBig.parse(output.contracts[":" + contractName].interface);
-        return new SolidityContract_1.default({
-            from: this.defaultTXOptions.from,
-            jsonInterface: abi,
-            data: byteCode,
-            gas: this.defaultTXOptions.gas,
-            gasPrice: this.defaultTXOptions.gasPrice
-        }, this.host, this.port);
-    };
-    ;
     EVMLC.prototype.generateContractFromABI = function (abi) {
         this.requireAddress();
         return new SolidityContract_1.default({

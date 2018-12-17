@@ -1,7 +1,3 @@
-import * as fs from 'fs';
-import * as JSONBig from 'json-bigint'
-import * as solidityCompiler from 'solc'
-
 import {Address, AddressType} from "./types";
 import {ABI} from "./utils/Interfaces";
 
@@ -59,23 +55,6 @@ export default class EVMLC extends DefaultClient {
     set defaultGasPrice(gasPrice: number) {
         this.defaultTXOptions.gasPrice = gasPrice;
     }
-
-    public generateContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
-        this.requireAddress();
-
-        const input = fs.readFileSync(filePath).toString();
-        const output = solidityCompiler.compile(input, 1);
-        const byteCode = output.contracts[`:${contractName}`].bytecode;
-        const abi = JSONBig.parse<ABI[]>(output.contracts[`:${contractName}`].interface);
-
-        return new SolidityContract({
-            from: this.defaultTXOptions.from,
-            jsonInterface: abi,
-            data: byteCode,
-            gas: this.defaultTXOptions.gas,
-            gasPrice: this.defaultTXOptions.gasPrice
-        }, this.host, this.port)
-    };
 
     public generateContractFromABI(abi: ABI[]): SolidityContract {
         this.requireAddress();

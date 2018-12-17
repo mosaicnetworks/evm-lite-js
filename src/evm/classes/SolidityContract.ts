@@ -4,13 +4,11 @@ import * as coder from 'web3/lib/solidity/coder'
 import * as checks from '../utils/checks';
 import * as errors from "../utils/errors"
 
-import {ABI} from "../..";
+import {ABI, TXReceipt} from "../..";
 import {Address, AddressType, Data, Gas, GasPrice} from "../types";
 
-import Transaction from "./Transaction";
-
 import SolidityFunction from "./SolidityFunction";
-import {TXReceipt} from "../client/TransactionClient";
+import Transaction from "./Transaction";
 
 
 export interface ContractOptions {

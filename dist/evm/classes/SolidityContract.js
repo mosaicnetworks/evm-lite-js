@@ -5,8 +5,8 @@ var coder = require("web3/lib/solidity/coder");
 var checks = require("../utils/checks");
 var errors = require("../utils/errors");
 var types_1 = require("../types");
-var Transaction_1 = require("./Transaction");
 var SolidityFunction_1 = require("./SolidityFunction");
+var Transaction_1 = require("./Transaction");
 var SolidityContract = /** @class */ (function () {
     function SolidityContract(options, host, port) {
         // const web3 = new Web3();

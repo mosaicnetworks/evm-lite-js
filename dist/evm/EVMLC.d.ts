@@ -13,7 +13,6 @@ export default class EVMLC extends DefaultClient {
     defaultFrom: string;
     defaultGas: number;
     defaultGasPrice: number;
-    generateContractFromSolidityFile(contractName: string, filePath: string): SolidityContract;
     generateContractFromABI(abi: ABI[]): SolidityContract;
     prepareTransfer(to: string, value: number, from?: string): Promise<Transaction>;
     private requireAddress;
