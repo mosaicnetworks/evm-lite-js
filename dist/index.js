@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var EVMLC_1 = require("./evm/EVMLC");
 exports.EVMLC = EVMLC_1.default;
-var TransactionClient_1 = require("./evm/client/TransactionClient");
-exports.TransactionClient = TransactionClient_1.default;
 var Account_1 = require("./evm/classes/Account");
 exports.Account = Account_1.default;
 var Transaction_1 = require("./evm/classes/Transaction");

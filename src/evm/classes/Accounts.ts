@@ -1,7 +1,10 @@
-class Accounts {
+import AccountClient from "../client/AccountClient";
 
-    constructor() {
-        // pass
+
+class Accounts extends AccountClient {
+
+    constructor(host: string, port: number) {
+        super(host, port)
     }
 
     public add() {

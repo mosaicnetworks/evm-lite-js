@@ -7,9 +7,10 @@ import * as errors from "../utils/errors"
 import {ABI} from "../..";
 import {Address, AddressType, Data, Gas, GasPrice} from "../types";
 
-import Transaction, {TXReceipt} from "./Transaction";
+import Transaction from "./Transaction";
 
 import SolidityFunction from "./SolidityFunction";
+import {TXReceipt} from "../client/TransactionClient";
 
 
 export interface ContractOptions {

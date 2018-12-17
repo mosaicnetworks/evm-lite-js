@@ -85,9 +85,9 @@ export default class Keystore {
         })
     }
 
-    public get(address: string): Promise<string> {
-        return new Promise<string>(resolve => {
-            resolve(JSON.stringify(this.getKeystoreFile(address)));
+    public get(address: string): Promise<V3JSONKeyStore> {
+        return new Promise<V3JSONKeyStore>(resolve => {
+            resolve(this.getKeystoreFile(address));
         });
     }
 

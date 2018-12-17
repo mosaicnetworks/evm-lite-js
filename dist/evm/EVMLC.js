@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -77,6 +77,7 @@ var EVMLC = /** @class */ (function (_super) {
         configurable: true
     });
     EVMLC.prototype.generateContractFromSolidityFile = function (contractName, filePath) {
+        this.requireAddress();
         var input = fs.readFileSync(filePath).toString();
         var output = solidityCompiler.compile(input, 1);
         var byteCode = output.contracts[":" + contractName].bytecode;
@@ -91,6 +92,7 @@ var EVMLC = /** @class */ (function (_super) {
     };
     ;
     EVMLC.prototype.generateContractFromABI = function (abi) {
+        this.requireAddress();
         return new SolidityContract_1.default({
             from: this.defaultTXOptions.from,
             jsonInterface: abi,
@@ -99,17 +101,34 @@ var EVMLC = /** @class */ (function (_super) {
         }, this.host, this.port);
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {
-        from = from || this.defaultFrom;
+        var _this = this;
+        var fromObject = new types_1.AddressType((from || this.defaultFrom).trim());
+        if (!fromObject.value) {
+            throw new Error('Default from address cannot be left blank or empty!');
+        }
+        if (!to) {
+            throw new Error('Must provide a to address!');
+        }
         if (value <= 0) {
             throw new Error('A transfer of funds must have a value greater than 0.');
         }
-        return new Transaction_1.default({
-            from: new types_1.AddressType(from),
-            to: new types_1.AddressType(to),
-            value: value,
-            gas: this.defaultGas,
-            gasPrice: this.defaultGasPrice
-        }, this.host, this.port, false);
+        return this.getAccount(fromObject.value)
+            .then(function (account) {
+            return new Transaction_1.default({
+                from: fromObject,
+                to: new types_1.AddressType(to.trim()),
+                value: value,
+                gas: _this.defaultGas,
+                gasPrice: _this.defaultGasPrice,
+                nonce: account.nonce,
+                chainId: 1
+            }, _this.host, _this.port, false);
+        });
+    };
+    EVMLC.prototype.requireAddress = function () {
+        if (!this.defaultTXOptions.from.value) {
+            throw new Error('Default from address cannot be left blank or empty!');
+        }
     };
     return EVMLC;
 }(DefaultClient_1.default));

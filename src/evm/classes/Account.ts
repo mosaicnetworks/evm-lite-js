@@ -1,15 +1,11 @@
 import * as Wallet from 'web3-eth-accounts';
 import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
 
-import {Nonce, parseTransaction} from "../types";
+import {BaseAccount} from "../..";
+import {parseTransaction} from "../types";
+
 import Transaction, {SignedTransaction, TX} from './Transaction';
 
-
-export interface BaseAccount {
-    address: string,
-    nonce: Nonce,
-    balance: any
-}
 
 export default class Account {
 
@@ -47,8 +43,14 @@ export default class Account {
 
     public signTransaction(tx: TX | Transaction): Promise<SignedTransaction> {
         if (tx instanceof Transaction) {
+            tx.tx.nonce = tx.tx.nonce || this.nonce;
+            tx.tx.chainId = tx.tx.chainId || 1;
+
             return this.account.signTransaction(parseTransaction(tx.tx));
         }
+        tx.nonce = tx.nonce || this.nonce;
+        tx.chainId = tx.chainId || 1;
+
         return this.account.signTransaction(parseTransaction(tx));
     }
 

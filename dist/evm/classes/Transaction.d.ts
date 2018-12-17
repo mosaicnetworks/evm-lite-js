@@ -1,18 +1,6 @@
 import { Address, ChainID, Data, Gas, GasPrice, Nonce, Value } from "../types";
-import TransactionClient from "../client/TransactionClient";
+import TransactionClient, { TXReceipt } from "../client/TransactionClient";
 import Account from "./Account";
-export interface TXReceipt {
-    root: string;
-    transactionHash: string;
-    from: string;
-    to?: string;
-    gasUsed: number;
-    cumulativeGasUsed: number;
-    contractAddress: string;
-    logs: [];
-    logsBloom: string;
-    status: number;
-}
 export interface SentTX {
     from: string;
     to: string;
@@ -56,8 +44,8 @@ export default class Transaction extends TransactionClient {
     receipt?: TXReceipt;
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     send(options?: OverrideTXOptions): Promise<TXReceipt>;
-    call(options?: OverrideTXOptions): Promise<string>;
     sign(account: Account): Promise<SignedTransaction>;
+    call(options?: OverrideTXOptions): Promise<string>;
     toString(): string;
     from(from: string): this;
     to(to: string): this;

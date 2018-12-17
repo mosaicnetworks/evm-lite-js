@@ -2,22 +2,9 @@ import * as JSONBig from 'json-bigint'
 
 import {Address, AddressType, ChainID, Data, Gas, GasPrice, Nonce, parseTransaction, Value} from "../types";
 
-import TransactionClient from "../client/TransactionClient";
+import TransactionClient, {TXReceipt} from "../client/TransactionClient";
 import Account from "./Account";
 
-
-export interface TXReceipt {
-    root: string;
-    transactionHash: string;
-    from: string;
-    to?: string;
-    gasUsed: number;
-    cumulativeGasUsed: number;
-    contractAddress: string;
-    logs: [];
-    logsBloom: string;
-    status: number;
-}
 
 export interface SentTX {
     from: string;
@@ -64,7 +51,8 @@ export default class Transaction extends TransactionClient {
 
     public receipt?: TXReceipt;
 
-    constructor(public tx: TX, host: string, port: number, private constant: boolean, private readonly unpackfn?: (data: string) => any) {
+    constructor(public tx: TX, host: string, port: number, private constant: boolean,
+                private readonly unpackfn?: (data: string) => any) {
         super(host, port)
     }
 
@@ -94,6 +82,10 @@ export default class Transaction extends TransactionClient {
             })
     }
 
+    public async sign(account: Account) {
+        return await account.signTransaction(this);
+    }
+
     public call(options?: OverrideTXOptions): Promise<string> {
         this.assignTXValues(options);
         this.checkGasAndGasPrice();
@@ -117,10 +109,6 @@ export default class Transaction extends TransactionClient {
 
                 return this.unpackfn(Buffer.from(obj.data).toString());
             });
-    }
-
-    public sign(account: Account): Promise<SignedTransaction> {
-        return account.signTransaction(this.tx)
     }
 
     public toString(): string {

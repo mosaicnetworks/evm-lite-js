@@ -1,6 +1,7 @@
 import { ABI } from "../..";
 import { Address, Data, Gas, GasPrice } from "../types";
-import Transaction, { TXReceipt } from "./Transaction";
+import Transaction from "./Transaction";
+import { TXReceipt } from "../client/TransactionClient";
 export interface ContractOptions {
     gas: Gas;
     gasPrice: GasPrice;

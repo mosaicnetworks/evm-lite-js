@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -30,7 +30,7 @@ var TransactionClient = /** @class */ (function (_super) {
     };
     TransactionClient.prototype.sendRaw = function (tx) {
         return BaseClient_1.request(this.options('POST', '/rawtx'), tx)
-            .then(function (response) { return response; });
+            .then(function (response) { return JSONBig.parse(response); });
     };
     TransactionClient.prototype.getReceipt = function (txHash) {
         return BaseClient_1.request(this.options('GET', "/tx/" + txHash))

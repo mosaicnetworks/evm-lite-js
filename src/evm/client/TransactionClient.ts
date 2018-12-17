@@ -1,9 +1,24 @@
 import * as JSONBig from "json-bigint";
 
-import {TXReceipt} from "../..";
-
 import BaseClient, {request} from "./BaseClient";
 
+
+export interface TXReceipt {
+    root: string;
+    transactionHash: string;
+    from: string;
+    to?: string;
+    gasUsed: number;
+    cumulativeGasUsed: number;
+    contractAddress: string;
+    logs: [];
+    logsBloom: string;
+    status: number;
+}
+
+interface SentRawTXResponse {
+    txHash: string;
+}
 
 export default class TransactionClient extends BaseClient {
 
@@ -21,9 +36,9 @@ export default class TransactionClient extends BaseClient {
             .then((response) => response)
     }
 
-    public sendRaw(tx: string): Promise<Readonly<string>> {
+    public sendRaw(tx: string): Promise<Readonly<SentRawTXResponse>> {
         return request(this.options('POST', '/rawtx'), tx)
-            .then((response) => response)
+            .then((response) => JSONBig.parse<SentRawTXResponse>(response))
     }
 
     public getReceipt(txHash: string): Promise<Readonly<TXReceipt>> {

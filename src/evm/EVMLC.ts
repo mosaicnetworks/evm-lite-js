@@ -61,6 +61,8 @@ export default class EVMLC extends DefaultClient {
     }
 
     public generateContractFromSolidityFile(contractName: string, filePath: string): SolidityContract {
+        this.requireAddress();
+
         const input = fs.readFileSync(filePath).toString();
         const output = solidityCompiler.compile(input, 1);
         const byteCode = output.contracts[`:${contractName}`].bytecode;
@@ -76,6 +78,8 @@ export default class EVMLC extends DefaultClient {
     };
 
     public generateContractFromABI(abi: ABI[]): SolidityContract {
+        this.requireAddress();
+
         return new SolidityContract({
             from: this.defaultTXOptions.from,
             jsonInterface: abi,
@@ -84,20 +88,39 @@ export default class EVMLC extends DefaultClient {
         }, this.host, this.port);
     }
 
-    public prepareTransfer(to: string, value: number, from?: string): Transaction {
-        from = from || this.defaultFrom;
+    public prepareTransfer(to: string, value: number, from?: string): Promise<Transaction> {
+        const fromObject = new AddressType((from || this.defaultFrom).trim());
+
+        if (!fromObject.value) {
+            throw new Error('Default from address cannot be left blank or empty!')
+        }
+
+        if (!to) {
+            throw new Error('Must provide a to address!')
+        }
 
         if (value <= 0) {
             throw new Error('A transfer of funds must have a value greater than 0.')
         }
 
-        return new Transaction({
-            from: new AddressType(from),
-            to: new AddressType(to),
-            value,
-            gas: this.defaultGas,
-            gasPrice: this.defaultGasPrice
-        }, this.host, this.port, false)
+        return this.getAccount(fromObject.value)
+            .then((account) => {
+                return new Transaction({
+                    from: fromObject,
+                    to: new AddressType(to.trim()),
+                    value,
+                    gas: this.defaultGas,
+                    gasPrice: this.defaultGasPrice,
+                    nonce: account.nonce,
+                    chainId: 1
+                }, this.host, this.port, false)
+            })
+    }
+
+    private requireAddress() {
+        if (!this.defaultTXOptions.from.value) {
+            throw new Error('Default from address cannot be left blank or empty!')
+        }
     }
 
 }

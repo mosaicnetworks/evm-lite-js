@@ -134,7 +134,7 @@ var Keystore = /** @class */ (function () {
     Keystore.prototype.get = function (address) {
         var _this = this;
         return new Promise(function (resolve) {
-            resolve(JSON.stringify(_this.getKeystoreFile(address)));
+            resolve(_this.getKeystoreFile(address));
         });
     };
     Keystore.prototype.fetchBalanceAndNonce = function (address, connection) {

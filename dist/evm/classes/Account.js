@@ -39,8 +39,12 @@ var Account = /** @class */ (function () {
     };
     Account.prototype.signTransaction = function (tx) {
         if (tx instanceof Transaction_1.default) {
+            tx.tx.nonce = tx.tx.nonce || this.nonce;
+            tx.tx.chainId = tx.tx.chainId || 1;
             return this.account.signTransaction(types_1.parseTransaction(tx.tx));
         }
+        tx.nonce = tx.nonce || this.nonce;
+        tx.chainId = tx.chainId || 1;
         return this.account.signTransaction(types_1.parseTransaction(tx));
     };
     Account.prototype.encrypt = function (password) {
