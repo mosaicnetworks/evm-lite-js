@@ -1,4 +1,4 @@
-import {Address, AddressType} from "./types";
+import {Address, AddressType, Gas, GasPrice, Value} from "./types";
 import {ABI} from "./utils/Interfaces";
 
 import Transaction, {BaseTX} from "./classes/Transaction";
@@ -40,19 +40,19 @@ export default class EVMLC extends DefaultClient {
         this.defaultTXOptions.from = new AddressType(address);
     }
 
-    get defaultGas(): number {
+    get defaultGas(): Gas {
         return this.defaultTXOptions.gas;
     }
 
-    set defaultGas(gas: number) {
+    set defaultGas(gas: Gas) {
         this.defaultTXOptions.gas = gas;
     }
 
-    get defaultGasPrice(): number {
+    get defaultGasPrice(): GasPrice {
         return this.defaultTXOptions.gasPrice;
     }
 
-    set defaultGasPrice(gasPrice: number) {
+    set defaultGasPrice(gasPrice: GasPrice) {
         this.defaultTXOptions.gasPrice = gasPrice;
     }
 
@@ -67,7 +67,7 @@ export default class EVMLC extends DefaultClient {
         }, this.host, this.port);
     }
 
-    public prepareTransfer(to: string, value: number, from?: string): Promise<Transaction> {
+    public prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction> {
         const fromObject = new AddressType((from || this.defaultFrom).trim());
 
         if (!fromObject.value) {

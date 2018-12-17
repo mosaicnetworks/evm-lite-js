@@ -13,6 +13,7 @@ declare module 'evm-lite-lib' {
 }
 
 declare module 'evm-lite-lib/evm/EVMLC' {
+    import {Gas, GasPrice, Value} from "evm-lite-lib/evm/types";
     import {ABI} from "evm-lite-lib/evm/utils/Interfaces";
     import Transaction, {BaseTX} from "evm-lite-lib/evm/classes/Transaction";
     import SolidityContract from "evm-lite-lib/evm/classes/SolidityContract";
@@ -25,14 +26,14 @@ declare module 'evm-lite-lib/evm/EVMLC' {
     export default class EVMLC extends DefaultClient {
         readonly defaultOptions: UserDefinedDefaultTXOptions;
         defaultFrom: string;
-        defaultGas: number;
-        defaultGasPrice: number;
+        defaultGas: Gas;
+        defaultGasPrice: GasPrice;
 
         constructor(host: string, port: number, userDefaultTXOptions: UserDefinedDefaultTXOptions);
 
         generateContractFromABI(abi: ABI[]): SolidityContract;
 
-        prepareTransfer(to: string, value: number, from?: string): Promise<Transaction>;
+        prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
     }
     export {};
 }
@@ -84,6 +85,8 @@ declare module 'evm-lite-lib/tools/classes/Keystore' {
 }
 
 declare module 'evm-lite-lib/tools/classes/Config' {
+    import {Gas, GasPrice} from "evm-lite-lib/evm/types/lib/TransactionTypes";
+
     export interface ConfigSchema {
         connection: {
             host: string;
@@ -91,8 +94,8 @@ declare module 'evm-lite-lib/tools/classes/Config' {
         };
         defaults: {
             from: string;
-            gas: number;
-            gasPrice: number;
+            gas: Gas;
+            gasPrice: GasPrice;
         };
         storage: {
             keystore: string;
@@ -146,10 +149,10 @@ declare module 'evm-lite-lib/evm/classes/Transaction' {
     export interface SentTX {
         from: string;
         to: string;
-        value: number;
-        gas: number;
-        nonce: number;
-        gasPrice: number;
+        value: Value;
+        gas: Gas;
+        nonce: Nonce;
+        gasPrice: GasPrice;
         date: any;
         txHash: string;
     }
@@ -171,9 +174,9 @@ declare module 'evm-lite-lib/evm/classes/Transaction' {
     interface OverrideTXOptions {
         to?: string;
         from?: string;
-        value?: number;
-        gas?: number;
-        gasPrice?: number;
+        value?: Value;
+        gas?: Gas;
+        gasPrice?: GasPrice;
     }
 
     export interface SignedTransaction {
@@ -202,13 +205,13 @@ declare module 'evm-lite-lib/evm/classes/Transaction' {
 
         to(to: string): this;
 
-        value(value: number): this;
+        value(value: Value): this;
 
-        gas(gas: number): this;
+        gas(gas: Gas): this;
 
-        gasPrice(gasPrice: number): this;
+        gasPrice(gasPrice: GasPrice): this;
 
-        data(data: string): this;
+        data(data: Data): this;
     }
     export {};
 }
@@ -290,6 +293,31 @@ declare module 'evm-lite-lib/evm/client/TransactionClient' {
     export {};
 }
 
+declare module 'evm-lite-lib/evm/types' {
+    import AddressType from 'evm-lite-lib/evm/types/lib/AddressType';
+    import ArrayType from 'evm-lite-lib/evm/types/lib/ArrayType';
+    import BooleanType from 'evm-lite-lib/evm/types/lib/BooleanType';
+    import ByteType from 'evm-lite-lib/evm/types/lib/ByteType';
+    import EVMType from 'evm-lite-lib/evm/types/lib/EVMType';
+    import StringType from 'evm-lite-lib/evm/types/lib/StringType';
+    import {TX} from "evm-lite-lib/evm/classes/Transaction";
+    export {AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType};
+    export * from 'evm-lite-lib/evm/types/lib/TransactionTypes';
+
+    export function parseSolidityTypes(raw: string): AddressType | BooleanType | ByteType | StringType | ArrayType<ByteType> | undefined;
+
+    export function parseTransaction(tx: TX): {
+        from: string;
+        to: string | undefined;
+        value?: number | undefined;
+        data?: string | undefined;
+        gas: number;
+        gasPrice: number;
+        nonce?: number | undefined;
+        chainId?: number | undefined;
+    };
+}
+
 declare module 'evm-lite-lib/evm/classes/SolidityContract' {
     import {ABI, TXReceipt} from "evm-lite-lib/";
     import {Address, Data, Gas, GasPrice} from "evm-lite-lib/evm/types";
@@ -316,20 +344,20 @@ declare module 'evm-lite-lib/evm/classes/SolidityContract' {
 
         deploy(options?: {
             parameters?: any[];
-            gas?: number;
-            gasPrice?: any;
-            data?: string;
+            gas?: Gas;
+            gasPrice?: GasPrice;
+            data?: Data;
         }): Promise<this>;
 
         setAddressAndPopulate(address: string): this;
 
         address(address: string): this;
 
-        gas(gas: number): this;
+        gas(gas: Gas): this;
 
-        gasPrice(gasPrice: number): this;
+        gasPrice(gasPrice: GasPrice): this;
 
-        data(data: string): this;
+        data(data: Data): this;
 
         JSONInterface(abis: ABI[]): this;
     }
@@ -360,29 +388,15 @@ declare module 'evm-lite-lib/' {
     export {TXReceipt} from "evm-lite-lib/evm/client/TransactionClient";
 }
 
-declare module 'evm-lite-lib/evm/types' {
-    import AddressType from 'evm-lite-lib/evm/types/types/AddressType';
-    import ArrayType from 'evm-lite-lib/evm/types/types/ArrayType';
-    import BooleanType from 'evm-lite-lib/evm/types/types/BooleanType';
-    import ByteType from 'evm-lite-lib/evm/types/types/ByteType';
-    import EVMType from 'evm-lite-lib/evm/types/types/EVMType';
-    import StringType from 'evm-lite-lib/evm/types/types/StringType';
-    import {TX} from "evm-lite-lib/evm/classes/Transaction";
-    export {AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType};
-    export * from 'evm-lite-lib/evm/types/types/TransactionTypes';
-
-    export function parseSolidityTypes(raw: string): AddressType | BooleanType | ByteType | StringType | ArrayType<ByteType> | undefined;
-
-    export function parseTransaction(tx: TX): {
-        from: string;
-        to: string | undefined;
-        value?: number | undefined;
-        data?: string | undefined;
-        gas: number;
-        gasPrice: number;
-        nonce?: number | undefined;
-        chainId?: number | undefined;
-    };
+declare module 'evm-lite-lib/evm/types/lib/TransactionTypes' {
+    import AddressType from "evm-lite-lib/evm/types/lib/AddressType";
+    export type Gas = number;
+    export type GasPrice = number;
+    export type Value = number;
+    export type Nonce = number;
+    export type ChainID = number;
+    export type Address = AddressType;
+    export type Data = string;
 }
 
 declare module 'evm-lite-lib/evm/client/BaseClient' {
@@ -402,8 +416,8 @@ declare module 'evm-lite-lib/evm/client/BaseClient' {
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/AddressType' {
-    import EVMType from "evm-lite-lib/evm/types/types/EVMType";
+declare module 'evm-lite-lib/evm/types/lib/AddressType' {
+    import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class AddressType extends EVMType {
         readonly value: string;
 
@@ -411,8 +425,8 @@ declare module 'evm-lite-lib/evm/types/types/AddressType' {
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/ArrayType' {
-    import EVMType from "evm-lite-lib/evm/types/types/EVMType";
+declare module 'evm-lite-lib/evm/types/lib/ArrayType' {
+    import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class ArrayType<T extends EVMType> extends EVMType {
         readonly item: T;
         readonly size?: number | undefined;
@@ -421,15 +435,15 @@ declare module 'evm-lite-lib/evm/types/types/ArrayType' {
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/BooleanType' {
-    import EVMType from "evm-lite-lib/evm/types/types/EVMType";
+declare module 'evm-lite-lib/evm/types/lib/BooleanType' {
+    import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class BooleanType extends EVMType {
         constructor();
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/ByteType' {
-    import EVMType from "evm-lite-lib/evm/types/types/EVMType";
+declare module 'evm-lite-lib/evm/types/lib/ByteType' {
+    import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class ByteType extends EVMType {
         readonly size: number;
 
@@ -437,27 +451,16 @@ declare module 'evm-lite-lib/evm/types/types/ByteType' {
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/EVMType' {
+declare module 'evm-lite-lib/evm/types/lib/EVMType' {
     export default abstract class EVMType {
         protected constructor();
     }
 }
 
-declare module 'evm-lite-lib/evm/types/types/StringType' {
-    import EVMType from "evm-lite-lib/evm/types/types/EVMType";
+declare module 'evm-lite-lib/evm/types/lib/StringType' {
+    import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class StringType extends EVMType {
         constructor();
     }
-}
-
-declare module 'evm-lite-lib/evm/types/types/TransactionTypes' {
-    import AddressType from "evm-lite-lib/evm/types/types/AddressType";
-    export type Gas = number;
-    export type GasPrice = number;
-    export type Value = number;
-    export type Nonce = number;
-    export type ChainID = number;
-    export type Address = AddressType;
-    export type Data = string;
 }
 

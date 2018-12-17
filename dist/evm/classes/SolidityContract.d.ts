@@ -21,15 +21,15 @@ export default class SolidityContract {
     constructor(options: ContractOptions, host: string, port: number);
     deploy(options?: {
         parameters?: any[];
-        gas?: number;
-        gasPrice?: any;
-        data?: string;
+        gas?: Gas;
+        gasPrice?: GasPrice;
+        data?: Data;
     }): Promise<this>;
     setAddressAndPopulate(address: string): this;
     address(address: string): this;
-    gas(gas: number): this;
-    gasPrice(gasPrice: number): this;
-    data(data: string): this;
+    gas(gas: Gas): this;
+    gasPrice(gasPrice: GasPrice): this;
+    data(data: Data): this;
     JSONInterface(abis: ABI[]): this;
     private attachMethodsToContract;
     private encodeConstructorParams;

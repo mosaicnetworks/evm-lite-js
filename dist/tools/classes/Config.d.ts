@@ -1,3 +1,4 @@
+import { Gas, GasPrice } from "../../evm/types/lib/TransactionTypes";
 export interface ConfigSchema {
     connection: {
         host: string;
@@ -5,8 +6,8 @@ export interface ConfigSchema {
     };
     defaults: {
         from: string;
-        gas: number;
-        gasPrice: number;
+        gas: Gas;
+        gasPrice: GasPrice;
     };
     storage: {
         keystore: string;

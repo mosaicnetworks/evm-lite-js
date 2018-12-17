@@ -1,3 +1,4 @@
+import { Gas, GasPrice, Value } from "./types";
 import { ABI } from "./utils/Interfaces";
 import Transaction, { BaseTX } from "./classes/Transaction";
 import SolidityContract from "./classes/SolidityContract";
@@ -11,10 +12,10 @@ export default class EVMLC extends DefaultClient {
     constructor(host: string, port: number, userDefaultTXOptions: UserDefinedDefaultTXOptions);
     readonly defaultOptions: UserDefinedDefaultTXOptions;
     defaultFrom: string;
-    defaultGas: number;
-    defaultGasPrice: number;
+    defaultGas: Gas;
+    defaultGasPrice: GasPrice;
     generateContractFromABI(abi: ABI[]): SolidityContract;
-    prepareTransfer(to: string, value: number, from?: string): Promise<Transaction>;
+    prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
     private requireAddress;
 }
 export {};

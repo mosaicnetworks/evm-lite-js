@@ -3,6 +3,7 @@ import * as path from "path";
 import * as toml from "toml";
 import * as tomlify from 'tomlify-j0.4';
 
+import {Gas, GasPrice} from "../../evm/types/lib/TransactionTypes";
 import Static from "./Static";
 
 
@@ -13,8 +14,8 @@ export interface ConfigSchema {
     };
     defaults: {
         from: string;
-        gas: number;
-        gasPrice: number;
+        gas: Gas;
+        gasPrice: GasPrice;
     };
     storage: {
         keystore: string;

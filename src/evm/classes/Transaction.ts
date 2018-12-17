@@ -9,10 +9,10 @@ import Account from "./Account";
 export interface SentTX {
     from: string;
     to: string;
-    value: number;
-    gas: number;
-    nonce: number;
-    gasPrice: number;
+    value: Value;
+    gas: Gas;
+    nonce: Nonce;
+    gasPrice: GasPrice;
     date: any;
     txHash: string;
 }
@@ -34,9 +34,9 @@ export interface TX extends BaseTX {
 interface OverrideTXOptions {
     to?: string,
     from?: string,
-    value?: number,
-    gas?: number,
-    gasPrice?: number
+    value?: Value,
+    gas?: Gas,
+    gasPrice?: GasPrice
 }
 
 export interface SignedTransaction {
@@ -125,22 +125,22 @@ export default class Transaction extends TransactionClient {
         return this
     }
 
-    public value(value: number): this {
+    public value(value: Value): this {
         this.tx.value = value;
         return this
     }
 
-    public gas(gas: number): this {
+    public gas(gas: Gas): this {
         this.tx.gas = gas;
         return this
     }
 
-    public gasPrice(gasPrice: number): this {
+    public gasPrice(gasPrice: GasPrice): this {
         this.tx.gasPrice = gasPrice;
         return this
     }
 
-    public data(data: string): this {
+    public data(data: Data): this {
         this.tx.data = data;
         return this
     }

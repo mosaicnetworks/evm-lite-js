@@ -6,7 +6,7 @@ import * as SolFunction from 'web3/lib/web3/function'
 import * as errors from "../utils/errors";
 
 import {ABI, Input} from '../..'
-import {AddressType} from "../types";
+import {AddressType, Gas, GasPrice} from "../types";
 
 import {EVMType, parseSolidityTypes}from '../types';
 
@@ -36,7 +36,8 @@ export default class SolidityFunction {
         }) || [];
     }
 
-    public generateTransaction(options: { from: AddressType, gas: number, gasPrice: number }, ...funcArgs: any[]): Transaction {
+    public generateTransaction(options: { from: AddressType, gas: Gas, gasPrice: GasPrice },
+                               ...funcArgs: any[]): Transaction {
         this._validateArgs(funcArgs);
 
         const callData = this.solFunction.getData();

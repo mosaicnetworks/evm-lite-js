@@ -4,10 +4,10 @@ import Account from "./Account";
 export interface SentTX {
     from: string;
     to: string;
-    value: number;
-    gas: number;
-    nonce: number;
-    gasPrice: number;
+    value: Value;
+    gas: Gas;
+    nonce: Nonce;
+    gasPrice: GasPrice;
     date: any;
     txHash: string;
 }
@@ -26,9 +26,9 @@ export interface TX extends BaseTX {
 interface OverrideTXOptions {
     to?: string;
     from?: string;
-    value?: number;
-    gas?: number;
-    gasPrice?: number;
+    value?: Value;
+    gas?: Gas;
+    gasPrice?: GasPrice;
 }
 export interface SignedTransaction {
     messageHash: string;
@@ -49,10 +49,10 @@ export default class Transaction extends TransactionClient {
     toString(): string;
     from(from: string): this;
     to(to: string): this;
-    value(value: number): this;
-    gas(gas: number): this;
-    gasPrice(gasPrice: number): this;
-    data(data: string): this;
+    value(value: Value): this;
+    gas(gas: Gas): this;
+    gasPrice(gasPrice: GasPrice): this;
+    data(data: Data): this;
     private assignTXValues;
     private checkGasAndGasPrice;
 }

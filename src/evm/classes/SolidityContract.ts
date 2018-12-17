@@ -40,7 +40,7 @@ export default class SolidityContract {
         }
     }
 
-    public deploy(options?: { parameters?: any[], gas?: number, gasPrice?: any, data?: string }): Promise<this> {
+    public deploy(options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }): Promise<this> {
         if (this.options.address) {
             throw errors.ContractAddressFieldSetAndDeployed();
         }
@@ -93,17 +93,17 @@ export default class SolidityContract {
         return this
     }
 
-    public gas(gas: number): this {
+    public gas(gas: Gas): this {
         this.options.gas = gas;
         return this
     }
 
-    public gasPrice(gasPrice: number): this {
+    public gasPrice(gasPrice: GasPrice): this {
         this.options.gasPrice = gasPrice;
         return this
     }
 
-    public data(data: string): this {
+    public data(data: Data): this {
         this.options.data = data;
         return this
     }
