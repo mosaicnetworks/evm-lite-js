@@ -2,14 +2,23 @@
 
 A javascript library to interact with EVM-Lite.
 
-## Usage
+## Installation
 
-Typescript usage support:
+The easiest way to install `evm-lite-lib` is by using `npm`:
+
+```console
+npm install evm-lite-lib
+```
+
+Note: Type definitions are provided for Typescript users.
+
+## Example
+
+Below is a basic exmaple of how to transfer from a an account on the node.
+
 ```typescript
-import {EVMLC} from 'evm-lite-lib';
-
 const from = '0xA4a5F65Fb3752b2B6632F2729f17dd61B2aaD650';
-const to = '0x6544a7e3d6f085002764d0ab38f1f80e81d7deab';
+const to = '0x5204302336b6634db77dbaca147918bdaed8b0e7';
 
 const evmlc = new EVMLC('127.0.0.1', 8080, {
     from,
@@ -17,28 +26,19 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
     gasPrice: 0
 });
 
-const transaction = evmlc.prepareTransfer(to, 200);
+const transaction = evmlc.prepareTransfer(to, 2000000);
+
 evmlc.getAccount(to)
-    .then ((account) => console.log('Account Before:', account, '\n\n'))
+    .then((account) => console.log('Account Before:', account, '\n\n'))
     .then(() => transaction.send())
     .then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
     .then(() => evmlc.getAccount(to))
-    .then((account) => console.log('Account After:', account, '\n\n'));
+    .then((account) => console.log('Account After:', account, '\n\n'))
+    .then(() => {
 
 
-const unDeployedContract = evmlc.generateContractFromSolidityFile('CrowdFunding', './tests/assets/contract.sol');
-unDeployedContract.deploy({
-    parameters: [10]
-})
-    .then((deployedContract) => {
-        console.log('Contract Address', deployedContract.options.address);
-        return deployedContract.methods.contribute().value(11).send()
-            .then((resp) => {
-                console.log('Contribute', resp);
-                return deployedContract.methods.checkGoalReached().call()
-            })
     })
-    .then((receipt) => {
-        console.log('Check Goal Reached: ', receipt);
-    });
+    .catch((error) => {
+        console.log(error)
+    })
 ```
