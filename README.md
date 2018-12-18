@@ -6,7 +6,7 @@ A javascript library to interact with EVM-Lite.
 
 ## Installation
 
-The easiest way to install `evm-lite-lib` is by using `npm`:
+To install `evm-lite-lib` by using `npm`:
 
 ```console
 npm install evm-lite-lib
@@ -16,7 +16,7 @@ Note: Type definitions are provided for Typescript users.
 
 ## Example
 
-Below is a basic exmaple of how to transfer from a an account on the node.
+Below is a basic example of how to transfer from a controlled account.
 
 ```typescript
 const from = '0xA4a5F65Fb3752b2B6632F2729f17dd61B2aaD650';
