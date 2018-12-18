@@ -1,5 +1,7 @@
 # EVM-Lite Library
 
+[![](https://img.shields.io/npm/v/@cycle/core.svg)](https://www.npmjs.com/package/evm-lite-lib)
+
 A javascript library to interact with EVM-Lite.
 
 ## Installation
