@@ -34,11 +34,5 @@ evmlc.getAccount(to)
     .then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
     .then(() => evmlc.getAccount(to))
     .then((account) => console.log('Account After:', account, '\n\n'))
-    .then(() => {
-
-
-    })
-    .catch((error) => {
-        console.log(error)
-    })
+    .catch((error) => console.log(error))
 ```

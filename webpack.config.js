@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const Webpack = require('webpack');
 const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const DtsBundleWebpack = require('dts-bundle-webpack')
+const DtsBundleWebpack = require('dts-bundle-webpack');
 
 const pkg = require('./package.json');
 
