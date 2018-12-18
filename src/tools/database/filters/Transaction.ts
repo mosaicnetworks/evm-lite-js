@@ -1,6 +1,6 @@
 import {TransactionSchema} from "../Database";
 
-import Static from "../../Static";
+import Static from "../../classes/Static";
 import Filter from "../abstract/Filter";
 
 

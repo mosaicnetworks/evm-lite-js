@@ -1,4 +1,4 @@
-import { SentTX } from "../../..";
+import { SentTX } from "../..";
 import TransactionController from './controllers/Transaction';
 export declare type TransactionSchema = SentTX;
 export interface DatabaseSchema {

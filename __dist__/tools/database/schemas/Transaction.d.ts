@@ -1,5 +1,5 @@
-import { SentTX } from "../../../..";
-import { Gas, GasPrice, Nonce, Value } from "../../../../evm/types";
+import { SentTX } from "../../..";
+import { Gas, GasPrice, Nonce, Value } from "../../../evm/types";
 export default class Transaction {
     private readonly data;
     constructor(sentTX?: SentTX);

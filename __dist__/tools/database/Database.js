@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var LowDB = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var path = require("path");
-var Static_1 = require("../Static");
+var Static_1 = require("../classes/Static");
 var Transaction_1 = require("./controllers/Transaction");
 var Database = /** @class */ (function () {
     function Database(directory, name) {

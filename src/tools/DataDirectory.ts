@@ -1,7 +1,7 @@
 import Config from "./classes/Config";
-import Database from "./classes/database/Database";
 import Keystore from "./classes/Keystore";
 import Static from "./classes/Static";
+import Database from "./database/Database";
 
 
 export default class DataDirectory {

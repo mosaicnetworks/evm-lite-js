@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Config_1 = require("./classes/Config");
-var Database_1 = require("./classes/database/Database");
 var Keystore_1 = require("./classes/Keystore");
 var Static_1 = require("./classes/Static");
+var Database_1 = require("./database/Database");
 var DataDirectory = /** @class */ (function () {
     function DataDirectory(path) {
         this.path = path;

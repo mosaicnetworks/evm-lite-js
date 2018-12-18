@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Static_1 = require("../../Static");
+var Static_1 = require("../../classes/Static");
 var Filter_1 = require("../abstract/Filter");
 var Transactions = /** @class */ (function (_super) {
     __extends(Transactions, _super);

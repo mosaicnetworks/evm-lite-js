@@ -2,9 +2,9 @@ import * as LowDB from "lowdb";
 import * as FileSync from 'lowdb/adapters/FileSync';
 import * as path from 'path';
 
-import {SentTX} from "../../..";
+import {SentTX} from "../..";
 
-import Static from "../Static";
+import Static from "../classes/Static";
 import TransactionController from './controllers/Transaction'
 
 
