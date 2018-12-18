@@ -10,11 +10,14 @@ var Database = /** @class */ (function () {
         this.directory = directory;
         this.name = name;
         this.path = path.join(directory, name);
-        this.database = LowDB(new FileSync(this.path));
-        if (!Static_1.default.exists(this.path)) {
+        if (Static_1.default.exists(this.path)) {
+            this.database = LowDB(new FileSync(this.path));
+        }
+        else {
             var defaults = {
                 transactions: []
             };
+            this.database = LowDB(new FileSync(this.path));
             this.database.defaults(defaults).write();
         }
         this.transactions = new Transaction_1.default(this.database);
