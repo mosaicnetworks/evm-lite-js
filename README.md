@@ -1,6 +1,6 @@
 # EVM-Lite Library
 
-[![](https://img.shields.io/npm/v/@cycle/core.svg)](https://www.npmjs.com/package/evm-lite-lib)
+[![npm version](https://badge.fury.io/js/evm-lite-lib.svg)](https://badge.fury.io/js/evm-lite-lib)
 
 A javascript library to interact with EVM-Lite.
 
