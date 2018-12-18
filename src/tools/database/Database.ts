@@ -23,15 +23,13 @@ export default class Database {
 
     constructor(private readonly directory: string, private readonly name: string) {
         this.path = path.join(directory, name);
+        this.database = LowDB(new FileSync(this.path));
 
-        if (Static.exists(this.path)) {
-            this.database = LowDB(new FileSync(this.path));
-        } else {
+        if (!Static.exists(this.path)) {
             const defaults: DatabaseSchema = {
                 transactions: []
             };
 
-            this.database = LowDB(new FileSync(this.path));
             this.database.defaults(defaults).write()
         }
 
