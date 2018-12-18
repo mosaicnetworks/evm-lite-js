@@ -1,7 +1,6 @@
 import * as SolFunction from 'web3/lib/web3/function';
 import { ABI } from '../..';
-import { AddressType, Gas, GasPrice } from "../types";
-import { EVMType } from '../types';
+import { AddressType, EVMType, Gas, GasPrice } from "../types";
 import Transaction from "./Transaction";
 export default class SolidityFunction {
     readonly contractAddress: AddressType;

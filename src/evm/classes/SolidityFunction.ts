@@ -6,9 +6,7 @@ import * as SolFunction from 'web3/lib/web3/function'
 import * as errors from "../utils/errors";
 
 import {ABI, Input} from '../..'
-import {AddressType, Gas, GasPrice} from "../types";
-
-import {EVMType, parseSolidityTypes}from '../types';
+import {AddressType, EVMType, Gas, GasPrice, parseSolidityTypes} from "../types";
 
 import Transaction, {TX} from "./Transaction";
 

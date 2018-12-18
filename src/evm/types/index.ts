@@ -24,7 +24,7 @@ export function parseSolidityTypes(raw: string) {
         case 'bytes':
             return new ArrayType(new ByteType());
     }
-};
+}
 
 export function parseTransaction(tx: TX) {
     return {

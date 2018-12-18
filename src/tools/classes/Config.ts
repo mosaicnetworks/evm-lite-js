@@ -43,7 +43,7 @@ export default class Config {
         }
     }
 
-    public defaultTOML(): string{
+    public defaultTOML(): string {
         return tomlify.toToml(this.default(), {spaces: 2});
     }
 
@@ -90,7 +90,7 @@ export default class Config {
             if (Static.isEquivalentObjects(this.data, data)) {
                 resolve('No changes detected to config.');
             } else {
-                fs.writeFile(this.path,  tomlify.toToml(data, {spaces: 2}), (err) => {
+                fs.writeFile(this.path, tomlify.toToml(data, {spaces: 2}), (err) => {
                     if (err) {
                         reject('Something went wrong writing the configuration.');
                         return;
