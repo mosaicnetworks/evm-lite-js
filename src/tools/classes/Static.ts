@@ -17,6 +17,16 @@ export default class Static {
         }
     }
 
+    public static cleanAddress(address: string) {
+        address = address.toLocaleLowerCase();
+
+        if (!address.startsWith('0x')) {
+            return '0x' + address
+        }
+
+        return address
+    }
+
     public static createOrReadFile(path: string, data: string): string {
         if (!Static.exists(path)) {
             fs.writeFileSync(path, data);
@@ -26,6 +36,7 @@ export default class Static {
 
         return fs.readFileSync(path, 'utf8');
     }
+
 
     public static isEquivalentObjects(objectA: any, objectB: any) {
         const aProps = Object.getOwnPropertyNames(objectA);

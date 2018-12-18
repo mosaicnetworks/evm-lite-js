@@ -15,6 +15,9 @@ var Config = /** @class */ (function () {
             var tomlData = fs.readFileSync(this.path, 'utf8');
             this.data = toml.parse(tomlData);
         }
+        else {
+            Static_1.default.createOrReadFile(this.path, this.defaultTOML());
+        }
     }
     Config.prototype.defaultTOML = function () {
         return tomlify.toToml(this.default(), { spaces: 2 });

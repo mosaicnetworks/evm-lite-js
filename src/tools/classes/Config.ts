@@ -38,10 +38,12 @@ export default class Config {
             const tomlData: string = fs.readFileSync(this.path, 'utf8');
 
             this.data = toml.parse(tomlData);
+        } else {
+            Static.createOrReadFile(this.path, this.defaultTOML())
         }
     }
 
-    public defaultTOML() {
+    public defaultTOML(): string{
         return tomlify.toToml(this.default(), {spaces: 2});
     }
 

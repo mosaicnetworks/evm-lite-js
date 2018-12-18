@@ -5,6 +5,7 @@ import * as path from "path";
 import {V3JSONKeyStore} from 'web3-eth-accounts';
 
 import {Account, BaseAccount, EVMLC} from "../..";
+import Static from "./Static";
 
 
 export default class Keystore {
@@ -13,6 +14,8 @@ export default class Keystore {
 
     constructor(public readonly directory: string, public readonly name: string) {
         this.path = path.join(directory, name);
+
+        Static.createDirectoryIfNotExists(this.path)
     }
 
     public create(password: string, output?: string): Promise<string> {

@@ -16,6 +16,13 @@ var Static = /** @class */ (function () {
             mkdir.sync(path);
         }
     };
+    Static.cleanAddress = function (address) {
+        address = address.toLocaleLowerCase();
+        if (!address.startsWith('0x')) {
+            return '0x' + address;
+        }
+        return address;
+    };
     Static.createOrReadFile = function (path, data) {
         if (!Static.exists(path)) {
             fs.writeFileSync(path, data);

@@ -39,11 +39,13 @@ var fs = require("fs");
 var JSONBig = require("json-bigint");
 var path = require("path");
 var __1 = require("../..");
+var Static_1 = require("./Static");
 var Keystore = /** @class */ (function () {
     function Keystore(directory, name) {
         this.directory = directory;
         this.name = name;
         this.path = path.join(directory, name);
+        Static_1.default.createDirectoryIfNotExists(this.path);
     }
     Keystore.prototype.create = function (password, output) {
         var _this = this;
