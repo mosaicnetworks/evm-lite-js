@@ -27,10 +27,12 @@ export default class Database {
         if (Static.exists(this.path)) {
             this.database = LowDB(new FileSync(this.path));
         } else {
-            this.database = LowDB(new FileSync(this.path));
-            this.database.defaults({
+            const defaults: DatabaseSchema = {
                 transactions: []
-            }).write()
+            };
+
+            this.database = LowDB(new FileSync(this.path));
+            this.database.defaults(defaults).write()
         }
 
         this.transactions = new TransactionController(this.database);

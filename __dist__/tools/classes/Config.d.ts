@@ -1,4 +1,4 @@
-import { Gas, GasPrice } from "../../evm/types/lib/TransactionTypes";
+import { Gas, GasPrice } from "../../evm/types";
 export interface ConfigSchema {
     connection: {
         host: string;

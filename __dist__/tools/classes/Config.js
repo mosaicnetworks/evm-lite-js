@@ -65,7 +65,7 @@ var Config = /** @class */ (function () {
                         reject('Something went wrong writing the configuration.');
                         return;
                     }
-                    _this.data = toml.parse(_this.toTOML());
+                    _this.data = data;
                     resolve('New configuration saved!');
                 });
             }

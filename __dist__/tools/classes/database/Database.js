@@ -14,10 +14,11 @@ var Database = /** @class */ (function () {
             this.database = LowDB(new FileSync(this.path));
         }
         else {
-            this.database = LowDB(new FileSync(this.path));
-            this.database.defaults({
+            var defaults = {
                 transactions: []
-            }).write();
+            };
+            this.database = LowDB(new FileSync(this.path));
+            this.database.defaults(defaults).write();
         }
         this.transactions = new Transaction_1.default(this.database);
     }

@@ -3,7 +3,8 @@ import * as path from "path";
 import * as toml from "toml";
 import * as tomlify from 'tomlify-j0.4';
 
-import {Gas, GasPrice} from "../../evm/types/lib/TransactionTypes";
+import {Gas, GasPrice} from "../../evm/types";
+
 import Static from "./Static";
 
 
@@ -93,7 +94,7 @@ export default class Config {
                         return;
                     }
 
-                    this.data = toml.parse(this.toTOML());
+                    this.data = data;
                     resolve('New configuration saved!');
                 });
             }

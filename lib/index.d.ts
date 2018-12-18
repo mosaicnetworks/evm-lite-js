@@ -13,79 +13,80 @@ declare module 'evm-lite-lib' {
 }
 
 declare module 'evm-lite-lib/evm/EVMLC' {
+    import SolidityContract from "evm-lite-lib/evm/classes/SolidityContract";
+    import Transaction, {BaseTX} from "evm-lite-lib/evm/classes/Transaction";
+    import DefaultClient from "evm-lite-lib/evm/client/DefaultClient";
     import {Gas, GasPrice, Value} from "evm-lite-lib/evm/types";
     import {ABI} from "evm-lite-lib/evm/utils/Interfaces";
-    import Transaction, {BaseTX} from "evm-lite-lib/evm/classes/Transaction";
-    import SolidityContract from "evm-lite-lib/evm/classes/SolidityContract";
-    import DefaultClient from "evm-lite-lib/evm/client/DefaultClient";
 
     interface UserDefinedDefaultTXOptions extends BaseTX {
         from: string;
     }
 
     export default class EVMLC extends DefaultClient {
-        readonly defaultOptions: UserDefinedDefaultTXOptions;
-        defaultFrom: string;
-        defaultGas: Gas;
-        defaultGasPrice: GasPrice;
+        public readonly defaultOptions: UserDefinedDefaultTXOptions;
+        public defaultFrom: string;
+        public defaultGas: Gas;
+        public defaultGasPrice: GasPrice;
 
         constructor(host: string, port: number, userDefaultTXOptions: UserDefinedDefaultTXOptions);
 
-        generateContractFromABI(abi: ABI[]): SolidityContract;
+        public generateContractFromABI(abi: ABI[]): SolidityContract;
 
-        prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
+        public prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
     }
     export {};
 }
 
 declare module 'evm-lite-lib/evm/classes/Account' {
-    import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
     import {BaseAccount} from "evm-lite-lib/";
     import Transaction, {SignedTransaction, TX} from 'evm-lite-lib/evm/classes/Transaction';
+    import {Account as Web3Account, V3JSONKeyStore} from 'web3-eth-accounts';
     export default class Account {
-        readonly address: string;
-        readonly privateKey: string;
-        balance: number;
-        nonce: number;
+
+        public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string): Account;
+
+        public readonly address: string;
+        public readonly privateKey: string;
+        public balance: number;
+        public nonce: number;
 
         constructor(data?: Web3Account);
 
-        static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string): Account;
+        public sign(message: string): any;
 
-        sign(message: string): any;
+        public signTransaction(tx: TX | Transaction): Promise<SignedTransaction>;
 
-        signTransaction(tx: TX | Transaction): Promise<SignedTransaction>;
+        public encrypt(password: string): V3JSONKeyStore;
 
-        encrypt(password: string): V3JSONKeyStore;
-
-        toBaseAccount(): BaseAccount;
+        public toBaseAccount(): BaseAccount;
     }
 }
 
 declare module 'evm-lite-lib/tools/classes/Keystore' {
-    import {V3JSONKeyStore} from 'web3-eth-accounts';
     import {BaseAccount, EVMLC} from "evm-lite-lib/";
+    import {V3JSONKeyStore} from 'web3-eth-accounts';
     export default class Keystore {
-        readonly directory: string;
-        readonly name: string;
-        readonly path: string;
+        public readonly directory: string;
+        public readonly name: string;
+        public readonly path: string;
 
         constructor(directory: string, name: string);
 
-        create(password: string, output?: string): Promise<string>;
+        public create(password: string, output?: string): Promise<string>;
 
-        import(data: string): Promise<string>;
+        public import(data: string): Promise<string>;
 
-        update(address: string, old: string, newPass: string): Promise<string>;
+        public update(address: string, old: string, newPass: string): Promise<string>;
 
-        list(fetch?: boolean, connection?: EVMLC): Promise<BaseAccount[]>;
+        public list(fetch?: boolean, connection?: EVMLC): Promise<BaseAccount[]>;
 
-        get(address: string): Promise<V3JSONKeyStore>;
+        public get(address: string): Promise<V3JSONKeyStore>;
     }
 }
 
 declare module 'evm-lite-lib/tools/classes/Config' {
-    import {Gas, GasPrice} from "evm-lite-lib/evm/types/lib/TransactionTypes";
+    import {Gas, GasPrice} from "evm-lite-lib/evm/types";
 
     export interface ConfigSchema {
         connection: {
@@ -103,28 +104,28 @@ declare module 'evm-lite-lib/tools/classes/Config' {
     }
 
     export default class Config {
-        readonly directory: string;
-        readonly name: string;
-        readonly path: string;
-        data: ConfigSchema;
+        public readonly directory: string;
+        public readonly name: string;
+        public readonly path: string;
+        public data: ConfigSchema;
 
         constructor(directory: string, name: string);
 
-        defaultTOML(): string;
+        public defaultTOML(): string;
 
-        default(): ConfigSchema;
+        public default(): ConfigSchema;
 
-        toTOML(): string;
+        public toTOML(): string;
 
-        load(): Promise<ConfigSchema>;
+        public load(): Promise<ConfigSchema>;
 
-        save(data: ConfigSchema): Promise<string>;
+        public save(data: ConfigSchema): Promise<string>;
     }
 }
 
 declare module 'evm-lite-lib/evm/client/AccountClient' {
-    import {Nonce} from "evm-lite-lib/evm/types";
     import BaseClient from "evm-lite-lib/evm/client/BaseClient";
+    import {Nonce} from "evm-lite-lib/evm/types";
 
     export interface BaseAccount {
         address: string;
@@ -135,16 +136,16 @@ declare module 'evm-lite-lib/evm/client/AccountClient' {
     export default class AccountClient extends BaseClient {
         constructor(host: string, port: number);
 
-        getAccount(address: string): Promise<Readonly<BaseAccount>>;
+        public getAccount(address: string): Promise<Readonly<BaseAccount>>;
 
-        getAccounts(): Promise<Readonly<BaseAccount[]>>;
+        public getAccounts(): Promise<Readonly<BaseAccount[]>>;
     }
 }
 
 declare module 'evm-lite-lib/evm/classes/Transaction' {
-    import {Address, ChainID, Data, Gas, GasPrice, Nonce, Value} from "evm-lite-lib/evm/types";
-    import TransactionClient, {TXReceipt} from "evm-lite-lib/evm/client/TransactionClient";
     import Account from "evm-lite-lib/evm/classes/Account";
+    import TransactionClient, {TXReceipt} from "evm-lite-lib/evm/client/TransactionClient";
+    import {Address, ChainID, Data, Gas, GasPrice, Nonce, Value} from "evm-lite-lib/evm/types";
 
     export interface SentTX {
         from: string;
@@ -188,30 +189,30 @@ declare module 'evm-lite-lib/evm/classes/Transaction' {
     }
 
     export default class Transaction extends TransactionClient {
-        tx: TX;
-        receipt?: TXReceipt;
+        public tx: TX;
+        public receipt?: TXReceipt;
 
         constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
 
-        send(options?: OverrideTXOptions): Promise<TXReceipt>;
+        public send(options?: OverrideTXOptions): Promise<TXReceipt>;
 
-        sign(account: Account): Promise<SignedTransaction>;
+        public sign(account: Account): Promise<SignedTransaction>;
 
-        call(options?: OverrideTXOptions): Promise<string>;
+        public call(options?: OverrideTXOptions): Promise<string>;
 
-        toString(): string;
+        public toString(): string;
 
-        from(from: string): this;
+        public from(from: string): this;
 
-        to(to: string): this;
+        public to(to: string): this;
 
-        value(value: Value): this;
+        public value(value: Value): this;
 
-        gas(gas: Gas): this;
+        public gas(gas: Gas): this;
 
-        gasPrice(gasPrice: GasPrice): this;
+        public gasPrice(gasPrice: GasPrice): this;
 
-        data(data: Data): this;
+        public data(data: Data): this;
     }
     export {};
 }
@@ -238,10 +239,10 @@ declare module 'evm-lite-lib/tools/DataDirectory' {
     import Database from "evm-lite-lib/tools/classes/database/Database";
     import Keystore from "evm-lite-lib/tools/classes/Keystore";
     export default class DataDirectory {
-        readonly path: string;
-        readonly config: Config;
-        readonly database: Database;
-        readonly keystore: Keystore;
+        public readonly path: string;
+        public readonly config: Config;
+        public readonly database: Database;
+        public readonly keystore: Keystore;
 
         constructor(path: string);
     }
@@ -249,15 +250,15 @@ declare module 'evm-lite-lib/tools/DataDirectory' {
 
 declare module 'evm-lite-lib/tools/classes/Static' {
     export default class Static {
-        static exists(path: string): boolean;
+        public static exists(path: string): boolean;
 
-        static isDirectory(path: string): boolean;
+        public static isDirectory(path: string): boolean;
 
-        static createDirectoryIfNotExists(path: string): void;
+        public static createDirectoryIfNotExists(path: string): void;
 
-        static createOrReadFile(path: string, data: string): string;
+        public static createOrReadFile(path: string, data: string): string;
 
-        static isEquivalentObjects(objectA: any, objectB: any): boolean;
+        public static isEquivalentObjects(objectA: any, objectB: any): boolean;
     }
 }
 
@@ -284,25 +285,25 @@ declare module 'evm-lite-lib/evm/client/TransactionClient' {
     export default class TransactionClient extends BaseClient {
         constructor(host: string, port: number);
 
-        callTX(tx: string): Promise<Readonly<string>>;
+        public callTX(tx: string): Promise<Readonly<string>>;
 
-        sendTX(tx: string): Promise<Readonly<string>>;
+        public sendTX(tx: string): Promise<Readonly<string>>;
 
-        sendRaw(tx: string): Promise<Readonly<SentRawTXResponse>>;
+        public sendRaw(tx: string): Promise<Readonly<SentRawTXResponse>>;
 
-        getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
+        public getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
     }
     export {};
 }
 
 declare module 'evm-lite-lib/evm/types' {
+    import {TX} from "evm-lite-lib/evm/classes/Transaction";
     import AddressType from 'evm-lite-lib/evm/types/lib/AddressType';
     import ArrayType from 'evm-lite-lib/evm/types/lib/ArrayType';
     import BooleanType from 'evm-lite-lib/evm/types/lib/BooleanType';
     import ByteType from 'evm-lite-lib/evm/types/lib/ByteType';
     import EVMType from 'evm-lite-lib/evm/types/lib/EVMType';
     import StringType from 'evm-lite-lib/evm/types/lib/StringType';
-    import {TX} from "evm-lite-lib/evm/classes/Transaction";
     export {AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType};
     export * from 'evm-lite-lib/evm/types/lib/TransactionTypes';
 
@@ -322,8 +323,8 @@ declare module 'evm-lite-lib/evm/types' {
 
 declare module 'evm-lite-lib/evm/classes/SolidityContract' {
     import {ABI, TXReceipt} from "evm-lite-lib/";
-    import {Address, Data, Gas, GasPrice} from "evm-lite-lib/evm/types";
     import Transaction from "evm-lite-lib/evm/classes/Transaction";
+    import {Address, Data, Gas, GasPrice} from "evm-lite-lib/evm/types";
 
     export interface ContractOptions {
         gas: Gas;
@@ -335,33 +336,33 @@ declare module 'evm-lite-lib/evm/classes/SolidityContract' {
     }
 
     export default class SolidityContract {
-        options: ContractOptions;
-        methods: {
+        public options: ContractOptions;
+        public methods: {
             [key: string]: () => Transaction;
         };
-        web3Contract: any;
-        receipt?: TXReceipt;
+        public web3Contract: any;
+        public receipt?: TXReceipt;
 
         constructor(options: ContractOptions, host: string, port: number);
 
-        deploy(options?: {
+        public deploy(options?: {
             parameters?: any[];
             gas?: Gas;
             gasPrice?: GasPrice;
             data?: Data;
         }): Promise<this>;
 
-        setAddressAndPopulate(address: string): this;
+        public setAddressAndPopulate(address: string): this;
 
-        address(address: string): this;
+        public address(address: string): this;
 
-        gas(gas: Gas): this;
+        public gas(gas: Gas): this;
 
-        gasPrice(gasPrice: GasPrice): this;
+        public gasPrice(gasPrice: GasPrice): this;
 
-        data(data: Data): this;
+        public data(data: Data): this;
 
-        JSONInterface(abis: ABI[]): this;
+        public JSONInterface(abis: ABI[]): this;
     }
 }
 
@@ -370,9 +371,9 @@ declare module 'evm-lite-lib/evm/client/DefaultClient' {
     export default abstract class DefaultClient extends AccountClient {
         protected constructor(host: string, port: number);
 
-        testConnection(): Promise<boolean>;
+        public testConnection(): Promise<boolean>;
 
-        getInfo(): Promise<Readonly<object>>;
+        public getInfo(): Promise<Readonly<object>>;
     }
 }
 
@@ -390,22 +391,11 @@ declare module 'evm-lite-lib/' {
     export {TXReceipt} from "evm-lite-lib/evm/client/TransactionClient";
 }
 
-declare module 'evm-lite-lib/evm/types/lib/TransactionTypes' {
-    import AddressType from "evm-lite-lib/evm/types/lib/AddressType";
-    export type Gas = number;
-    export type GasPrice = number;
-    export type Value = number;
-    export type Nonce = number;
-    export type ChainID = number;
-    export type Address = AddressType;
-    export type Data = string;
-}
-
 declare module 'evm-lite-lib/evm/client/BaseClient' {
     export const request: (options: any, tx?: string | undefined) => Promise<string>;
     export default abstract class BaseClient {
-        readonly host: Readonly<string>;
-        readonly port: Readonly<number>;
+        public readonly host: Readonly<string>;
+        public readonly port: Readonly<number>;
 
         protected constructor(host: Readonly<string>, port: Readonly<number>);
 
@@ -428,8 +418,8 @@ declare module 'evm-lite-lib/tools/classes/database/Database' {
     }
 
     export default class Database {
-        readonly path: string;
-        readonly transactions: TransactionController;
+        public readonly path: string;
+        public readonly transactions: TransactionController;
 
         constructor(directory: string, name: string);
     }
@@ -438,7 +428,7 @@ declare module 'evm-lite-lib/tools/classes/database/Database' {
 declare module 'evm-lite-lib/evm/types/lib/AddressType' {
     import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class AddressType extends EVMType {
-        readonly value: string;
+        public readonly value: string;
 
         constructor(value: string);
     }
@@ -447,8 +437,8 @@ declare module 'evm-lite-lib/evm/types/lib/AddressType' {
 declare module 'evm-lite-lib/evm/types/lib/ArrayType' {
     import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class ArrayType<T extends EVMType> extends EVMType {
-        readonly item: T;
-        readonly size?: number | undefined;
+        public readonly item: T;
+        public readonly size?: number | undefined;
 
         constructor(item: T, size?: number | undefined);
     }
@@ -464,7 +454,7 @@ declare module 'evm-lite-lib/evm/types/lib/BooleanType' {
 declare module 'evm-lite-lib/evm/types/lib/ByteType' {
     import EVMType from "evm-lite-lib/evm/types/lib/EVMType";
     export default class ByteType extends EVMType {
-        readonly size: number;
+        public readonly size: number;
 
         constructor();
     }
@@ -483,17 +473,57 @@ declare module 'evm-lite-lib/evm/types/lib/StringType' {
     }
 }
 
+declare module 'evm-lite-lib/evm/types/lib/TransactionTypes' {
+    import AddressType from "evm-lite-lib/evm/types/lib/AddressType";
+    export type Gas = number;
+    export type GasPrice = number;
+    export type Value = number;
+    export type Nonce = number;
+    export type ChainID = number;
+    export type Address = AddressType;
+    export type Data = string;
+}
+
 declare module 'evm-lite-lib/tools/classes/database/controllers/Transaction' {
-    import * as LowDB from "lowdb";
     import {DatabaseSchema, TransactionSchema} from "evm-lite-lib/tools/classes/database/Database";
+    import TransactionSchemaClass from 'evm-lite-lib/tools/classes/database/schemas/Transaction';
+    import * as LowDB from "lowdb";
     export default class Transaction {
         constructor(database: LowDB.LowdbSync<DatabaseSchema>);
 
-        add(tx: TransactionSchema): Promise<void>;
+        public add(tx: TransactionSchema | TransactionSchemaClass): Promise<void>;
 
-        list(): Promise<TransactionSchema[]>;
+        public create(tx?: TransactionSchema): TransactionSchemaClass;
 
-        get(hash: string): Promise<TransactionSchema>;
+        public list(): Promise<TransactionSchema[]>;
+
+        public get(hash: string): Promise<TransactionSchema>;
+    }
+}
+
+declare module 'evm-lite-lib/tools/classes/database/schemas/Transaction' {
+    import {SentTX} from "evm-lite-lib/";
+    import {Gas, GasPrice, Nonce, Value} from "evm-lite-lib/evm/types";
+    export default class Transaction {
+        public readonly raw: SentTX;
+
+        constructor(sentTX?: SentTX);
+
+        public date(value: any): this;
+
+        public from(value: string): this;
+
+        public gas(value: Gas): this;
+
+        public gasPrice(value: GasPrice): this;
+
+        public nonce(value: Nonce): this;
+
+        public to(value: string): this;
+
+        public txHash(value: string): this;
+
+        public value(value: Value): this;
     }
 }
 
