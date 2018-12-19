@@ -5,6 +5,7 @@
     "outDir": "./__dist__",
     "declaration": true,
     "strict": true,
+    "experimentalDecorators": true,
     "lib": [
       "es6"
     ],

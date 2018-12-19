@@ -17,7 +17,6 @@ export default class Transaction {
             nonce: (sentTX && sentTX.nonce) || 0,
             date: (sentTX && sentTX.date) || '',
         }
-
     }
 
     get raw(): SentTX {

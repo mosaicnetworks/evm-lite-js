@@ -1,6 +1,6 @@
 {
   "name": "evm-lite-lib",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A Node.js module for interacting with EVM-Lite.",
   "main": "./__dist__/index.js",
   "typings": "./__dist__/index.d.ts",

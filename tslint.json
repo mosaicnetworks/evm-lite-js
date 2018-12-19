@@ -14,6 +14,7 @@
     "interface-name": false,
     "variable-name": false,
     "object-literal-sort-keys": false,
-    "max-classes-per-file": false
+    "max-classes-per-file": false,
+    "ban-types": false
   }
 }
