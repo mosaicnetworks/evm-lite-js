@@ -19,22 +19,27 @@ Note: Type definitions are provided for Typescript users.
 Below is a basic example of how to transfer from a controlled account.
 
 ```typescript
-const from = '0xA4a5F65Fb3752b2B6632F2729f17dd61B2aaD650';
-const to = '0x5204302336b6634db77dbaca147918bdaed8b0e7';
+const evmlib = require('evm-lite-lib');
 
-const evmlc = new EVMLC('127.0.0.1', 8080, {
-    from,
-    gas: 100000,
-    gasPrice: 0
+const from = '0xb1A28a3BCb7899647108cb3C19a211F1DD09B94E';
+const to = '0x1dEC6F07B50CFa047873A508a095be2552680874';
+
+let evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
+	from,
+	gas: 100000,
+	gasPrice: 0
 });
 
-const transaction = evmlc.prepareTransfer(to, 2000000);
+const transactionPrepare = evmlc.prepareTransfer(to, 200);
 
 evmlc.getAccount(to)
-    .then((account) => console.log('Account Before:', account, '\n\n'))
-    .then(() => transaction.send())
-    .then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
-    .then(() => evmlc.getAccount(to))
-    .then((account) => console.log('Account After:', account, '\n\n'))
-    .catch((error) => console.log(error))
+	.then((account) => {
+		console.log('Account Before:', account, '\n\n')
+		return transactionPrepare
+	})
+	.then((transaction) => transaction.send())
+	.then((receipt) => console.log('Transaction Receipt:', receipt, '\n\n'))
+	.then(() => evmlc.getAccount(to))
+	.then((account) => console.log('Account After:', account, '\n\n'))
+	.catch((error) => console.log(error));
 ```

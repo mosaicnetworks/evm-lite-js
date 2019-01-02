@@ -8,5 +8,5 @@ yarn.lock
 .prettierrc
 .gitignore
 .editorconfig
-tests
 test
+webpack.config.js

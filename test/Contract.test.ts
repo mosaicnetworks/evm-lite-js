@@ -8,7 +8,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 });
 
 const ABI_FOR_CROWD_FUNDING_CONTRACT: [] = [];
-const COMPILED_DATA: string = '';
+const COMPILED_DATA: string = 'data';
 
 const notDeployedContract = evmlc.generateContractFromABI(ABI_FOR_CROWD_FUNDING_CONTRACT);
 
