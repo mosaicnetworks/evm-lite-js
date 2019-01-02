@@ -47,8 +47,8 @@ const config = {
         new Webpack.IgnorePlugin(/^(?:electron|ws)$/),
         new DtsBundleWebpack({
             name: packageName,
-            main: './__dist__/index.d.ts',
-            baseDir: '__dist__',
+            main: './dist/index.d.ts',
+            baseDir: 'dist',
             out: '../lib/index.d.ts',
         }),
         new ForkTSCheckerWebpackPlugin({

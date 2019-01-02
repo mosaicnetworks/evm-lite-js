@@ -1,10 +1,10 @@
-import EVMType from "./EVMType";
+import EVMType from './EVMType';
 
 
 export default class StringType extends EVMType {
 
-    constructor() {
-        super();
-    }
+	constructor() {
+		super();
+	}
 
 }

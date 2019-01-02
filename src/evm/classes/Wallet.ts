@@ -1,30 +1,30 @@
-import AccountClient from "../client/AccountClient";
+import AccountClient from '../client/AccountClient';
 
 
 class Wallet extends AccountClient {
 
-    constructor(host: string, port: number) {
-        super(host, port)
-    }
+	constructor(host: string, port: number) {
+		super(host, port);
+	}
 
-    public add() {
-        // pass
-    }
+	public add() {
+		// pass
+	}
 
-    public remove() {
-        // pass
-    }
+	public remove() {
+		// pass
+	}
 
-    public clear() {
-        // pass
-    }
+	public clear() {
+		// pass
+	}
 
-    public encrypt() {
-        // pass
-    }
+	public encrypt() {
+		// pass
+	}
 
-    public decrypt() {
-        // pass
-    }
+	public decrypt() {
+		// pass
+	}
 
 }

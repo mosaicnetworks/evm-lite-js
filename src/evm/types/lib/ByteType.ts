@@ -1,12 +1,12 @@
-import EVMType from "./EVMType";
+import EVMType from './EVMType';
 
 
 export default class ByteType extends EVMType {
-    public readonly size: number;
+	public readonly size: number;
 
-    constructor() {
-        super();
-        this.size = 1;
-    }
+	constructor() {
+		super();
+		this.size = 1;
+	}
 
 }
