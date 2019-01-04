@@ -40,7 +40,7 @@ export default class SolidityContract {
 		}
 	}
 
-	public deploy(options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }): Promise<this> {
+	public deploy(options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }): Transaction {
 		if (this.options.address) {
 			throw errors.ContractAddressFieldSetAndDeployed();
 		}
@@ -72,11 +72,6 @@ export default class SolidityContract {
 			}, this.host, this.port, false)
 				.gas(this.options.gas)
 				.gasPrice(this.options.gasPrice)
-				.send()
-				.then((receipt: TXReceipt) => {
-					this.receipt = receipt;
-					return this.setAddressAndPopulate(this.receipt.contractAddress);
-				});
 		} else {
 			throw errors.InvalidDataFieldInOptions();
 		}

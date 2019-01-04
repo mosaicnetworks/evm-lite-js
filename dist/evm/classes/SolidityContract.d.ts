@@ -24,7 +24,7 @@ export default class SolidityContract {
         gas?: Gas;
         gasPrice?: GasPrice;
         data?: Data;
-    }): Promise<this>;
+    }): Transaction;
     setAddressAndPopulate(address: string): this;
     address(address: string): this;
     gas(gas: Gas): this;

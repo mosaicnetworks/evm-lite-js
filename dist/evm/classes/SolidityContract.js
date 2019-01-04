@@ -21,7 +21,6 @@ var SolidityContract = /** @class */ (function () {
         }
     }
     SolidityContract.prototype.deploy = function (options) {
-        var _this = this;
         if (this.options.address) {
             throw errors.ContractAddressFieldSetAndDeployed();
         }
@@ -47,12 +46,7 @@ var SolidityContract = /** @class */ (function () {
                 gasPrice: this.options.gasPrice
             }, this.host, this.port, false)
                 .gas(this.options.gas)
-                .gasPrice(this.options.gasPrice)
-                .send()
-                .then(function (receipt) {
-                _this.receipt = receipt;
-                return _this.setAddressAndPopulate(_this.receipt.contractAddress);
-            });
+                .gasPrice(this.options.gasPrice);
         }
         else {
             throw errors.InvalidDataFieldInOptions();
