@@ -9,19 +9,6 @@ import Transaction, { SignedTransaction, TX } from './Transaction';
 
 export default class Account {
 
-	public balance: number = 0;
-	public nonce: number = 0;
-	private readonly account: Web3Account;
-
-	constructor(data?: Web3Account) {
-		if (!data) {
-			// @ts-ignore
-			this.account = new Wallet().create();
-		} else {
-			this.account = data;
-		}
-	}
-
 	get address(): string {
 		return this.account.address;
 	}
@@ -35,6 +22,19 @@ export default class Account {
 		const decryptedAccount = new Wallet().decrypt(v3JSONKeyStore, password);
 
 		return new Account(decryptedAccount);
+	}
+
+	public balance: number = 0;
+	public nonce: number = 0;
+	private readonly account: Web3Account;
+
+	constructor(data?: Web3Account) {
+		if (!data) {
+			// @ts-ignore
+			this.account = new Wallet().create();
+		} else {
+			this.account = data;
+		}
 	}
 
 	public sign(message: string): any {

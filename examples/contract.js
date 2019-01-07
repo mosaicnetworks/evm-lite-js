@@ -1,5 +1,5 @@
 const EVMLC = require('evm-lite-lib').EVMLC;
-const KeyStore = require('evm-lite-lib').Keystore;
+const DataDirectory = require('evm-lite-lib').DataDirectory;
 const Accounts = require('evm-lite-lib').Account;
 const solc = require('solc');
 const fs = require('fs');
@@ -15,7 +15,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 });
 
 // Keystore object
-const keystore = new KeyStore('[..]/.evmlc', 'keystore');
+const dataDirectory = new DataDirectory('[..]/.evmlc');
 
 // Contract Object
 const contractPath = '[..]/CrowdFunding.sol';
@@ -28,7 +28,7 @@ const ABI = JSON.parse(output.contracts[contractName].interface);
 async function deploySmartContract() {
 
 	// Get account from keystore
-	const keystoreFile = await keystore.get(from);
+	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the account
 	const decryptedAccount = Accounts.decrypt(keystoreFile, 'supersecurepassword');

@@ -6,9 +6,9 @@ import Database from './database/Database';
 
 export default class DataDirectory {
 
-	public readonly config: Config;
-	public readonly database: Database;
-	public readonly keystore: Keystore;
+	public config: Config;
+	public database: Database;
+	public keystore: Keystore;
 
 	constructor(readonly path: string) {
 		Static.createDirectoryIfNotExists(path);
@@ -16,6 +16,18 @@ export default class DataDirectory {
 		this.config = new Config(this.path, 'config.toml');
 		this.keystore = new Keystore(this.path, 'keystore');
 		this.database = new Database(this.path, 'db.json');
+	}
+
+	public newKeystore(dataDirectory: string, name: string): void {
+		this.keystore = new Keystore(dataDirectory, name);
+	}
+
+	public newConfig(dataDirectory: string, name: string): void {
+		this.config = new Config(dataDirectory, name);
+	}
+
+	public newDatabase(dataDirectory: string, name: string): void {
+		this.database = new Database(dataDirectory, name);
 	}
 
 }

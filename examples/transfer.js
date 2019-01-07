@@ -11,14 +11,14 @@ const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
 	gasPrice: 0
 });
 
-// Keystore object
-const keystore = new evmlib.Keystore('/Users/danu/.evmlc', 'keystore');
+// Data directory object
+const dataDirectory = new evmlib.DataDirectory('[..]/.evmlc');
 
 async function signTransactionLocally() {
 
 	// Get keystore object from the keystore directory
 	// For the from address so we can decrypt and sign
-	const keystoreFile = await keystore.get(from);
+	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the v3JSONKeystore file so expose `sign` function
 	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'asd');
