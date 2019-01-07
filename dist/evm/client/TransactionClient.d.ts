@@ -18,7 +18,7 @@ export default class TransactionClient extends BaseClient {
     constructor(host: string, port: number);
     callTX(tx: string): Promise<Readonly<string>>;
     sendTX(tx: string): Promise<Readonly<string>>;
-    sendRaw(tx: string): Promise<Readonly<SentRawTXResponse>>;
+    sendRaw(tx: string): Promise<SentRawTXResponse>;
     getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
 }
 export {};

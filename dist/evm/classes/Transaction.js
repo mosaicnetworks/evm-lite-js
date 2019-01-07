@@ -83,12 +83,42 @@ var Transaction = /** @class */ (function (_super) {
             return _this.receipt;
         });
     };
+    Transaction.prototype.sendRawTX = function (options) {
+        var _this = this;
+        this.assignTXValues(options);
+        this.checkGasAndGasPrice();
+        if (!this.signedTX) {
+            throw new Error('Transaction has not been signed locally yet.');
+        }
+        if (this.constant) {
+            throw new Error('Transaction does not mutate state. Use `call()` instead');
+        }
+        if (!this.tx.data && !this.tx.value) {
+            throw new Error('Transaction does have a value to send.');
+        }
+        return this.sendRaw(this.signedTX.rawTransaction)
+            .then(function (res) {
+            return res.txHash;
+        })
+            .then(function (txHash) {
+            return _this.getReceipt(txHash);
+        })
+            .then(function (response) {
+            _this.receipt = response;
+            return _this.receipt;
+        });
+    };
     Transaction.prototype.sign = function (account) {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, account.signTransaction(this)];
-                    case 1: return [2 /*return*/, _a.sent()];
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, account.signTransaction(this)];
+                    case 1:
+                        _a.signedTX = _b.sent();
+                        return [2 /*return*/, this];
                 }
             });
         });

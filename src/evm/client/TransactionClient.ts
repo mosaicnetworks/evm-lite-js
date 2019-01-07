@@ -36,7 +36,7 @@ export default class TransactionClient extends BaseClient {
 			.then((response) => response);
 	}
 
-	public sendRaw(tx: string): Promise<Readonly<SentRawTXResponse>> {
+	public sendRaw(tx: string): Promise<SentRawTXResponse> {
 		return request(this.options('POST', '/rawtx'), tx)
 			.then((response) => JSONBig.parse<SentRawTXResponse>(response));
 	}

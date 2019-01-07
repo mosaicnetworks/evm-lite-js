@@ -50,6 +50,7 @@ export interface SignedTransaction {
 export default class Transaction extends TransactionClient {
 
 	public receipt?: TXReceipt;
+	public signedTX?: SignedTransaction;
 
 	constructor(public tx: TX, host: string, port: number, private constant: boolean,
 				private readonly unpackfn?: (data: string) => any) {
@@ -82,8 +83,39 @@ export default class Transaction extends TransactionClient {
 			});
 	}
 
-	public async sign(account: Account) {
-		return await account.signTransaction(this);
+	public sendRawTX(options?: OverrideTXOptions): Promise<TXReceipt> {
+		this.assignTXValues(options);
+		this.checkGasAndGasPrice();
+
+		if (!this.signedTX) {
+			throw new Error('Transaction has not been signed locally yet.');
+		}
+
+		if (this.constant) {
+			throw new Error('Transaction does not mutate state. Use `call()` instead');
+		}
+
+		if (!this.tx.data && !this.tx.value) {
+			throw new Error('Transaction does have a value to send.');
+		}
+
+		return this.sendRaw(this.signedTX.rawTransaction)
+			.then((res) => {
+				return res.txHash;
+			})
+			.then((txHash) => {
+				return this.getReceipt(txHash);
+			})
+			.then((response) => {
+				this.receipt = response;
+				return this.receipt;
+			});
+	}
+
+	public async sign(account: Account): Promise<this> {
+		this.signedTX = await account.signTransaction(this);
+
+		return this;
 	}
 
 	public call(options?: OverrideTXOptions): Promise<string> {
