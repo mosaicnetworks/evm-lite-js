@@ -73,7 +73,7 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    EVMLC.prototype.generateContractFromABI = function (abi) {
+    EVMLC.prototype.generateContractFromABI = function (abi, data) {
         var _this = this;
         this.requireAddress();
         return this.getAccount(this.defaultFrom.trim())
@@ -82,7 +82,8 @@ var EVMLC = /** @class */ (function (_super) {
             jsonInterface: abi,
             gas: _this.defaultTXOptions.gas,
             gasPrice: _this.defaultTXOptions.gasPrice,
-            nonce: account.nonce
+            nonce: account.nonce,
+            data: data || '',
         }, _this.host, _this.port); });
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {

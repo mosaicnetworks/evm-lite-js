@@ -56,7 +56,7 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	public generateContractFromABI<ContractSchema extends BaseContractFunctionSchema>(abi: ABI[]):
+	public generateContractFromABI<ContractSchema extends BaseContractFunctionSchema>(abi: ABI[], data?: string):
 		Promise<SolidityContract<ContractSchema>> {
 
 		this.requireAddress();
@@ -67,7 +67,8 @@ export default class EVMLC extends DefaultClient {
 				jsonInterface: abi,
 				gas: this.defaultTXOptions.gas,
 				gasPrice: this.defaultTXOptions.gasPrice,
-				nonce: account.nonce
+				nonce: account.nonce,
+				data: data || '',
 			}, this.host, this.port));
 	}
 
