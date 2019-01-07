@@ -10,3 +10,4 @@ yarn.lock
 .editorconfig
 test
 webpack.config.js
+examples

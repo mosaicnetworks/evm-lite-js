@@ -45,9 +45,7 @@ var SolidityContract = /** @class */ (function () {
                 gas: this.options.gas,
                 gasPrice: this.options.gasPrice,
                 nonce: this.options.nonce
-            }, this.host, this.port, false)
-                .gas(this.options.gas)
-                .gasPrice(this.options.gasPrice);
+            }, this.host, this.port, false).gas(this.options.gas).gasPrice(this.options.gasPrice);
         }
         else {
             throw errors.InvalidDataFieldInOptions();

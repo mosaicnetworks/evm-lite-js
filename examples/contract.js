@@ -4,6 +4,7 @@ const Accounts = require('evm-lite-lib').Account;
 const solc = require('solc');
 const fs = require('fs');
 
+// Default from address
 const from = '0x1a5c6b111e883d920fd24fee0bafae838958fa05';
 
 // EVMLC object
@@ -17,7 +18,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 const keystore = new KeyStore('[..]/.evmlc', 'keystore');
 
 // Contract Object
-const contractPath = '/Users/junwei/Documents/CrowdFunding.sol';
+const contractPath = '[..]/CrowdFunding.sol';
 const contractFile = fs.readFileSync(contractPath, 'utf8');
 const contractName = ':' + 'CrowdFunding';
 
@@ -25,16 +26,26 @@ const output = solc.compile(contractFile, 1);
 const ABI = JSON.parse(output.contracts[contractName].interface);
 
 async function deploySmartContract() {
-	// Decrypted The Account
+
+	// Get account from keystore
 	const keystoreFile = await keystore.get(from);
+
+	// Decrypt the account
 	const decryptedAccount = Accounts.decrypt(keystoreFile, 'supersecurepassword');
-	const DeployedContract = evmlc.generateContractFromABI(ABI);
 
-	DeployedContract.data(output.contracts[contractName].bytecode);
+	// Bytecode of compiled account
+	const byteCode = output.contracts[contractName].bytecode;
 
-	const deployTransaction = DeployedContract.deploy({ parameters: [10000] });
+	// Generate contract to deploy later
+	const notDeployedContract = (await evmlc.generateContractFromABI(ABI)).data(byteCode);
+
+	// Generate deployment transaction
+	const deployTransaction = notDeployedContract.deploy({ parameters: [10000] });
+
+	// Sign transaction with decrypted account
 	const signedTransaction = await deployTransaction.sign(decryptedAccount);
 
+	// Send deployment transaction
 	return await signedTransaction.sendRawTX();
 }
 

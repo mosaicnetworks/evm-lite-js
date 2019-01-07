@@ -10,13 +10,14 @@ export interface ContractOptions {
     data?: Data;
     jsonInterface: ABI[];
 }
-export default class SolidityContract {
+export interface BaseContractFunctionSchema {
+    [key: string]: (...args: any[]) => Transaction;
+}
+export default class SolidityContract<ContractFunctionSchema extends BaseContractFunctionSchema> {
     options: ContractOptions;
     private host;
     private port;
-    methods: {
-        [key: string]: () => Transaction;
-    };
+    methods: ContractFunctionSchema | BaseContractFunctionSchema;
     web3Contract: any;
     receipt?: TXReceipt;
     constructor(options: ContractOptions, host: string, port: number);

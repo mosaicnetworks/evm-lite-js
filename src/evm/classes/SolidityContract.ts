@@ -21,11 +21,13 @@ export interface ContractOptions {
 	jsonInterface: ABI[];
 }
 
-export default class SolidityContract {
+export interface BaseContractFunctionSchema {
+	[key: string]: (...args: any[]) => Transaction;
+}
 
-	public methods: {
-		[key: string]: () => Transaction;
-	};
+export default class SolidityContract<ContractFunctionSchema extends BaseContractFunctionSchema> {
+
+	public methods: ContractFunctionSchema | BaseContractFunctionSchema;
 	public web3Contract: any;
 	public receipt?: TXReceipt;
 
@@ -71,9 +73,7 @@ export default class SolidityContract {
 				gas: this.options.gas,
 				gasPrice: this.options.gasPrice,
 				nonce: this.options.nonce
-			}, this.host, this.port, false)
-				.gas(this.options.gas)
-				.gasPrice(this.options.gasPrice);
+			}, this.host, this.port, false).gas(this.options.gas).gasPrice(this.options.gasPrice);
 		} else {
 			throw errors.InvalidDataFieldInOptions();
 		}
@@ -123,6 +123,7 @@ export default class SolidityContract {
 				}
 
 				const solFunction = new SolidityFunction(funcJSON, this.options.address, this.host, this.port);
+
 				this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
 					gas: this.options.gas,
 					gasPrice: this.options.gasPrice,
