@@ -90,7 +90,7 @@ const ABI = JSON.parse(output.contracts[contractName].interface);
 
 async function deploySmartContract() {
 
-	// Get account from keystore
+    // Get account from keystore
 	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the account
