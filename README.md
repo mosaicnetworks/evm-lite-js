@@ -151,7 +151,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
 
 // Return generated object
 const generateContract = async () => {
-	return await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+  return await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
 };
 
 generateContract()
