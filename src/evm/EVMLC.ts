@@ -56,15 +56,17 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	public generateContractFromABI(abi: ABI[]): SolidityContract {
+	public generateContractFromABI(abi: ABI[]): Promise<SolidityContract> {
 		this.requireAddress();
 
-		return new SolidityContract({
-			from: this.defaultTXOptions.from,
-			jsonInterface: abi,
-			gas: this.defaultTXOptions.gas,
-			gasPrice: this.defaultTXOptions.gasPrice
-		}, this.host, this.port);
+		return this.getAccount(this.defaultFrom.trim())
+			.then((account) => new SolidityContract({
+				from: this.defaultTXOptions.from,
+				jsonInterface: abi,
+				gas: this.defaultTXOptions.gas,
+				gasPrice: this.defaultTXOptions.gasPrice,
+				nonce: account.nonce
+			}, this.host, this.port));
 	}
 
 	public prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction> {
@@ -83,17 +85,15 @@ export default class EVMLC extends DefaultClient {
 		}
 
 		return this.getAccount(fromObject.value)
-			.then((account) => {
-				return new Transaction({
-					from: fromObject,
-					to: new AddressType(to.trim()),
-					value,
-					gas: this.defaultGas,
-					gasPrice: this.defaultGasPrice,
-					nonce: account.nonce,
-					chainId: 1
-				}, this.host, this.port, false);
-			});
+			.then((account) => new Transaction({
+				from: fromObject,
+				to: new AddressType(to.trim()),
+				value,
+				gas: this.defaultGas,
+				gasPrice: this.defaultGasPrice,
+				nonce: account.nonce,
+				chainId: 1
+			}, this.host, this.port, false));
 	}
 
 	private requireAddress() {

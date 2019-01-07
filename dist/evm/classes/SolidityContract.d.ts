@@ -1,11 +1,12 @@
 import { ABI, TXReceipt } from '../..';
-import { Address, Data, Gas, GasPrice } from '../types';
+import { Address, Data, Gas, GasPrice, Nonce } from '../types';
 import Transaction from './Transaction';
 export interface ContractOptions {
     gas: Gas;
     gasPrice: GasPrice;
     from: Address;
     address?: Address;
+    nonce?: Nonce;
     data?: Data;
     jsonInterface: ABI[];
 }

@@ -74,13 +74,16 @@ var EVMLC = /** @class */ (function (_super) {
         configurable: true
     });
     EVMLC.prototype.generateContractFromABI = function (abi) {
+        var _this = this;
         this.requireAddress();
-        return new SolidityContract_1.default({
-            from: this.defaultTXOptions.from,
+        return this.getAccount(this.defaultFrom.trim())
+            .then(function (account) { return new SolidityContract_1.default({
+            from: _this.defaultTXOptions.from,
             jsonInterface: abi,
-            gas: this.defaultTXOptions.gas,
-            gasPrice: this.defaultTXOptions.gasPrice
-        }, this.host, this.port);
+            gas: _this.defaultTXOptions.gas,
+            gasPrice: _this.defaultTXOptions.gasPrice,
+            nonce: account.nonce
+        }, _this.host, _this.port); });
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {
         var _this = this;
@@ -95,17 +98,15 @@ var EVMLC = /** @class */ (function (_super) {
             throw new Error('A transfer of funds must have a value greater than 0.');
         }
         return this.getAccount(fromObject.value)
-            .then(function (account) {
-            return new Transaction_1.default({
-                from: fromObject,
-                to: new types_1.AddressType(to.trim()),
-                value: value,
-                gas: _this.defaultGas,
-                gasPrice: _this.defaultGasPrice,
-                nonce: account.nonce,
-                chainId: 1
-            }, _this.host, _this.port, false);
-        });
+            .then(function (account) { return new Transaction_1.default({
+            from: fromObject,
+            to: new types_1.AddressType(to.trim()),
+            value: value,
+            gas: _this.defaultGas,
+            gasPrice: _this.defaultGasPrice,
+            nonce: account.nonce,
+            chainId: 1
+        }, _this.host, _this.port, false); });
     };
     EVMLC.prototype.requireAddress = function () {
         if (!this.defaultTXOptions.from.value) {

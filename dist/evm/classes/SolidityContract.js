@@ -43,7 +43,8 @@ var SolidityContract = /** @class */ (function () {
                 from: this.options.from,
                 data: encodedData,
                 gas: this.options.gas,
-                gasPrice: this.options.gasPrice
+                gasPrice: this.options.gasPrice,
+                nonce: this.options.nonce
             }, this.host, this.port, false)
                 .gas(this.options.gas)
                 .gasPrice(this.options.gasPrice);

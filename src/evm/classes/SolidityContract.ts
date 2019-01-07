@@ -5,19 +5,20 @@ import * as checks from '../utils/checks';
 import * as errors from '../utils/errors';
 
 import { ABI, TXReceipt } from '../..';
-import { Address, AddressType, Data, Gas, GasPrice } from '../types';
+import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../types';
 
 import SolidityFunction from './SolidityFunction';
 import Transaction from './Transaction';
 
 
 export interface ContractOptions {
-	gas: Gas,
-	gasPrice: GasPrice,
-	from: Address,
-	address?: Address,
-	data?: Data,
-	jsonInterface: ABI[]
+	gas: Gas;
+	gasPrice: GasPrice;
+	from: Address;
+	address?: Address;
+	nonce?: Nonce;
+	data?: Data;
+	jsonInterface: ABI[];
 }
 
 export default class SolidityContract {
@@ -68,10 +69,11 @@ export default class SolidityContract {
 				from: this.options.from,
 				data: encodedData,
 				gas: this.options.gas,
-				gasPrice: this.options.gasPrice
+				gasPrice: this.options.gasPrice,
+				nonce: this.options.nonce
 			}, this.host, this.port, false)
 				.gas(this.options.gas)
-				.gasPrice(this.options.gasPrice)
+				.gasPrice(this.options.gasPrice);
 		} else {
 			throw errors.InvalidDataFieldInOptions();
 		}

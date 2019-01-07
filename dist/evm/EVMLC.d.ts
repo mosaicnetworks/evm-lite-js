@@ -14,7 +14,7 @@ export default class EVMLC extends DefaultClient {
     defaultFrom: string;
     defaultGas: Gas;
     defaultGasPrice: GasPrice;
-    generateContractFromABI(abi: ABI[]): SolidityContract;
+    generateContractFromABI(abi: ABI[]): Promise<SolidityContract>;
     prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
     private requireAddress;
 }
