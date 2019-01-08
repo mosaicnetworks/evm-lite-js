@@ -29,7 +29,7 @@ async function signTransactionLocally() {
 	// Sign transaction and return a new Transaction object
 	const signedTransaction = await transaction.sign(decryptedAccount);
 
-	return await signedTransaction.sendRawTX();
+	return await signedTransaction.submit();
 }
 
 signTransactionLocally()

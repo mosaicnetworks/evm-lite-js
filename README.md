@@ -51,7 +51,7 @@ async function signTransactionLocally() {
 	// Sign transaction and return a new Transaction object
 	const signedTransaction = await transaction.sign(decryptedAccount);
 
-	return await signedTransaction.sendRawTX();
+	return await signedTransaction.submit();
 }
 
 signTransactionLocally()
@@ -109,7 +109,7 @@ async function deploySmartContract() {
 	const signedTransaction = await deployTransaction.sign(decryptedAccount);
 
 	// Send deployment transaction
-	return await signedTransaction.sendRawTX();
+	return await signedTransaction.submit();
 }
 
 deploySmartContract()
