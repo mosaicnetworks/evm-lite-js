@@ -11,7 +11,7 @@ export interface TXReceipt {
     logsBloom: string;
     status: number;
 }
-interface SentRawTXResponse {
+export interface SentRawTXResponse {
     txHash: string;
 }
 export default class TransactionClient extends BaseClient {
@@ -21,4 +21,3 @@ export default class TransactionClient extends BaseClient {
     sendRaw(tx: string): Promise<SentRawTXResponse>;
     getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
 }
-export {};

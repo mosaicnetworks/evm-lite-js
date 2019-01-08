@@ -79,11 +79,11 @@ var Transaction = /** @class */ (function (_super) {
             return _this.getReceipt(txHash);
         })
             .then(function (response) {
-            _this.receipt = response;
-            return _this.receipt;
+            _this.txReceipt = response;
+            return _this.txReceipt;
         });
     };
-    Transaction.prototype.sendRawTX = function (options) {
+    Transaction.prototype.submit = function (options) {
         var _this = this;
         this.assignTXValues(options);
         this.checkGasAndGasPrice();
@@ -97,16 +97,8 @@ var Transaction = /** @class */ (function (_super) {
             throw new Error('Transaction does have a value to send.');
         }
         return this.sendRaw(this.signedTX.rawTransaction)
-            .then(function (res) {
-            return res.txHash;
-        })
-            .then(function (txHash) {
-            return _this.getReceipt(txHash);
-        })
-            .then(function (response) {
-            _this.receipt = response;
-            return _this.receipt;
-        });
+            .then(function (res) { return res.txHash; })
+            .then(function (hash) { return _this.hash = hash; });
     };
     Transaction.prototype.sign = function (account) {
         return __awaiter(this, void 0, void 0, function () {
@@ -123,6 +115,18 @@ var Transaction = /** @class */ (function (_super) {
             });
         });
     };
+    Object.defineProperty(Transaction.prototype, "receipt", {
+        get: function () {
+            if (this.hash) {
+                return this.getReceipt(this.hash);
+            }
+            else {
+                throw new Error('Transaction hash not found');
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Transaction.prototype.call = function (options) {
         var _this = this;
         this.assignTXValues(options);

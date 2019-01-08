@@ -16,7 +16,7 @@ export interface TXReceipt {
 	status: number;
 }
 
-interface SentRawTXResponse {
+export interface SentRawTXResponse {
 	txHash: string;
 }
 

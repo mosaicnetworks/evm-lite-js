@@ -41,12 +41,14 @@ export default class Transaction extends TransactionClient {
     tx: TX;
     private constant;
     private readonly unpackfn?;
-    receipt?: TXReceipt;
+    txReceipt?: TXReceipt;
     signedTX?: SignedTransaction;
+    hash?: string;
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     send(options?: OverrideTXOptions): Promise<TXReceipt>;
-    sendRawTX(options?: OverrideTXOptions): Promise<TXReceipt>;
+    submit(options?: OverrideTXOptions): Promise<string>;
     sign(account: Account): Promise<this>;
+    readonly receipt: Promise<Readonly<TXReceipt>>;
     call(options?: OverrideTXOptions): Promise<string>;
     toString(): string;
     from(from: string): this;

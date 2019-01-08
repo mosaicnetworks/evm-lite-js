@@ -36,7 +36,7 @@ interface OverrideTXOptions {
 	from?: string,
 	value?: Value,
 	gas?: Gas,
-	gasPrice?: GasPrice
+	gasPrice?: GasPrice,
 }
 
 export interface SignedTransaction {
@@ -49,8 +49,9 @@ export interface SignedTransaction {
 
 export default class Transaction extends TransactionClient {
 
-	public receipt?: TXReceipt;
+	public txReceipt?: TXReceipt;
 	public signedTX?: SignedTransaction;
+	public hash?: string;
 
 	constructor(public tx: TX, host: string, port: number, private constant: boolean,
 				private readonly unpackfn?: (data: string) => any) {
@@ -78,12 +79,12 @@ export default class Transaction extends TransactionClient {
 				return this.getReceipt(txHash);
 			})
 			.then((response) => {
-				this.receipt = response;
-				return this.receipt;
+				this.txReceipt = response;
+				return this.txReceipt;
 			});
 	}
 
-	public sendRawTX(options?: OverrideTXOptions): Promise<TXReceipt> {
+	public submit(options?: OverrideTXOptions): Promise<string> {
 		this.assignTXValues(options);
 		this.checkGasAndGasPrice();
 
@@ -100,22 +101,22 @@ export default class Transaction extends TransactionClient {
 		}
 
 		return this.sendRaw(this.signedTX.rawTransaction)
-			.then((res) => {
-				return res.txHash;
-			})
-			.then((txHash) => {
-				return this.getReceipt(txHash);
-			})
-			.then((response) => {
-				this.receipt = response;
-				return this.receipt;
-			});
+			.then(res =>  res.txHash)
+			.then(hash => this.hash = hash);
 	}
 
 	public async sign(account: Account): Promise<this> {
 		this.signedTX = await account.signTransaction(this);
 
 		return this;
+	}
+
+	public get receipt() {
+		if (this.hash) {
+			return this.getReceipt(this.hash)
+		} else {
+			throw new Error('Transaction hash not found');
+		}
 	}
 
 	public call(options?: OverrideTXOptions): Promise<string> {
