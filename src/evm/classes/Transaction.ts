@@ -85,6 +85,7 @@ export default class Transaction extends TransactionClient {
 	}
 
 	public submit(options?: OverrideTXOptions): Promise<string> {
+
 		this.assignTXValues(options);
 		this.checkGasAndGasPrice();
 
@@ -191,7 +192,7 @@ export default class Transaction extends TransactionClient {
 
 	private checkGasAndGasPrice() {
 		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-			throw new Error('Gas & Gas Price not set');
+			throw new Error('Gas or Gas Price not set');
 		}
 	}
 

@@ -186,7 +186,7 @@ var Transaction = /** @class */ (function (_super) {
     };
     Transaction.prototype.checkGasAndGasPrice = function () {
         if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('Gas & Gas Price not set');
+            throw new Error('Gas or Gas Price not set');
         }
     };
     return Transaction;

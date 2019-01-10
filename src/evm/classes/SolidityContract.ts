@@ -32,9 +32,6 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	public receipt?: TXReceipt;
 
 	constructor(public options: ContractOptions, private host: string, private port: number) {
-		// const web3 = new Web3();
-		// this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
-
 		this.options.address = options.address;
 		this.methods = {};
 

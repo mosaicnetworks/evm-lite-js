@@ -9,8 +9,6 @@ var SolidityFunction_1 = require("./SolidityFunction");
 var Transaction_1 = require("./Transaction");
 var SolidityContract = /** @class */ (function () {
     function SolidityContract(options, host, port) {
-        // const web3 = new Web3();
-        // this.web3Contract = web3.eth.contract(this.options.jsonInterface).at(this.options.address);
         this.options = options;
         this.host = host;
         this.port = port;

@@ -16,7 +16,7 @@ Note: Type definitions are provided for Typescript users.
 
 ## Example
 
-Below is a basic example of how to transfer from a controlled account.
+Below is a basic example of how to sign locally and submit a transaction to the node.
 
 ### Transfer
 ```javascript
