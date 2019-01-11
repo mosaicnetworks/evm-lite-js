@@ -104,7 +104,7 @@ generateContract()
 	.catch((error) => console.log(error));
 ```
 
-### Contract Generation (Typescript)
+### Contract Deployment (Typescript)
 ```typescript
 import * as fs from 'fs';
 import * as solc from 'solc';
