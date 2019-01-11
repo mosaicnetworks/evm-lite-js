@@ -27,11 +27,14 @@ async function signTransactionLocally() {
 	const transaction = await evmlc.prepareTransfer(to, 2000);
 
 	// Sign transaction and return a new Transaction object
-	const signedTransaction = await transaction.sign(decryptedAccount);
+	await transaction.sign(decryptedAccount);
 
-	return await signedTransaction.submit();
+	// Send transaction to node
+	await transaction.submit()
+
+	return transaction;
 }
 
 signTransactionLocally()
-	.then((txResponse) => console.log(txResponse))
+	.then((transaction) => console.log(transaction.hash))
 	.catch((error) => console.log(error));

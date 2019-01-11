@@ -1,8 +1,8 @@
-const EVMLC = require('evm-lite-lib').EVMLC;
-const DataDirectory = require('evm-lite-lib').DataDirectory;
-const Accounts = require('evm-lite-lib').Account;
-const solc = require('solc');
-const fs = require('fs');
+import * as fs from 'fs';
+import * as solc from 'solc';
+
+import { Account as Accounts, DataDirectory, EVMLC } from 'evm-lite-lib';
+
 
 // Default from address
 const from = '0x1a5c6b111e883d920fd24fee0bafae838958fa05';
@@ -48,7 +48,7 @@ async function deploySmartContract() {
 	// Send deployment transaction
 	await deployTransaction.submit();
 
-	return deployTransaction;
+	return deployTransaction
 }
 
 deploySmartContract()
