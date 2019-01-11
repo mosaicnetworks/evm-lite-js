@@ -43,7 +43,7 @@ async function signTransactionLocally() {
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);
 
-	// Sign transaction and return a new Transaction object
+	// Sign transaction and return the same Transaction object
 	await transaction.sign(account);
 
 	// Send transaction to node
