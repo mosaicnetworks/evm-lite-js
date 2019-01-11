@@ -43,23 +43,26 @@ async function signTransactionLocally() {
 	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the v3JSONKeystore file so expose `sign` function
-	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'asd');
+	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'supersecurepassword');
 
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);
 
 	// Sign transaction and return a new Transaction object
-	const signedTransaction = await transaction.sign(decryptedAccount);
+	await transaction.sign(decryptedAccount);
 
-	return await signedTransaction.submit();
+	// Send transaction to node
+	await transaction.submit()
+
+	return transaction;
 }
 
 signTransactionLocally()
-	.then((txResponse) => console.log(txResponse))
+	.then((transaction) => console.log(transaction.hash))
 	.catch((error) => console.log(error));
 ```
 
-### Contract Abstraction
+### Contract Deployment
 ```javascript
 const EVMLC = require('evm-lite-lib').EVMLC;
 const DataDirectory = require('evm-lite-lib').DataDirectory;
@@ -81,7 +84,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new DataDirectory('[..]/.evmlc');
 
 // Contract Object
-const contractPath = '[..]/CrowdFunding.sol';
+const contractPath = './assets/CrowdFunding.sol';
 const contractFile = fs.readFileSync(contractPath, 'utf8');
 const contractName = ':' + 'CrowdFunding';
 
@@ -90,7 +93,7 @@ const ABI = JSON.parse(output.contracts[contractName].interface);
 
 async function deploySmartContract() {
 
-    // Get account from keystore
+	// Get account from keystore
 	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the account
@@ -106,18 +109,20 @@ async function deploySmartContract() {
 	const deployTransaction = notDeployedContract.deploy({ parameters: [10000] });
 
 	// Sign transaction with decrypted account
-	const signedTransaction = await deployTransaction.sign(decryptedAccount);
+	await deployTransaction.sign(decryptedAccount);
 
 	// Send deployment transaction
-	return await signedTransaction.submit();
+	await deployTransaction.submit();
+
+	return deployTransaction;
 }
 
 deploySmartContract()
-	.then((txResponse) => console.log(txResponse))
+	.then((transaction) => console.log(transaction.hash))
 	.catch((error) => console.log(error));
 ```
 
-#### Typescript
+#### Contract Generation (Typescript)
 ```typescript
 import * as fs from 'fs';
 import * as solc from 'solc';
