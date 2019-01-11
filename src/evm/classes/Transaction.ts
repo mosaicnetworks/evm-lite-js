@@ -53,9 +53,17 @@ export default class Transaction extends TransactionClient {
 	public signedTX?: SignedTransaction;
 	public hash?: string;
 
-	constructor(public tx: TX, host: string, port: number, private constant: boolean,
+	constructor(private tx: TX, host: string, port: number, private constant: boolean,
 				private readonly unpackfn?: (data: string) => any) {
 		super(host, port);
+	}
+
+	public get receipt() {
+		if (this.hash) {
+			return this.getReceipt(this.hash);
+		} else {
+			throw new Error('Transaction hash not found');
+		}
 	}
 
 	public send(options?: OverrideTXOptions): Promise<TXReceipt> {
@@ -84,8 +92,7 @@ export default class Transaction extends TransactionClient {
 			});
 	}
 
-	public submit(options?: OverrideTXOptions): Promise<string> {
-
+	public submit(options?: OverrideTXOptions): Promise<this | string> {
 		this.assignTXValues(options);
 		this.checkGasAndGasPrice();
 
@@ -101,23 +108,23 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
-		return this.sendRaw(this.signedTX.rawTransaction)
-			.then(res =>  res.txHash)
-			.then(hash => this.hash = hash);
+		if (!this.constant) {
+			return this.sendRaw(this.signedTX.rawTransaction)
+				.then(res => res.txHash)
+				.then(hash => {
+					this.hash = hash;
+					return this;
+				});
+		} else {
+			return this.call()
+				.then((response) => response);
+		}
 	}
 
 	public async sign(account: Account): Promise<this> {
 		this.signedTX = await account.signTransaction(this);
 
 		return this;
-	}
-
-	public get receipt() {
-		if (this.hash) {
-			return this.getReceipt(this.hash)
-		} else {
-			throw new Error('Transaction hash not found');
-		}
 	}
 
 	public call(options?: OverrideTXOptions): Promise<string> {
@@ -145,12 +152,26 @@ export default class Transaction extends TransactionClient {
 			});
 	}
 
+	public toJSON(): TX {
+		return this.tx;
+	}
+
 	public toString(): string {
 		return JSONBig.stringify(parseTransaction(this.tx));
 	}
 
 	public from(from: string): this {
 		this.tx.from = new AddressType(from);
+		return this;
+	}
+
+	public nonce(nonce: number): this {
+		this.tx.nonce = nonce;
+		return this;
+	}
+
+	public chainID(chainId: number): this {
+		this.tx.chainId = chainId;
 		return this;
 	}
 

@@ -21,7 +21,7 @@ async function signTransactionLocally() {
 	const keystoreFile = await dataDirectory.keystore.get(from);
 
 	// Decrypt the v3JSONKeystore file so expose `sign` function
-	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'asd');
+	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'supersecurepassword');
 
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);

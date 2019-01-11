@@ -18,7 +18,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new DataDirectory('[..]/.evmlc');
 
 // Contract Object
-const contractPath = '[..]/CrowdFunding.sol';
+const contractPath = './assets/CrowdFunding.sol';
 const contractFile = fs.readFileSync(contractPath, 'utf8');
 const contractName = ':' + 'CrowdFunding';
 

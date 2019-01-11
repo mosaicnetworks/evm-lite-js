@@ -38,20 +38,23 @@ export interface SignedTransaction {
     rawTransaction: string;
 }
 export default class Transaction extends TransactionClient {
-    tx: TX;
+    private tx;
     private constant;
     private readonly unpackfn?;
     txReceipt?: TXReceipt;
     signedTX?: SignedTransaction;
     hash?: string;
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
-    send(options?: OverrideTXOptions): Promise<TXReceipt>;
-    submit(options?: OverrideTXOptions): Promise<string>;
-    sign(account: Account): Promise<this>;
     readonly receipt: Promise<Readonly<TXReceipt>>;
+    send(options?: OverrideTXOptions): Promise<TXReceipt>;
+    submit(options?: OverrideTXOptions): Promise<this | string>;
+    sign(account: Account): Promise<this>;
     call(options?: OverrideTXOptions): Promise<string>;
+    toJSON(): TX;
     toString(): string;
     from(from: string): this;
+    nonce(nonce: number): this;
+    chainID(chainId: number): this;
     to(to: string): this;
     value(value: Value): this;
     gas(gas: Gas): this;

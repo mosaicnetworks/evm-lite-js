@@ -60,6 +60,18 @@ var Transaction = /** @class */ (function (_super) {
         _this.unpackfn = unpackfn;
         return _this;
     }
+    Object.defineProperty(Transaction.prototype, "receipt", {
+        get: function () {
+            if (this.hash) {
+                return this.getReceipt(this.hash);
+            }
+            else {
+                throw new Error('Transaction hash not found');
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Transaction.prototype.send = function (options) {
         var _this = this;
         this.assignTXValues(options);
@@ -96,9 +108,18 @@ var Transaction = /** @class */ (function (_super) {
         if (!this.tx.data && !this.tx.value) {
             throw new Error('Transaction does have a value to send.');
         }
-        return this.sendRaw(this.signedTX.rawTransaction)
-            .then(function (res) { return res.txHash; })
-            .then(function (hash) { return _this.hash = hash; });
+        if (!this.constant) {
+            return this.sendRaw(this.signedTX.rawTransaction)
+                .then(function (res) { return res.txHash; })
+                .then(function (hash) {
+                _this.hash = hash;
+                return _this;
+            });
+        }
+        else {
+            return this.call()
+                .then(function (response) { return response; });
+        }
     };
     Transaction.prototype.sign = function (account) {
         return __awaiter(this, void 0, void 0, function () {
@@ -115,18 +136,6 @@ var Transaction = /** @class */ (function (_super) {
             });
         });
     };
-    Object.defineProperty(Transaction.prototype, "receipt", {
-        get: function () {
-            if (this.hash) {
-                return this.getReceipt(this.hash);
-            }
-            else {
-                throw new Error('Transaction hash not found');
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
     Transaction.prototype.call = function (options) {
         var _this = this;
         this.assignTXValues(options);
@@ -148,11 +157,22 @@ var Transaction = /** @class */ (function (_super) {
             return _this.unpackfn(Buffer.from(obj.data).toString());
         });
     };
+    Transaction.prototype.toJSON = function () {
+        return this.tx;
+    };
     Transaction.prototype.toString = function () {
         return JSONBig.stringify(types_1.parseTransaction(this.tx));
     };
     Transaction.prototype.from = function (from) {
         this.tx.from = new types_1.AddressType(from);
+        return this;
+    };
+    Transaction.prototype.nonce = function (nonce) {
+        this.tx.nonce = nonce;
+        return this;
+    };
+    Transaction.prototype.chainID = function (chainId) {
+        this.tx.chainId = chainId;
         return this;
     };
     Transaction.prototype.to = function (to) {

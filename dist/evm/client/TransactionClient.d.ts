@@ -11,13 +11,13 @@ export interface TXReceipt {
     logsBloom: string;
     status: number;
 }
-export interface SentRawTXResponse {
+export interface RawTXSubmitResponse {
     txHash: string;
 }
 export default class TransactionClient extends BaseClient {
     constructor(host: string, port: number);
-    callTX(tx: string): Promise<Readonly<string>>;
-    sendTX(tx: string): Promise<Readonly<string>>;
-    sendRaw(tx: string): Promise<SentRawTXResponse>;
-    getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
+    protected callTX(tx: string): Promise<Readonly<string>>;
+    protected sendTX(tx: string): Promise<Readonly<string>>;
+    protected sendRaw(tx: string): Promise<Readonly<RawTXSubmitResponse>>;
+    protected getReceipt(txHash: string): Promise<Readonly<TXReceipt>>;
 }

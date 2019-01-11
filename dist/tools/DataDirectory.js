@@ -9,7 +9,11 @@ var DataDirectory = /** @class */ (function () {
         this.path = path;
         Static_1.default.createDirectoryIfNotExists(path);
         this.config = new Config_1.default(this.path, 'config.toml');
-        this.keystore = new Keystore_1.default(this.path, 'keystore');
+        var keystorePath = this.config.data.storage.keystore;
+        var list = keystorePath.split('/');
+        var name = list.pop() || 'keystore';
+        var keystoreParentDirectory = list.join('/');
+        this.keystore = new Keystore_1.default(keystoreParentDirectory, name);
         this.database = new Database_1.default(this.path, 'db.json');
     }
     DataDirectory.prototype.newKeystore = function (dataDirectory, name) {

@@ -43,11 +43,19 @@ export default class Account {
 
 	public signTransaction(tx: TX | Transaction): Promise<SignedTransaction> {
 		if (tx instanceof Transaction) {
-			tx.tx.nonce = tx.tx.nonce || this.nonce;
-			tx.tx.chainId = tx.tx.chainId || 1;
+			const transaction = tx.toJSON();
 
-			return this.account.signTransaction(parseTransaction(tx.tx));
+			if (!transaction.nonce) {
+				tx.nonce(this.nonce);
+			}
+
+			if (!transaction.chainId) {
+				tx.chainID(transaction.chainId || 1);
+			}
+
+			return this.account.signTransaction(parseTransaction(tx.toJSON()));
 		}
+
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 
