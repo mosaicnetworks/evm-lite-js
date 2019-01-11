@@ -7,6 +7,7 @@ import * as errors from '../utils/errors';
 import { ABI, TXReceipt } from '../..';
 import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../types';
 
+import Account from './Account';
 import SolidityFunction from './SolidityFunction';
 import Transaction from './Transaction';
 
@@ -21,13 +22,13 @@ export interface ContractOptions {
 	jsonInterface: ABI[];
 }
 
-export interface BaseContractFunctionSchema {
+export interface BaseContractSchema {
 	[key: string]: (...args: any[]) => Transaction;
 }
 
-export default class SolidityContract<ContractFunctionSchema extends BaseContractFunctionSchema> {
+export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
 
-	public methods: ContractFunctionSchema | BaseContractFunctionSchema;
+	public methods: ContractFunctionSchema | BaseContractSchema;
 	public web3Contract: any;
 	public receipt?: TXReceipt;
 
@@ -40,7 +41,10 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		}
 	}
 
-	public deploy(options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }): Transaction {
+	public async deploy(
+		account: Account,
+		options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }
+	): Promise<this> {
 		if (this.options.address) {
 			throw errors.ContractAddressFieldSetAndDeployed();
 		}
@@ -64,13 +68,22 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 				encodedData = encodedData + this.encodeConstructorParams(options.parameters);
 			}
 
-			return new Transaction({
+			const transaction = new Transaction({
 				from: this.options.from,
 				data: encodedData,
 				gas: this.options.gas,
 				gasPrice: this.options.gasPrice,
 				nonce: this.options.nonce
-			}, this.host, this.port, false).gas(this.options.gas).gasPrice(this.options.gasPrice);
+			}, this.host, this.port, false)
+				.gas(this.options.gas)
+				.gasPrice(this.options.gasPrice);
+
+			await transaction.sign(account);
+			await transaction.submit();
+
+			const receipt = await transaction.receipt;
+
+			return this.setAddressAndPopulate(receipt.contractAddress);
 		} else {
 			throw errors.InvalidDataFieldInOptions();
 		}
@@ -109,11 +122,11 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 
 	private attachMethodsToContract(): void {
 		if (!this.options.address) {
-			throw new Error('Cannot attach function');
+			throw new Error('Cannot attach functions. No contract address set.');
 		}
-		this.options.jsonInterface.filter((json) => {
-			return json.type === 'function';
-		})
+
+		this.options.jsonInterface
+			.filter((json) => json.type === 'function')
 			.map((funcJSON: ABI) => {
 				if (!this.options.address) {
 					throw new Error('Cannot attach function');
@@ -130,17 +143,11 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	private encodeConstructorParams(params: any[]): any {
-		return this.options.jsonInterface.filter((json) => {
-			return json.type === 'constructor' && json.inputs.length === params.length;
-		})
-			.map((json) => {
-				return json.inputs.map((input) => {
-					return input.type;
-				});
-			})
-			.map((types) => {
-				return coder.encodeParams(types, params);
-			})[0] || '';
+		return this.options.jsonInterface.filter((json) =>
+			json.type === 'constructor' && json.inputs.length === params.length
+		)
+			.map((json) => json.inputs.map((input) => input.type))
+			.map((types) => coder.encodeParams(types, params))[0] || '';
 	}
 
 }

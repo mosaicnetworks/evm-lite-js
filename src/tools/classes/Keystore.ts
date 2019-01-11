@@ -18,6 +18,12 @@ export default class Keystore {
 		Static.createDirectoryIfNotExists(this.path);
 	}
 
+	public async decrypt(address: string, password: string): Promise<Account> {
+		const keystore = await this.get(address.toLowerCase());
+
+		return await Account.decrypt(keystore, password);;
+	}
+
 	public create(password: string, output?: string): Promise<string> {
 		return new Promise<string>((resolve) => {
 			const account = new Account();

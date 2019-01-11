@@ -3,7 +3,7 @@ import { ABI } from './utils/Interfaces';
 
 import Transaction, { BaseTX } from './classes/Transaction';
 
-import SolidityContract, { BaseContractFunctionSchema } from './classes/SolidityContract';
+import SolidityContract, { BaseContractSchema } from './classes/SolidityContract';
 import DefaultClient from './client/DefaultClient';
 
 
@@ -56,7 +56,7 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	public generateContractFromABI<ContractSchema extends BaseContractFunctionSchema>(abi: ABI[], data?: string):
+	public generateContractFromABI<ContractSchema extends BaseContractSchema>(abi: ABI[], data?: string):
 		Promise<SolidityContract<ContractSchema>> {
 
 		this.requireAddress();

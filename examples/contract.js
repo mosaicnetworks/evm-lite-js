@@ -1,6 +1,6 @@
 const EVMLC = require('evm-lite-lib').EVMLC;
 const DataDirectory = require('evm-lite-lib').DataDirectory;
-const Accounts = require('evm-lite-lib').Account;
+
 const solc = require('solc');
 const fs = require('fs');
 
@@ -25,32 +25,19 @@ const contractName = ':' + 'CrowdFunding';
 const output = solc.compile(contractFile, 1);
 const ABI = JSON.parse(output.contracts[contractName].interface);
 
-async function deploySmartContract() {
+const generateContract = async () => {
+	// Get keystore and decrypt
+	const account = await dataDirectory.keystore.decrypt(from, 'password');
 
-	// Get account from keystore
-	const keystoreFile = await dataDirectory.keystore.get(from);
+	// Generate contract object with ABI and data
+	const contract = await evmlc.generateContractFromABI(ABI, data);
 
-	// Decrypt the account
-	const decryptedAccount = Accounts.decrypt(keystoreFile, 'supersecurepassword');
+	// Deploy and return contract with functions populated
+	return await contract.deploy(account, {
+		parameters: [100000]
+	});
+};
 
-	// Bytecode of compiled account
-	const byteCode = output.contracts[contractName].bytecode;
-
-	// Generate contract to deploy later
-	const notDeployedContract = (await evmlc.generateContractFromABI(ABI)).data(byteCode);
-
-	// Generate deployment transaction
-	const deployTransaction = notDeployedContract.deploy({ parameters: [10000] });
-
-	// Sign transaction with decrypted account
-	await deployTransaction.sign(decryptedAccount);
-
-	// Send deployment transaction
-	await deployTransaction.submit();
-
-	return deployTransaction;
-}
-
-deploySmartContract()
-	.then((transaction) => console.log(transaction.hash))
+generateContract()
+	.then((contract) => console.log(contract.methods))
 	.catch((error) => console.log(error));

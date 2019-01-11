@@ -1,5 +1,6 @@
 import { ABI, TXReceipt } from '../..';
 import { Address, Data, Gas, GasPrice, Nonce } from '../types';
+import Account from './Account';
 import Transaction from './Transaction';
 export interface ContractOptions {
     gas: Gas;
@@ -10,23 +11,23 @@ export interface ContractOptions {
     data?: Data;
     jsonInterface: ABI[];
 }
-export interface BaseContractFunctionSchema {
+export interface BaseContractSchema {
     [key: string]: (...args: any[]) => Transaction;
 }
-export default class SolidityContract<ContractFunctionSchema extends BaseContractFunctionSchema> {
+export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
     options: ContractOptions;
     private host;
     private port;
-    methods: ContractFunctionSchema | BaseContractFunctionSchema;
+    methods: ContractFunctionSchema | BaseContractSchema;
     web3Contract: any;
     receipt?: TXReceipt;
     constructor(options: ContractOptions, host: string, port: number);
-    deploy(options?: {
+    deploy(account: Account, options?: {
         parameters?: any[];
         gas?: Gas;
         gasPrice?: GasPrice;
         data?: Data;
-    }): Transaction;
+    }): Promise<this>;
     setAddressAndPopulate(address: string): this;
     address(address: string): this;
     gas(gas: Gas): this;

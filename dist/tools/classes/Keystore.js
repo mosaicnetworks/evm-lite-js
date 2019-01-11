@@ -47,6 +47,20 @@ var Keystore = /** @class */ (function () {
         this.path = path.join(directory, name);
         Static_1.default.createDirectoryIfNotExists(this.path);
     }
+    Keystore.prototype.decrypt = function (address, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var keystore;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.get(address.toLowerCase())];
+                    case 1:
+                        keystore = _a.sent();
+                        return [4 /*yield*/, __1.Account.decrypt(keystore, password)];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     Keystore.prototype.create = function (password, output) {
         var _this = this;
         return new Promise(function (resolve) {

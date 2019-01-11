@@ -15,19 +15,14 @@ const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new evmlib.DataDirectory('[..]/.evmlc');
 
 async function signTransactionLocally() {
-
-	// Get keystore object from the keystore directory
-	// For the from address so we can decrypt and sign
-	const keystoreFile = await dataDirectory.keystore.get(from);
-
-	// Decrypt the v3JSONKeystore file so expose `sign` function
-	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'supersecurepassword');
+	// Get keystore object from the keystore directory and decrypt
+	const account = await dataDirectory.keystore.decrypt(from, 'password');
 
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);
 
 	// Sign transaction and return a new Transaction object
-	await transaction.sign(decryptedAccount);
+	await transaction.sign(account);
 
 	// Send transaction to node
 	await transaction.submit()

@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { BaseContractFunctionSchema, EVMLC, Transaction } from '../src';
+import { Account, BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
 
 // Contract function schema
-interface CrowdFundingSchema extends BaseContractFunctionSchema {
+interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Transaction;
 	checkGoalReached: () => Transaction;
 	settle: () => Transaction;
@@ -18,7 +18,7 @@ const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
 
 // Default from address
-const from = '0x0f22af88f03ab6633ea8d15dbc90721d2c1dc73f';
+const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
 const defaultOptions = {
 	from,
 	gas: 1000000,
@@ -27,11 +27,18 @@ const defaultOptions = {
 
 // EVMLC controller object
 const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
+const directory = new DataDirectory('/Users/danu/.evmlc');
 
 // Return generated object
 const generateContract = async () => {
-	return await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+	const account = await directory.keystore.decrypt(from, 'asd');
+	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+
+	return contract.deploy(account, {
+		parameters: [100000]
+	});
 };
 
 generateContract()
-	.then((contract) => console.log(contract.options));
+	.then((contract) => console.log(contract.options))
+	.catch((error) => console.log(error))	;

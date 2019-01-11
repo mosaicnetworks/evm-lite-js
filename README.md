@@ -37,19 +37,14 @@ const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new evmlib.DataDirectory('[..]/.evmlc');
 
 async function signTransactionLocally() {
-
-	// Get keystore object from the keystore directory
-	// For the from address so we can decrypt and sign
-	const keystoreFile = await dataDirectory.keystore.get(from);
-
-	// Decrypt the v3JSONKeystore file so expose `sign` function
-	const decryptedAccount = evmlib.Account.decrypt(keystoreFile, 'supersecurepassword');
+	// Get keystore object from the keystore directory and decrypt
+	const account = await dataDirectory.keystore.decrypt(from, 'password');
 
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);
 
 	// Sign transaction and return a new Transaction object
-	await transaction.sign(decryptedAccount);
+	await transaction.sign(account);
 
 	// Send transaction to node
 	await transaction.submit()
@@ -66,7 +61,7 @@ signTransactionLocally()
 ```javascript
 const EVMLC = require('evm-lite-lib').EVMLC;
 const DataDirectory = require('evm-lite-lib').DataDirectory;
-const Accounts = require('evm-lite-lib').Account;
+
 const solc = require('solc');
 const fs = require('fs');
 
@@ -91,46 +86,33 @@ const contractName = ':' + 'CrowdFunding';
 const output = solc.compile(contractFile, 1);
 const ABI = JSON.parse(output.contracts[contractName].interface);
 
-async function deploySmartContract() {
+const generateContract = async () => {
+	// Get keystore and decrypt
+	const account = await dataDirectory.keystore.decrypt(from, 'password');
 
-	// Get account from keystore
-	const keystoreFile = await dataDirectory.keystore.get(from);
+	// Generate contract object with ABI and data
+	const contract = await evmlc.generateContractFromABI(ABI, data);
 
-	// Decrypt the account
-	const decryptedAccount = Accounts.decrypt(keystoreFile, 'supersecurepassword');
+	// Deploy and return contract with functions populated
+	return await contract.deploy(account, {
+		parameters: [100000]
+	});
+};
 
-	// Bytecode of compiled account
-	const byteCode = output.contracts[contractName].bytecode;
-
-	// Generate contract to deploy later
-	const notDeployedContract = (await evmlc.generateContractFromABI(ABI)).data(byteCode);
-
-	// Generate deployment transaction
-	const deployTransaction = notDeployedContract.deploy({ parameters: [10000] });
-
-	// Sign transaction with decrypted account
-	await deployTransaction.sign(decryptedAccount);
-
-	// Send deployment transaction
-	await deployTransaction.submit();
-
-	return deployTransaction;
-}
-
-deploySmartContract()
-	.then((transaction) => console.log(transaction.hash))
+generateContract()
+	.then((contract) => console.log(contract.methods))
 	.catch((error) => console.log(error));
 ```
 
-#### Contract Generation (Typescript)
+### Contract Generation (Typescript)
 ```typescript
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { BaseContractFunctionSchema, EVMLC, Transaction } from '../src';
+import { Account, BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
 
 // Contract function schema
-interface CrowdFundingSchema extends BaseContractFunctionSchema {
+interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Transaction;
 	checkGoalReached: () => Transaction;
 	settle: () => Transaction;
@@ -144,7 +126,7 @@ const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
 
 // Default from address
-const from = '0x0f22af88f03ab6633ea8d15dbc90721d2c1dc73f';
+const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
 const defaultOptions = {
 	from,
 	gas: 1000000,
@@ -153,12 +135,20 @@ const defaultOptions = {
 
 // EVMLC controller object
 const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
+const directory = new DataDirectory('/Users/danu/.evmlc');
 
 // Return generated object
 const generateContract = async () => {
-  return await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+	const account = await directory.keystore.decrypt(from, 'asd');
+	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+
+	return contract.deploy(account, {
+		parameters: [100000]
+	});
 };
 
 generateContract()
-	.then((contract) => console.log(contract.options));
+	.then((contract) => console.log(contract.options))
+	.catch((error) => console.log(error))	;
+
 ```
