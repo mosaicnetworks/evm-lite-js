@@ -12,6 +12,12 @@ import SolidityFunction from './SolidityFunction';
 import Transaction from './Transaction';
 
 
+interface OverrideContractDeployParameters {
+	gas?: Gas,
+	gasPrice?: GasPrice,
+	data?: Data
+}
+
 export interface ContractOptions {
 	gas: Gas;
 	gasPrice: GasPrice;
@@ -41,17 +47,14 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		}
 	}
 
-	public async deploy(
-		account: Account,
-		options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }
-	): Promise<this> {
+	public async deploy(account: Account, params?: any[], options?: OverrideContractDeployParameters): Promise<this> {
 		if (this.options.address) {
 			throw errors.ContractAddressFieldSetAndDeployed();
 		}
 
 		this.options.jsonInterface.filter((abi: ABI) => {
-			if (abi.type === 'constructor' && (options && options.parameters)) {
-				checks.requireArgsLength(abi.inputs.length, options.parameters.length);
+			if (abi.type === 'constructor' && (params)) {
+				checks.requireArgsLength(abi.inputs.length, params.length);
 			}
 		});
 
@@ -64,8 +67,8 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		if (this.options.data) {
 			let encodedData = this.options.data;
 
-			if (options && options.parameters) {
-				encodedData = encodedData + this.encodeConstructorParams(options.parameters);
+			if (params) {
+				encodedData = encodedData + this.encodeConstructorParams(params);
 			}
 
 			const transaction = new Transaction({

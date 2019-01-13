@@ -53,7 +53,7 @@ var SolidityContract = /** @class */ (function () {
             this.attachMethodsToContract();
         }
     }
-    SolidityContract.prototype.deploy = function (account, options) {
+    SolidityContract.prototype.deploy = function (account, params, options) {
         return __awaiter(this, void 0, void 0, function () {
             var encodedData, transaction, receipt;
             return __generator(this, function (_a) {
@@ -63,8 +63,8 @@ var SolidityContract = /** @class */ (function () {
                             throw errors.ContractAddressFieldSetAndDeployed();
                         }
                         this.options.jsonInterface.filter(function (abi) {
-                            if (abi.type === 'constructor' && (options && options.parameters)) {
-                                checks.requireArgsLength(abi.inputs.length, options.parameters.length);
+                            if (abi.type === 'constructor' && (params)) {
+                                checks.requireArgsLength(abi.inputs.length, params.length);
                             }
                         });
                         if (options) {
@@ -74,8 +74,8 @@ var SolidityContract = /** @class */ (function () {
                         }
                         if (!this.options.data) return [3 /*break*/, 4];
                         encodedData = this.options.data;
-                        if (options && options.parameters) {
-                            encodedData = encodedData + this.encodeConstructorParams(options.parameters);
+                        if (params) {
+                            encodedData = encodedData + this.encodeConstructorParams(params);
                         }
                         transaction = new Transaction_1.default({
                             from: this.options.from,

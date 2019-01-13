@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { Account, BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
+import { BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
 
 // Contract function schema
 interface CrowdFundingSchema extends BaseContractSchema {
@@ -34,11 +34,9 @@ const generateContract = async () => {
 	const account = await directory.keystore.decrypt(from, 'asd');
 	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
 
-	return contract.deploy(account, {
-		parameters: [100000]
-	});
+	return contract.deploy(account, [1000]);
 };
 
 generateContract()
 	.then((contract) => console.log(contract.options))
-	.catch((error) => console.log(error))	;
+	.catch((error) => console.log(error));

@@ -5,6 +5,23 @@ var Keystore_1 = require("./classes/Keystore");
 var Static_1 = require("./classes/Static");
 var Database_1 = require("./database/Database");
 var DataDirectory = /** @class */ (function () {
+    /**
+     * Data directory controller class
+     *
+     * @description
+     * A data directory is a folder which contains the 'keystore', 'db.json' and the 'config.toml' file for the client
+     * sided tools for EVM-Lite. The default directory structure is:
+     *
+     * + Data Directory
+     *     + keystore
+     *     - db.json
+     *     - config.toml
+     *
+     * If the directory does not exist it will be created along with all required files. The keystore directory is
+     * relative to the 'config.toml' file.
+     *
+     * @param path - The relative or absolute path for the data directory.
+     */
     function DataDirectory(path) {
         this.path = path;
         Static_1.default.createDirectoryIfNotExists(path);
