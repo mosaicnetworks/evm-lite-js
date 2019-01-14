@@ -24,6 +24,7 @@ const contractName = ':' + 'CrowdFunding';
 
 const output = solc.compile(contractFile, 1);
 const ABI = JSON.parse(output.contracts[contractName].interface);
+const data = output.contracts[contractName].bytecode;
 
 const generateContract = async () => {
 	// Get keystore and decrypt
