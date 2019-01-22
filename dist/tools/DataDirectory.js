@@ -26,11 +26,8 @@ var DataDirectory = /** @class */ (function () {
         this.path = path;
         Static_1.default.createDirectoryIfNotExists(path);
         this.config = new Config_1.default(this.path, 'config.toml');
-        var keystorePath = this.config.data.storage.keystore;
-        var list = keystorePath.split('/');
-        var name = list.pop() || 'keystore';
-        var keystoreParentDirectory = list.join('/');
-        this.keystore = new Keystore_1.default(keystoreParentDirectory, name);
+        var keys = Static_1.default.getParentAndName(this.config.data.storage.keystore);
+        this.keystore = new Keystore_1.default(keys.parent, keys.name);
         this.database = new Database_1.default(this.path, 'db.json');
     }
     DataDirectory.prototype.newKeystore = function (dataDirectory, name) {

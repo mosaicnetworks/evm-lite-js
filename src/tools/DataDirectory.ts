@@ -32,12 +32,9 @@ export default class DataDirectory {
 
 		this.config = new Config(this.path, 'config.toml');
 
-		const keystorePath = this.config.data.storage.keystore;
-		const list = keystorePath.split('/');
-		const name = list.pop() || 'keystore';
-		const keystoreParentDirectory = list.join('/');
+		const keys = Static.getParentAndName(this.config.data.storage.keystore);
 
-		this.keystore = new Keystore(keystoreParentDirectory, name);
+		this.keystore = new Keystore(keys.parent, keys.name);
 		this.database = new Database(this.path, 'db.json');
 	}
 

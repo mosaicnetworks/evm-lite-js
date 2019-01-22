@@ -1,11 +1,10 @@
 import * as SolFunction from 'web3/lib/web3/function';
 import { ABI } from '../..';
 import { AddressType, EVMType, Gas, GasPrice } from '../types';
+import AccountClient from '../client/AccountClient';
 import Transaction from './Transaction';
-export default class SolidityFunction {
+export default class SolidityFunction extends AccountClient {
     readonly contractAddress: AddressType;
-    private host;
-    private port;
     readonly name: string;
     readonly inputTypes: EVMType[];
     readonly outputTypes: EVMType[];
@@ -17,9 +16,9 @@ export default class SolidityFunction {
         from: AddressType;
         gas: Gas;
         gasPrice: GasPrice;
-    }, ...funcArgs: any[]): Transaction;
+    }, ...funcArgs: any[]): Promise<Transaction>;
     unpackOutput(output: string): any;
-    private _validateArgs;
+    private validateArgs;
     private requireArgsLength;
     private requireSolidityTypes;
 }

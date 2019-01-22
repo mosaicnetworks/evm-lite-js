@@ -17,7 +17,7 @@ export interface ContractOptions {
     jsonInterface: ABI[];
 }
 export interface BaseContractSchema {
-    [key: string]: (...args: any[]) => Transaction;
+    [key: string]: (...args: any[]) => Promise<Transaction>;
 }
 export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
     options: ContractOptions;
@@ -28,7 +28,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
     receipt?: TXReceipt;
     constructor(options: ContractOptions, host: string, port: number);
     deploy(account: Account, params?: any[], options?: OverrideContractDeployParameters): Promise<this>;
-    setAddressAndPopulate(address: string): this;
+    setAddressAndPopulateFunctions(address: string): this;
     address(address: string): this;
     gas(gas: Gas): this;
     gasPrice(gasPrice: GasPrice): this;

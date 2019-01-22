@@ -4,5 +4,9 @@ export default class Static {
     static createDirectoryIfNotExists(path: string): void;
     static cleanAddress(address: string): string;
     static createOrReadFile(path: string, data: string): string;
+    static getParentAndName(path: string): {
+        parent: string;
+        name: string;
+    };
     static isEquivalentObjects(objectA: any, objectB: any): boolean;
 }
