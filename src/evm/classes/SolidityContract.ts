@@ -39,7 +39,6 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	public receipt?: TXReceipt;
 
 	constructor(public options: ContractOptions, private host: string, private port: number) {
-		this.options.address = options.address;
 		this.methods = {};
 
 		if (this.options.address) {

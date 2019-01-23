@@ -100,10 +100,6 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction has not been signed locally yet.');
 		}
 
-		if (this.constant) {
-			throw new Error('Transaction does not mutate state. Use `call()` instead');
-		}
-
 		if (!this.tx.data && !this.tx.value) {
 			throw new Error('Transaction does have a value to send.');
 		}

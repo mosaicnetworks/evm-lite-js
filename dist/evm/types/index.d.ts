@@ -7,7 +7,7 @@ import StringType from './lib/StringType';
 import { TX } from '../classes/Transaction';
 export { AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType };
 export * from './lib/TransactionTypes';
-export declare function parseSolidityTypes(raw: string): AddressType | BooleanType | StringType | ByteType | ArrayType<ByteType> | undefined;
+export declare function parseSolidityTypes(raw: string): AddressType | BooleanType | ByteType | StringType | ArrayType<ByteType> | undefined;
 export declare function parseTransaction(tx: TX): {
     from: string;
     to: string | undefined;

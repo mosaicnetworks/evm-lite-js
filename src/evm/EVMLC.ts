@@ -56,9 +56,12 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	public loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], data?: string):
-		Promise<SolidityContract<ContractSchema>> {
+	public loadContract<ContractSchema extends BaseContractSchema>
+	(abi: ABI[], options?: { data?: string, contractAddress?: string }): Promise<SolidityContract<ContractSchema>> {
 		this.requireAddress();
+
+		const address = options && options.contractAddress ? new AddressType(options.contractAddress) : undefined;
+		const data: string = options && options.data || '';
 
 		return this.getAccount(this.defaultFrom.trim())
 			.then((account) => new SolidityContract<ContractSchema>({
@@ -67,7 +70,8 @@ export default class EVMLC extends DefaultClient {
 				gas: this.defaultTXOptions.gas,
 				gasPrice: this.defaultTXOptions.gasPrice,
 				nonce: account.nonce,
-				data: data || ''
+				address,
+				data
 			}, this.host, this.port));
 	}
 

@@ -58,7 +58,6 @@ var SolidityContract = /** @class */ (function () {
         this.options = options;
         this.host = host;
         this.port = port;
-        this.options.address = options.address;
         this.methods = {};
         if (this.options.address) {
             this.attachMethodsToContract();

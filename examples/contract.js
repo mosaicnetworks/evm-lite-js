@@ -25,20 +25,49 @@ const contractName = ':' + 'CrowdFunding';
 const output = solc.compile(contractFile, 1);
 const ABI = JSON.parse(output.contracts[contractName].interface);
 const data = output.contracts[contractName].bytecode;
+const account = dataDirectory.keystore.decrypt(from, 'password');
 
-const generateContract = async () => {
-	// Get keystore and decrypt
-	const account = await dataDirectory.keystore.decrypt(from, 'password');
-
+const loadContract = async () => {
 	// Generate contract object with ABI and data
-	const contract = await evmlc.generateContractFromABI(ABI, data);
+	const contract = await evmlc.loadContract(ABI, {
+		data
+		// Will generate functions for the deployed contract at the address if set.
+		/* contractAddress: '' */
+	});
 
 	// Deploy and return contract with functions populated
-	return await contract.deploy(account, {
-		parameters: [100000]
+	return await contract.deploy(await account, [10000], {
+		// by default
+		gas: evmlc.defaultGas,
+		gasPrice: evmlc.defaultGasPrice
 	});
 };
 
-generateContract()
-	.then((contract) => console.log(contract.methods))
+loadContract()
+	.then(async (contract) => {
+		const transaction = await contract.methods.contribute();
+
+		transaction.value(200);
+
+		await transaction.sign(await account);
+		await transaction.submit();
+
+		return contract;
+	})
+	.then(async (contract) => {
+		const account = await evmlc.getAccount(contract.options.address.value);
+		console.log(account);
+
+		return contract;
+	})
+	.then(async (contract) => {
+		const transaction = await contract.methods.checkGoalReached();
+
+		await transaction.sign(await account);
+
+		const response = await transaction.submit();
+		console.log(response);
+
+		return contract;
+	})
 	.catch((error) => console.log(error));

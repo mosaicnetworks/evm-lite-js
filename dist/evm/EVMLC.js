@@ -73,9 +73,11 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    EVMLC.prototype.loadContract = function (abi, data) {
+    EVMLC.prototype.loadContract = function (abi, options) {
         var _this = this;
         this.requireAddress();
+        var address = options && options.contractAddress ? new types_1.AddressType(options.contractAddress) : undefined;
+        var data = options && options.data || '';
         return this.getAccount(this.defaultFrom.trim())
             .then(function (account) { return new SolidityContract_1.default({
             from: _this.defaultTXOptions.from,
@@ -83,7 +85,8 @@ var EVMLC = /** @class */ (function (_super) {
             gas: _this.defaultTXOptions.gas,
             gasPrice: _this.defaultTXOptions.gasPrice,
             nonce: account.nonce,
-            data: data || ''
+            address: address,
+            data: data
         }, _this.host, _this.port); });
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {

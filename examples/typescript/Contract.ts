@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
+import { BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../../src';
 
 // Contract function schema
 interface CrowdFundingSchema extends BaseContractSchema {
@@ -12,10 +12,10 @@ interface CrowdFundingSchema extends BaseContractSchema {
 
 // Contract compilation
 const contractName: string = ':CrowdFunding';
-const output = solc.compile(fs.readFileSync('./test/assets/contract.sol', 'utf8'), 1);
+const output = solc.compile(fs.readFileSync('./assets/contract.sol', 'utf8'), 1);
 const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
-
+console.log(ABI)
 // Default from address
 const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
 const defaultOptions = {
@@ -31,15 +31,14 @@ const account = directory.keystore.decrypt(from, 'asd');
 const contractAddress = '0x3d9f3699440744ca2dfce1ff40cd21ff4696d908';
 
 // Return generated object
-const generateContract = async () => {
-	const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, data);
-
-	contract.setAddressAndPopulateFunctions(contractAddress);
-
-	return contract;
+const loadContract = async () => {
+	return await evmlc.loadContract<CrowdFundingSchema>(ABI, {
+		data,
+		contractAddress
+	});
 };
 
-generateContract()
+loadContract()
 	.then(async (contract) => {
 		const transaction = await contract.methods.contribute();
 
@@ -50,6 +49,20 @@ generateContract()
 
 		return contract;
 	})
-	.then((contract) => evmlc.getAccount(contract.options.address!.value))
-	.then((account) => console.log(account))
+	.then(async (contract) => {
+		const account = await evmlc.getAccount(contract.options.address!.value);
+		console.log(account);
+
+		return contract;
+	})
+	.then(async (contract) => {
+		const transaction = await contract.methods.checkGoalReached();
+
+		await transaction.sign(await account);
+
+		const response = await transaction.submit();
+		console.log(response);
+
+		return contract;
+	})
 	.catch((error) => console.log(error));
