@@ -140,12 +140,12 @@ var SolidityContract = /** @class */ (function () {
         }
         this.options.interface
             .filter(function (json) { return json.type === 'function'; })
-            .map(function (funcJSON) {
+            .map(function (funcABI) {
             if (!_this.options.address) {
                 throw new Error('Cannot attach function');
             }
-            var solFunction = new SolidityFunction_1.default(funcJSON, _this.options.address, _this.host, _this.port);
-            _this.methods[funcJSON.name] = solFunction.generateTransaction.bind(solFunction, {
+            var solFunction = new SolidityFunction_1.default(funcABI, _this.options.address, _this.host, _this.port);
+            _this.methods[funcABI.name] = solFunction.generateTransaction.bind(solFunction, {
                 gas: _this.options.gas,
                 gasPrice: _this.options.gasPrice,
                 from: _this.options.from

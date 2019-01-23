@@ -28,16 +28,15 @@ const defaultOptions = {
 const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
 const directory = new DataDirectory('/Users/danu/.evmlc');
 const account = directory.keystore.decrypt(from, 'asd');
+const contractAddress = '0x3d9f3699440744ca2dfce1ff40cd21ff4696d908';
 
 // Return generated object
 const generateContract = async () => {
 	const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, data);
 
-	return contract.deploy(await account, [1000], {
-		gas: 100000,
-		gasPrice: 0,
-		data
-	});
+	contract.setAddressAndPopulateFunctions(contractAddress);
+
+	return contract;
 };
 
 generateContract()
@@ -49,7 +48,8 @@ generateContract()
 		await transaction.sign(await account);
 		await transaction.submit();
 
-		return transaction;
+		return contract;
 	})
-	.then((transaction) => console.log(transaction))
+	.then((contract) => evmlc.getAccount(contract.options.address!.value))
+	.then((account) => console.log(account))
 	.catch((error) => console.log(error));

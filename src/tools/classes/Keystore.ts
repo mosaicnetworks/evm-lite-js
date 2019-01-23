@@ -100,7 +100,7 @@ export default class Keystore {
 		});
 	}
 
-	private fetchBalanceAndNonce(address: string, connection: EVMLC): Promise<BaseAccount> {
+	public fetchBalanceAndNonce(address: string, connection: EVMLC): Promise<BaseAccount> {
 		return new Promise<BaseAccount>(async (resolve) => {
 			const account = await connection.getAccount(address);
 
