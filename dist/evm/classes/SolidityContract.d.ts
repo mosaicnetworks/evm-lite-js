@@ -14,7 +14,7 @@ export interface ContractOptions {
     address?: Address;
     nonce?: Nonce;
     data?: Data;
-    jsonInterface: ABI[];
+    interface: ABI[];
 }
 export interface BaseContractSchema {
     [key: string]: (...args: any[]) => Promise<Transaction>;

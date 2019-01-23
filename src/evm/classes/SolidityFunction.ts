@@ -38,7 +38,7 @@ export default class SolidityFunction extends AccountClient {
 	}
 
 	public async generateTransaction(options: { from: AddressType, gas: Gas, gasPrice: GasPrice },
-							   ...funcArgs: any[]): Promise<Transaction> {
+									 ...funcArgs: any[]): Promise<Transaction> {
 		this.validateArgs(funcArgs);
 
 		const callData = this.solFunction.getData();

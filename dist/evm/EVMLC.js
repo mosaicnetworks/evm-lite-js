@@ -79,7 +79,7 @@ var EVMLC = /** @class */ (function (_super) {
         return this.getAccount(this.defaultFrom.trim())
             .then(function (account) { return new SolidityContract_1.default({
             from: _this.defaultTXOptions.from,
-            jsonInterface: abi,
+            interface: abi,
             gas: _this.defaultTXOptions.gas,
             gasPrice: _this.defaultTXOptions.gasPrice,
             nonce: account.nonce,

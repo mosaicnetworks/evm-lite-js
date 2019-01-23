@@ -25,7 +25,7 @@ export interface ContractOptions {
 	address?: Address;
 	nonce?: Nonce;
 	data?: Data;
-	jsonInterface: ABI[];
+	interface: ABI[];
 }
 
 export interface BaseContractSchema {
@@ -54,7 +54,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 			throw errors.ContractAddressFieldSetAndDeployed();
 		}
 
-		this.options.jsonInterface.filter((abi: ABI) => {
+		this.options.interface.filter((abi: ABI) => {
 			if (abi.type === 'constructor' && (params)) {
 				checks.requireArgsLength(abi.inputs.length, params.length);
 			}
@@ -89,8 +89,9 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	public setAddressAndPopulateFunctions(address: string): this {
-		this.options.address = new AddressType(address);
+		this.address(address);
 		this.attachMethodsToContract();
+
 		return this;
 	}
 
@@ -115,7 +116,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	public JSONInterface(abis: ABI[]): this {
-		this.options.jsonInterface = abis;
+		this.options.interface = abis;
 		return this;
 	}
 
@@ -124,7 +125,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 			throw new Error('Cannot attach functions. No contract address set.');
 		}
 
-		this.options.jsonInterface
+		this.options.interface
 			.filter((json) => json.type === 'function')
 			.map((funcJSON: ABI) => {
 				if (!this.options.address) {
@@ -142,7 +143,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	private encodeConstructorParams(params: any[]): any {
-		return this.options.jsonInterface.filter((json) =>
+		return this.options.interface.filter((json) =>
 			json.type === 'constructor' && json.inputs.length === params.length
 		)
 			.map((json) => json.inputs.map((input) => input.type))

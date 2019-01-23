@@ -74,7 +74,7 @@ var SolidityContract = /** @class */ (function () {
                         if (this.options.address) {
                             throw errors.ContractAddressFieldSetAndDeployed();
                         }
-                        this.options.jsonInterface.filter(function (abi) {
+                        this.options.interface.filter(function (abi) {
                             if (abi.type === 'constructor' && (params)) {
                                 checks.requireArgsLength(abi.inputs.length, params.length);
                             }
@@ -109,7 +109,7 @@ var SolidityContract = /** @class */ (function () {
         });
     };
     SolidityContract.prototype.setAddressAndPopulateFunctions = function (address) {
-        this.options.address = new types_1.AddressType(address);
+        this.address(address);
         this.attachMethodsToContract();
         return this;
     };
@@ -130,7 +130,7 @@ var SolidityContract = /** @class */ (function () {
         return this;
     };
     SolidityContract.prototype.JSONInterface = function (abis) {
-        this.options.jsonInterface = abis;
+        this.options.interface = abis;
         return this;
     };
     SolidityContract.prototype.attachMethodsToContract = function () {
@@ -138,7 +138,7 @@ var SolidityContract = /** @class */ (function () {
         if (!this.options.address) {
             throw new Error('Cannot attach functions. No contract address set.');
         }
-        this.options.jsonInterface
+        this.options.interface
             .filter(function (json) { return json.type === 'function'; })
             .map(function (funcJSON) {
             if (!_this.options.address) {
@@ -153,7 +153,7 @@ var SolidityContract = /** @class */ (function () {
         });
     };
     SolidityContract.prototype.encodeConstructorParams = function (params) {
-        return this.options.jsonInterface.filter(function (json) {
+        return this.options.interface.filter(function (json) {
             return json.type === 'constructor' && json.inputs.length === params.length;
         })
             .map(function (json) { return json.inputs.map(function (input) { return input.type; }); })

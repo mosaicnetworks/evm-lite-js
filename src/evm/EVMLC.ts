@@ -63,7 +63,7 @@ export default class EVMLC extends DefaultClient {
 		return this.getAccount(this.defaultFrom.trim())
 			.then((account) => new SolidityContract<ContractSchema>({
 				from: this.defaultTXOptions.from,
-				jsonInterface: abi,
+				interface: abi,
 				gas: this.defaultTXOptions.gas,
 				gasPrice: this.defaultTXOptions.gasPrice,
 				nonce: account.nonce,
