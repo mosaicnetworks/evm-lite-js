@@ -56,19 +56,18 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	public generateContractFromABI<ContractSchema extends BaseContractSchema>(abi: ABI[], data?: string):
+	public loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], data?: string):
 		Promise<SolidityContract<ContractSchema>> {
-
 		this.requireAddress();
 
 		return this.getAccount(this.defaultFrom.trim())
 			.then((account) => new SolidityContract<ContractSchema>({
 				from: this.defaultTXOptions.from,
-				jsonInterface: abi,
+				interface: abi,
 				gas: this.defaultTXOptions.gas,
 				gasPrice: this.defaultTXOptions.gasPrice,
 				nonce: account.nonce,
-				data: data || '',
+				data: data || ''
 			}, this.host, this.port));
 	}
 
@@ -76,15 +75,15 @@ export default class EVMLC extends DefaultClient {
 		const fromObject = new AddressType((from || this.defaultFrom).trim());
 
 		if (!fromObject.value) {
-			throw new Error('Default from address cannot be left blank or empty!');
+			throw new Error('Default `from` address cannot be left blank or empty.');
 		}
 
 		if (!to) {
-			throw new Error('Must provide a to address!');
+			throw new Error('Must provide a `to` address!');
 		}
 
 		if (value <= 0) {
-			throw new Error('A transfer of funds must have a value greater than 0.');
+			throw new Error('A transfer of funds must have a `value` greater than 0.');
 		}
 
 		return this.getAccount(fromObject.value)

@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -53,35 +64,31 @@ var SolidityContract = /** @class */ (function () {
             this.attachMethodsToContract();
         }
     }
-    SolidityContract.prototype.deploy = function (account, options) {
+    SolidityContract.prototype.deploy = function (account, params, options) {
         return __awaiter(this, void 0, void 0, function () {
-            var encodedData, transaction, receipt;
+            var data, transaction, receipt;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        options = __assign({}, options);
                         if (this.options.address) {
                             throw errors.ContractAddressFieldSetAndDeployed();
                         }
-                        this.options.jsonInterface.filter(function (abi) {
-                            if (abi.type === 'constructor' && (options && options.parameters)) {
-                                checks.requireArgsLength(abi.inputs.length, options.parameters.length);
+                        this.options.interface.filter(function (abi) {
+                            if (abi.type === 'constructor' && (params)) {
+                                checks.requireArgsLength(abi.inputs.length, params.length);
                             }
                         });
-                        if (options) {
-                            this.options.data = options.data || this.options.data;
-                            this.options.gas = options.gas || this.options.gas;
-                            this.options.gasPrice = options.gasPrice || this.options.gasPrice;
-                        }
-                        if (!this.options.data) return [3 /*break*/, 4];
-                        encodedData = this.options.data;
-                        if (options && options.parameters) {
-                            encodedData = encodedData + this.encodeConstructorParams(options.parameters);
+                        if (!(this.options.data || options.data)) return [3 /*break*/, 4];
+                        data = options.data || this.options.data;
+                        if (params) {
+                            data = data + this.encodeConstructorParams(params);
                         }
                         transaction = new Transaction_1.default({
                             from: this.options.from,
-                            data: encodedData,
-                            gas: this.options.gas,
-                            gasPrice: this.options.gasPrice,
+                            data: data,
+                            gas: options.gas || this.options.gas,
+                            gasPrice: options.gasPrice || this.options.gasPrice,
                             nonce: this.options.nonce
                         }, this.host, this.port, false)
                             .gas(this.options.gas)
@@ -95,14 +102,14 @@ var SolidityContract = /** @class */ (function () {
                         return [4 /*yield*/, transaction.receipt];
                     case 3:
                         receipt = _a.sent();
-                        return [2 /*return*/, this.setAddressAndPopulate(receipt.contractAddress)];
+                        return [2 /*return*/, this.setAddressAndPopulateFunctions(receipt.contractAddress)];
                     case 4: throw errors.InvalidDataFieldInOptions();
                 }
             });
         });
     };
-    SolidityContract.prototype.setAddressAndPopulate = function (address) {
-        this.options.address = new types_1.AddressType(address);
+    SolidityContract.prototype.setAddressAndPopulateFunctions = function (address) {
+        this.address(address);
         this.attachMethodsToContract();
         return this;
     };
@@ -123,7 +130,7 @@ var SolidityContract = /** @class */ (function () {
         return this;
     };
     SolidityContract.prototype.JSONInterface = function (abis) {
-        this.options.jsonInterface = abis;
+        this.options.interface = abis;
         return this;
     };
     SolidityContract.prototype.attachMethodsToContract = function () {
@@ -131,7 +138,7 @@ var SolidityContract = /** @class */ (function () {
         if (!this.options.address) {
             throw new Error('Cannot attach functions. No contract address set.');
         }
-        this.options.jsonInterface
+        this.options.interface
             .filter(function (json) { return json.type === 'function'; })
             .map(function (funcJSON) {
             if (!_this.options.address) {
@@ -146,7 +153,7 @@ var SolidityContract = /** @class */ (function () {
         });
     };
     SolidityContract.prototype.encodeConstructorParams = function (params) {
-        return this.options.jsonInterface.filter(function (json) {
+        return this.options.interface.filter(function (json) {
             return json.type === 'constructor' && json.inputs.length === params.length;
         })
             .map(function (json) { return json.inputs.map(function (input) { return input.type; }); })

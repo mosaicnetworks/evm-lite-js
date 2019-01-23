@@ -30,6 +30,15 @@ var Static = /** @class */ (function () {
         }
         return fs.readFileSync(path, 'utf8');
     };
+    Static.getParentAndName = function (path) {
+        var list = path.split('/');
+        var name = list.pop() || 'keystore';
+        var parent = list.join('/');
+        return {
+            parent: parent,
+            name: name,
+        };
+    };
     Static.isEquivalentObjects = function (objectA, objectB) {
         var aProps = Object.getOwnPropertyNames(objectA);
         var bProps = Object.getOwnPropertyNames(objectB);

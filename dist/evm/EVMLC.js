@@ -73,30 +73,30 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    EVMLC.prototype.generateContractFromABI = function (abi, data) {
+    EVMLC.prototype.loadContract = function (abi, data) {
         var _this = this;
         this.requireAddress();
         return this.getAccount(this.defaultFrom.trim())
             .then(function (account) { return new SolidityContract_1.default({
             from: _this.defaultTXOptions.from,
-            jsonInterface: abi,
+            interface: abi,
             gas: _this.defaultTXOptions.gas,
             gasPrice: _this.defaultTXOptions.gasPrice,
             nonce: account.nonce,
-            data: data || '',
+            data: data || ''
         }, _this.host, _this.port); });
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {
         var _this = this;
         var fromObject = new types_1.AddressType((from || this.defaultFrom).trim());
         if (!fromObject.value) {
-            throw new Error('Default from address cannot be left blank or empty!');
+            throw new Error('Default `from` address cannot be left blank or empty.');
         }
         if (!to) {
-            throw new Error('Must provide a to address!');
+            throw new Error('Must provide a `to` address!');
         }
         if (value <= 0) {
-            throw new Error('A transfer of funds must have a value greater than 0.');
+            throw new Error('A transfer of funds must have a `value` greater than 0.');
         }
         return this.getAccount(fromObject.value)
             .then(function (account) { return new Transaction_1.default({

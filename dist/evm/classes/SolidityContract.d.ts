@@ -2,6 +2,11 @@ import { ABI, TXReceipt } from '../..';
 import { Address, Data, Gas, GasPrice, Nonce } from '../types';
 import Account from './Account';
 import Transaction from './Transaction';
+interface OverrideContractDeployParameters {
+    gas?: Gas;
+    gasPrice?: GasPrice;
+    data?: Data;
+}
 export interface ContractOptions {
     gas: Gas;
     gasPrice: GasPrice;
@@ -9,10 +14,10 @@ export interface ContractOptions {
     address?: Address;
     nonce?: Nonce;
     data?: Data;
-    jsonInterface: ABI[];
+    interface: ABI[];
 }
 export interface BaseContractSchema {
-    [key: string]: (...args: any[]) => Transaction;
+    [key: string]: (...args: any[]) => Promise<Transaction>;
 }
 export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
     options: ContractOptions;
@@ -22,13 +27,8 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
     web3Contract: any;
     receipt?: TXReceipt;
     constructor(options: ContractOptions, host: string, port: number);
-    deploy(account: Account, options?: {
-        parameters?: any[];
-        gas?: Gas;
-        gasPrice?: GasPrice;
-        data?: Data;
-    }): Promise<this>;
-    setAddressAndPopulate(address: string): this;
+    deploy(account: Account, params?: any[], options?: OverrideContractDeployParameters): Promise<this>;
+    setAddressAndPopulateFunctions(address: string): this;
     address(address: string): this;
     gas(gas: Gas): this;
     gasPrice(gasPrice: GasPrice): this;
@@ -37,3 +37,4 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
     private attachMethodsToContract;
     private encodeConstructorParams;
 }
+export {};

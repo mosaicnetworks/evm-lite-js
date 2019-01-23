@@ -1,14 +1,13 @@
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { Account, BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
+import { BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
 
 // Contract function schema
 interface CrowdFundingSchema extends BaseContractSchema {
-	contribute: () => Transaction;
-	checkGoalReached: () => Transaction;
-	settle: () => Transaction;
-	otherFunction: (address: string, data: number) => Transaction;
+	contribute: () => Promise<Transaction>;
+	checkGoalReached: () => Promise<Transaction>;
+	settle: () => Promise<Transaction>;
 }
 
 // Contract compilation
@@ -28,17 +27,29 @@ const defaultOptions = {
 // EVMLC controller object
 const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
 const directory = new DataDirectory('/Users/danu/.evmlc');
+const account = directory.keystore.decrypt(from, 'asd');
 
 // Return generated object
 const generateContract = async () => {
-	const account = await directory.keystore.decrypt(from, 'asd');
-	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+	const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, data);
 
-	return contract.deploy(account, {
-		parameters: [100000]
+	return contract.deploy(await account, [1000], {
+		gas: 100000,
+		gasPrice: 0,
+		data
 	});
 };
 
 generateContract()
-	.then((contract) => console.log(contract.options))
-	.catch((error) => console.log(error))	;
+	.then(async (contract) => {
+		const transaction = await contract.methods.contribute();
+
+		transaction.value(200);
+
+		await transaction.sign(await account);
+		await transaction.submit();
+
+		return transaction;
+	})
+	.then((transaction) => console.log(transaction))
+	.catch((error) => console.log(error));

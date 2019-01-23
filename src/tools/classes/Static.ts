@@ -37,6 +37,16 @@ export default class Static {
 		return fs.readFileSync(path, 'utf8');
 	}
 
+	public static getParentAndName(path: string) {
+		const list = path.split('/');
+		const name = list.pop() || 'keystore';
+		const parent = list.join('/');
+
+		return {
+			parent,
+			name,
+		};
+	}
 
 	public static isEquivalentObjects(objectA: any, objectB: any) {
 		const aProps = Object.getOwnPropertyNames(objectA);

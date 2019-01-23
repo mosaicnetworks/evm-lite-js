@@ -8,10 +8,11 @@ import * as errors from '../utils/errors';
 import { ABI, Input } from '../..';
 import { AddressType, EVMType, Gas, GasPrice, parseSolidityTypes } from '../types';
 
+import AccountClient from '../client/AccountClient';
 import Transaction, { TX } from './Transaction';
 
 
-export default class SolidityFunction {
+export default class SolidityFunction extends AccountClient {
 
 	public readonly name: string;
 	public readonly inputTypes: EVMType[];
@@ -20,7 +21,9 @@ export default class SolidityFunction {
 	public readonly constant: boolean;
 	public readonly payable: boolean;
 
-	constructor(abi: ABI, readonly contractAddress: AddressType, private host: string, private port: number) {
+	constructor(abi: ABI, readonly contractAddress: AddressType, host: string, port: number) {
+		super(host, port);
+
 		this.name = abi.name;
 		this.solFunction = new SolFunction('', abi, '');
 		this.constant = (abi.stateMutability === 'view' || abi.stateMutability === 'pure' || abi.constant);
@@ -34,9 +37,9 @@ export default class SolidityFunction {
 		}) || [];
 	}
 
-	public generateTransaction(options: { from: AddressType, gas: Gas, gasPrice: GasPrice },
-							   ...funcArgs: any[]): Transaction {
-		this._validateArgs(funcArgs);
+	public async generateTransaction(options: { from: AddressType, gas: Gas, gasPrice: GasPrice },
+									 ...funcArgs: any[]): Promise<Transaction> {
+		this.validateArgs(funcArgs);
 
 		const callData = this.solFunction.getData();
 		const tx: TX = {
@@ -59,26 +62,30 @@ export default class SolidityFunction {
 			unpackfn = this.unpackOutput.bind(this);
 		}
 
-		return new Transaction(tx, this.host, this.port, this.constant, unpackfn);
+		const account = await this.getAccount(tx.from.value);
+
+		return new Transaction({
+			...tx,
+			nonce: account.nonce
+		}, this.host, this.port, this.constant, unpackfn);
 	}
 
 	public unpackOutput(output: string): any {
-		output = output.length >= 2 ? output.slice(2) : output;
-		const result = coder.decodeParams(this.outputTypes, output);
+		const result = coder.decodeParams(this.outputTypes, output.length >= 2 ? output.slice(2) : output);
+
 		return result.length === 1 ? result[0] : result;
 	}
 
-	private _validateArgs(args: any[]): void {
+	private validateArgs(args: any[]): void {
 		this.requireArgsLength(args.length);
 		this.requireSolidityTypes(args);
 	}
 
-	private requireArgsLength(received: number): (boolean | Error) {
+	private requireArgsLength(received: number): void {
 		const expected = this.inputTypes.length;
+
 		if (expected !== received) {
 			throw errors.InvalidNumberOfSolidityArgs(expected, received);
-		} else {
-			return true;
 		}
 	};
 

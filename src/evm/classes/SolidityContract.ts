@@ -12,6 +12,12 @@ import SolidityFunction from './SolidityFunction';
 import Transaction from './Transaction';
 
 
+interface OverrideContractDeployParameters {
+	gas?: Gas,
+	gasPrice?: GasPrice,
+	data?: Data
+}
+
 export interface ContractOptions {
 	gas: Gas;
 	gasPrice: GasPrice;
@@ -19,11 +25,11 @@ export interface ContractOptions {
 	address?: Address;
 	nonce?: Nonce;
 	data?: Data;
-	jsonInterface: ABI[];
+	interface: ABI[];
 }
 
 export interface BaseContractSchema {
-	[key: string]: (...args: any[]) => Transaction;
+	[key: string]: (...args: any[]) => Promise<Transaction>;
 }
 
 export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
@@ -41,38 +47,31 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		}
 	}
 
-	public async deploy(
-		account: Account,
-		options?: { parameters?: any[], gas?: Gas, gasPrice?: GasPrice, data?: Data }
-	): Promise<this> {
+	public async deploy(account: Account, params?: any[], options?: OverrideContractDeployParameters): Promise<this> {
+		options = { ...options };
+
 		if (this.options.address) {
 			throw errors.ContractAddressFieldSetAndDeployed();
 		}
 
-		this.options.jsonInterface.filter((abi: ABI) => {
-			if (abi.type === 'constructor' && (options && options.parameters)) {
-				checks.requireArgsLength(abi.inputs.length, options.parameters.length);
+		this.options.interface.filter((abi: ABI) => {
+			if (abi.type === 'constructor' && (params)) {
+				checks.requireArgsLength(abi.inputs.length, params.length);
 			}
 		});
 
-		if (options) {
-			this.options.data = options.data || this.options.data;
-			this.options.gas = options.gas || this.options.gas;
-			this.options.gasPrice = options.gasPrice || this.options.gasPrice;
-		}
+		if (this.options.data || options.data) {
+			let data = options.data || this.options.data;
 
-		if (this.options.data) {
-			let encodedData = this.options.data;
-
-			if (options && options.parameters) {
-				encodedData = encodedData + this.encodeConstructorParams(options.parameters);
+			if (params) {
+				data = data + this.encodeConstructorParams(params);
 			}
 
 			const transaction = new Transaction({
 				from: this.options.from,
-				data: encodedData,
-				gas: this.options.gas,
-				gasPrice: this.options.gasPrice,
+				data,
+				gas: options.gas || this.options.gas!,
+				gasPrice: options.gasPrice || this.options.gasPrice!,
 				nonce: this.options.nonce
 			}, this.host, this.port, false)
 				.gas(this.options.gas)
@@ -83,15 +82,16 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 
 			const receipt = await transaction.receipt;
 
-			return this.setAddressAndPopulate(receipt.contractAddress);
+			return this.setAddressAndPopulateFunctions(receipt.contractAddress);
 		} else {
 			throw errors.InvalidDataFieldInOptions();
 		}
 	}
 
-	public setAddressAndPopulate(address: string): this {
-		this.options.address = new AddressType(address);
+	public setAddressAndPopulateFunctions(address: string): this {
+		this.address(address);
 		this.attachMethodsToContract();
+
 		return this;
 	}
 
@@ -116,7 +116,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	public JSONInterface(abis: ABI[]): this {
-		this.options.jsonInterface = abis;
+		this.options.interface = abis;
 		return this;
 	}
 
@@ -125,7 +125,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 			throw new Error('Cannot attach functions. No contract address set.');
 		}
 
-		this.options.jsonInterface
+		this.options.interface
 			.filter((json) => json.type === 'function')
 			.map((funcJSON: ABI) => {
 				if (!this.options.address) {
@@ -143,7 +143,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	private encodeConstructorParams(params: any[]): any {
-		return this.options.jsonInterface.filter((json) =>
+		return this.options.interface.filter((json) =>
 			json.type === 'constructor' && json.inputs.length === params.length
 		)
 			.map((json) => json.inputs.map((input) => input.type))
