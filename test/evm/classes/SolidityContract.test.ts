@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
-import evmlc from '../../setup.test';
+import evmlc from '../../setup';
 
 import { BaseContractSchema, DataDirectory, Transaction } from '../../../src';
 
