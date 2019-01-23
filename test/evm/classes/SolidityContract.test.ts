@@ -1,5 +1,8 @@
+/* tslint:disable:no-var-requires */
+
 import * as Chai from 'chai';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as solc from 'solc';
 
 import evmlc from '../../setup.test';
@@ -17,7 +20,7 @@ const output = solc.compile(fs.readFileSync('./test/assets/contract.sol', 'utf8'
 const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
 
-const directory = new DataDirectory('/Users/danu/.evmlc');
+const directory = new DataDirectory(path.join(require('os').homedir(), '.evmlc'));
 const account = directory.keystore.decrypt(evmlc.defaultFrom, 'asd');
 
 const assert = Chai.assert;

@@ -1,6 +1,6 @@
 jobs:
   build:
-    working_directory: ~/mern-starter
+    working_directory: ~/mosaicnetworks/evm-lite-lib
     docker:
       - image: circleci/node
     steps: # a collection of executable commands
