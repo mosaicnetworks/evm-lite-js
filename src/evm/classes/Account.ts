@@ -6,9 +6,7 @@ import { parseTransaction } from '../types';
 
 import Transaction, { SignedTransaction, TX } from './Transaction';
 
-
 export default class Account {
-
 	get address(): string {
 		return this.account.address;
 	}
@@ -23,7 +21,6 @@ export default class Account {
 
 		return new Account(decryptedAccount);
 	}
-
 	public balance: number = 0;
 	public nonce: number = 0;
 	private readonly account: Web3Account;
@@ -73,5 +70,4 @@ export default class Account {
 			nonce: this.nonce
 		};
 	}
-
 }

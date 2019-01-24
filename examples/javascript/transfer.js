@@ -14,7 +14,6 @@ const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
 // Data directory object
 const dataDirectory = new evmlib.DataDirectory('[..]/.evmlc');
 
-
 // Async Await
 async function signTransactionLocallyAsync() {
 	// Get keystore object from the keystore directory and decrypt
@@ -27,21 +26,11 @@ async function signTransactionLocallyAsync() {
 	await transaction.sign(account);
 
 	// Send transaction to node
-	await transaction.submit()
+	await transaction.submit();
 
 	return transaction;
 }
 
-// TODO: ES5 version of async-await.
-function signTransactionLocallyPromises() {
-	let transaction;
-
-	return dataDirectory.keystore.decrypt(from, 'password')
-		.then((account) => {
-
-		})
-}
-
 signTransactionLocallyAsync()
-	.then((transaction) => console.log(transaction.hash))
-	.catch((error) => console.log(error));
+	.then(transaction => console.log(transaction.hash))
+	.catch(error => console.log(error));

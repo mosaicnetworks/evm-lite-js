@@ -72,6 +72,13 @@ var Transaction = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Send a transaction to a node for a controlled account.
+     *
+     * @param options - Override transactions options for
+     *
+     * @deprecated
+     */
     Transaction.prototype.send = function (options) {
         var _this = this;
         this.assignTXValues(options);
@@ -114,8 +121,7 @@ var Transaction = /** @class */ (function (_super) {
             });
         }
         else {
-            return this.call()
-                .then(function (response) { return response; });
+            return this.call();
         }
     };
     Transaction.prototype.sign = function (account) {

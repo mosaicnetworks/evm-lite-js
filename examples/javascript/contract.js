@@ -44,7 +44,7 @@ const loadContract = async () => {
 };
 
 loadContract()
-	.then(async (contract) => {
+	.then(async contract => {
 		const transaction = await contract.methods.contribute();
 
 		transaction.value(200);
@@ -54,13 +54,13 @@ loadContract()
 
 		return contract;
 	})
-	.then(async (contract) => {
+	.then(async contract => {
 		const account = await evmlc.getAccount(contract.options.address.value);
 		console.log(account);
 
 		return contract;
 	})
-	.then(async (contract) => {
+	.then(async contract => {
 		const transaction = await contract.methods.checkGoalReached();
 
 		await transaction.sign(await account);
@@ -70,4 +70,4 @@ loadContract()
 
 		return contract;
 	})
-	.catch((error) => console.log(error));
+	.catch(error => console.log(error));

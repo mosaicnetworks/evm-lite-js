@@ -36,7 +36,7 @@ var Static = /** @class */ (function () {
         var parent = list.join('/');
         return {
             parent: parent,
-            name: name,
+            name: name
         };
     };
     Static.isEquivalentObjects = function (objectA, objectB) {

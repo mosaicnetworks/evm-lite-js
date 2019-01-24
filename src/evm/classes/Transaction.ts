@@ -5,7 +5,6 @@ import { Address, AddressType, ChainID, Data, Gas, GasPrice, Nonce, parseTransac
 import TransactionClient, { TXReceipt } from '../client/TransactionClient';
 import Account from './Account';
 
-
 export interface SentTX {
 	from: string;
 	to: string;
@@ -32,11 +31,11 @@ export interface TX extends BaseTX {
 }
 
 interface OverrideTXOptions {
-	to?: string,
-	from?: string,
-	value?: Value,
-	gas?: Gas,
-	gasPrice?: GasPrice,
+	to?: string;
+	from?: string;
+	value?: Value;
+	gas?: Gas;
+	gasPrice?: GasPrice;
 }
 
 export interface SignedTransaction {
@@ -48,13 +47,17 @@ export interface SignedTransaction {
 }
 
 export default class Transaction extends TransactionClient {
-
 	public txReceipt?: TXReceipt;
 	public signedTX?: SignedTransaction;
 	public hash?: string;
 
-	constructor(private tx: TX, host: string, port: number, private constant: boolean,
-				private readonly unpackfn?: (data: string) => any) {
+	constructor(
+		private tx: TX,
+		host: string,
+		port: number,
+		private constant: boolean,
+		private readonly unpackfn?: (data: string) => any
+	) {
 		super(host, port);
 	}
 
@@ -66,6 +69,13 @@ export default class Transaction extends TransactionClient {
 		}
 	}
 
+	/**
+	 * Send a transaction to a node for a controlled account.
+	 *
+	 * @param options - Override transactions options for
+	 *
+	 * @deprecated
+	 */
 	public send(options?: OverrideTXOptions): Promise<TXReceipt> {
 		this.assignTXValues(options);
 		this.checkGasAndGasPrice();
@@ -79,14 +89,14 @@ export default class Transaction extends TransactionClient {
 		}
 
 		return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then((res) => {
+			.then(res => {
 				const response: { txHash: string } = JSONBig.parse(res);
 				return response.txHash;
 			})
-			.then((txHash) => {
+			.then(txHash => {
 				return this.getReceipt(txHash);
 			})
-			.then((response) => {
+			.then(response => {
 				this.txReceipt = response;
 				return this.txReceipt;
 			});
@@ -112,8 +122,7 @@ export default class Transaction extends TransactionClient {
 					return this;
 				});
 		} else {
-			return this.call()
-				.then((response) => response);
+			return this.call();
 		}
 	}
 
@@ -136,7 +145,7 @@ export default class Transaction extends TransactionClient {
 		}
 
 		return this.callTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then((response) => {
+			.then(response => {
 				return JSONBig.parse(response);
 			})
 			.then((obj: any) => {
@@ -198,8 +207,8 @@ export default class Transaction extends TransactionClient {
 
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
-			this.tx.to = (options.to) ? new AddressType(options.to) : this.tx.to;
-			this.tx.from = (options.from) ? new AddressType(options.from) : this.tx.from;
+			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
+			this.tx.from = options.from ? new AddressType(options.from) : this.tx.from;
 
 			this.tx.gas = options.gas || this.tx.gas;
 			this.tx.value = options.value || this.tx.value;
@@ -212,5 +221,4 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Gas or Gas Price not set');
 		}
 	}
-
 }

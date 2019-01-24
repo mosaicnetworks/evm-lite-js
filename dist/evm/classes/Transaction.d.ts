@@ -46,6 +46,13 @@ export default class Transaction extends TransactionClient {
     hash?: string;
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     readonly receipt: Promise<Readonly<TXReceipt>>;
+    /**
+     * Send a transaction to a node for a controlled account.
+     *
+     * @param options - Override transactions options for
+     *
+     * @deprecated
+     */
     send(options?: OverrideTXOptions): Promise<TXReceipt>;
     submit(options?: OverrideTXOptions): Promise<this | string>;
     sign(account: Account): Promise<this>;

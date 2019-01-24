@@ -44,7 +44,7 @@ export default class Static {
 
 		return {
 			parent,
-			name,
+			name
 		};
 	}
 

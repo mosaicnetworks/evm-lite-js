@@ -21,7 +21,7 @@ export default class Keystore {
 	public async decrypt(address: string, password: string): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 
-		return await Account.decrypt(keystore, password);;
+		return await Account.decrypt(keystore, password);
 	}
 
 	public create(password: string, output?: string): Promise<string> {

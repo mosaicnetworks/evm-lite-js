@@ -11,11 +11,10 @@ import Account from './Account';
 import SolidityFunction from './SolidityFunction';
 import Transaction from './Transaction';
 
-
 interface OverrideContractDeployParameters {
-	gas?: Gas,
-	gasPrice?: GasPrice,
-	data?: Data
+	gas?: Gas;
+	gasPrice?: GasPrice;
+	data?: Data;
 }
 
 export interface ContractOptions {
@@ -32,13 +31,18 @@ export interface BaseContractSchema {
 	[key: string]: (...args: any[]) => Promise<Transaction>;
 }
 
-export default class SolidityContract<ContractFunctionSchema extends BaseContractSchema> {
-
+export default class SolidityContract<
+	ContractFunctionSchema extends BaseContractSchema
+> {
 	public methods: ContractFunctionSchema | BaseContractSchema;
 	public web3Contract: any;
 	public receipt?: TXReceipt;
 
-	constructor(public options: ContractOptions, private host: string, private port: number) {
+	constructor(
+		public options: ContractOptions,
+		private host: string,
+		private port: number
+	) {
 		this.methods = {};
 
 		if (this.options.address) {
@@ -46,7 +50,11 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		}
 	}
 
-	public async deploy(account: Account, params?: any[], options?: OverrideContractDeployParameters): Promise<this> {
+	public async deploy(
+		account: Account,
+		params?: any[],
+		options?: OverrideContractDeployParameters
+	): Promise<this> {
 		options = { ...options };
 
 		if (this.options.address) {
@@ -54,7 +62,7 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 		}
 
 		this.options.interface.filter((abi: ABI) => {
-			if (abi.type === 'constructor' && (params)) {
+			if (abi.type === 'constructor' && params) {
 				checks.requireArgsLength(abi.inputs.length, params.length);
 			}
 		});
@@ -66,13 +74,18 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 				data = data + this.encodeConstructorParams(params);
 			}
 
-			const transaction = new Transaction({
-				from: this.options.from,
-				data,
-				gas: options.gas || this.options.gas!,
-				gasPrice: options.gasPrice || this.options.gasPrice!,
-				nonce: this.options.nonce
-			}, this.host, this.port, false)
+			const transaction = new Transaction(
+				{
+					from: this.options.from,
+					data,
+					gas: options.gas || this.options.gas!,
+					gasPrice: options.gasPrice || this.options.gasPrice!,
+					nonce: this.options.nonce
+				},
+				this.host,
+				this.port,
+				false
+			)
 				.gas(this.options.gas)
 				.gasPrice(this.options.gasPrice);
 
@@ -121,19 +134,28 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 
 	private attachMethodsToContract(): void {
 		if (!this.options.address) {
-			throw new Error('Cannot attach functions. No contract address set.');
+			throw new Error(
+				'Cannot attach functions. No contract address set.'
+			);
 		}
 
 		this.options.interface
-			.filter((json) => json.type === 'function')
+			.filter(json => json.type === 'function')
 			.map((funcABI: ABI) => {
 				if (!this.options.address) {
 					throw new Error('Cannot attach function');
 				}
 
-				const solFunction = new SolidityFunction(funcABI, this.options.address, this.host, this.port);
+				const solFunction = new SolidityFunction(
+					funcABI,
+					this.options.address,
+					this.host,
+					this.port
+				);
 
-				this.methods[funcABI.name] = solFunction.generateTransaction.bind(solFunction, {
+				this.methods[
+					funcABI.name
+				] = solFunction.generateTransaction.bind(solFunction, {
 					gas: this.options.gas,
 					gasPrice: this.options.gasPrice,
 					from: this.options.from
@@ -142,11 +164,15 @@ export default class SolidityContract<ContractFunctionSchema extends BaseContrac
 	}
 
 	private encodeConstructorParams(params: any[]): any {
-		return this.options.interface.filter((json) =>
-			json.type === 'constructor' && json.inputs.length === params.length
-		)
-			.map((json) => json.inputs.map((input) => input.type))
-			.map((types) => coder.encodeParams(types, params))[0] || '';
+		return (
+			this.options.interface
+				.filter(
+					json =>
+						json.type === 'constructor' &&
+						json.inputs.length === params.length
+				)
+				.map(json => json.inputs.map(input => input.type))
+				.map(types => coder.encodeParams(types, params))[0] || ''
+		);
 	}
-
 }
