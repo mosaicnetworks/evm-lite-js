@@ -19,6 +19,10 @@ export interface RawTXSubmitResponse {
 	txHash: string;
 }
 
+export interface SendTXResponse {
+	txHash: string;
+}
+
 export default class TransactionClient extends BaseClient {
 	constructor(host: string, port: number) {
 		super(host, port);
@@ -30,9 +34,9 @@ export default class TransactionClient extends BaseClient {
 		);
 	}
 
-	protected sendTX(tx: string): Promise<Readonly<string>> {
-		return request(this.options('POST', '/tx'), tx).then(
-			response => response
+	protected sendTX(tx: string): Promise<Readonly<SendTXResponse>> {
+		return request(this.options('POST', '/tx'), tx).then(response =>
+			JSON.parse(response)
 		);
 	}
 

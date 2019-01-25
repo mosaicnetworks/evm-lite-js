@@ -1,6 +1,16 @@
 import * as JSONBig from 'json-bigint';
 
-import { Address, AddressType, ChainID, Data, Gas, GasPrice, Nonce, parseTransaction, Value } from '../types';
+import {
+	Address,
+	AddressType,
+	ChainID,
+	Data,
+	Gas,
+	GasPrice,
+	Nonce,
+	parseTransaction,
+	Value
+} from '../types';
 
 import TransactionClient, { TXReceipt } from '../client/TransactionClient';
 import Account from './Account';
@@ -81,7 +91,9 @@ export default class Transaction extends TransactionClient {
 		this.checkGasAndGasPrice();
 
 		if (this.constant) {
-			throw new Error('Transaction does not mutate state. Use `call()` instead');
+			throw new Error(
+				'Transaction does not mutate state. Use `call()` instead'
+			);
 		}
 
 		if (!this.tx.data && !this.tx.value) {
@@ -89,13 +101,8 @@ export default class Transaction extends TransactionClient {
 		}
 
 		return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then(res => {
-				const response: { txHash: string } = JSONBig.parse(res);
-				return response.txHash;
-			})
-			.then(txHash => {
-				return this.getReceipt(txHash);
-			})
+			.then(response => response.txHash)
+			.then(txHash => this.getReceipt(txHash))
 			.then(response => {
 				this.txReceipt = response;
 				return this.txReceipt;
@@ -133,15 +140,15 @@ export default class Transaction extends TransactionClient {
 	}
 
 	public call(options?: OverrideTXOptions): Promise<string> {
-		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
-
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
 		}
 
 		if (this.tx.value) {
-			throw new Error('Transaction cannot have value if it does not intend to mutate state.');
+			throw new Error(
+				'Transaction cannot have value if it' +
+					'does not intend to mutate the state.'
+			);
 		}
 
 		return this.callTX(JSONBig.stringify(parseTransaction(this.tx)))
@@ -208,7 +215,9 @@ export default class Transaction extends TransactionClient {
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
 			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
-			this.tx.from = options.from ? new AddressType(options.from) : this.tx.from;
+			this.tx.from = options.from
+				? new AddressType(options.from)
+				: this.tx.from;
 
 			this.tx.gas = options.gas || this.tx.gas;
 			this.tx.value = options.value || this.tx.value;

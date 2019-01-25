@@ -66,11 +66,11 @@ export default class EVMLC extends DefaultClient {
 	): Promise<SolidityContract<ContractSchema>> {
 		this.requireAddress();
 
+		const data: string = (options && options.data) || '';
 		const address =
 			options && options.contractAddress
 				? new AddressType(options.contractAddress)
 				: undefined;
-		const data: string = (options && options.data) || '';
 
 		return this.getAccount(this.defaultFrom.trim()).then(
 			account =>
