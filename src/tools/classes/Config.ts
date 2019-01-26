@@ -7,7 +7,6 @@ import { Gas, GasPrice } from '../../evm/types';
 
 import Static from './Static';
 
-
 export interface ConfigSchema {
 	connection: {
 		host: string;
@@ -24,12 +23,14 @@ export interface ConfigSchema {
 }
 
 export default class Config {
-
 	public readonly path: string;
 
 	public data: ConfigSchema;
 
-	constructor(public readonly directory: string, public readonly name: string) {
+	constructor(
+		public readonly directory: string,
+		public readonly name: string
+	) {
 		this.data = this.default();
 
 		this.path = path.join(directory, name);
@@ -90,17 +91,22 @@ export default class Config {
 			if (Static.isEquivalentObjects(this.data, data)) {
 				resolve('No changes detected to config.');
 			} else {
-				fs.writeFile(this.path, tomlify.toToml(data, { spaces: 2 }), (err) => {
-					if (err) {
-						reject('Something went wrong writing the configuration.');
-						return;
-					}
+				fs.writeFile(
+					this.path,
+					tomlify.toToml(data, { spaces: 2 }),
+					err => {
+						if (err) {
+							reject(
+								'Something went wrong writing the configuration.'
+							);
+							return;
+						}
 
-					this.data = data;
-					resolve('New configuration saved!');
-				});
+						this.data = data;
+						resolve('New configuration saved!');
+					}
+				);
 			}
 		});
 	}
-
 }

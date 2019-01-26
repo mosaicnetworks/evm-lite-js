@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
-
 export default class Static {
 	public static exists(path: string): boolean {
 		return fs.existsSync(path);
@@ -57,8 +56,16 @@ export default class Static {
 		}
 
 		for (const propName of aProps) {
-			if (typeof objectA[propName] === 'object' && typeof objectB[propName] === 'object') {
-				if (!Static.isEquivalentObjects(objectA[propName], objectB[propName])) {
+			if (
+				typeof objectA[propName] === 'object' &&
+				typeof objectB[propName] === 'object'
+			) {
+				if (
+					!Static.isEquivalentObjects(
+						objectA[propName],
+						objectB[propName]
+					)
+				) {
 					return false;
 				}
 			} else if (objectA[propName] !== objectB[propName]) {

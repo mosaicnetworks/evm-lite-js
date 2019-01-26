@@ -52,8 +52,7 @@ loadContract()
 
 		transaction.value(1100);
 
-		await transaction.sign(await account);
-		await transaction.submit();
+		await transaction.submit({}, await account);
 
 		return contract;
 	})
@@ -65,12 +64,14 @@ loadContract()
 	})
 	.then(async contract => {
 		const transaction = await contract.methods.checkGoalReached();
+		const response = await transaction.submit({}, await account);
 
-		await transaction.sign(await account);
-
-		const response = await transaction.submit();
+		transaction.value(0);
+		console.log(transaction.toJSON());
 		console.log(response);
 
 		return contract;
 	})
 	.catch(error => console.log(error));
+
+export default loadContract;

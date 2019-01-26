@@ -5,7 +5,7 @@ import ByteType from './lib/ByteType';
 import EVMType from './lib/EVMType';
 import StringType from './lib/StringType';
 
-import { TX } from '../classes/Transaction';
+import { ParsedTX, TX } from '../classes/Transaction';
 
 export { AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType };
 
@@ -26,7 +26,7 @@ export function parseSolidityTypes(raw: string) {
 	}
 }
 
-export function parseTransaction(tx: TX) {
+export function parseTransaction(tx: TX): ParsedTX {
 	return {
 		...tx,
 		from: tx.from.value,

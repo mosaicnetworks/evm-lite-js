@@ -15,6 +15,10 @@ import {
 import TransactionClient, { TXReceipt } from '../client/TransactionClient';
 import Account from './Account';
 
+export interface CallTXResponse {
+	data: string;
+}
+
 export interface SentTX {
 	from: string;
 	to: string;
@@ -36,6 +40,13 @@ export interface BaseTX {
 export interface TX extends BaseTX {
 	from: Address;
 	to?: Address;
+	value?: Value;
+	data?: Data;
+}
+
+export interface ParsedTX extends BaseTX {
+	from: string;
+	to?: string;
 	value?: Value;
 	data?: Data;
 }
@@ -109,9 +120,16 @@ export default class Transaction extends TransactionClient {
 			});
 	}
 
-	public submit(options?: OverrideTXOptions): Promise<this | string> {
+	public async submit(
+		options?: OverrideTXOptions,
+		account?: Account
+	): Promise<this | string> {
 		this.assignTXValues(options);
 		this.checkGasAndGasPrice();
+
+		if (account) {
+			await this.sign(account);
+		}
 
 		if (!this.signedTX) {
 			throw new Error('Transaction has not been signed locally yet.');
@@ -122,14 +140,13 @@ export default class Transaction extends TransactionClient {
 		}
 
 		if (!this.constant) {
-			return this.sendRaw(this.signedTX.rawTransaction)
-				.then(res => res.txHash)
-				.then(hash => {
-					this.hash = hash;
-					return this;
-				});
+			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
+
+			this.hash = txHash;
+
+			return this;
 		} else {
-			return this.call();
+			return await this.call();
 		}
 	}
 
@@ -139,7 +156,7 @@ export default class Transaction extends TransactionClient {
 		return this;
 	}
 
-	public call(options?: OverrideTXOptions): Promise<string> {
+	public async call(options?: OverrideTXOptions): Promise<string> {
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
 		}
@@ -151,17 +168,14 @@ export default class Transaction extends TransactionClient {
 			);
 		}
 
-		return this.callTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then(response => {
-				return JSONBig.parse(response);
-			})
-			.then((obj: any) => {
-				if (!this.unpackfn) {
-					throw new Error('Unpacking function required.');
-				}
+		const call = await this.callTX(this.toString());
+		const response = JSONBig.parse<CallTXResponse>(call);
 
-				return this.unpackfn(Buffer.from(obj.data).toString());
-			});
+		if (!this.unpackfn) {
+			throw new Error('Unpacking function required.');
+		}
+
+		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
 	public toJSON(): TX {
