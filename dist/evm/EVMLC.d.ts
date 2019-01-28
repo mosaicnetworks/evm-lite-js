@@ -14,7 +14,14 @@ export default class EVMLC extends DefaultClient {
     defaultFrom: string;
     defaultGas: Gas;
     defaultGasPrice: GasPrice;
-    loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], data?: string): Promise<SolidityContract<ContractSchema>>;
+    compileContract(name: string, path: string): {
+        abi: any[];
+        bytecode: string;
+    };
+    loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], options?: {
+        data?: string;
+        contractAddress?: string;
+    }): Promise<SolidityContract<ContractSchema>>;
     prepareTransfer(to: string, value: Value, from?: string): Promise<Transaction>;
     private requireAddress;
 }

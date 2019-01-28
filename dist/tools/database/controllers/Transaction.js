@@ -48,8 +48,11 @@ var Transaction = /** @class */ (function () {
     Transaction.prototype.insert = function (tx) {
         var _this = this;
         return new Promise(function (resolve) {
-            var txToSubmit = (tx instanceof Transaction_2.default) ? tx.raw : tx;
-            _this.database.get('transactions').push(txToSubmit).write();
+            var txToSubmit = tx instanceof Transaction_2.default ? tx.raw : tx;
+            _this.database
+                .get('transactions')
+                .push(txToSubmit)
+                .write();
             resolve();
         });
     };
@@ -79,7 +82,8 @@ var Transaction = /** @class */ (function () {
     Transaction.prototype.get = function (hash) {
         var _this = this;
         return new Promise(function (resolve) {
-            var transaction = _this.database.get('transactions')
+            var transaction = _this.database
+                .get('transactions')
                 .find({
                 txHash: hash
             })

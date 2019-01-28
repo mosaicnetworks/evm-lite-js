@@ -19,6 +19,7 @@ Note: Type definitions are provided for Typescript users.
 Below is a basic example of how to sign locally and submit a transaction to the node.
 
 ### Transfer
+
 ```javascript
 const evmlib = require('evm-lite-lib');
 
@@ -47,17 +48,18 @@ async function signTransactionLocally() {
 	await transaction.sign(account);
 
 	// Send transaction to node
-	await transaction.submit()
+	await transaction.submit();
 
 	return transaction;
 }
 
 signTransactionLocally()
-	.then((transaction) => console.log(transaction.hash))
-	.catch((error) => console.log(error));
+	.then(transaction => console.log(transaction.hash))
+	.catch(error => console.log(error));
 ```
 
 ### Contract Deployment
+
 ```javascript
 const EVMLC = require('evm-lite-lib').EVMLC;
 const DataDirectory = require('evm-lite-lib').DataDirectory;
@@ -100,16 +102,23 @@ const generateContract = async () => {
 };
 
 generateContract()
-	.then((contract) => console.log(contract.methods))
-	.catch((error) => console.log(error));
+	.then(contract => console.log(contract.methods))
+	.catch(error => console.log(error));
 ```
 
 ### Contract Deployment (Typescript)
+
 ```typescript
 import * as fs from 'fs';
 import * as solc from 'solc';
 
-import { Account, BaseContractSchema, DataDirectory, EVMLC, Transaction } from '../src';
+import {
+	Account,
+	BaseContractSchema,
+	DataDirectory,
+	EVMLC,
+	Transaction
+} from '../src';
 
 // Contract function schema
 interface CrowdFundingSchema extends BaseContractSchema {
@@ -121,7 +130,10 @@ interface CrowdFundingSchema extends BaseContractSchema {
 
 // Contract compilation
 const contractName: string = ':CrowdFunding';
-const output = solc.compile(fs.readFileSync('./test/assets/contract.sol', 'utf8'), 1);
+const output = solc.compile(
+	fs.readFileSync('./test/assets/contract.sol', 'utf8'),
+	1
+);
 const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
 
@@ -140,7 +152,10 @@ const directory = new DataDirectory('/Users/danu/.evmlc');
 // Return generated object
 const generateContract = async () => {
 	const account = await directory.keystore.decrypt(from, 'asd');
-	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(ABI, data);
+	const contract = await evmlc.generateContractFromABI<CrowdFundingSchema>(
+		ABI,
+		data
+	);
 
 	return contract.deploy(account, {
 		parameters: [100000]
@@ -148,7 +163,6 @@ const generateContract = async () => {
 };
 
 generateContract()
-	.then((contract) => console.log(contract.options))
-	.catch((error) => console.log(error))	;
-
+	.then(contract => console.log(contract.options))
+	.catch(error => console.log(error));
 ```

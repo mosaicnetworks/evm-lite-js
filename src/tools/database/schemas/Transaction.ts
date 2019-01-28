@@ -1,10 +1,9 @@
 import { SentTX } from '../../..';
 import { Gas, GasPrice, Nonce, Value } from '../../../evm/types';
 
-export type TransactionSchema = SentTX
+export type TransactionSchema = SentTX;
 
 export default class Transaction {
-
 	private readonly data: TransactionSchema;
 
 	constructor(sentTX?: TransactionSchema) {
@@ -63,6 +62,4 @@ export default class Transaction {
 		this.data.value = value;
 		return this;
 	}
-
-
 }

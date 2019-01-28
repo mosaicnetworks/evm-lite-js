@@ -1,10 +1,23 @@
 import * as JSONBig from 'json-bigint';
 
-import { Address, AddressType, ChainID, Data, Gas, GasPrice, Nonce, parseTransaction, Value } from '../types';
+import {
+	Address,
+	AddressType,
+	ChainID,
+	Data,
+	Gas,
+	GasPrice,
+	Nonce,
+	parseTransaction,
+	Value
+} from '../types';
 
 import TransactionClient, { TXReceipt } from '../client/TransactionClient';
 import Account from './Account';
 
+export interface CallTXResponse {
+	data: string;
+}
 
 export interface SentTX {
 	from: string;
@@ -31,12 +44,19 @@ export interface TX extends BaseTX {
 	data?: Data;
 }
 
+export interface ParsedTX extends BaseTX {
+	from: string;
+	to?: string;
+	value?: Value;
+	data?: Data;
+}
+
 interface OverrideTXOptions {
-	to?: string,
-	from?: string,
-	value?: Value,
-	gas?: Gas,
-	gasPrice?: GasPrice,
+	to?: string;
+	from?: string;
+	value?: Value;
+	gas?: Gas;
+	gasPrice?: GasPrice;
 }
 
 export interface SignedTransaction {
@@ -48,13 +68,17 @@ export interface SignedTransaction {
 }
 
 export default class Transaction extends TransactionClient {
-
 	public txReceipt?: TXReceipt;
 	public signedTX?: SignedTransaction;
 	public hash?: string;
 
-	constructor(private tx: TX, host: string, port: number, private constant: boolean,
-				private readonly unpackfn?: (data: string) => any) {
+	constructor(
+		private tx: TX,
+		host: string,
+		port: number,
+		private constant: boolean,
+		private readonly unpackfn?: (data: string) => any
+	) {
 		super(host, port);
 	}
 
@@ -66,12 +90,20 @@ export default class Transaction extends TransactionClient {
 		}
 	}
 
+	/**
+	 * Send a transaction to a node for a controlled account.
+	 *
+	 * @param options - Override transactions options
+	 *
+	 * @deprecated
+	 */
 	public send(options?: OverrideTXOptions): Promise<TXReceipt> {
 		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
 
 		if (this.constant) {
-			throw new Error('Transaction does not mutate state. Use `call()` instead');
+			throw new Error(
+				'Transaction does not mutate state. Use `call()` instead'
+			);
 		}
 
 		if (!this.tx.data && !this.tx.value) {
@@ -79,29 +111,30 @@ export default class Transaction extends TransactionClient {
 		}
 
 		return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then((res) => {
-				const response: { txHash: string } = JSONBig.parse(res);
-				return response.txHash;
-			})
-			.then((txHash) => {
-				return this.getReceipt(txHash);
-			})
-			.then((response) => {
+			.then(response => response.txHash)
+			.then(txHash => this.getReceipt(txHash))
+			.then(response => {
 				this.txReceipt = response;
 				return this.txReceipt;
 			});
 	}
 
-	public submit(options?: OverrideTXOptions): Promise<this | string> {
+	public async submit(
+		options?: OverrideTXOptions,
+		account?: Account
+	): Promise<this | string> {
 		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
+
+		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+			throw new Error('Gas or Gas Price not set');
+		}
+
+		if (account) {
+			await this.sign(account);
+		}
 
 		if (!this.signedTX) {
 			throw new Error('Transaction has not been signed locally yet.');
-		}
-
-		if (this.constant) {
-			throw new Error('Transaction does not mutate state. Use `call()` instead');
 		}
 
 		if (!this.tx.data && !this.tx.value) {
@@ -109,15 +142,13 @@ export default class Transaction extends TransactionClient {
 		}
 
 		if (!this.constant) {
-			return this.sendRaw(this.signedTX.rawTransaction)
-				.then(res => res.txHash)
-				.then(hash => {
-					this.hash = hash;
-					return this;
-				});
+			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
+
+			this.hash = txHash;
+
+			return this;
 		} else {
-			return this.call()
-				.then((response) => response);
+			return await this.call();
 		}
 	}
 
@@ -127,29 +158,26 @@ export default class Transaction extends TransactionClient {
 		return this;
 	}
 
-	public call(options?: OverrideTXOptions): Promise<string> {
-		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
-
+	public async call(options?: OverrideTXOptions): Promise<string> {
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
 		}
 
 		if (this.tx.value) {
-			throw new Error('Transaction cannot have value if it does not intend to mutate state.');
+			throw new Error(
+				'Transaction cannot have value if it' +
+					'does not intend to mutate the state.'
+			);
 		}
 
-		return this.callTX(JSONBig.stringify(parseTransaction(this.tx)))
-			.then((response) => {
-				return JSONBig.parse(response);
-			})
-			.then((obj: any) => {
-				if (!this.unpackfn) {
-					throw new Error('Unpacking function required.');
-				}
+		const call = await this.callTX(this.toString());
+		const response = JSONBig.parse<CallTXResponse>(call);
 
-				return this.unpackfn(Buffer.from(obj.data).toString());
-			});
+		if (!this.unpackfn) {
+			throw new Error('Unpacking function required.');
+		}
+
+		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
 	public toJSON(): TX {
@@ -202,19 +230,14 @@ export default class Transaction extends TransactionClient {
 
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
-			this.tx.to = (options.to) ? new AddressType(options.to) : this.tx.to;
-			this.tx.from = (options.from) ? new AddressType(options.from) : this.tx.from;
+			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
+			this.tx.from = options.from
+				? new AddressType(options.from)
+				: this.tx.from;
 
 			this.tx.gas = options.gas || this.tx.gas;
 			this.tx.value = options.value || this.tx.value;
 			this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
 		}
 	}
-
-	private checkGasAndGasPrice() {
-		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-			throw new Error('Gas or Gas Price not set');
-		}
-	}
-
 }

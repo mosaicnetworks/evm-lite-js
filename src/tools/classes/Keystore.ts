@@ -7,12 +7,13 @@ import { V3JSONKeyStore } from 'web3-eth-accounts';
 import { Account, BaseAccount, EVMLC } from '../..';
 import Static from './Static';
 
-
 export default class Keystore {
-
 	public readonly path: string;
 
-	constructor(public readonly directory: string, public readonly name: string) {
+	constructor(
+		public readonly directory: string,
+		public readonly name: string
+	) {
 		this.path = path.join(directory, name);
 
 		Static.createDirectoryIfNotExists(this.path);
@@ -21,19 +22,24 @@ export default class Keystore {
 	public async decrypt(address: string, password: string): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 
-		return await Account.decrypt(keystore, password);;
+		return await Account.decrypt(keystore, password);
 	}
 
 	public create(password: string, output?: string): Promise<string> {
-		return new Promise<string>((resolve) => {
+		return new Promise<string>(resolve => {
 			const account = new Account();
 			const eAccount = account.encrypt(password);
 			const sEAccount = JSONBig.stringify(eAccount);
-			const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
+			const filename = `UTC--${JSONBig.stringify(new Date())}--${
+				account.address
+			}`
 				.replace(/"/g, '')
 				.replace(/:/g, '-');
 
-			fs.writeFileSync(path.join(output || this.path, filename), sEAccount);
+			fs.writeFileSync(
+				path.join(output || this.path, filename),
+				sEAccount
+			);
 			resolve(sEAccount);
 		});
 	}
@@ -41,7 +47,9 @@ export default class Keystore {
 	public import(data: string): Promise<string> {
 		return new Promise<string>(resolve => {
 			const account: BaseAccount = JSONBig.parse(data);
-			const filename = `UTC--${JSONBig.stringify(new Date())}--${account.address}`
+			const filename = `UTC--${JSONBig.stringify(new Date())}--${
+				account.address
+			}`
 				.replace(/"/g, '')
 				.replace(/:/g, '-');
 			fs.writeFileSync(path.join(this.path, filename), data);
@@ -49,13 +57,20 @@ export default class Keystore {
 		});
 	}
 
-	public update(address: string, old: string, newPass: string): Promise<string> {
+	public update(
+		address: string,
+		old: string,
+		newPass: string
+	): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const path = this.getFilePathForAddress(address);
 			let account: Account;
 
 			try {
-				account = Account.decrypt(JSONBig.parse(fs.readFileSync(path, 'utf8')), old);
+				account = Account.decrypt(
+					JSONBig.parse(fs.readFileSync(path, 'utf8')),
+					old
+				);
 			} catch (e) {
 				reject('Decryption with password provided failed!');
 				return;
@@ -70,15 +85,20 @@ export default class Keystore {
 		});
 	}
 
-	public list(fetch: boolean = false, connection?: EVMLC): Promise<BaseAccount[]> {
-		return new Promise<BaseAccount[]>(async (resolve) => {
+	public list(
+		fetch: boolean = false,
+		connection?: EVMLC
+	): Promise<BaseAccount[]> {
+		return new Promise<BaseAccount[]>(async resolve => {
 			const accounts: BaseAccount[] = [];
 			const files = this.allKeystoreFiles();
 			if (files.length) {
 				for (const file of files) {
 					const address = file.address;
 					if (fetch && connection) {
-						accounts.push(await this.fetchBalanceAndNonce(address, connection));
+						accounts.push(
+							await this.fetchBalanceAndNonce(address, connection)
+						);
 					} else {
 						accounts.push({
 							address,
@@ -100,8 +120,11 @@ export default class Keystore {
 		});
 	}
 
-	private fetchBalanceAndNonce(address: string, connection: EVMLC): Promise<BaseAccount> {
-		return new Promise<BaseAccount>(async (resolve) => {
+	public fetchBalanceAndNonce(
+		address: string,
+		connection: EVMLC
+	): Promise<BaseAccount> {
+		return new Promise<BaseAccount>(async resolve => {
 			const account = await connection.getAccount(address);
 
 			if (account) {
@@ -111,8 +134,8 @@ export default class Keystore {
 	}
 
 	private getFilePathForAddress(address: string): string {
-		const dir = fs.readdirSync(this.path).filter((file) => {
-			return !(file.startsWith('.'));
+		const dir = fs.readdirSync(this.path).filter(file => {
+			return !file.startsWith('.');
 		});
 
 		if (address.startsWith('0x')) {
@@ -122,7 +145,9 @@ export default class Keystore {
 
 		for (const filename of dir) {
 			const filepath = path.join(this.path, filename);
-			const account: BaseAccount = JSONBig.parse(fs.readFileSync(filepath, 'utf8'));
+			const account: BaseAccount = JSONBig.parse(
+				fs.readFileSync(filepath, 'utf8')
+			);
 			if (account.address === address) {
 				return filepath;
 			}
@@ -133,8 +158,8 @@ export default class Keystore {
 
 	private allKeystoreFiles() {
 		const json = [];
-		const files = fs.readdirSync(this.path).filter((file) => {
-			return !(file.startsWith('.'));
+		const files = fs.readdirSync(this.path).filter(file => {
+			return !file.startsWith('.');
 		});
 
 		for (const file of files) {
@@ -152,7 +177,10 @@ export default class Keystore {
 			address = address.substr(2);
 		}
 		address = address.toLowerCase();
-		return this.allKeystoreFiles().filter((file) => file.address === address)[0] || null;
+		return (
+			this.allKeystoreFiles().filter(
+				file => file.address === address
+			)[0] || null
+		);
 	}
-
 }

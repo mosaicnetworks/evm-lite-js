@@ -11,7 +11,7 @@ export default class Keystore {
     update(address: string, old: string, newPass: string): Promise<string>;
     list(fetch?: boolean, connection?: EVMLC): Promise<BaseAccount[]>;
     get(address: string): Promise<V3JSONKeyStore>;
-    private fetchBalanceAndNonce;
+    fetchBalanceAndNonce(address: string, connection: EVMLC): Promise<BaseAccount>;
     private getFilePathForAddress;
     private allKeystoreFiles;
     private getKeystoreFile;

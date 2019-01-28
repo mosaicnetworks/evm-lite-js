@@ -1,6 +1,9 @@
 import { Address, ChainID, Data, Gas, GasPrice, Nonce, Value } from '../types';
 import TransactionClient, { TXReceipt } from '../client/TransactionClient';
 import Account from './Account';
+export interface CallTXResponse {
+    data: string;
+}
 export interface SentTX {
     from: string;
     to: string;
@@ -20,6 +23,12 @@ export interface BaseTX {
 export interface TX extends BaseTX {
     from: Address;
     to?: Address;
+    value?: Value;
+    data?: Data;
+}
+export interface ParsedTX extends BaseTX {
+    from: string;
+    to?: string;
     value?: Value;
     data?: Data;
 }
@@ -46,8 +55,15 @@ export default class Transaction extends TransactionClient {
     hash?: string;
     constructor(tx: TX, host: string, port: number, constant: boolean, unpackfn?: ((data: string) => any) | undefined);
     readonly receipt: Promise<Readonly<TXReceipt>>;
+    /**
+     * Send a transaction to a node for a controlled account.
+     *
+     * @param options - Override transactions options
+     *
+     * @deprecated
+     */
     send(options?: OverrideTXOptions): Promise<TXReceipt>;
-    submit(options?: OverrideTXOptions): Promise<this | string>;
+    submit(options?: OverrideTXOptions, account?: Account): Promise<this | string>;
     sign(account: Account): Promise<this>;
     call(options?: OverrideTXOptions): Promise<string>;
     toJSON(): TX;
@@ -61,6 +77,5 @@ export default class Transaction extends TransactionClient {
     gasPrice(gasPrice: GasPrice): this;
     data(data: Data): this;
     private assignTXValues;
-    private checkGasAndGasPrice;
 }
 export {};

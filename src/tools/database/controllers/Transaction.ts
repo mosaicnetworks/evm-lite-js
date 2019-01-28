@@ -5,22 +5,23 @@ import { DatabaseSchema, TransactionSchema } from '../Database';
 import TransactionFilter from '../filters/Transaction';
 import TransactionSchemaClass from '../schemas/Transaction';
 
-
 export default class Transaction {
-
 	private readonly schema = TransactionSchemaClass;
 
-	constructor(private readonly database: LowDB.LowdbSync<DatabaseSchema>) {
-	}
+	constructor(private readonly database: LowDB.LowdbSync<DatabaseSchema>) {}
 
 	/**
 	 * @description Mutates database.
 	 */
 	public insert(tx: TransactionSchema | TransactionSchemaClass) {
-		return new Promise<void>((resolve) => {
-			const txToSubmit: TransactionSchema = (tx instanceof TransactionSchemaClass) ? tx.raw : tx;
+		return new Promise<void>(resolve => {
+			const txToSubmit: TransactionSchema =
+				tx instanceof TransactionSchemaClass ? tx.raw : tx;
 
-			this.database.get('transactions').push(txToSubmit).write();
+			this.database
+				.get('transactions')
+				.push(txToSubmit)
+				.write();
 			resolve();
 		});
 	}
@@ -40,7 +41,8 @@ export default class Transaction {
 
 	public get(hash: string): Promise<TransactionSchema> {
 		return new Promise<TransactionSchema>(resolve => {
-			const transaction = this.database.get('transactions')
+			const transaction = this.database
+				.get('transactions')
 				.find({
 					txHash: hash
 				})
@@ -49,5 +51,4 @@ export default class Transaction {
 			resolve(transaction);
 		});
 	}
-
 }

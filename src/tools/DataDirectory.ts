@@ -3,9 +3,7 @@ import Keystore from './classes/Keystore';
 import Static from './classes/Static';
 import Database from './database/Database';
 
-
 export default class DataDirectory {
-
 	public config: Config;
 	public database: Database;
 	public keystore: Keystore;
@@ -14,16 +12,18 @@ export default class DataDirectory {
 	 * Data directory controller class
 	 *
 	 * @description
-	 * A data directory is a folder which contains the 'keystore', 'db.json' and the 'config.toml' file for the client
-	 * sided tools for EVM-Lite. The default directory structure is:
+	 * A data directory is a folder which contains the 'keystore', 'db.json'
+	 * and the 'config.toml' file for the client sided tools for EVM-Lite.
+	 * The default directory structure is:
 	 *
 	 * + Data Directory
 	 *     + keystore
 	 *     - db.json
 	 *     - config.toml
 	 *
-	 * If the directory does not exist it will be created along with all required files. The keystore directory is
-	 * relative to the 'config.toml' file.
+	 * If the directory does not exist it will be created along with all
+	 * required files. The keystore directory is relative to the 'config.toml'
+	 * file.
 	 *
 	 * @param path - The relative or absolute path for the data directory.
 	 */
@@ -49,5 +49,4 @@ export default class DataDirectory {
 	public newDatabase(dataDirectory: string, name: string): void {
 		this.database = new Database(dataDirectory, name);
 	}
-
 }

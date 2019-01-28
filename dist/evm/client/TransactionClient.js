@@ -21,20 +21,20 @@ var TransactionClient = /** @class */ (function (_super) {
         return _super.call(this, host, port) || this;
     }
     TransactionClient.prototype.callTX = function (tx) {
-        return BaseClient_1.request(this.options('POST', '/call'), tx)
-            .then(function (response) { return response; });
+        return BaseClient_1.request(this.options('POST', '/call'), tx).then(function (response) { return response; });
     };
     TransactionClient.prototype.sendTX = function (tx) {
-        return BaseClient_1.request(this.options('POST', '/tx'), tx)
-            .then(function (response) { return response; });
+        return BaseClient_1.request(this.options('POST', '/tx'), tx).then(function (response) {
+            return JSON.parse(response);
+        });
     };
     TransactionClient.prototype.sendRaw = function (tx) {
-        return BaseClient_1.request(this.options('POST', '/rawtx'), tx)
-            .then(function (response) { return JSONBig.parse(response); });
+        return BaseClient_1.request(this.options('POST', '/rawtx'), tx).then(function (response) {
+            return JSONBig.parse(response);
+        });
     };
     TransactionClient.prototype.getReceipt = function (txHash) {
-        return BaseClient_1.request(this.options('GET', "/tx/" + txHash))
-            .then(function (response) { return JSONBig.parse(response); });
+        return BaseClient_1.request(this.options('GET', "/tx/" + txHash)).then(function (response) { return JSONBig.parse(response); });
     };
     return TransactionClient;
 }(BaseClient_1.default));

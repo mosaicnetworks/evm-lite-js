@@ -172,7 +172,7 @@ var Keystore = /** @class */ (function () {
     };
     Keystore.prototype.getFilePathForAddress = function (address) {
         var dir = fs.readdirSync(this.path).filter(function (file) {
-            return !(file.startsWith('.'));
+            return !file.startsWith('.');
         });
         if (address.startsWith('0x')) {
             address = address.substr(2);
@@ -191,7 +191,7 @@ var Keystore = /** @class */ (function () {
     Keystore.prototype.allKeystoreFiles = function () {
         var json = [];
         var files = fs.readdirSync(this.path).filter(function (file) {
-            return !(file.startsWith('.'));
+            return !file.startsWith('.');
         });
         for (var _i = 0, files_2 = files; _i < files_2.length; _i++) {
             var file = files_2[_i];
@@ -206,7 +206,7 @@ var Keystore = /** @class */ (function () {
             address = address.substr(2);
         }
         address = address.toLowerCase();
-        return this.allKeystoreFiles().filter(function (file) { return file.address === address; })[0] || null;
+        return (this.allKeystoreFiles().filter(function (file) { return file.address === address; })[0] || null);
     };
     return Keystore;
 }());

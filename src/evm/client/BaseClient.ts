@@ -2,13 +2,13 @@ import * as http from 'http';
 
 export const request = (options: any, tx?: string): Promise<string> => {
 	return new Promise<string>((resolve, reject) => {
-		const req = http.request(options, (response) => {
+		const req = http.request(options, response => {
 			let data = '';
-			response.on('data', (chunk) => data += chunk);
+			response.on('data', chunk => (data += chunk));
 			response.on('end', () => resolve(data));
-			response.on('error', (err) => reject(err));
+			response.on('error', err => reject(err));
 		});
-		req.on('error', (err) => reject(err));
+		req.on('error', err => reject(err));
 		if (tx) {
 			req.write(tx);
 		}
@@ -17,9 +17,10 @@ export const request = (options: any, tx?: string): Promise<string> => {
 };
 
 export default abstract class BaseClient {
-
-	protected constructor(public readonly host: Readonly<string>, public readonly port: Readonly<number>) {
-	}
+	protected constructor(
+		public readonly host: Readonly<string>,
+		public readonly port: Readonly<number>
+	) {}
 
 	protected options(method: string, path: string) {
 		return {
@@ -29,5 +30,4 @@ export default abstract class BaseClient {
 			path
 		};
 	}
-
 }

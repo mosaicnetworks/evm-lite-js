@@ -74,14 +74,20 @@ var SolidityFunction = /** @class */ (function (_super) {
         _this.contractAddress = contractAddress;
         _this.name = abi.name;
         _this.solFunction = new SolFunction('', abi, '');
-        _this.constant = (abi.stateMutability === 'view' || abi.stateMutability === 'pure' || abi.constant);
-        _this.payable = (abi.stateMutability === 'payable' || abi.payable);
+        _this.constant =
+            abi.stateMutability === 'view' ||
+                abi.stateMutability === 'pure' ||
+                abi.constant;
+        _this.payable = abi.stateMutability === 'payable' || abi.payable;
         _this.inputTypes = abi.inputs.map(function (i) {
             return i.type;
         });
-        _this.outputTypes = abi.outputs && abi.outputs.map(function (i) {
-            return i.type;
-        }) || [];
+        _this.outputTypes =
+            (abi.outputs &&
+                abi.outputs.map(function (i) {
+                    return i.type;
+                })) ||
+                [];
         return _this;
     }
     SolidityFunction.prototype.generateTransaction = function (options) {
@@ -90,19 +96,20 @@ var SolidityFunction = /** @class */ (function (_super) {
             funcArgs[_i - 1] = arguments[_i];
         }
         return __awaiter(this, void 0, void 0, function () {
-            var callData, tx, unpackfn, account;
+            var payload, tx, unpackfn, account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        console.log(funcArgs);
                         this.validateArgs(funcArgs);
-                        callData = this.solFunction.getData();
+                        payload = this.solFunction.toPayload(funcArgs);
                         tx = {
                             from: options.from,
                             to: this.contractAddress,
                             gas: options.gas,
                             gasPrice: options.gasPrice
                         };
-                        tx.data = callData;
+                        tx.data = payload.data;
                         if (tx.value && tx.value <= 0 && this.payable) {
                             throw Error('Function is payable and requires `value` greater than 0.');
                         }
@@ -134,7 +141,6 @@ var SolidityFunction = /** @class */ (function (_super) {
             throw errors.InvalidNumberOfSolidityArgs(expected, received);
         }
     };
-    ;
     SolidityFunction.prototype.requireSolidityTypes = function (args) {
         var _this = this;
         args.map(function (a, i) {
@@ -143,7 +149,6 @@ var SolidityFunction = /** @class */ (function (_super) {
             }
         });
     };
-    ;
     return SolidityFunction;
 }(AccountClient_1.default));
 exports.default = SolidityFunction;

@@ -7,21 +7,22 @@ import { SentTX } from '../..';
 import Static from '../classes/Static';
 import TransactionController from './controllers/Transaction';
 
-
 export type TransactionSchema = SentTX;
 
 export interface DatabaseSchema {
-	transactions: TransactionSchema[],
+	transactions: TransactionSchema[];
 }
 
 export default class Database {
-
 	public readonly path: string;
 	public readonly transactions: TransactionController;
 
 	private readonly database: LowDB.LowdbSync<DatabaseSchema>;
 
-	constructor(private readonly directory: string, private readonly name: string) {
+	constructor(
+		private readonly directory: string,
+		private readonly name: string
+	) {
 		this.path = path.join(directory, name);
 
 		if (Static.exists(this.path)) {
@@ -37,5 +38,4 @@ export default class Database {
 
 		this.transactions = new TransactionController(this.database);
 	}
-
 }
