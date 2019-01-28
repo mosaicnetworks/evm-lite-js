@@ -5,8 +5,8 @@ export default class Static {
     static cleanAddress(address: string): string;
     static createOrReadFile(path: string, data: string): string;
     static getParentAndName(path: string): {
-        parent: string;
-        name: string;
+        parent: any;
+        name: any;
     };
     static isEquivalentObjects(objectA: any, objectB: any): boolean;
 }

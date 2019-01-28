@@ -48,7 +48,7 @@ var Keystore = /** @class */ (function () {
         Static_1.default.createDirectoryIfNotExists(this.path);
     }
     Keystore.prototype.decrypt = function (address, password) {
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, Promise, function () {
             var keystore;
             return __generator(this, function (_a) {
                 switch (_a.label) {

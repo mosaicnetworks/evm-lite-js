@@ -1,5 +1,5 @@
-const EVMLC = require('evm-lite-lib').EVMLC;
-const DataDirectory = require('evm-lite-lib').DataDirectory;
+const { EVMLC } = require('evm-lite-lib');
+const { DataDirectory } = require('evm-lite-lib');
 
 const solc = require('solc');
 const fs = require('fs');
@@ -18,7 +18,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new DataDirectory('[..]/.evmlc');
 
 // Contract Object
-const contractPath = './assets/CrowdFunding.sol';
+const contractPath = '../assets/CrowdFunding.sol';
 const contractFile = fs.readFileSync(contractPath, 'utf8');
 const contractName = ':' + 'CrowdFunding';
 

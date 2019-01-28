@@ -24,8 +24,6 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var solc = require("solc");
 var types_1 = require("./types");
 var Transaction_1 = require("./classes/Transaction");
 var SolidityContract_1 = require("./classes/SolidityContract");
@@ -75,15 +73,15 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    EVMLC.prototype.compileContract = function (name, path) {
-        var output = solc.compile(fs.readFileSync(path, 'utf8'), 1);
-        var ABI = JSON.parse(output.contracts[":" + name].interface);
-        var bytecode = output.contracts[":" + name].bytecode;
-        return {
-            abi: ABI,
-            bytecode: bytecode
-        };
-    };
+    // public compileContract(name: string, path: string) {
+    // 	const output = solc.compile(fs.readFileSync(path, 'utf8'), 1);
+    // 	const ABI: any[] = JSON.parse(output.contracts[`:${name}`].interface);
+    // 	const bytecode: string = output.contracts[`:${name}`].bytecode;
+    // 	return {
+    // 		abi: ABI,
+    // 		bytecode
+    // 	};
+    // }
     EVMLC.prototype.loadContract = function (abi, options) {
         var _this = this;
         this.requireAddress();

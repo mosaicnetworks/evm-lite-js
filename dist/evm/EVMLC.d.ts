@@ -14,10 +14,6 @@ export default class EVMLC extends DefaultClient {
     defaultFrom: string;
     defaultGas: Gas;
     defaultGasPrice: GasPrice;
-    compileContract(name: string, path: string): {
-        abi: any[];
-        bytecode: string;
-    };
     loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], options?: {
         data?: string;
         contractAddress?: string;

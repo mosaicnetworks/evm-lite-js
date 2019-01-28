@@ -60,14 +60,14 @@ var Transaction = /** @class */ (function () {
         return new this.schema(tx);
     };
     Transaction.prototype.list = function () {
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.database.getState().transactions];
             });
         });
     };
     Transaction.prototype.filter = function () {
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, Promise, function () {
             var transactions;
             return __generator(this, function (_a) {
                 switch (_a.label) {
