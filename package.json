@@ -11,7 +11,8 @@
   "author": "Danu Kumanan",
   "license": "MIT",
   "dependencies": {
-    "chalk": "latest",
+    "@babel/runtime": "^7.3.1",
+    "crypto-random-hex": "^1.0.0",
     "js-scrypt": "^0.2.0",
     "json-bigint": "^0.3.0",
     "lowdb": "^1.0.0",
@@ -19,8 +20,8 @@
     "solc": "^0.4.25",
     "toml": "^2.3.3",
     "tomlify-j0.4": "^3.0.0",
-    "web3": "0.20.7",
-    "web3-eth-accounts": "^1.0.0-beta.26"
+    "web3": "0.20.6",
+    "web3-eth-accounts": "1.0.0-beta.37"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
@@ -48,6 +49,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mosaicnetworks/evm-lite-nodejs-sdk"
+    "url": "https://github.com/mosaicnetworks/evm-lite-lib"
   }
 }

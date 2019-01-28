@@ -14,23 +14,19 @@ interface CrowdFundingSchema extends BaseContractSchema {
 	settle: () => Promise<Transaction>;
 }
 
-const compile = solc.compile('../assets/CrowdFunding.sol', 1);
-const compiled = {
-	abi: JSON.parse(compile.contracts[`:CrowdFunding`].interface),
-	bytecode: JSON.parse(compile.contracts[`:CrowdFunding`].bytecode)
-};
-
 const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
-const defaultOptions = {
+const evmlc = new EVMLC('127.0.0.1', 8080, {
 	from,
 	gas: 1000000,
 	gasPrice: 0
-};
-
-const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
+});
 const directory = new DataDirectory('/Users/danu/.evmlc');
 const account = directory.keystore.decrypt(from, 'asd');
 const contractAddress = '0x38CB86c8123e68164390259D022b5D2afffCB273';
+const compiled = evmlc.compileContract(
+	'CrowdFunding',
+	'../assets/CrowdFunding.sol'
+);
 
 const loadContract = async () => {
 	return await evmlc.loadContract<CrowdFundingSchema>(compiled.abi, {
@@ -43,7 +39,7 @@ loadContract()
 	.then(async contract => {
 		const transaction = await contract.methods.contribute();
 
-		transaction.value(1100);
+		transaction.value(10);
 
 		await transaction.submit({}, await account);
 

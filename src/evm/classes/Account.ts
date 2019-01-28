@@ -1,10 +1,36 @@
-import * as Wallet from 'web3-eth-accounts';
-import { Account as Web3Account, V3JSONKeyStore } from 'web3-eth-accounts';
+// @ts-ignore
+import * as Accounts from 'web3-eth-accounts';
+// @ts-ignore
+import { Account as Web3Account } from 'web3-eth-accounts';
 
 import { BaseAccount } from '../..';
 import { parseTransaction } from '../types';
 
-import Transaction, { SignedTransaction, TX } from './Transaction';
+import Transaction, { ParsedTX, SignedTransaction, TX } from './Transaction';
+
+export interface KDFEncryption {
+	ciphertext: string;
+	ciperparams: {
+		iv: string;
+	};
+	cipher: string;
+	kdf: string;
+	kdfparams: {
+		dklen: number;
+		salt: string;
+		n: number;
+		r: number;
+		p: number;
+	};
+	mac: string;
+}
+
+export interface V3JSONKeyStore {
+	version: number;
+	id: string;
+	address: string;
+	crypto: KDFEncryption;
+}
 
 export default class Account {
 	get address(): string {
@@ -15,27 +41,22 @@ export default class Account {
 		return this.account.privateKey;
 	}
 
-	public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
-		// @ts-ignore
-		const decryptedAccount = new Wallet().decrypt(v3JSONKeyStore, password);
-
-		return new Account(decryptedAccount);
-	}
 	public balance: number = 0;
 	public nonce: number = 0;
 	private readonly account: Web3Account;
 
 	constructor(data?: Web3Account) {
+		const randomHex = require('crypto-random-hex');
+
 		if (!data) {
-			// @ts-ignore
-			this.account = new Wallet().create();
+			this.account = new Accounts().create(randomHex(32));
 		} else {
 			this.account = data;
 		}
 	}
 
 	public sign(message: string): any {
-		return this.account.sign(message);
+		return this.account.sign!(message);
 	}
 
 	public signTransaction(tx: TX | Transaction): Promise<SignedTransaction> {
@@ -50,17 +71,24 @@ export default class Account {
 				tx.chainID(transaction.chainId || 1);
 			}
 
-			return this.account.signTransaction(parseTransaction(tx.toJSON()));
+			return this.account.signTransaction!(
+				// @ts-ignore
+				parseTransaction(tx.toJSON())
+			);
 		}
 
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 
-		return this.account.signTransaction(parseTransaction(tx));
+		return this.account.signTransaction!(
+			// @ts-ignore
+			parseTransaction(tx.toJSON())
+		);
 	}
 
 	public encrypt(password: string): V3JSONKeyStore {
-		return this.account.encrypt(password);
+		// @ts-ignore
+		return this.account.encrypt!(password);
 	}
 
 	public toBaseAccount(): BaseAccount {
