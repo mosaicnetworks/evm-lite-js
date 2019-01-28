@@ -135,7 +135,7 @@ export default class SolidityContract<
 	private attachMethodsToContract(): void {
 		if (!this.options.address) {
 			throw new Error(
-				'Cannot attach functions. No contract address set.'
+				'Cannot attach functions as contract address not set.'
 			);
 		}
 

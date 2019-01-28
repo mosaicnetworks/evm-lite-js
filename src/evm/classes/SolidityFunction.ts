@@ -56,9 +56,11 @@ export default class SolidityFunction extends AccountClient {
 		options: { from: AddressType; gas: Gas; gasPrice: GasPrice },
 		...funcArgs: any[]
 	): Promise<Transaction> {
+		console.log(funcArgs);
+
 		this.validateArgs(funcArgs);
 
-		const callData = this.solFunction.getData();
+		const payload = this.solFunction.toPayload(funcArgs);
 		const tx: TX = {
 			from: options.from,
 			to: this.contractAddress,
@@ -66,7 +68,7 @@ export default class SolidityFunction extends AccountClient {
 			gasPrice: options.gasPrice
 		};
 
-		tx.data = callData;
+		tx.data = payload.data;
 
 		if (tx.value && tx.value <= 0 && this.payable) {
 			throw Error(

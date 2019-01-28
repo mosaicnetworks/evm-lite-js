@@ -21,8 +21,7 @@ var AccountClient = /** @class */ (function (_super) {
         return _super.call(this, host, port) || this;
     }
     AccountClient.prototype.getAccount = function (address) {
-        return BaseClient_1.request(this.options('GET', "/account/" + address))
-            .then(function (response) {
+        return BaseClient_1.request(this.options('GET', "/account/" + address)).then(function (response) {
             var account = JSONBig.parse(response);
             if (typeof account.balance === 'object') {
                 account.balance = account.balance.toFormat(0);
@@ -31,8 +30,7 @@ var AccountClient = /** @class */ (function (_super) {
         });
     };
     AccountClient.prototype.getAccounts = function () {
-        return BaseClient_1.request(this.options('GET', '/accounts'))
-            .then(function (response) {
+        return BaseClient_1.request(this.options('GET', '/accounts')).then(function (response) {
             var json = JSONBig.parse(response);
             if (json.accounts) {
                 return json.accounts.map(function (account) {

@@ -22,12 +22,12 @@ var DefaultClient = /** @class */ (function (_super) {
         return _super.call(this, host, port) || this;
     }
     DefaultClient.prototype.testConnection = function () {
-        return BaseClient_1.request(this.options('GET', '/info'))
-            .then(function () { return true; });
+        return BaseClient_1.request(this.options('GET', '/info')).then(function () { return true; });
     };
     DefaultClient.prototype.getInfo = function () {
-        return BaseClient_1.request(this.options('GET', '/info'))
-            .then(function (response) { return JSONBig.parse(response); });
+        return BaseClient_1.request(this.options('GET', '/info')).then(function (response) {
+            return JSONBig.parse(response);
+        });
     };
     return DefaultClient;
 }(AccountClient_1.default));

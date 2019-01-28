@@ -47,7 +47,8 @@ var Static = /** @class */ (function () {
         }
         for (var _i = 0, aProps_1 = aProps; _i < aProps_1.length; _i++) {
             var propName = aProps_1[_i];
-            if (typeof objectA[propName] === 'object' && typeof objectB[propName] === 'object') {
+            if (typeof objectA[propName] === 'object' &&
+                typeof objectB[propName] === 'object') {
                 if (!Static.isEquivalentObjects(objectA[propName], objectB[propName])) {
                     return false;
                 }

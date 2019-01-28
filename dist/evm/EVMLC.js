@@ -24,6 +24,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var fs = require("fs");
+var solc = require("solc");
 var types_1 = require("./types");
 var Transaction_1 = require("./classes/Transaction");
 var SolidityContract_1 = require("./classes/SolidityContract");
@@ -73,21 +75,33 @@ var EVMLC = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    EVMLC.prototype.compileContract = function (name, path) {
+        var output = solc.compile(fs.readFileSync(path, 'utf8'), 1);
+        var ABI = JSON.parse(output.contracts[":" + name].interface);
+        var bytecode = output.contracts[":" + name].bytecode;
+        return {
+            abi: ABI,
+            bytecode: bytecode
+        };
+    };
     EVMLC.prototype.loadContract = function (abi, options) {
         var _this = this;
         this.requireAddress();
-        var address = options && options.contractAddress ? new types_1.AddressType(options.contractAddress) : undefined;
-        var data = options && options.data || '';
-        return this.getAccount(this.defaultFrom.trim())
-            .then(function (account) { return new SolidityContract_1.default({
-            from: _this.defaultTXOptions.from,
-            interface: abi,
-            gas: _this.defaultTXOptions.gas,
-            gasPrice: _this.defaultTXOptions.gasPrice,
-            nonce: account.nonce,
-            address: address,
-            data: data
-        }, _this.host, _this.port); });
+        var data = (options && options.data) || '';
+        var address = options && options.contractAddress
+            ? new types_1.AddressType(options.contractAddress)
+            : undefined;
+        return this.getAccount(this.defaultFrom.trim()).then(function (account) {
+            return new SolidityContract_1.default({
+                from: _this.defaultTXOptions.from,
+                interface: abi,
+                gas: _this.defaultTXOptions.gas,
+                gasPrice: _this.defaultTXOptions.gasPrice,
+                nonce: account.nonce,
+                address: address,
+                data: data
+            }, _this.host, _this.port);
+        });
     };
     EVMLC.prototype.prepareTransfer = function (to, value, from) {
         var _this = this;
@@ -101,16 +115,17 @@ var EVMLC = /** @class */ (function (_super) {
         if (value <= 0) {
             throw new Error('A transfer of funds must have a `value` greater than 0.');
         }
-        return this.getAccount(fromObject.value)
-            .then(function (account) { return new Transaction_1.default({
-            from: fromObject,
-            to: new types_1.AddressType(to.trim()),
-            value: value,
-            gas: _this.defaultGas,
-            gasPrice: _this.defaultGasPrice,
-            nonce: account.nonce,
-            chainId: 1
-        }, _this.host, _this.port, false); });
+        return this.getAccount(fromObject.value).then(function (account) {
+            return new Transaction_1.default({
+                from: fromObject,
+                to: new types_1.AddressType(to.trim()),
+                value: value,
+                gas: _this.defaultGas,
+                gasPrice: _this.defaultGasPrice,
+                nonce: account.nonce,
+                chainId: 1
+            }, _this.host, _this.port, false);
+        });
     };
     EVMLC.prototype.requireAddress = function () {
         if (!this.defaultTXOptions.from.value) {

@@ -8,14 +8,12 @@ import {
 	Transaction
 } from '../../src';
 
-// Contract function schema
 interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Promise<Transaction>;
 	checkGoalReached: () => Promise<Transaction>;
 	settle: () => Promise<Transaction>;
 }
 
-// Contract compilation
 const contractName: string = ':CrowdFunding';
 const output = solc.compile(
 	fs.readFileSync('../assets/CrowdFunding.sol', 'utf8'),
@@ -24,7 +22,6 @@ const output = solc.compile(
 const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
 const data: string = output.contracts[contractName].bytecode;
 
-// Default from address
 const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
 const defaultOptions = {
 	from,
@@ -32,13 +29,11 @@ const defaultOptions = {
 	gasPrice: 0
 };
 
-// EVMLC controller object
 const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
 const directory = new DataDirectory('/Users/danu/.evmlc');
 const account = directory.keystore.decrypt(from, 'asd');
 const contractAddress = '0x38CB86c8123e68164390259D022b5D2afffCB273';
 
-// Return generated object
 const loadContract = async () => {
 	return await evmlc.loadContract<CrowdFundingSchema>(ABI, {
 		data,

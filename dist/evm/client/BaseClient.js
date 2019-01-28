@@ -5,7 +5,7 @@ exports.request = function (options, tx) {
     return new Promise(function (resolve, reject) {
         var req = http.request(options, function (response) {
             var data = '';
-            response.on('data', function (chunk) { return data += chunk; });
+            response.on('data', function (chunk) { return (data += chunk); });
             response.on('end', function () { return resolve(data); });
             response.on('error', function (err) { return reject(err); });
         });

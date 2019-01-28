@@ -22,12 +22,14 @@ var Transactions = /** @class */ (function (_super) {
     }
     Transactions.prototype.sender = function (address) {
         return this.objects.filter(function (transaction) {
-            return Static_1.default.cleanAddress(transaction.from) === Static_1.default.cleanAddress(address);
+            return (Static_1.default.cleanAddress(transaction.from) ===
+                Static_1.default.cleanAddress(address));
         });
     };
     Transactions.prototype.receiver = function (address) {
         return this.objects.filter(function (transaction) {
-            return Static_1.default.cleanAddress(transaction.to) === Static_1.default.cleanAddress(address);
+            return (Static_1.default.cleanAddress(transaction.to) ===
+                Static_1.default.cleanAddress(address));
         });
     };
     return Transactions;

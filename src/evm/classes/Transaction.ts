@@ -93,13 +93,12 @@ export default class Transaction extends TransactionClient {
 	/**
 	 * Send a transaction to a node for a controlled account.
 	 *
-	 * @param options - Override transactions options for
+	 * @param options - Override transactions options
 	 *
 	 * @deprecated
 	 */
 	public send(options?: OverrideTXOptions): Promise<TXReceipt> {
 		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
 
 		if (this.constant) {
 			throw new Error(
@@ -125,7 +124,10 @@ export default class Transaction extends TransactionClient {
 		account?: Account
 	): Promise<this | string> {
 		this.assignTXValues(options);
-		this.checkGasAndGasPrice();
+
+		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+			throw new Error('Gas or Gas Price not set');
+		}
 
 		if (account) {
 			await this.sign(account);
@@ -236,12 +238,6 @@ export default class Transaction extends TransactionClient {
 			this.tx.gas = options.gas || this.tx.gas;
 			this.tx.value = options.value || this.tx.value;
 			this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-		}
-	}
-
-	private checkGasAndGasPrice() {
-		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-			throw new Error('Gas or Gas Price not set');
 		}
 	}
 }

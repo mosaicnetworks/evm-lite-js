@@ -75,14 +75,13 @@ var Transaction = /** @class */ (function (_super) {
     /**
      * Send a transaction to a node for a controlled account.
      *
-     * @param options - Override transactions options for
+     * @param options - Override transactions options
      *
      * @deprecated
      */
     Transaction.prototype.send = function (options) {
         var _this = this;
         this.assignTXValues(options);
-        this.checkGasAndGasPrice();
         if (this.constant) {
             throw new Error('Transaction does not mutate state. Use `call()` instead');
         }
@@ -90,39 +89,46 @@ var Transaction = /** @class */ (function (_super) {
             throw new Error('Transaction does have a value to send.');
         }
         return this.sendTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
-            .then(function (res) {
-            var response = JSONBig.parse(res);
-            return response.txHash;
-        })
-            .then(function (txHash) {
-            return _this.getReceipt(txHash);
-        })
+            .then(function (response) { return response.txHash; })
+            .then(function (txHash) { return _this.getReceipt(txHash); })
             .then(function (response) {
             _this.txReceipt = response;
             return _this.txReceipt;
         });
     };
-    Transaction.prototype.submit = function (options) {
-        var _this = this;
-        this.assignTXValues(options);
-        this.checkGasAndGasPrice();
-        if (!this.signedTX) {
-            throw new Error('Transaction has not been signed locally yet.');
-        }
-        if (!this.tx.data && !this.tx.value) {
-            throw new Error('Transaction does have a value to send.');
-        }
-        if (!this.constant) {
-            return this.sendRaw(this.signedTX.rawTransaction)
-                .then(function (res) { return res.txHash; })
-                .then(function (hash) {
-                _this.hash = hash;
-                return _this;
+    Transaction.prototype.submit = function (options, account) {
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.assignTXValues(options);
+                        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
+                            throw new Error('Gas or Gas Price not set');
+                        }
+                        if (!account) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.sign(account)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!this.signedTX) {
+                            throw new Error('Transaction has not been signed locally yet.');
+                        }
+                        if (!this.tx.data && !this.tx.value) {
+                            throw new Error('Transaction does have a value to send.');
+                        }
+                        if (!!this.constant) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.sendRaw(this.signedTX.rawTransaction)];
+                    case 3:
+                        txHash = (_a.sent()).txHash;
+                        this.hash = txHash;
+                        return [2 /*return*/, this];
+                    case 4: return [4 /*yield*/, this.call()];
+                    case 5: return [2 /*return*/, _a.sent()];
+                }
             });
-        }
-        else {
-            return this.call();
-        }
+        });
     };
     Transaction.prototype.sign = function (account) {
         return __awaiter(this, void 0, void 0, function () {
@@ -140,24 +146,28 @@ var Transaction = /** @class */ (function (_super) {
         });
     };
     Transaction.prototype.call = function (options) {
-        var _this = this;
-        this.assignTXValues(options);
-        this.checkGasAndGasPrice();
-        if (!this.constant) {
-            throw new Error('Transaction mutates state. Use `send()` instead');
-        }
-        if (this.tx.value) {
-            throw new Error('Transaction cannot have value if it does not intend to mutate state.');
-        }
-        return this.callTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
-            .then(function (response) {
-            return JSONBig.parse(response);
-        })
-            .then(function (obj) {
-            if (!_this.unpackfn) {
-                throw new Error('Unpacking function required.');
-            }
-            return _this.unpackfn(Buffer.from(obj.data).toString());
+        return __awaiter(this, void 0, void 0, function () {
+            var call, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.constant) {
+                            throw new Error('Transaction mutates state. Use `send()` instead');
+                        }
+                        if (this.tx.value) {
+                            throw new Error('Transaction cannot have value if it' +
+                                'does not intend to mutate the state.');
+                        }
+                        return [4 /*yield*/, this.callTX(this.toString())];
+                    case 1:
+                        call = _a.sent();
+                        response = JSONBig.parse(call);
+                        if (!this.unpackfn) {
+                            throw new Error('Unpacking function required.');
+                        }
+                        return [2 /*return*/, this.unpackfn(Buffer.from(response.data).toString())];
+                }
+            });
         });
     };
     Transaction.prototype.toJSON = function () {
@@ -200,16 +210,13 @@ var Transaction = /** @class */ (function (_super) {
     };
     Transaction.prototype.assignTXValues = function (options) {
         if (options) {
-            this.tx.to = (options.to) ? new types_1.AddressType(options.to) : this.tx.to;
-            this.tx.from = (options.from) ? new types_1.AddressType(options.from) : this.tx.from;
+            this.tx.to = options.to ? new types_1.AddressType(options.to) : this.tx.to;
+            this.tx.from = options.from
+                ? new types_1.AddressType(options.from)
+                : this.tx.from;
             this.tx.gas = options.gas || this.tx.gas;
             this.tx.value = options.value || this.tx.value;
             this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
-        }
-    };
-    Transaction.prototype.checkGasAndGasPrice = function () {
-        if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-            throw new Error('Gas or Gas Price not set');
         }
     };
     return Transaction;
