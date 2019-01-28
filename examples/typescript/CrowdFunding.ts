@@ -14,29 +14,23 @@ interface CrowdFundingSchema extends BaseContractSchema {
 	settle: () => Promise<Transaction>;
 }
 
-const contractName: string = ':CrowdFunding';
-const output = solc.compile(
-	fs.readFileSync('../assets/CrowdFunding.sol', 'utf8'),
-	1
-);
-const ABI: any[] = JSON.parse(output.contracts[contractName].interface);
-const data: string = output.contracts[contractName].bytecode;
-
 const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
-const defaultOptions = {
+const evmlc = new EVMLC('127.0.0.1', 8080, {
 	from,
 	gas: 1000000,
 	gasPrice: 0
-};
-
-const evmlc = new EVMLC('127.0.0.1', 8080, defaultOptions);
+});
 const directory = new DataDirectory('/Users/danu/.evmlc');
 const account = directory.keystore.decrypt(from, 'asd');
 const contractAddress = '0x38CB86c8123e68164390259D022b5D2afffCB273';
+const compiled = evmlc.compileContract(
+	'CrowdFunding',
+	'../assets/CrowdFunding.sol'
+);
 
 const loadContract = async () => {
-	return await evmlc.loadContract<CrowdFundingSchema>(ABI, {
-		data,
+	return await evmlc.loadContract<CrowdFundingSchema>(compiled.abi, {
+		data: compiled.bytecode,
 		contractAddress
 	});
 };
@@ -45,7 +39,7 @@ loadContract()
 	.then(async contract => {
 		const transaction = await contract.methods.contribute();
 
-		transaction.value(1100);
+		transaction.value(10);
 
 		await transaction.submit({}, await account);
 

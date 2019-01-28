@@ -2,9 +2,9 @@ import * as fs from 'fs';
 import * as JSONBig from 'json-bigint';
 import * as path from 'path';
 
-import { V3JSONKeyStore } from 'web3-eth-accounts';
+import { V3JSONKeyStore } from '../..';
 
-import { Account, BaseAccount, EVMLC } from '../..';
+import { Account, BaseAccount, EVMLC, Wallet } from '../..';
 import Static from './Static';
 
 export default class Keystore {
@@ -22,7 +22,7 @@ export default class Keystore {
 	public async decrypt(address: string, password: string): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 
-		return await Account.decrypt(keystore, password);
+		return await Wallet.decrypt(keystore, password);
 	}
 
 	public create(password: string, output?: string): Promise<string> {
@@ -67,7 +67,7 @@ export default class Keystore {
 			let account: Account;
 
 			try {
-				account = Account.decrypt(
+				account = Wallet.decrypt(
 					JSONBig.parse(fs.readFileSync(path, 'utf8')),
 					old
 				);

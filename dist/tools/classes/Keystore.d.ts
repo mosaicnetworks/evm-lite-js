@@ -1,4 +1,4 @@
-import { V3JSONKeyStore } from 'web3-eth-accounts';
+import { V3JSONKeyStore } from '../..';
 import { Account, BaseAccount, EVMLC } from '../..';
 export default class Keystore {
     readonly directory: string;
