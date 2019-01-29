@@ -100,7 +100,6 @@ var SolidityFunction = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(funcArgs);
                         this.validateArgs(funcArgs);
                         payload = this.solFunction.toPayload(funcArgs);
                         tx = {
