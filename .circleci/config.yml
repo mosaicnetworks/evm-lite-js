@@ -1,42 +1,32 @@
 version: 2
 jobs:
-  build-evm-lite:
-    working_directory: ~/mosaicnetworks/evm-lite
+  build:
     docker:
-      - image: circleci/golang
+      - image: circleci/node
     steps:
-      - run: go get github.com/mosaicnetworks/evm-lite
       - run:
-          name: install-vendor
-          command: make vendor
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+            key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install
-          command: make install
-      - run:
-          name: start-evml
-          command: ./cmd/evml/evml solo
-          background: true
-
-  build-evm-lite-cli:
-    working_directory: ~/mosaicnetworks/evm-lite-lib
+            name: install-dependencies
+            command: npm install
+      - save_cache:
+            key: dependency-cache-{{ checksum "package.json" }}
+            paths:
+                - ./node_modules
+  test:
     docker:
       - image: circleci/node
     steps:
       - checkout
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-dependencies
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
           name: test
           command: npm run test
-      - store_artifacts:
-          path: test-results.xml
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
