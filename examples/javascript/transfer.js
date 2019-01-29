@@ -17,7 +17,10 @@ const dataDirectory = new evmlib.DataDirectory('[..]/.evmlc');
 // Async Await
 async function signTransactionLocallyAsync() {
 	// Get keystore object from the keystore directory and decrypt
-	const account = await dataDirectory.keystore.decrypt(from, 'password');
+	const account = await dataDirectory.keystore.decryptAccount(
+		from,
+		'password'
+	);
 
 	// Prepare a transaction with value of 2000
 	const transaction = await evmlc.prepareTransfer(to, 2000);

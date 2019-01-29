@@ -1,6 +1,3 @@
-import * as fs from 'fs';
-import * as solc from 'solc';
-
 import { Address, AddressType, Gas, GasPrice, Value } from './types';
 import { ABI } from './utils/Interfaces';
 
@@ -61,17 +58,6 @@ export default class EVMLC extends DefaultClient {
 
 	set defaultGasPrice(gasPrice: GasPrice) {
 		this.defaultTXOptions.gasPrice = gasPrice;
-	}
-
-	public compileContract(name: string, path: string) {
-		const output = solc.compile(fs.readFileSync(path, 'utf8'), 1);
-		const ABI: any[] = JSON.parse(output.contracts[`:${name}`].interface);
-		const bytecode: string = output.contracts[`:${name}`].bytecode;
-
-		return {
-			abi: ABI,
-			bytecode
-		};
 	}
 
 	public loadContract<ContractSchema extends BaseContractSchema>(

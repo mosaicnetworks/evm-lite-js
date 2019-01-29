@@ -22,7 +22,14 @@ const password = 'password';
 // Contract Object
 const contractPath = 'solidity/claimhub.sol';
 const contractAddress = '0x77f7a0cd3800a581dcdda0d45c23426c4abc91fe';
-const compiled = evmlc.compileContract('ClaimHub', contractPath);
+const contractPath = '../assets/ClaimHub.sol';
+const contractFile = fs.readFileSync(contractPath, 'utf8');
+const contractName = ':' + 'ClaimHub';
+const output = solc.compile(contractFile, 1);
+const compiled = {
+	bytecode: output.contracts[contractName].bytecode,
+	abi: JSON.parse(output.contracts[contractName].interface)
+};
 
 const generateContract = async () => {
 	// Generate contract object with ABI and data

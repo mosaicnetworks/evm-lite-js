@@ -1,4 +1,17 @@
-## UNRELEASED
+## 0.1.20
+
+FEATURES:
+
+IMPROVEMENTS:
+
+-   `Keystore.decrypt` renamed to `Keystore.decryptAccount`
+-   Removed `solc` as dependency as a result also removed `EVMLC.compileContract`
+
+SECURITY:
+
+BUG FIXES:
+
+## 0.1.19
 
 FEATURES:
 
