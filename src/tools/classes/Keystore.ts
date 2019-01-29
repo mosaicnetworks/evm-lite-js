@@ -4,7 +4,7 @@ import * as path from 'path';
 
 import { V3JSONKeyStore } from '../..';
 
-import { Account, BaseAccount, EVMLC, Wallet } from '../..';
+import { Account, BaseAccount, EVMLC } from '../..';
 import Static from './Static';
 
 export default class Keystore {
@@ -19,10 +19,13 @@ export default class Keystore {
 		Static.createDirectoryIfNotExists(this.path);
 	}
 
-	public async decrypt(address: string, password: string): Promise<Account> {
+	public async decryptAccount(
+		address: string,
+		password: string
+	): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 
-		return await Wallet.decrypt(keystore, password);
+		return await Account.decrypt(keystore, password);
 	}
 
 	public create(password: string, output?: string): Promise<string> {
@@ -67,7 +70,7 @@ export default class Keystore {
 			let account: Account;
 
 			try {
-				account = Wallet.decrypt(
+				account = Account.decrypt(
 					JSONBig.parse(fs.readFileSync(path, 'utf8')),
 					old
 				);

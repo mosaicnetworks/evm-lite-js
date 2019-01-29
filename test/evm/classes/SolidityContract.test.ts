@@ -1,11 +1,8 @@
-/* tslint:disable:no-var-requires */
-
-import * as Chai from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
-import evmlc from '../../setup';
+import evmlc, { assert } from '../../setup';
 
 import { BaseContractSchema, DataDirectory, Transaction } from '../../../src';
 
@@ -26,12 +23,10 @@ const data: string = output.contracts[contractName].bytecode;
 const directory = new DataDirectory(
 	path.join(require('os').homedir(), '.evmlc')
 );
-const account = directory.keystore.decrypt(evmlc.defaultFrom, 'asd');
+const account = directory.keystore.decryptAccount(evmlc.defaultFrom, 'asd');
 
-const assert = Chai.assert;
-
-describe('SolidityContract', () => {
-	it('should create a new contract object with defaults passed from evmlc object', async () => {
+describe('SolidityContract.ts', () => {
+	it('should create a new contract object with defaults', async () => {
 		const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, {
 			data
 		});
@@ -53,7 +48,7 @@ describe('SolidityContract', () => {
 		);
 	});
 
-	it('should create a new contract object and add functions when address is set from initiation', async () => {
+	it('should create contract with functions when address set', async () => {
 		const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, {
 			data,
 			contractAddress: '0x3d9f3699440744ca2dfce1ff40cd21ff4696d908'
@@ -71,7 +66,7 @@ describe('SolidityContract', () => {
 		);
 	});
 
-	it('should create a new contract object and add functions when address is set after initiation', async () => {
+	it('should create contract with functions when address set after', async () => {
 		const contract = await evmlc.loadContract<CrowdFundingSchema>(ABI, {
 			data
 		});
@@ -114,7 +109,7 @@ describe('SolidityContract', () => {
 			'there should be no methods added'
 		);
 
-		await contract.deploy(await account, [10000]);
+		await contract.deploy(await account, [10]);
 
 		assert.notEqual(
 			contract.options.address,

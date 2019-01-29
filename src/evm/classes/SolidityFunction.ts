@@ -56,8 +56,6 @@ export default class SolidityFunction extends AccountClient {
 		options: { from: AddressType; gas: Gas; gasPrice: GasPrice },
 		...funcArgs: any[]
 	): Promise<Transaction> {
-		console.log(funcArgs);
-
 		this.validateArgs(funcArgs);
 
 		const payload = this.solFunction.toPayload(funcArgs);

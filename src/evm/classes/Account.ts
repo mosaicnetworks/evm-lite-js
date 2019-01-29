@@ -41,6 +41,11 @@ export default class Account {
 		return this.account.privateKey;
 	}
 
+	public static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
+		const account = new Accounts().decrypt(v3JSONKeyStore, password);
+		return new Account(account);
+	}
+
 	public balance: number = 0;
 	public nonce: number = 0;
 	private readonly account: Web3Account;
