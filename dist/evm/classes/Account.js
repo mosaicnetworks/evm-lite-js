@@ -30,6 +30,10 @@ var Account = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Account.decrypt = function (v3JSONKeyStore, password) {
+        var account = new Accounts().decrypt(v3JSONKeyStore, password);
+        return new Account(account);
+    };
     Account.prototype.sign = function (message) {
         return this.account.sign(message);
     };

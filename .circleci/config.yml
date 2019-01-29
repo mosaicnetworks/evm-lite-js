@@ -1,25 +1,25 @@
+version: 2
 jobs:
     build:
-        working_directory: ~/mosaicnetworks/evm-lite-lib
-        docker:
-            - image: circleci/node
-        steps:
-            - checkout
-            - run:
-                  name: update-npm
-                  command: 'sudo npm install -g npm@latest'
-            - restore_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-            - run:
-                  name: install-dependencies
-                  command: npm install
-            - save_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-                  paths:
-                      - ./node_modules
-            - run:
-                  name: test
-                  command: npm run test
-            - store_artifacts:
-                  path: test-results.xml
-                  prefix: tests
+      working_directory: ~/mosaicnetworks/evm-lite-lib
+      docker:
+          - image: circleci/node
+      steps:
+          - checkout
+          - run:
+                name: update-npm
+                command: 'sudo npm install -g npm@latest'
+          - restore_cache:
+                key: dependency-cache-{{ checksum "package.json" }}
+          - run:
+                name: install-dependencies
+                command: npm install
+          - save_cache:
+                key: dependency-cache-{{ checksum "package.json" }}
+                paths:
+                    - ./node_modules
+          - run:
+                name: test
+                command: npm run test
+          - store_artifacts:
+                path: test-results.xml
