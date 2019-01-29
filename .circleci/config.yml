@@ -1,42 +1,42 @@
 jobs:
-      build:
-            working_directory: ~/mosaicnetworks/evm-lite
-            docker:
-                  - image: circleci/golang
-            steps:
-                  - run: go get github.com/mosaicnetworks/evm-lite
-                  - run:
-                        name: install-vendor
-                        command: make vendor
-                  - run:
-                        name: install
-                        command: make install
-                  - run:
-                        name: start-evml
-                        command: ./cmd/evml/evml solo
-                        background: true
+  build:
+    working_directory: ~/mosaicnetworks/evm-lite
+    docker:
+      - image: circleci/golang
+    steps:
+      - run: go get github.com/mosaicnetworks/evm-lite
+      - run:
+        name: install-vendor
+        command: make vendor
+      - run:
+        name: install
+        command: make install
+      - run:
+        name: start-evml
+        command: ./cmd/evml/evml solo
+        background: true
 
-      build:
-            working_directory: ~/mosaicnetworks/evm-lite-lib
-            docker:
-            - image: circleci/node
-            steps:
-            - checkout
-            - run:
-                  name: update-npm
-                  command: 'sudo npm install -g npm@latest'
-            - restore_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-            - run:
-                  name: install-dependencies
-                  command: npm install
-            - save_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-                  paths:
-                        - ./node_modules
-            - run:
-                  name: test
-                  command: npm run test
-            - store_artifacts:
-                  path: test-results.xml
-                  prefix: tests
+  build:
+    working_directory: ~/mosaicnetworks/evm-lite-lib
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - run:
+        name: update-npm
+        command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+        name: install-dependencies
+        command: npm install
+      - save_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+          - ./node_modules
+      - run:
+        name: test
+        command: npm run test
+      - store_artifacts:
+        path: test-results.xml
+        prefix: tests
