@@ -26,6 +26,7 @@ export interface V3JSONKeyStore {
 export default class Account {
     readonly address: string;
     readonly privateKey: string;
+    static decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string): Account;
     balance: number;
     nonce: number;
     private readonly account;

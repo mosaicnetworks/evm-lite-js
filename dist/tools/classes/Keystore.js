@@ -47,7 +47,7 @@ var Keystore = /** @class */ (function () {
         this.path = path.join(directory, name);
         Static_1.default.createDirectoryIfNotExists(this.path);
     }
-    Keystore.prototype.decrypt = function (address, password) {
+    Keystore.prototype.decryptAccount = function (address, password) {
         return __awaiter(this, void 0, void 0, function () {
             var keystore;
             return __generator(this, function (_a) {
@@ -55,7 +55,7 @@ var Keystore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.get(address.toLowerCase())];
                     case 1:
                         keystore = _a.sent();
-                        return [4 /*yield*/, __1.Wallet.decrypt(keystore, password)];
+                        return [4 /*yield*/, __1.Account.decrypt(keystore, password)];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -91,7 +91,7 @@ var Keystore = /** @class */ (function () {
             var path = _this.getFilePathForAddress(address);
             var account;
             try {
-                account = __1.Wallet.decrypt(JSONBig.parse(fs.readFileSync(path, 'utf8')), old);
+                account = __1.Account.decrypt(JSONBig.parse(fs.readFileSync(path, 'utf8')), old);
             }
             catch (e) {
                 reject('Decryption with password provided failed!');

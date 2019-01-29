@@ -6,11 +6,7 @@ export { default as Config, ConfigSchema } from './tools/classes/Config';
 export { default as Database } from './tools/database/Database';
 export { BaseContractSchema } from './evm/classes/SolidityContract';
 export { BaseAccount } from './evm/client/AccountClient';
-export {
-	SentTX,
-	SignedTransaction,
-	default as Transaction
-} from './evm/classes/Transaction';
+export { SentTX, SignedTransaction, default as Transaction } from './evm/classes/Transaction';
 export * from './evm/utils/Interfaces';
 export { V3JSONKeyStore } from './evm/classes/Account';
 export { default as DataDirectory } from './tools/DataDirectory';

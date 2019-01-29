@@ -13,19 +13,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-// @ts-ignore
-var Accounts = require("web3-eth-accounts");
 var AccountClient_1 = require("../client/AccountClient");
-var Account_1 = require("./Account");
 var Wallet = /** @class */ (function (_super) {
     __extends(Wallet, _super);
     function Wallet(host, port) {
         return _super.call(this, host, port) || this;
     }
-    Wallet.decrypt = function (v3JSONKeyStore, password) {
-        var account = new Accounts().decrypt(v3JSONKeyStore, password);
-        return new Account_1.default(account);
-    };
     Wallet.prototype.add = function () {
         // pass
     };

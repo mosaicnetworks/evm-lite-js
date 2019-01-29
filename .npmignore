@@ -13,3 +13,4 @@ webpack.config.js
 examples
 .circleci
 lib
+.vscode
