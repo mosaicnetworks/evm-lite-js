@@ -116,7 +116,7 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
-		return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
+		return this.sendTX(this.parseToString())
 			.then(response => response.txHash)
 			.then(txHash => this.getReceipt(txHash))
 			.then(response => {

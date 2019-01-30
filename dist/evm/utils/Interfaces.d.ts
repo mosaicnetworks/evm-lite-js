@@ -1,15 +1,13 @@
 export interface Input {
-	name: string;
-	type: string;
-	indexed?: boolean;
+    name: string;
+    type: string;
 }
 export interface ABI {
-	anonymous?: boolean;
-	constant?: any;
-	inputs: Input[];
-	name?: any;
-	outputs?: any[];
-	payable?: any;
-	stateMutability?: any;
-	type?: any;
+    constant?: any;
+    inputs: Input[];
+    name?: any;
+    outputs?: any[];
+    payable: any;
+    stateMutability: any;
+    type: any;
 }

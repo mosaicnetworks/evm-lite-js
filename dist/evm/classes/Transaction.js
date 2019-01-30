@@ -93,7 +93,7 @@ var Transaction = /** @class */ (function (_super) {
         if (!this.tx.data && !this.tx.value) {
             throw new Error('Transaction does have a value to send.');
         }
-        return this.sendTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
+        return this.sendTX(this.parseToString())
             .then(function (response) { return response.txHash; })
             .then(function (txHash) { return _this.getReceipt(txHash); })
             .then(function (response) {
