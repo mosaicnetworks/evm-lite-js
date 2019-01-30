@@ -67,6 +67,12 @@ export interface SignedTransaction {
 	rawTransaction: string;
 }
 
+function delay(t: number, v?: any) {
+	return new Promise(resolve => {
+		setTimeout(resolve.bind(null, v), t);
+	});
+}
+
 export default class Transaction extends TransactionClient {
 	public txReceipt?: TXReceipt;
 	public signedTX?: SignedTransaction;
@@ -141,13 +147,19 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
+		console.log('SIGNED: ', this.signedTX);
+
 		if (!this.constant) {
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
+
+			await delay(3000);
 
 			this.hash = txHash;
 
 			return this;
 		} else {
+			await delay(2000);
+
 			return await this.call();
 		}
 	}
@@ -170,8 +182,17 @@ export default class Transaction extends TransactionClient {
 			);
 		}
 
-		const call = await this.callTX(this.toString());
+		const tx = JSON.parse(this.parseToString());
+
+		delete tx.chainId;
+		delete tx.nonce;
+
+		console.log('Transaction: ', tx);
+		const call = await this.callTX(JSON.stringify(tx));
+		console.log('Call: ', call);
+
 		const response = JSONBig.parse<CallTXResponse>(call);
+		console.log('Response: ', response);
 
 		if (!this.unpackfn) {
 			throw new Error('Unpacking function required.');
@@ -184,7 +205,7 @@ export default class Transaction extends TransactionClient {
 		return this.tx;
 	}
 
-	public toString(): string {
+	public parseToString(): string {
 		return JSONBig.stringify(parseTransaction(this.tx));
 	}
 

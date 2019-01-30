@@ -21,7 +21,7 @@ var TransactionClient = /** @class */ (function (_super) {
         return _super.call(this, host, port) || this;
     }
     TransactionClient.prototype.callTX = function (tx) {
-        return BaseClient_1.request(this.options('POST', '/call'), tx).then(function (response) { return response; });
+        return BaseClient_1.request(this.options('POST', '/call'), tx);
     };
     TransactionClient.prototype.sendTX = function (tx) {
         return BaseClient_1.request(this.options('POST', '/tx'), tx).then(function (response) {

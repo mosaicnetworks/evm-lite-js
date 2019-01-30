@@ -5,7 +5,7 @@ export default class Keystore {
     readonly name: string;
     readonly path: string;
     constructor(directory: string, name: string);
-    decryptAccount(address: string, password: string): Promise<Account>;
+    decryptAccount(address: string, password: string, connection?: EVMLC): Promise<Account>;
     create(password: string, output?: string): Promise<string>;
     import(data: string): Promise<string>;
     update(address: string, old: string, newPass: string): Promise<string>;

@@ -51,6 +51,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var JSONBig = require("json-bigint");
 var types_1 = require("../types");
 var TransactionClient_1 = require("../client/TransactionClient");
+function delay(t, v) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve.bind(null, v), t);
+    });
+}
 var Transaction = /** @class */ (function (_super) {
     __extends(Transaction, _super);
     function Transaction(tx, host, port, constant, unpackfn) {
@@ -118,14 +123,21 @@ var Transaction = /** @class */ (function (_super) {
                         if (!this.tx.data && !this.tx.value) {
                             throw new Error('Transaction does have a value to send.');
                         }
-                        if (!!this.constant) return [3 /*break*/, 4];
+                        console.log('SIGNED: ', this.signedTX);
+                        if (!!this.constant) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.sendRaw(this.signedTX.rawTransaction)];
                     case 3:
                         txHash = (_a.sent()).txHash;
+                        return [4 /*yield*/, delay(3000)];
+                    case 4:
+                        _a.sent();
                         this.hash = txHash;
                         return [2 /*return*/, this];
-                    case 4: return [4 /*yield*/, this.call()];
-                    case 5: return [2 /*return*/, _a.sent()];
+                    case 5: return [4 /*yield*/, delay(2000)];
+                    case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.call()];
+                    case 7: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -147,7 +159,7 @@ var Transaction = /** @class */ (function (_super) {
     };
     Transaction.prototype.call = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var call, response;
+            var tx, call, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -158,10 +170,16 @@ var Transaction = /** @class */ (function (_super) {
                             throw new Error('Transaction cannot have value if it' +
                                 'does not intend to mutate the state.');
                         }
-                        return [4 /*yield*/, this.callTX(this.toString())];
+                        tx = JSON.parse(this.parseToString());
+                        delete tx.chainId;
+                        delete tx.nonce;
+                        console.log('Transaction: ', tx);
+                        return [4 /*yield*/, this.callTX(JSON.stringify(tx))];
                     case 1:
                         call = _a.sent();
+                        console.log('Call: ', call);
                         response = JSONBig.parse(call);
+                        console.log('Response: ', response);
                         if (!this.unpackfn) {
                             throw new Error('Unpacking function required.');
                         }
@@ -173,7 +191,7 @@ var Transaction = /** @class */ (function (_super) {
     Transaction.prototype.toJSON = function () {
         return this.tx;
     };
-    Transaction.prototype.toString = function () {
+    Transaction.prototype.parseToString = function () {
         return JSONBig.stringify(types_1.parseTransaction(this.tx));
     };
     Transaction.prototype.from = function (from) {

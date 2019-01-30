@@ -29,9 +29,7 @@ export default class TransactionClient extends BaseClient {
 	}
 
 	protected callTX(tx: string): Promise<Readonly<string>> {
-		return request(this.options('POST', '/call'), tx).then(
-			response => response
-		);
+		return request(this.options('POST', '/call'), tx);
 	}
 
 	protected sendTX(tx: string): Promise<Readonly<SendTXResponse>> {

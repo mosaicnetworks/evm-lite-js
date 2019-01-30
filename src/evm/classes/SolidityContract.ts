@@ -22,7 +22,7 @@ export interface ContractOptions {
 	gasPrice: GasPrice;
 	from: Address;
 	address?: Address;
-	nonce?: Nonce;
+	nonce: Nonce;
 	data?: Data;
 	interface: ABI[];
 }
@@ -58,7 +58,7 @@ export default class SolidityContract<
 		options = { ...options };
 
 		if (this.options.address) {
-			throw errors.ContractAddressFieldSetAndDeployed();
+			return Promise.reject(errors.ContractAddressFieldSetAndDeployed());
 		}
 
 		this.options.interface.filter((abi: ABI) => {
@@ -78,8 +78,8 @@ export default class SolidityContract<
 				{
 					from: this.options.from,
 					data,
-					gas: options.gas || this.options.gas!,
-					gasPrice: options.gasPrice || this.options.gasPrice!,
+					gas: options.gas || this.options.gas,
+					gasPrice: options.gasPrice || this.options.gasPrice,
 					nonce: this.options.nonce
 				},
 				this.host,
@@ -89,14 +89,15 @@ export default class SolidityContract<
 				.gas(this.options.gas)
 				.gasPrice(this.options.gasPrice);
 
-			await transaction.sign(account);
-			await transaction.submit();
+			await transaction.submit({}, account);
 
-			const receipt = await transaction.receipt;
+			this.receipt = await transaction.receipt;
 
-			return this.setAddressAndPopulateFunctions(receipt.contractAddress);
+			return this.setAddressAndPopulateFunctions(
+				this.receipt.contractAddress
+			);
 		} else {
-			throw errors.InvalidDataFieldInOptions();
+			return Promise.reject(errors.InvalidDataFieldInOptions());
 		}
 	}
 

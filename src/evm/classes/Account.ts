@@ -75,7 +75,7 @@ export default class Account {
 			if (!transaction.chainId) {
 				tx.chainID(transaction.chainId || 1);
 			}
-
+			console.log('BEFORE SIGNED: ', parseTransaction(tx.toJSON()));
 			return this.account.signTransaction!(
 				// @ts-ignore
 				parseTransaction(tx.toJSON())

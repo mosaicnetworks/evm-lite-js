@@ -47,16 +47,25 @@ var Keystore = /** @class */ (function () {
         this.path = path.join(directory, name);
         Static_1.default.createDirectoryIfNotExists(this.path);
     }
-    Keystore.prototype.decryptAccount = function (address, password) {
+    Keystore.prototype.decryptAccount = function (address, password, connection) {
         return __awaiter(this, void 0, void 0, function () {
-            var keystore;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var keystore, decrypted, _a, nonce, balance;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.get(address.toLowerCase())];
                     case 1:
-                        keystore = _a.sent();
+                        keystore = _b.sent();
                         return [4 /*yield*/, __1.Account.decrypt(keystore, password)];
-                    case 2: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        decrypted = _b.sent();
+                        if (!connection) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.fetchBalanceAndNonce(address, connection)];
+                    case 3:
+                        _a = _b.sent(), nonce = _a.nonce, balance = _a.balance;
+                        decrypted.nonce = nonce;
+                        decrypted.balance = balance;
+                        _b.label = 4;
+                    case 4: return [2 /*return*/, decrypted];
                 }
             });
         });

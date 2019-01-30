@@ -12,7 +12,7 @@ export interface ContractOptions {
     gasPrice: GasPrice;
     from: Address;
     address?: Address;
-    nonce?: Nonce;
+    nonce: Nonce;
     data?: Data;
     interface: ABI[];
 }

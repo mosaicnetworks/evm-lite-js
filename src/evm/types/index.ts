@@ -27,9 +27,12 @@ export function parseSolidityTypes(raw: string) {
 }
 
 export function parseTransaction(tx: TX): ParsedTX {
-	return {
+	const parsedTX = {
 		...tx,
-		from: tx.from.value,
-		to: tx.to && tx.to.value
+		from: tx.from.value.toLowerCase(),
+		to: (tx.to && tx.to.value.toLowerCase()) || '',
+		value: tx.value || 0
 	};
+
+	return parsedTX;
 }

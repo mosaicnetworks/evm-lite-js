@@ -21,11 +21,23 @@ export default class Keystore {
 
 	public async decryptAccount(
 		address: string,
-		password: string
+		password: string,
+		connection?: EVMLC
 	): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
+		const decrypted = await Account.decrypt(keystore, password);
 
-		return await Account.decrypt(keystore, password);
+		if (connection) {
+			const { nonce, balance } = await this.fetchBalanceAndNonce(
+				address,
+				connection
+			);
+
+			decrypted.nonce = nonce;
+			decrypted.balance = balance;
+		}
+
+		return decrypted;
 	}
 
 	public create(password: string, output?: string): Promise<string> {

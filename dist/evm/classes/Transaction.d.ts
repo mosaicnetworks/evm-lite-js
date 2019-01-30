@@ -67,7 +67,7 @@ export default class Transaction extends TransactionClient {
     sign(account: Account): Promise<this>;
     call(options?: OverrideTXOptions): Promise<string>;
     toJSON(): TX;
-    toString(): string;
+    parseToString(): string;
     from(from: string): this;
     nonce(nonce: number): this;
     chainID(chainId: number): this;

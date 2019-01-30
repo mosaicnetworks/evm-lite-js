@@ -39,6 +39,7 @@ function parseSolidityTypes(raw) {
 }
 exports.parseSolidityTypes = parseSolidityTypes;
 function parseTransaction(tx) {
-    return __assign({}, tx, { from: tx.from.value, to: tx.to && tx.to.value });
+    var parsedTX = __assign({}, tx, { from: tx.from.value.toLowerCase(), to: (tx.to && tx.to.value.toLowerCase()) || '', value: tx.value || 0 });
+    return parsedTX;
 }
 exports.parseTransaction = parseTransaction;
