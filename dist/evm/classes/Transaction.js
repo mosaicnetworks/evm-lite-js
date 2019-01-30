@@ -101,6 +101,13 @@ var Transaction = /** @class */ (function (_super) {
             return _this.txReceipt;
         });
     };
+    /**
+     * Should `send()` or `call()` the transaction or message dependent on
+     * whether the transaction or message mutates the state.
+     *
+     * @param options - (optional) Override transaction options.
+     * @param account - (optional) The account to sign this transaction.
+     */
     Transaction.prototype.submit = function (options, account) {
         return __awaiter(this, void 0, void 0, function () {
             var txHash;

@@ -30,23 +30,31 @@ var SolidityContract_1 = require("./classes/SolidityContract");
 var DefaultClient_1 = require("./client/DefaultClient");
 var EVMLC = /** @class */ (function (_super) {
     __extends(EVMLC, _super);
+    /**
+     * The root controller class to interact with contracts and make transfers.
+     *
+     * @param host - The host address of the node.
+     * @param port - The port of the node.
+     * @param userDefaultTXOptions - The default values for transactions.
+     */
     function EVMLC(host, port, userDefaultTXOptions) {
         var _this = _super.call(this, host, port) || this;
         _this.userDefaultTXOptions = userDefaultTXOptions;
         _this.defaultTXOptions = __assign({}, userDefaultTXOptions, { from: new types_1.AddressType(userDefaultTXOptions.from) });
         return _this;
     }
-    Object.defineProperty(EVMLC.prototype, "defaultOptions", {
-        get: function () {
-            return this.userDefaultTXOptions;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(EVMLC.prototype, "defaultFrom", {
+        /**
+         * The default `from` address that will be used for any transactions
+         * created from this object.
+         */
         get: function () {
             return this.defaultTXOptions.from.value;
         },
+        /**
+         * Should allow you to set the default `from` to be used for any
+         * transactions created from this object.
+         */
         set: function (address) {
             this.defaultTXOptions.from = new types_1.AddressType(address);
         },
@@ -54,9 +62,17 @@ var EVMLC = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(EVMLC.prototype, "defaultGas", {
+        /**
+         * The default `gas` value that will be used for any transactions created
+         * from this object.
+         */
         get: function () {
             return this.defaultTXOptions.gas;
         },
+        /**
+         * Should allow you to set the default `gas` value to be used for any
+         * transactions created from this object.
+         */
         set: function (gas) {
             this.defaultTXOptions.gas = gas;
         },
@@ -64,18 +80,39 @@ var EVMLC = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(EVMLC.prototype, "defaultGasPrice", {
+        /**
+         * The default `gasPrice` value that will be used for any transactions
+         * created from this object.
+         */
         get: function () {
             return this.defaultTXOptions.gasPrice;
         },
+        /**
+         * Should allow you to set the default `gasPrice` to be used for any
+         * transactions created from this object.
+         */
         set: function (gasPrice) {
             this.defaultTXOptions.gasPrice = gasPrice;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * Should generate a contract abstraction class to interact with the
+     * respective contract.
+     *
+     * @description
+     * This function will also fetch the nonce from the node with connection
+     * details specified in the contructor for this class.
+     *
+     * @param abi - The interface of the respective contract.
+     * @param options - (optional) The `data` and `contractAddress` options.
+     */
     EVMLC.prototype.loadContract = function (abi, options) {
         var _this = this;
-        this.requireAddress();
+        if (!this.defaultTXOptions.from.value) {
+            throw new Error('Default from address cannot be left blank or empty!');
+        }
         var data = (options && options.data) || '';
         var address = options && options.contractAddress
             ? new types_1.AddressType(options.contractAddress)
@@ -92,6 +129,18 @@ var EVMLC = /** @class */ (function (_super) {
             }, _this.host, _this.port);
         });
     };
+    /**
+     * Should prepare a transaction to transfer `value` to the specified `to`
+     * address.
+     *
+     * @description
+     * This function will also fetch the nonce from the node with connection
+     * details specified in the contructor for this class.
+     *
+     * @param to - The address to transfer funds to.
+     * @param value - The amount to transfer.
+     * @param from - (optional) Overrides `from` address set in the constructor.
+     */
     EVMLC.prototype.prepareTransfer = function (to, value, from) {
         var _this = this;
         var fromObject = new types_1.AddressType((from || this.defaultFrom).trim());
@@ -115,11 +164,6 @@ var EVMLC = /** @class */ (function (_super) {
                 chainId: 1
             }, _this.host, _this.port, false);
         });
-    };
-    EVMLC.prototype.requireAddress = function () {
-        if (!this.defaultTXOptions.from.value) {
-            throw new Error('Default from address cannot be left blank or empty!');
-        }
     };
     return EVMLC;
 }(DefaultClient_1.default));

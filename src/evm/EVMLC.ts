@@ -19,6 +19,13 @@ interface DefaultTXOptions extends BaseTX {
 export default class EVMLC extends DefaultClient {
 	private readonly defaultTXOptions: DefaultTXOptions;
 
+	/**
+	 * The root controller class to interact with contracts and make transfers.
+	 *
+	 * @param host - The host address of the node.
+	 * @param port - The port of the node.
+	 * @param userDefaultTXOptions - The default values for transactions.
+	 */
 	constructor(
 		host: string,
 		port: number,
@@ -32,39 +39,74 @@ export default class EVMLC extends DefaultClient {
 		};
 	}
 
-	get defaultOptions(): UserDefinedDefaultTXOptions {
-		return this.userDefaultTXOptions;
-	}
-
+	/**
+	 * The default `from` address that will be used for any transactions
+	 * created from this object.
+	 */
 	get defaultFrom(): string {
 		return this.defaultTXOptions.from.value;
 	}
 
+	/**
+	 * Should allow you to set the default `from` to be used for any
+	 * transactions created from this object.
+	 */
 	set defaultFrom(address: string) {
 		this.defaultTXOptions.from = new AddressType(address);
 	}
 
+	/**
+	 * The default `gas` value that will be used for any transactions created
+	 * from this object.
+	 */
 	get defaultGas(): Gas {
 		return this.defaultTXOptions.gas;
 	}
 
+	/**
+	 * Should allow you to set the default `gas` value to be used for any
+	 * transactions created from this object.
+	 */
 	set defaultGas(gas: Gas) {
 		this.defaultTXOptions.gas = gas;
 	}
 
+	/**
+	 * The default `gasPrice` value that will be used for any transactions
+	 * created from this object.
+	 */
 	get defaultGasPrice(): GasPrice {
 		return this.defaultTXOptions.gasPrice;
 	}
 
+	/**
+	 * Should allow you to set the default `gasPrice` to be used for any
+	 * transactions created from this object.
+	 */
 	set defaultGasPrice(gasPrice: GasPrice) {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
+	/**
+	 * Should generate a contract abstraction class to interact with the
+	 * respective contract.
+	 *
+	 * @description
+	 * This function will also fetch the nonce from the node with connection
+	 * details specified in the contructor for this class.
+	 *
+	 * @param abi - The interface of the respective contract.
+	 * @param options - (optional) The `data` and `contractAddress` options.
+	 */
 	public loadContract<ContractSchema extends BaseContractSchema>(
 		abi: ABI[],
 		options?: { data?: string; contractAddress?: string }
 	): Promise<SolidityContract<ContractSchema>> {
-		this.requireAddress();
+		if (!this.defaultTXOptions.from.value) {
+			throw new Error(
+				'Default from address cannot be left blank or empty!'
+			);
+		}
 
 		const data: string = (options && options.data) || '';
 		const address =
@@ -90,6 +132,18 @@ export default class EVMLC extends DefaultClient {
 		);
 	}
 
+	/**
+	 * Should prepare a transaction to transfer `value` to the specified `to`
+	 * address.
+	 *
+	 * @description
+	 * This function will also fetch the nonce from the node with connection
+	 * details specified in the contructor for this class.
+	 *
+	 * @param to - The address to transfer funds to.
+	 * @param value - The amount to transfer.
+	 * @param from - (optional) Overrides `from` address set in the constructor.
+	 */
 	public prepareTransfer(
 		to: string,
 		value: Value,
@@ -130,13 +184,5 @@ export default class EVMLC extends DefaultClient {
 					false
 				)
 		);
-	}
-
-	private requireAddress() {
-		if (!this.defaultTXOptions.from.value) {
-			throw new Error(
-				'Default from address cannot be left blank or empty!'
-			);
-		}
 	}
 }
