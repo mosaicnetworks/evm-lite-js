@@ -65,20 +65,20 @@ var SolidityContract = /** @class */ (function () {
     }
     SolidityContract.prototype.deploy = function (account, params, options) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, transaction, receipt;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var data, transaction, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         options = __assign({}, options);
                         if (this.options.address) {
-                            throw errors.ContractAddressFieldSetAndDeployed();
+                            return [2 /*return*/, Promise.reject(errors.ContractAddressFieldSetAndDeployed())];
                         }
                         this.options.interface.filter(function (abi) {
                             if (abi.type === 'constructor' && params) {
                                 checks.requireArgsLength(abi.inputs.length, params.length);
                             }
                         });
-                        if (!(this.options.data || options.data)) return [3 /*break*/, 4];
+                        if (!(this.options.data || options.data)) return [3 /*break*/, 3];
                         data = options.data || this.options.data;
                         if (params) {
                             data = data + this.encodeConstructorParams(params);
@@ -92,17 +92,15 @@ var SolidityContract = /** @class */ (function () {
                         }, this.host, this.port, false)
                             .gas(this.options.gas)
                             .gasPrice(this.options.gasPrice);
-                        return [4 /*yield*/, transaction.sign(account)];
+                        return [4 /*yield*/, transaction.submit({}, account)];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, transaction.submit()];
-                    case 2:
-                        _a.sent();
+                        _b.sent();
+                        _a = this;
                         return [4 /*yield*/, transaction.receipt];
-                    case 3:
-                        receipt = _a.sent();
-                        return [2 /*return*/, this.setAddressAndPopulateFunctions(receipt.contractAddress)];
-                    case 4: throw errors.InvalidDataFieldInOptions();
+                    case 2:
+                        _a.receipt = _b.sent();
+                        return [2 /*return*/, this.setAddressAndPopulateFunctions(this.receipt.contractAddress)];
+                    case 3: return [2 /*return*/, Promise.reject(errors.InvalidDataFieldInOptions())];
                 }
             });
         });

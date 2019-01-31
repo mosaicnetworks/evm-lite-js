@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-export const request = (options: any, tx?: string): Promise<string> => {
+export const request = (options: Options, tx?: string): Promise<string> => {
 	return new Promise<string>((resolve, reject) => {
 		const req = http.request(options, response => {
 			let data = '';
@@ -16,13 +16,20 @@ export const request = (options: any, tx?: string): Promise<string> => {
 	});
 };
 
+export interface Options {
+	host: string;
+	port: number;
+	method: string;
+	path: string;
+}
+
 export default abstract class BaseClient {
 	protected constructor(
 		public readonly host: Readonly<string>,
 		public readonly port: Readonly<number>
 	) {}
 
-	protected options(method: string, path: string) {
+	protected options(method: string, path: string): Options {
 		return {
 			host: this.host,
 			port: this.port,

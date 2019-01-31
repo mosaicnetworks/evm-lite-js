@@ -51,6 +51,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var JSONBig = require("json-bigint");
 var types_1 = require("../types");
 var TransactionClient_1 = require("../client/TransactionClient");
+function delay(t, v) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve.bind(null, v), t);
+    });
+}
 var Transaction = /** @class */ (function (_super) {
     __extends(Transaction, _super);
     function Transaction(tx, host, port, constant, unpackfn) {
@@ -88,7 +93,7 @@ var Transaction = /** @class */ (function (_super) {
         if (!this.tx.data && !this.tx.value) {
             throw new Error('Transaction does have a value to send.');
         }
-        return this.sendTX(JSONBig.stringify(types_1.parseTransaction(this.tx)))
+        return this.sendTX(this.parseToString())
             .then(function (response) { return response.txHash; })
             .then(function (txHash) { return _this.getReceipt(txHash); })
             .then(function (response) {
@@ -96,6 +101,13 @@ var Transaction = /** @class */ (function (_super) {
             return _this.txReceipt;
         });
     };
+    /**
+     * Should `send()` or `call()` the transaction or message dependent on
+     * whether the transaction or message mutates the state.
+     *
+     * @param options - (optional) Override transaction options.
+     * @param account - (optional) The account to sign this transaction.
+     */
     Transaction.prototype.submit = function (options, account) {
         return __awaiter(this, void 0, void 0, function () {
             var txHash;
@@ -118,14 +130,20 @@ var Transaction = /** @class */ (function (_super) {
                         if (!this.tx.data && !this.tx.value) {
                             throw new Error('Transaction does have a value to send.');
                         }
-                        if (!!this.constant) return [3 /*break*/, 4];
+                        if (!!this.constant) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.sendRaw(this.signedTX.rawTransaction)];
                     case 3:
                         txHash = (_a.sent()).txHash;
+                        return [4 /*yield*/, delay(1000)];
+                    case 4:
+                        _a.sent();
                         this.hash = txHash;
                         return [2 /*return*/, this];
-                    case 4: return [4 /*yield*/, this.call()];
-                    case 5: return [2 /*return*/, _a.sent()];
+                    case 5: return [4 /*yield*/, delay(1000)];
+                    case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.call()];
+                    case 7: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -147,7 +165,7 @@ var Transaction = /** @class */ (function (_super) {
     };
     Transaction.prototype.call = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var call, response;
+            var tx, call, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -158,7 +176,10 @@ var Transaction = /** @class */ (function (_super) {
                             throw new Error('Transaction cannot have value if it' +
                                 'does not intend to mutate the state.');
                         }
-                        return [4 /*yield*/, this.callTX(this.toString())];
+                        tx = JSON.parse(this.parseToString());
+                        delete tx.chainId;
+                        delete tx.nonce;
+                        return [4 /*yield*/, this.callTX(JSON.stringify(tx))];
                     case 1:
                         call = _a.sent();
                         response = JSONBig.parse(call);
@@ -173,7 +194,7 @@ var Transaction = /** @class */ (function (_super) {
     Transaction.prototype.toJSON = function () {
         return this.tx;
     };
-    Transaction.prototype.toString = function () {
+    Transaction.prototype.parseToString = function () {
         return JSONBig.stringify(types_1.parseTransaction(this.tx));
     };
     Transaction.prototype.from = function (from) {

@@ -67,6 +67,12 @@ export interface SignedTransaction {
 	rawTransaction: string;
 }
 
+function delay(t: number, v?: any) {
+	return new Promise(resolve => {
+		setTimeout(resolve.bind(null, v), t);
+	});
+}
+
 export default class Transaction extends TransactionClient {
 	public txReceipt?: TXReceipt;
 	public signedTX?: SignedTransaction;
@@ -110,7 +116,7 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
-		return this.sendTX(JSONBig.stringify(parseTransaction(this.tx)))
+		return this.sendTX(this.parseToString())
 			.then(response => response.txHash)
 			.then(txHash => this.getReceipt(txHash))
 			.then(response => {
@@ -119,6 +125,13 @@ export default class Transaction extends TransactionClient {
 			});
 	}
 
+	/**
+	 * Should `send()` or `call()` the transaction or message dependent on
+	 * whether the transaction or message mutates the state.
+	 *
+	 * @param options - (optional) Override transaction options.
+	 * @param account - (optional) The account to sign this transaction.
+	 */
 	public async submit(
 		options?: OverrideTXOptions,
 		account?: Account
@@ -144,10 +157,14 @@ export default class Transaction extends TransactionClient {
 		if (!this.constant) {
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
+			await delay(1000);
+
 			this.hash = txHash;
 
 			return this;
 		} else {
+			await delay(1000);
+
 			return await this.call();
 		}
 	}
@@ -170,7 +187,12 @@ export default class Transaction extends TransactionClient {
 			);
 		}
 
-		const call = await this.callTX(this.toString());
+		const tx = JSON.parse(this.parseToString());
+
+		delete tx.chainId;
+		delete tx.nonce;
+
+		const call = await this.callTX(JSON.stringify(tx));
 		const response = JSONBig.parse<CallTXResponse>(call);
 
 		if (!this.unpackfn) {
@@ -184,7 +206,7 @@ export default class Transaction extends TransactionClient {
 		return this.tx;
 	}
 
-	public toString(): string {
+	public parseToString(): string {
 		return JSONBig.stringify(parseTransaction(this.tx));
 	}
 

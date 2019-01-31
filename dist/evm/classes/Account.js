@@ -54,7 +54,7 @@ var Account = /** @class */ (function () {
         tx.chainId = tx.chainId || 1;
         return this.account.signTransaction(
         // @ts-ignore
-        types_1.parseTransaction(tx.toJSON()));
+        types_1.parseTransaction(tx));
     };
     Account.prototype.encrypt = function (password) {
         // @ts-ignore

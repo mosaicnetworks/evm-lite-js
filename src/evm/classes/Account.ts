@@ -87,7 +87,7 @@ export default class Account {
 
 		return this.account.signTransaction!(
 			// @ts-ignore
-			parseTransaction(tx.toJSON())
+			parseTransaction(tx)
 		);
 	}
 
