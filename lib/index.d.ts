@@ -1,7 +1,9 @@
 declare module 'evm-lite-lib' {
 	export { default as EVMLC } from 'evm-lite-lib/evm/EVMLC';
 	export { default as Account } from 'evm-lite-lib/evm/classes/Account';
-	export { default as Wallet } from 'evm-lite-lib/evm/classes/Wallet';
+	export {
+		default as SolidityContract
+	} from 'evm-lite-lib/evm/classes/SolidityContract';
 	export { default as Keystore } from 'evm-lite-lib/tools/classes/Keystore';
 	export {
 		default as Config,
@@ -17,6 +19,9 @@ declare module 'evm-lite-lib' {
 		SignedTransaction,
 		default as Transaction
 	} from 'evm-lite-lib/evm/classes/Transaction';
+	export {
+		default as AddressType
+	} from 'evm-lite-lib/evm/types/lib/AddressType';
 	export * from 'evm-lite-lib/evm/utils/Interfaces';
 	export { V3JSONKeyStore } from 'evm-lite-lib/evm/classes/Account';
 	export { default as DataDirectory } from 'evm-lite-lib/tools/DataDirectory';
@@ -148,15 +153,55 @@ declare module 'evm-lite-lib/evm/classes/Account' {
 	}
 }
 
-declare module 'evm-lite-lib/evm/classes/Wallet' {
-	import AccountClient from 'evm-lite-lib/evm/client/AccountClient';
-	export default class Wallet extends AccountClient {
-		constructor(host: string, port: number);
-		add(): void;
-		remove(): void;
-		clear(): void;
-		encrypt(): void;
+declare module 'evm-lite-lib/evm/classes/SolidityContract' {
+	import { ABI, TXReceipt } from 'evm-lite-lib/';
+	import {
+		Address,
+		Data,
+		Gas,
+		GasPrice,
+		Nonce
+	} from 'evm-lite-lib/evm/types';
+	import Account from 'evm-lite-lib/evm/classes/Account';
+	import Transaction from 'evm-lite-lib/evm/classes/Transaction';
+	interface OverrideContractDeployParameters {
+		gas?: Gas;
+		gasPrice?: GasPrice;
+		data?: Data;
 	}
+	export interface ContractOptions {
+		gas: Gas;
+		gasPrice: GasPrice;
+		from: Address;
+		address?: Address;
+		nonce: Nonce;
+		data?: Data;
+		interface: ABI[];
+	}
+	export interface BaseContractSchema {
+		[key: string]: (...args: any[]) => Promise<Transaction>;
+	}
+	export default class SolidityContract<
+		ContractFunctionSchema extends BaseContractSchema
+	> {
+		options: ContractOptions;
+		methods: ContractFunctionSchema | BaseContractSchema;
+		web3Contract: any;
+		receipt?: TXReceipt;
+		constructor(options: ContractOptions, host: string, port: number);
+		deploy(
+			account: Account,
+			params?: any[],
+			options?: OverrideContractDeployParameters
+		): Promise<this>;
+		setAddressAndPopulateFunctions(address: string): this;
+		address(address: string): this;
+		gas(gas: Gas): this;
+		gasPrice(gasPrice: GasPrice): this;
+		data(data: Data): this;
+		JSONInterface(abis: ABI[]): this;
+	}
+	export {};
 }
 
 declare module 'evm-lite-lib/tools/classes/Keystore' {
@@ -226,57 +271,6 @@ declare module 'evm-lite-lib/tools/database/Database' {
 		readonly transactions: TransactionController;
 		constructor(directory: string, name: string);
 	}
-}
-
-declare module 'evm-lite-lib/evm/classes/SolidityContract' {
-	import { ABI, TXReceipt } from 'evm-lite-lib/';
-	import {
-		Address,
-		Data,
-		Gas,
-		GasPrice,
-		Nonce
-	} from 'evm-lite-lib/evm/types';
-	import Account from 'evm-lite-lib/evm/classes/Account';
-	import Transaction from 'evm-lite-lib/evm/classes/Transaction';
-	interface OverrideContractDeployParameters {
-		gas?: Gas;
-		gasPrice?: GasPrice;
-		data?: Data;
-	}
-	export interface ContractOptions {
-		gas: Gas;
-		gasPrice: GasPrice;
-		from: Address;
-		address?: Address;
-		nonce: Nonce;
-		data?: Data;
-		interface: ABI[];
-	}
-	export interface BaseContractSchema {
-		[key: string]: (...args: any[]) => Promise<Transaction>;
-	}
-	export default class SolidityContract<
-		ContractFunctionSchema extends BaseContractSchema
-	> {
-		options: ContractOptions;
-		methods: ContractFunctionSchema | BaseContractSchema;
-		web3Contract: any;
-		receipt?: TXReceipt;
-		constructor(options: ContractOptions, host: string, port: number);
-		deploy(
-			account: Account,
-			params?: any[],
-			options?: OverrideContractDeployParameters
-		): Promise<this>;
-		setAddressAndPopulateFunctions(address: string): this;
-		address(address: string): this;
-		gas(gas: Gas): this;
-		gasPrice(gasPrice: GasPrice): this;
-		data(data: Data): this;
-		JSONInterface(abis: ABI[]): this;
-	}
-	export {};
 }
 
 declare module 'evm-lite-lib/evm/client/AccountClient' {
@@ -398,6 +392,14 @@ declare module 'evm-lite-lib/evm/classes/Transaction' {
 		data(data: Data): this;
 	}
 	export {};
+}
+
+declare module 'evm-lite-lib/evm/types/lib/AddressType' {
+	import EVMType from 'evm-lite-lib/evm/types/lib/EVMType';
+	export default class AddressType extends EVMType {
+		readonly value: string;
+		constructor(value: string);
+	}
 }
 
 declare module 'evm-lite-lib/evm/utils/Interfaces' {
@@ -538,7 +540,9 @@ declare module 'evm-lite-lib/evm/client/DefaultClient' {
 declare module 'evm-lite-lib/' {
 	export { default as EVMLC } from 'evm-lite-lib/evm/EVMLC';
 	export { default as Account } from 'evm-lite-lib/evm/classes/Account';
-	export { default as Wallet } from 'evm-lite-lib/evm/classes/Wallet';
+	export {
+		default as SolidityContract
+	} from 'evm-lite-lib/evm/classes/SolidityContract';
 	export { default as Keystore } from 'evm-lite-lib/tools/classes/Keystore';
 	export {
 		default as Config,
@@ -554,6 +558,9 @@ declare module 'evm-lite-lib/' {
 		SignedTransaction,
 		default as Transaction
 	} from 'evm-lite-lib/evm/classes/Transaction';
+	export {
+		default as AddressType
+	} from 'evm-lite-lib/evm/types/lib/AddressType';
 	export * from 'evm-lite-lib/evm/utils/Interfaces';
 	export { V3JSONKeyStore } from 'evm-lite-lib/evm/classes/Account';
 	export { default as DataDirectory } from 'evm-lite-lib/tools/DataDirectory';
@@ -601,11 +608,9 @@ declare module 'evm-lite-lib/evm/client/BaseClient' {
 	}
 }
 
-declare module 'evm-lite-lib/evm/types/lib/AddressType' {
-	import EVMType from 'evm-lite-lib/evm/types/lib/EVMType';
-	export default class AddressType extends EVMType {
-		readonly value: string;
-		constructor(value: string);
+declare module 'evm-lite-lib/evm/types/lib/EVMType' {
+	export default abstract class EVMType {
+		protected constructor();
 	}
 }
 
@@ -630,12 +635,6 @@ declare module 'evm-lite-lib/evm/types/lib/ByteType' {
 	export default class ByteType extends EVMType {
 		readonly size: number;
 		constructor();
-	}
-}
-
-declare module 'evm-lite-lib/evm/types/lib/EVMType' {
-	export default abstract class EVMType {
-		protected constructor();
 	}
 }
 
