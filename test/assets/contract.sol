@@ -1,14 +1,13 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.5.3;
 
 contract CrowdFunding {
-    // Defines a new type with two fields.
     struct Funder {
         address addr;
         uint amount;
     }
 
     struct Campaign {
-        address beneficiary;
+        address payable beneficiary;
         uint fundingGoal;
         uint numFunders;
         uint amount;
@@ -26,35 +25,38 @@ contract CrowdFunding {
         bool ok
     );
 
-    function CrowdFunding(uint goal) {
-        // Creates new struct and saves in storage.
+    constructor() public {
         campaign = Campaign({
             beneficiary: msg.sender,
-            fundingGoal: goal,
+            fundingGoal: 5,
             numFunders: 0,
-            amount:0});
+            amount:0
+        });
     }
 
-    function contribute() payable {
+    function contribute() public payable {
         campaign.amount += msg.value;
-        NewContribution(campaign.beneficiary, msg.sender, msg.value);
+
+        emit NewContribution(campaign.beneficiary, msg.sender, msg.value);
     }
 
-    function checkGoalReached() constant returns (bool reached, address beneficiary, uint goal, uint amount) {
+    function checkGoalReached() public view returns (bool reached, address beneficiary, uint goal, uint amount) {
         if (campaign.amount < campaign.fundingGoal)
-            return (false, campaign.beneficiary, campaign.fundingGoal , campaign.amount);
+            return (false, campaign.beneficiary, campaign.fundingGoal, campaign.amount);
         else
-            return (true, campaign.beneficiary, campaign.fundingGoal , campaign.amount);
+            return (true, campaign.beneficiary, campaign.fundingGoal, campaign.amount);
     }
 
-    function settle() {
+    function settle() public {
         if (campaign.amount >= campaign.fundingGoal) {
             uint am = campaign.amount;
+            
             campaign.amount = 0;
             campaign.beneficiary.transfer(am);
-            Settlement(true);
+
+            emit Settlement(true);
         } else {
-            Settlement(false);
+            emit Settlement(false);
         }
     }
 }

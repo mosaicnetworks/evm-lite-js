@@ -46,7 +46,6 @@ var Account = /** @class */ (function () {
             if (!transaction.chainId) {
                 tx.chainID(transaction.chainId || 1);
             }
-            console.log('BEFORE SIGNED: ', types_1.parseTransaction(tx.toJSON()));
             return this.account.signTransaction(
             // @ts-ignore
             types_1.parseTransaction(tx.toJSON()));
@@ -55,7 +54,7 @@ var Account = /** @class */ (function () {
         tx.chainId = tx.chainId || 1;
         return this.account.signTransaction(
         // @ts-ignore
-        types_1.parseTransaction(tx.toJSON()));
+        types_1.parseTransaction(tx));
     };
     Account.prototype.encrypt = function (password) {
         // @ts-ignore

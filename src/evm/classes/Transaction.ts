@@ -154,18 +154,16 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
-		console.log('SIGNED: ', this.signedTX);
-
 		if (!this.constant) {
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
-			await delay(3000);
+			await delay(1000);
 
 			this.hash = txHash;
 
 			return this;
 		} else {
-			await delay(2000);
+			await delay(1000);
 
 			return await this.call();
 		}
@@ -194,12 +192,8 @@ export default class Transaction extends TransactionClient {
 		delete tx.chainId;
 		delete tx.nonce;
 
-		console.log('Transaction: ', tx);
 		const call = await this.callTX(JSON.stringify(tx));
-		console.log('Call: ', call);
-
 		const response = JSONBig.parse<CallTXResponse>(call);
-		console.log('Response: ', response);
 
 		if (!this.unpackfn) {
 			throw new Error('Unpacking function required.');

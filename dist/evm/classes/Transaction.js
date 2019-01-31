@@ -130,17 +130,16 @@ var Transaction = /** @class */ (function (_super) {
                         if (!this.tx.data && !this.tx.value) {
                             throw new Error('Transaction does have a value to send.');
                         }
-                        console.log('SIGNED: ', this.signedTX);
                         if (!!this.constant) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.sendRaw(this.signedTX.rawTransaction)];
                     case 3:
                         txHash = (_a.sent()).txHash;
-                        return [4 /*yield*/, delay(3000)];
+                        return [4 /*yield*/, delay(1000)];
                     case 4:
                         _a.sent();
                         this.hash = txHash;
                         return [2 /*return*/, this];
-                    case 5: return [4 /*yield*/, delay(2000)];
+                    case 5: return [4 /*yield*/, delay(1000)];
                     case 6:
                         _a.sent();
                         return [4 /*yield*/, this.call()];
@@ -180,13 +179,10 @@ var Transaction = /** @class */ (function (_super) {
                         tx = JSON.parse(this.parseToString());
                         delete tx.chainId;
                         delete tx.nonce;
-                        console.log('Transaction: ', tx);
                         return [4 /*yield*/, this.callTX(JSON.stringify(tx))];
                     case 1:
                         call = _a.sent();
-                        console.log('Call: ', call);
                         response = JSONBig.parse(call);
-                        console.log('Response: ', response);
                         if (!this.unpackfn) {
                             throw new Error('Unpacking function required.');
                         }
