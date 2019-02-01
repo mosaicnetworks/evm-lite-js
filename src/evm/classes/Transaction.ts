@@ -142,19 +142,19 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Gas or Gas Price not set');
 		}
 
-		if (account) {
-			await this.sign(account);
-		}
-
-		if (!this.signedTX) {
-			throw new Error('Transaction has not been signed locally yet.');
-		}
-
 		if (!this.tx.data && !this.tx.value) {
 			throw new Error('Transaction does have a value to send.');
 		}
 
 		if (!this.constant) {
+			if (account) {
+				await this.sign(account);
+			}
+
+			if (!this.signedTX) {
+				throw new Error('Transaction has not been signed locally yet.');
+			}
+
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
 			await delay(1000);

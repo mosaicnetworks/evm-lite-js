@@ -38,7 +38,8 @@ const config = {
 		'path',
 		'any-promise',
 		'websocket',
-		'json-bigint'
+		'json-bigint',
+		'web-eth-accounts'
 	],
 	target: 'node',
 	node: {},

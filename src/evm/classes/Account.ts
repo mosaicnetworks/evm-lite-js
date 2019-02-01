@@ -32,6 +32,8 @@ export interface V3JSONKeyStore {
 	crypto: KDFEncryption;
 }
 
+const randomHex = require('crypto-random-hex');
+
 export default class Account {
 	get address(): string {
 		return this.account.address;
@@ -51,8 +53,6 @@ export default class Account {
 	private readonly account: Web3Account;
 
 	constructor(data?: Web3Account) {
-		const randomHex = require('crypto-random-hex');
-
 		if (!data) {
 			this.account = new Accounts().create(randomHex(32));
 		} else {

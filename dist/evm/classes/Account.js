@@ -4,11 +4,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Accounts = require("web3-eth-accounts");
 var types_1 = require("../types");
 var Transaction_1 = require("./Transaction");
+var randomHex = require('crypto-random-hex');
 var Account = /** @class */ (function () {
     function Account(data) {
         this.balance = 0;
         this.nonce = 0;
-        var randomHex = require('crypto-random-hex');
         if (!data) {
             this.account = new Accounts().create(randomHex(32));
         }

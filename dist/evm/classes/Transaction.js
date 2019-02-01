@@ -118,6 +118,10 @@ var Transaction = /** @class */ (function (_super) {
                         if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
                             throw new Error('Gas or Gas Price not set');
                         }
+                        if (!this.tx.data && !this.tx.value) {
+                            throw new Error('Transaction does have a value to send.');
+                        }
+                        if (!!this.constant) return [3 /*break*/, 5];
                         if (!account) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.sign(account)];
                     case 1:
@@ -127,10 +131,6 @@ var Transaction = /** @class */ (function (_super) {
                         if (!this.signedTX) {
                             throw new Error('Transaction has not been signed locally yet.');
                         }
-                        if (!this.tx.data && !this.tx.value) {
-                            throw new Error('Transaction does have a value to send.');
-                        }
-                        if (!!this.constant) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.sendRaw(this.signedTX.rawTransaction)];
                     case 3:
                         txHash = (_a.sent()).txHash;
