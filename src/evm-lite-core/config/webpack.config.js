@@ -5,7 +5,7 @@ const Webpack = require('webpack');
 const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const DtsBundleWebpack = require('dts-bundle-webpack');
 
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 
 const resolveApp = relativePath => {
 	return path.resolve(fs.realpathSync(process.cwd()), relativePath);
@@ -54,8 +54,8 @@ const config = {
 		new Webpack.IgnorePlugin(/^(?:electron|ws)$/),
 		new DtsBundleWebpack({
 			name: packageName,
+			baseDir: './dist',
 			main: './dist/index.d.ts',
-			baseDir: 'dist',
 			out: '../lib/index.d.ts'
 		}),
 		new ForkTSCheckerWebpackPlugin({
