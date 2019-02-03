@@ -1,0 +1,15 @@
+src
+tsconfig.json
+tslint.json
+.npmignore
+yarn.lock
+.idea
+.prettierignore
+.prettierrc
+.gitignore
+.editorconfig
+test
+webpack.config.js
+examples
+.circleci
+.vscode

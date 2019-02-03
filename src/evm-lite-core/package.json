@@ -1,0 +1,29 @@
+{
+	"name": "evm-lite-core",
+	"version": "1.0.0",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"scripts": {
+		"tests": "mocha -r ts-node/register tests/**/*.test.ts"
+	},
+	"dependencies": {
+		"@babel/runtime": "^7.3.1",
+		"crypto-random-hex": "^1.0.0",
+		"js-scrypt": "^0.2.0",
+		"json-bigint": "0.3.0",
+		"web3": "0.20.6",
+		"web3-eth-accounts": "1.0.0-beta.37"
+	},
+	"devDependencies": {
+		"@types/chai": "^4.1.7",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.21",
+		"chai": "^4.2.0",
+		"mocha": "^5.2.0",
+		"solc": "^0.5.3",
+		"ts-node": "^8.0.2",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1"
+	}
+}
