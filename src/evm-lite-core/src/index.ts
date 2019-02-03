@@ -16,4 +16,4 @@ export {
 export { BaseAccount } from './client/AccountClient';
 export { TXReceipt } from './client/TransactionClient';
 
-export { default as AddressType } from './types/lib/AddressType';
+export { default as AddressType } from './types/src/AddressType';
