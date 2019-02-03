@@ -87,20 +87,10 @@ export default class Transaction extends TransactionClient {
 		super(host, port);
 	}
 
-	public get receipt() {
-		if (this.hash) {
-			return this.getReceipt(this.hash);
-		} else {
-			throw new Error('Transaction hash not found');
-		}
-	}
-
 	/**
 	 * Send a transaction to a node for a controlled account.
 	 *
 	 * @param options - Override transactions options
-	 *
-	 * @deprecated
 	 */
 	public send(options?: OverrideTXOptions): Promise<TXReceipt> {
 		this.assignTXValues(options);
@@ -168,8 +158,16 @@ export default class Transaction extends TransactionClient {
 		}
 	}
 
+	public get receipt() {
+		if (this.hash) {
+			return this.getReceipt(this.hash);
+		} else {
+			throw new Error('Transaction hash not found');
+		}
+	}
+
 	public async sign(account: Account): Promise<this> {
-		this.signedTX = await account.signTransaction(this.parseTransaction());
+		this.signedTX = await account.signTransaction(this.parse());
 
 		return this;
 	}
@@ -201,8 +199,30 @@ export default class Transaction extends TransactionClient {
 		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
+	public parse(): ParsedTX {
+		let data: string | undefined = this.tx.data;
+
+		const parsedTX = {
+			...this.tx,
+
+			from: this.tx.from && this.tx.from.value.toLowerCase(),
+			to: (this.tx.to && this.tx.to.value.toLowerCase()) || '',
+			value: this.tx.value || 0
+		};
+
+		if (data) {
+			if (!data.startsWith('0x')) {
+				data = `0x${data}`;
+			}
+
+			parsedTX.data = data;
+		}
+
+		return parsedTX;
+	}
+
 	public parseToString(): string {
-		return JSONBig.stringify(this.parseTransaction());
+		return JSONBig.stringify(this.parse());
 	}
 
 	public from(from: string): this {
@@ -244,27 +264,6 @@ export default class Transaction extends TransactionClient {
 		this.tx.data = data;
 		return this;
 	}
-
-	private parseTransaction(): ParsedTX {
-		let data: string | undefined = this.tx.data;
-		const parsedTX = {
-			...this.tx,
-			from: this.tx.from.value.toLowerCase(),
-			to: (this.tx.to && this.tx.to.value.toLowerCase()) || '',
-			value: this.tx.value || 0
-		};
-
-		if (data) {
-			if (!data.startsWith('0x')) {
-				data = '0x' + data;
-			}
-
-			parsedTX.data = data;
-		}
-
-		return parsedTX;
-	}
-
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
 			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;

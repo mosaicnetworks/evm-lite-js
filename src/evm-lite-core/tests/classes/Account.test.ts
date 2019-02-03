@@ -1,4 +1,4 @@
-import { Accounts, V3JSONKeyStore, Account } from '../../src';
+import { Account, Accounts, V3JSONKeyStore } from '../../src';
 
 import evmlc, { assert } from '../setup';
 
@@ -59,8 +59,8 @@ describe('Account.ts', () => {
 		);
 
 		assert.equal(
-			transaction.toJSON().from.value,
-			evmlc.defaultFrom,
+			transaction.parse().from,
+			evmlc.defaultFrom.toLowerCase(),
 			'`from` address should automatically be passed on from parent obj'
 		);
 		assert.equal(
@@ -69,7 +69,7 @@ describe('Account.ts', () => {
 			'signed transaction value should be undefined'
 		);
 
-		const signed = await decrypted.signTransaction(transaction);
+		const signed = await decrypted.signTransaction(transaction.parse());
 
 		assert.notEqual(
 			signed,
