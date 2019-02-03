@@ -8,7 +8,6 @@ import {
 	Gas,
 	GasPrice,
 	Nonce,
-	parseTransaction,
 	Value
 } from '../types';
 
@@ -170,7 +169,7 @@ export default class Transaction extends TransactionClient {
 	}
 
 	public async sign(account: Account): Promise<this> {
-		this.signedTX = await account.signTransaction(this);
+		this.signedTX = await account.signTransaction(this.parseTransaction());
 
 		return this;
 	}
@@ -202,12 +201,8 @@ export default class Transaction extends TransactionClient {
 		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
-	public toJSON(): TX {
-		return this.tx;
-	}
-
 	public parseToString(): string {
-		return JSONBig.stringify(parseTransaction(this.tx));
+		return JSONBig.stringify(this.parseTransaction());
 	}
 
 	public from(from: string): this {
@@ -248,6 +243,26 @@ export default class Transaction extends TransactionClient {
 	public data(data: Data): this {
 		this.tx.data = data;
 		return this;
+	}
+
+	private parseTransaction(): ParsedTX {
+		let data: string | undefined = this.tx.data;
+		const parsedTX = {
+			...this.tx,
+			from: this.tx.from.value.toLowerCase(),
+			to: (this.tx.to && this.tx.to.value.toLowerCase()) || '',
+			value: this.tx.value || 0
+		};
+
+		if (data) {
+			if (!data.startsWith('0x')) {
+				data = '0x' + data;
+			}
+
+			parsedTX.data = data;
+		}
+
+		return parsedTX;
 	}
 
 	private assignTXValues(options?: OverrideTXOptions) {

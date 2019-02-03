@@ -1,4 +1,4 @@
-import { Account, V3JSONKeyStore } from '../../src';
+import { Accounts, V3JSONKeyStore, Account } from '../../src';
 
 import evmlc, { assert } from '../setup';
 
@@ -8,7 +8,7 @@ let encrypted: V3JSONKeyStore;
 
 describe('Account.ts', () => {
 	it('should create a new account', async () => {
-		account = new Account();
+		account = evmlc.accounts.create();
 
 		assert.notEqual(
 			account.privateKey,
@@ -38,7 +38,7 @@ describe('Account.ts', () => {
 	});
 
 	it('should decrypt an account', async () => {
-		decrypted = Account.decrypt(encrypted, 'asd');
+		decrypted = evmlc.accounts.decrypt(encrypted, 'asd');
 
 		assert.notEqual(
 			account.privateKey,

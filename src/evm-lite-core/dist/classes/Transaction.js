@@ -12,6 +12,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -155,7 +166,7 @@ var Transaction = /** @class */ (function (_super) {
                 switch (_b.label) {
                     case 0:
                         _a = this;
-                        return [4 /*yield*/, account.signTransaction(this)];
+                        return [4 /*yield*/, account.signTransaction(this.parseTransaction())];
                     case 1:
                         _a.signedTX = _b.sent();
                         return [2 /*return*/, this];
@@ -191,11 +202,8 @@ var Transaction = /** @class */ (function (_super) {
             });
         });
     };
-    Transaction.prototype.toJSON = function () {
-        return this.tx;
-    };
     Transaction.prototype.parseToString = function () {
-        return JSONBig.stringify(types_1.parseTransaction(this.tx));
+        return JSONBig.stringify(this.parseTransaction());
     };
     Transaction.prototype.from = function (from) {
         this.tx.from = new types_1.AddressType(from);
@@ -228,6 +236,17 @@ var Transaction = /** @class */ (function (_super) {
     Transaction.prototype.data = function (data) {
         this.tx.data = data;
         return this;
+    };
+    Transaction.prototype.parseTransaction = function () {
+        var data = this.tx.data;
+        var parsedTX = __assign({}, this.tx, { from: this.tx.from.value.toLowerCase(), to: (this.tx.to && this.tx.to.value.toLowerCase()) || '', value: this.tx.value || 0 });
+        if (data) {
+            if (!data.startsWith('0x')) {
+                data = '0x' + data;
+            }
+            parsedTX.data = data;
+        }
+        return parsedTX;
     };
     Transaction.prototype.assignTXValues = function (options) {
         if (options) {

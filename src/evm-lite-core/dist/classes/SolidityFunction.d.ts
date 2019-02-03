@@ -1,6 +1,6 @@
 import * as SolFunction from 'web3/lib/web3/function';
 import { AddressType, EVMType, Gas, GasPrice } from '../types';
-import { ABI } from '../utils/Interfaces';
+import { ABI } from './SolidityContract';
 import AccountClient from '../client/AccountClient';
 import Transaction from './Transaction';
 export default class SolidityFunction extends AccountClient {

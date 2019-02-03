@@ -1,13 +1,14 @@
 import { Gas, GasPrice, Value } from '../types';
-import { ABI } from '../utils/Interfaces';
 import Transaction, { BaseTX } from './Transaction';
-import SolidityContract, { BaseContractSchema } from './SolidityContract';
+import SolidityContract, { BaseContractSchema, ContractABI } from './SolidityContract';
+import Accounts from '../classes/Accounts';
 import DefaultClient from '../client/DefaultClient';
 interface UserDefinedDefaultTXOptions extends BaseTX {
     from: string;
 }
 export default class EVMLC extends DefaultClient {
     private readonly userDefaultTXOptions;
+    accounts: Accounts;
     private readonly defaultTXOptions;
     /**
      * The root controller class to interact with contracts and make transfers.
@@ -55,7 +56,7 @@ export default class EVMLC extends DefaultClient {
      * @param abi - The interface of the respective contract.
      * @param options - (optional) The `data` and `contractAddress` options.
      */
-    loadContract<ContractSchema extends BaseContractSchema>(abi: ABI[], options?: {
+    loadContract<ContractSchema extends BaseContractSchema>(abi: ContractABI, options?: {
         data?: string;
         contractAddress?: string;
     }): Promise<SolidityContract<ContractSchema>>;

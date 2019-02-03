@@ -1,8 +1,8 @@
-import AccountClient from '../client/AccountClient';
-export default class Wallet extends AccountClient {
-    constructor(host: string, port: number);
-    add(): void;
-    remove(): void;
-    clear(): void;
-    encrypt(): void;
+import Account from './Account';
+import { V3JSONKeyStore } from './Account';
+export default class Accounts {
+    private accounts;
+    constructor();
+    decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string): Account;
+    create(): Account;
 }

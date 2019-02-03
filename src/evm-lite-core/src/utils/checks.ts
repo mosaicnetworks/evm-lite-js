@@ -1,6 +1,9 @@
 import * as errors from './errors';
 
-export const requireArgsLength = (expected: number, received: number): (boolean | Error) => {
+export const requireArgsLength = (
+	expected: number,
+	received: number
+): boolean | Error => {
 	if (expected !== received) {
 		throw errors.InvalidNumberOfSolidityArgs(expected, received);
 	} else {
@@ -8,7 +11,10 @@ export const requireArgsLength = (expected: number, received: number): (boolean 
 	}
 };
 
-export const requireSolidityTypes = (required: string, received: any): (boolean | Error) => {
+export const requireSolidityTypes = (
+	required: string,
+	received: any
+): boolean | Error => {
 	if (typeof received !== parseSolidityType(required)) {
 		throw errors.InvalidSolidityType();
 	} else {
@@ -16,7 +22,7 @@ export const requireSolidityTypes = (required: string, received: any): (boolean 
 	}
 };
 
-const parseSolidityType = (type: string): (string | undefined) => {
+const parseSolidityType = (type: string): string | undefined => {
 	switch (type.toLowerCase()) {
 		case 'address':
 			return 'string';

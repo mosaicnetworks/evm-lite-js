@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var types_1 = require("../types");
 var Transaction_1 = require("./Transaction");
 var SolidityContract_1 = require("./SolidityContract");
+var Accounts_1 = require("../classes/Accounts");
 var DefaultClient_1 = require("../client/DefaultClient");
 var EVMLC = /** @class */ (function (_super) {
     __extends(EVMLC, _super);
@@ -40,6 +41,7 @@ var EVMLC = /** @class */ (function (_super) {
     function EVMLC(host, port, userDefaultTXOptions) {
         var _this = _super.call(this, host, port) || this;
         _this.userDefaultTXOptions = userDefaultTXOptions;
+        _this.accounts = new Accounts_1.default();
         _this.defaultTXOptions = __assign({}, userDefaultTXOptions, { from: new types_1.AddressType(userDefaultTXOptions.from) });
         return _this;
     }

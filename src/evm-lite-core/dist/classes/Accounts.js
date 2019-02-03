@@ -1,36 +1,23 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var AccountClient_1 = require("../client/AccountClient");
-var Wallet = /** @class */ (function (_super) {
-    __extends(Wallet, _super);
-    function Wallet(host, port) {
-        return _super.call(this, host, port) || this;
+var web3_eth_accounts_1 = require("web3-eth-accounts");
+var Account_1 = require("./Account");
+var Accounts = /** @class */ (function () {
+    function Accounts() {
+        this.accounts = new web3_eth_accounts_1.Accounts('http://', {
+            defaultAccount: '0X0000000000000000000000000000000000000000',
+            defaultGas: 0,
+            defaultGasPrice: ''
+        });
     }
-    Wallet.prototype.add = function () {
-        // pass
+    Accounts.prototype.decrypt = function (v3JSONKeyStore, password) {
+        var account = this.accounts.decrypt(v3JSONKeyStore, password);
+        return new Account_1.default(account);
     };
-    Wallet.prototype.remove = function () {
-        // pass
+    Accounts.prototype.create = function () {
+        var randomHex = require('crypto-random-hex');
+        return new Account_1.default(this.accounts.create(randomHex(32)));
     };
-    Wallet.prototype.clear = function () {
-        // pass
-    };
-    Wallet.prototype.encrypt = function () {
-        // pass
-    };
-    return Wallet;
-}(AccountClient_1.default));
-exports.default = Wallet;
+    return Accounts;
+}());
+exports.default = Accounts;

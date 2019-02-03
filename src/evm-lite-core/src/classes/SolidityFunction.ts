@@ -12,7 +12,7 @@ import {
 	GasPrice,
 	parseSolidityTypes
 } from '../types';
-import { ABI, Input } from '../utils/Interfaces';
+import { ABI, Input } from './SolidityContract';
 
 import AccountClient from '../client/AccountClient';
 import Transaction, { TX } from './Transaction';

@@ -1,10 +1,10 @@
 export { default as EVMLC } from './classes/EVMLC';
-export { default as Account } from './classes/Account';
-export { BaseAccount } from './client/AccountClient';
-
+export { default as Account, V3JSONKeyStore } from './classes/Account';
+export { default as Accounts } from './classes/Accounts';
 export {
 	default as SolidityContract,
-	BaseContractSchema
+	BaseContractSchema,
+	ContractABI
 } from './classes/SolidityContract';
 
 export {
@@ -13,7 +13,7 @@ export {
 	default as Transaction
 } from './classes/Transaction';
 
-export { default as AddressType } from './types/lib/AddressType';
-export * from './utils/Interfaces';
-export { V3JSONKeyStore } from './classes/Account';
+export { BaseAccount } from './client/AccountClient';
 export { TXReceipt } from './client/TransactionClient';
+
+export { default as AddressType } from './types/lib/AddressType';

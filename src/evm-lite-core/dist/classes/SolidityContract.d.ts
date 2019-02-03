@@ -1,6 +1,5 @@
 import { TXReceipt } from '../client/TransactionClient';
 import { Address, Data, Gas, GasPrice, Nonce } from '../types';
-import { ABI } from '../utils/Interfaces';
 import Account from './Account';
 import Transaction from './Transaction';
 interface OverrideContractDeployParameters {
@@ -17,6 +16,20 @@ export interface ContractOptions {
     data?: Data;
     interface: ABI[];
 }
+export interface Input {
+    name: string;
+    type: string;
+}
+export interface ABI {
+    constant?: any;
+    inputs: Input[];
+    name?: any;
+    outputs?: any[];
+    payable: any;
+    stateMutability: any;
+    type: any;
+}
+export declare type ContractABI = ABI[];
 export interface BaseContractSchema {
     [key: string]: (...args: any[]) => Promise<Transaction>;
 }

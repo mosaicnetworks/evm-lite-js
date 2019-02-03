@@ -73,7 +73,6 @@ export default class Transaction extends TransactionClient {
     submit(options?: OverrideTXOptions, account?: Account): Promise<this | string>;
     sign(account: Account): Promise<this>;
     call(options?: OverrideTXOptions): Promise<string>;
-    toJSON(): TX;
     parseToString(): string;
     from(from: string): this;
     nonce(nonce: number): this;
@@ -83,6 +82,7 @@ export default class Transaction extends TransactionClient {
     gas(gas: Gas): this;
     gasPrice(gasPrice: GasPrice): this;
     data(data: Data): this;
+    private parseTransaction;
     private assignTXValues;
 }
 export {};

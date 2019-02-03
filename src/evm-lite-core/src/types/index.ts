@@ -25,23 +25,3 @@ export function parseSolidityTypes(raw: string) {
 			return new ArrayType(new ByteType());
 	}
 }
-
-export function parseTransaction(tx: TX): ParsedTX {
-	let data: string | undefined = tx.data;
-	const parsedTX = {
-		...tx,
-		from: tx.from.value.toLowerCase(),
-		to: (tx.to && tx.to.value.toLowerCase()) || '',
-		value: tx.value || 0
-	};
-
-	if (data) {
-		if (!data.startsWith('0x')) {
-			data = '0x' + data;
-		}
-
-		parsedTX.data = data;
-	}
-
-	return parsedTX;
-}

@@ -1,10 +1,13 @@
 import { Address, AddressType, Gas, GasPrice, Value } from '../types';
-import { ABI } from '../utils/Interfaces';
 
 import Transaction, { BaseTX } from './Transaction';
 
-import SolidityContract, { BaseContractSchema } from './SolidityContract';
+import SolidityContract, {
+	BaseContractSchema,
+	ContractABI
+} from './SolidityContract';
 
+import Accounts from '../classes/Accounts';
 import DefaultClient from '../client/DefaultClient';
 
 interface UserDefinedDefaultTXOptions extends BaseTX {
@@ -16,6 +19,8 @@ interface DefaultTXOptions extends BaseTX {
 }
 
 export default class EVMLC extends DefaultClient {
+	public accounts: Accounts;
+
 	private readonly defaultTXOptions: DefaultTXOptions;
 
 	/**
@@ -32,6 +37,7 @@ export default class EVMLC extends DefaultClient {
 	) {
 		super(host, port);
 
+		this.accounts = new Accounts();
 		this.defaultTXOptions = {
 			...userDefaultTXOptions,
 			from: new AddressType(userDefaultTXOptions.from)
@@ -98,7 +104,7 @@ export default class EVMLC extends DefaultClient {
 	 * @param options - (optional) The `data` and `contractAddress` options.
 	 */
 	public loadContract<ContractSchema extends BaseContractSchema>(
-		abi: ABI[],
+		abi: ContractABI,
 		options?: { data?: string; contractAddress?: string }
 	): Promise<SolidityContract<ContractSchema>> {
 		if (!this.defaultTXOptions.from.value) {
