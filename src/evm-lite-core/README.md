@@ -31,7 +31,7 @@ npm install evm-lite-core
 ```javascript
 const evmlcore = require('evm-lite-core');
 
-// Instansiate EVMLC object
+// Instantiate EVMLC object
 const evmlc = new evmlcore.EVMLC('127.0.0.1', 8080, {
     from: '',
     gas: 1000000,
@@ -52,7 +52,7 @@ evmlc.defaultFrom = account.address;
 ```javascript
 import { EVMLC } from 'evm-lite-core';
 
-// Instansiate EVMLC object
+// Instantiate EVMLC object
 const evmlc = new EVMLC('127.0.0.1', 8080, {
     from: '',
     gas: 1000000,
@@ -65,4 +65,42 @@ const account = evmlc.accounts.create();
 
 // Set default `from` to new account
 evmlc.defaultFrom = account.address;
+```
+
+### Transfer Tokens
+
+```javascript
+import { EVMLC } from 'evm-lite-core';
+
+// Instantiate EVMLC object
+const evmlc = new EVMLC('127.0.0.1', 8080, {
+    from: '',
+    gas: 1000000,
+    gasPrice: 0
+});
+
+
+// Create account key pair
+const account = evmlc.accounts.create();
+
+// Set default `from` to new account
+evmlc.defaultFrom = account.address;
+
+
+async function transfer(value) {
+   // Prepare a transfer (returns Promise)
+   // `from`, `gas`, `gasPrice` are passed down from the EVMLC object
+   const transferTransaction = await evmlc.prepareTransfer('TO_ADDRESS', 100);
+
+   // Sign the transaction locally
+   // await transferTransaction.sign(account);
+
+   // Send transaction
+   // await transferTransaction.submit();
+
+   // Could also be done like this
+   await transferTransaction.submit({}, account);
+
+   return transferTransaction;
+}
 ```
