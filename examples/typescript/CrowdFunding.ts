@@ -47,22 +47,26 @@ loadContract()
 
 		transaction.value(10);
 
-		await transaction.submit({}, await account);
+		await transaction.submit({ timeout: 2 }, await account);
+
+		console.log(transaction.receipt);
 
 		return contract;
 	})
 	.then(async contract => {
 		const account = await evmlc.getAccount(contract.options.address!.value);
+
 		console.log(account);
 
 		return contract;
 	})
 	.then(async contract => {
 		const transaction = await contract.methods.checkGoalReached();
-		const response = await transaction.submit({}, await account);
+		const response = await transaction.submit(
+			{ timeout: 2 },
+			await account
+		);
 
-		transaction.value(0);
-		console.log(transaction.toJSON());
 		console.log(response);
 
 		return contract;
