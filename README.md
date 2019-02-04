@@ -4,6 +4,12 @@
 
 A javascript library to interact with EVM-Lite.
 
+## Introduction
+
+![alt text][uml]
+
+[uml]: assets/dia.png "Dependency Diagram"
+
 ## Installation
 
 To install `evm-lite-lib` by using `npm`:
