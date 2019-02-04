@@ -4,7 +4,7 @@ import * as solc from 'solc';
 
 import evmlc, { assert } from '../setup';
 
-import { BaseContractSchema, Transaction } from '../../src';
+import { BaseContractSchema, SolidityContract, Transaction } from '../../src';
 
 interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Promise<Transaction>;
@@ -44,6 +44,8 @@ function compile(contractName: string, fileName: string) {
 }
 
 const compiled = compile('CrowdFunding', 'contract');
+
+let contract: SolidityContract<CrowdFundingSchema>;
 
 describe('SolidityContract.ts', () => {
 	it('should create a new contract object with defaults', async () => {
@@ -127,9 +129,11 @@ describe('SolidityContract.ts', () => {
 		);
 	});
 
-	it('should create a new contract object and deploy it to a node', async () => {
+	it('should create CrowdFunding.sol and deploy it to a node', async () => {
 		const account = evmlc.accounts.create();
-		const contract = await evmlc.loadContract<CrowdFundingSchema>(
+		evmlc.defaultFrom = account.address;
+
+		const dummyContract = await evmlc.loadContract<CrowdFundingSchema>(
 			compiled.abi,
 			{
 				data: compiled.bytecode
@@ -137,22 +141,36 @@ describe('SolidityContract.ts', () => {
 		);
 
 		assert.equal(
-			Object.keys(contract.methods).length === 0,
+			Object.keys(dummyContract.methods).length === 0,
 			true,
 			'there should be no methods added'
 		);
 
-		await contract.deploy(account, []);
+		await dummyContract.deploy(account, [10]);
 
 		assert.notEqual(
-			contract.options.address,
+			dummyContract.options.address,
 			undefined,
 			'deployed contract should have an address set'
 		);
 		assert.equal(
-			Object.keys(contract.methods).length > 0,
+			Object.keys(dummyContract.methods).length > 0,
 			true,
 			'there should be methods added'
+		);
+
+		contract = dummyContract;
+	});
+
+	it('should checkGoalReached() of the dummy contract', async () => {
+		const transaction = await contract.methods.checkGoalReached();
+		const response: any = await transaction.submit();
+
+		assert.equal(response[0], false, 'funding goal should not be reached');
+		assert.equal(
+			response[1].toLowerCase(),
+			contract.options.from.value.toLowerCase(),
+			'contract deployment address should be the beneficiary'
 		);
 	});
 });

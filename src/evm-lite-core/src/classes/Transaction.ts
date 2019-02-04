@@ -124,7 +124,7 @@ export default class Transaction extends TransactionClient {
 	public async submit(
 		options?: OverrideTXOptions,
 		account?: Account
-	): Promise<this | string> {
+	): Promise<this | any[]> {
 		this.assignTXValues(options);
 
 		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
@@ -172,7 +172,7 @@ export default class Transaction extends TransactionClient {
 		return this;
 	}
 
-	public async call(options?: OverrideTXOptions): Promise<string> {
+	public async call(options?: OverrideTXOptions): Promise<any[]> {
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
 		}

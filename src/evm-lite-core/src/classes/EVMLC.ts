@@ -97,6 +97,7 @@ export default class EVMLC extends DefaultClient {
 	 * respective contract.
 	 *
 	 * @description
+	 * Currently only support the compilation of a single solodity `contract`.
 	 * This function will also fetch the nonce from the node with connection
 	 * details specified in the contructor for this class.
 	 *
