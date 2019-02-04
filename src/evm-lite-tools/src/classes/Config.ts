@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as toml from 'toml';
 import * as tomlify from 'tomlify-j0.4';
 
-import { Gas, GasPrice } from '../../evm/types';
+import { Gas, GasPrice } from 'evm-lite-core';
 
 import Static from './Static';
 
@@ -32,7 +32,6 @@ export default class Config {
 		public readonly name: string
 	) {
 		this.data = this.default();
-
 		this.path = path.join(directory, name);
 
 		if (Static.exists(this.path)) {
@@ -96,9 +95,7 @@ export default class Config {
 					tomlify.toToml(data, { spaces: 2 }),
 					err => {
 						if (err) {
-							reject(
-								'Something went wrong writing the configuration.'
-							);
+							reject('Error writing the configuration.');
 							return;
 						}
 

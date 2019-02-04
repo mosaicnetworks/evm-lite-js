@@ -127,31 +127,32 @@ describe('SolidityContract.ts', () => {
 		);
 	});
 
-	// it('should create a new contract object and deploy it to a node', async () => {
-	// 	const contract = await evmlc.loadContract<CrowdFundingSchema>(
-	// 		compiled.abi,
-	// 		{
-	// 			data: compiled.bytecode
-	// 		}
-	// 	);
+	it('should create a new contract object and deploy it to a node', async () => {
+		const account = evmlc.accounts.create();
+		const contract = await evmlc.loadContract<CrowdFundingSchema>(
+			compiled.abi,
+			{
+				data: compiled.bytecode
+			}
+		);
 
-	// 	assert.equal(
-	// 		Object.keys(contract.methods).length === 0,
-	// 		true,
-	// 		'there should be no methods added'
-	// 	);
+		assert.equal(
+			Object.keys(contract.methods).length === 0,
+			true,
+			'there should be no methods added'
+		);
 
-	// 	await contract.deploy(await account, []);
+		await contract.deploy(account, []);
 
-	// 	assert.notEqual(
-	// 		contract.options.address,
-	// 		undefined,
-	// 		'deployed contract should have an address set'
-	// 	);
-	// 	assert.equal(
-	// 		Object.keys(contract.methods).length > 0,
-	// 		true,
-	// 		'there should be methods added'
-	// 	);
-	// });
+		assert.notEqual(
+			contract.options.address,
+			undefined,
+			'deployed contract should have an address set'
+		);
+		assert.equal(
+			Object.keys(contract.methods).length > 0,
+			true,
+			'there should be methods added'
+		);
+	});
 });

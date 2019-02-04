@@ -2,13 +2,19 @@ import * as fs from 'fs';
 import * as JSONBig from 'json-bigint';
 import * as path from 'path';
 
-import { V3JSONKeyStore } from '../..';
+import {
+	Account,
+	Accounts,
+	BaseAccount,
+	EVMLC,
+	V3JSONKeyStore
+} from 'evm-lite-core';
 
-import { Account, BaseAccount, EVMLC } from '../..';
 import Static from './Static';
 
 export default class Keystore {
 	public readonly path: string;
+	private readonly accounts = new Accounts();
 
 	constructor(
 		public readonly directory: string,
@@ -25,7 +31,7 @@ export default class Keystore {
 		connection?: EVMLC
 	): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
-		const decrypted = await Account.decrypt(keystore, password);
+		const decrypted = await this.accounts.decrypt(keystore, password);
 
 		if (connection) {
 			const { nonce, balance } = await this.fetchBalanceAndNonce(
@@ -42,7 +48,7 @@ export default class Keystore {
 
 	public create(password: string, output?: string): Promise<string> {
 		return new Promise<string>(resolve => {
-			const account = new Account();
+			const account = this.accounts.create();
 			const eAccount = account.encrypt(password);
 			const sEAccount = JSONBig.stringify(eAccount);
 			const filename = `UTC--${JSONBig.stringify(new Date())}--${
@@ -82,7 +88,7 @@ export default class Keystore {
 			let account: Account;
 
 			try {
-				account = Account.decrypt(
+				account = this.accounts.decrypt(
 					JSONBig.parse(fs.readFileSync(path, 'utf8')),
 					old
 				);
@@ -135,7 +141,7 @@ export default class Keystore {
 		});
 	}
 
-	public fetchBalanceAndNonce(
+	private fetchBalanceAndNonce(
 		address: string,
 		connection: EVMLC
 	): Promise<BaseAccount> {

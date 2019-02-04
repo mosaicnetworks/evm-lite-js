@@ -25,10 +25,10 @@ contract CrowdFunding {
         bool ok
     );
 
-    constructor() public {
+    constructor(uint amount) public {
         campaign = Campaign({
             beneficiary: msg.sender,
-            fundingGoal: 5,
+            fundingGoal: amount,
             numFunders: 0,
             amount:0
         });

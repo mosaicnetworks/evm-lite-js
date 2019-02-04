@@ -1,4 +1,4 @@
-import { Account, V3JSONKeyStore } from 'evm-lite-core';
+import { Account, V3JSONKeyStore } from '../../src';
 
 import evmlc, { assert } from '../setup';
 

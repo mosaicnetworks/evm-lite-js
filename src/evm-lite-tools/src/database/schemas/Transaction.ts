@@ -1,5 +1,4 @@
-import { SentTX } from '../../..';
-import { Gas, GasPrice, Nonce, Value } from '../../../evm/types';
+import { Gas, GasPrice, Nonce, SentTX, Value } from 'evm-lite-core';
 
 export type TransactionSchema = SentTX;
 

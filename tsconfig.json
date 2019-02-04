@@ -9,6 +9,6 @@
     "lib": ["es6", "dom"],
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/index.ts"],
   "exclude": ["*.test.ts", "node_modules"]
 }

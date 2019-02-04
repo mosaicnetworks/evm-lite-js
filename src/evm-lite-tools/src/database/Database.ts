@@ -2,7 +2,7 @@ import * as LowDB from 'lowdb';
 import * as FileSync from 'lowdb/adapters/FileSync';
 import * as path from 'path';
 
-import { SentTX } from '../..';
+import { SentTX } from 'evm-lite-core';
 
 import Static from '../classes/Static';
 import TransactionController from './controllers/Transaction';

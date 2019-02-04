@@ -8,8 +8,8 @@ yarn.lock
 .prettierrc
 .gitignore
 .editorconfig
-test
-webpack.config.js
+tests
+config
+.vscode
 examples
 .circleci
-.vscode
