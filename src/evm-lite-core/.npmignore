@@ -11,5 +11,3 @@ yarn.lock
 tests
 config
 .vscode
-examples
-.circleci

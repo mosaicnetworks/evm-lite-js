@@ -1,0 +1,3 @@
+exports = {
+	preset: 'ts-jest'
+};

@@ -1,0 +1,31 @@
+{
+	"name": "evm-lite-tools",
+	"version": "0.0.1",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc -p ./tsconfig.json",
+		"tests": "mocha -r ts-node/register tests/**/*.test.ts",
+		"package": "webpack --config config/webpack.config.js"
+	},
+	"dependencies": {
+		"json-bigint": "^0.3.0",
+		"lowdb": "1.0.0",
+		"mkdirp": "0.5.1",
+		"toml": "^2.3.3",
+		"tomlify-j0.4": "^3.0.0"
+	},
+	"devDependencies": {
+		"@types/chai": "^4.1.7",
+		"@types/lowdb": "^1.0.6",
+		"@types/mkdirp": "^0.5.2",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.21",
+		"chai": "^4.2.0",
+		"mocha": "^5.2.0",
+		"tslint": "^5.12.1",
+		"tslint-config-prettier": "^1.17.0",
+		"typescript": "^3.3.1"
+	}
+}
