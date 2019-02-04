@@ -4,11 +4,11 @@
 
 A javascript library to interact with EVM-Lite.
 
-## Introduction
+<!-- ## Introduction
 
 ![alt text][uml]
 
-[uml]: assets/keyed-dia-new.png "Dependency Diagram"
+[uml]: assets/keyed-dia-new.png "Dependency Diagram" -->
 
 ## Installation
 
