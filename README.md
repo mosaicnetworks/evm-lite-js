@@ -8,7 +8,7 @@ A javascript library to interact with EVM-Lite.
 
 ![alt text][uml]
 
-[uml]: assets/dia.png "Dependency Diagram"
+[uml]: assets/keyed-dia.png "Dependency Diagram"
 
 ## Installation
 
