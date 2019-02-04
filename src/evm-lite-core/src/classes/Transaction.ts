@@ -56,6 +56,7 @@ interface OverrideTXOptions {
 	value?: Value;
 	gas?: Gas;
 	gasPrice?: GasPrice;
+	timeout?: number;
 }
 
 export interface SignedTransaction {
@@ -135,6 +136,8 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does have a value to send.');
 		}
 
+		const timeout = ((options && options.timeout) || 1) * 1000;
+
 		if (!this.constant) {
 			if (account) {
 				await this.sign(account);
@@ -146,13 +149,13 @@ export default class Transaction extends TransactionClient {
 
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
-			await delay(1000);
+			await delay(timeout);
 
 			this.hash = txHash;
 
 			return this;
 		} else {
-			await delay(1000);
+			await delay(timeout);
 
 			return await this.call();
 		}

@@ -96,10 +96,10 @@ async function transfer(value) {
    // await transferTransaction.sign(account);
 
    // Send transaction
-   // await transferTransaction.submit();
+   // await transferTransaction.submit({ timeout: 2 });
 
-   // Could also be done like this
-   await transferTransaction.submit({}, account);
+   // Could also be done like this with a timeout of 2 seconds
+   await transferTransaction.submit({ timeout: 2 }, account);
 
    return transferTransaction;
 }
