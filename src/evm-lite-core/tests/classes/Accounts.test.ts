@@ -25,16 +25,22 @@ describe('Accounts.ts', () => {
 		});
 	});
 
-	describe('prepareTransfer()', () => {
-		it('should prepare transaction with default values', async () => {
-			const transaction = await evmlc.accounts.prepareTransfer(
-				'SOME_ADDRESS',
-				200
-			);
-			const parsed = transaction.parse();
+	describe('prepareTransfer()', async () => {
+		const transaction = await evmlc.accounts.prepareTransfer(
+			'SOME_ADDRESS',
+			200
+		);
+		const parsed = transaction.parse();
 
+		it('transaction has default gas', async () => {
 			expect(parsed.gas).toBe(evmlc.defaultGas);
+		});
+
+		it('transaction has default gasPrice', async () => {
 			expect(parsed.gasPrice).toBe(evmlc.defaultGasPrice);
+		});
+
+		it('transaction has default from', async () => {
 			expect(parsed.from).toBe(evmlc.defaultFrom.toLowerCase());
 		});
 	});
