@@ -20,9 +20,9 @@ export default class Accounts {
 		return new Account(account);
 	}
 
-	public create(): Account {
+	public create(hex?: string): Account {
 		const randomHex = require('crypto-random-hex');
 
-		return new Account(this.accounts.create(randomHex(32)));
+		return new Account(this.accounts.create(hex || randomHex(32)));
 	}
 }

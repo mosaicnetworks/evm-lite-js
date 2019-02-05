@@ -9,16 +9,16 @@ import {
 	GasPrice,
 	Nonce,
 	Value
-} from '../types';
+} from '../../types';
 
-import TransactionClient, { TXReceipt } from '../client/TransactionClient';
-import Account from './Account';
+import TransactionClient, { TXReceipt } from '../../clients/TransactionClient';
+import Account from '../accounts/Account';
 
-export interface CallTXResponse {
+export interface CallTransactionResponse {
 	data: string;
 }
 
-export interface SentTX {
+export interface SentTransaction {
 	from: string;
 	to: string;
 	value: Value;
@@ -29,21 +29,21 @@ export interface SentTX {
 	txHash: string;
 }
 
-export interface BaseTX {
+export interface BaseTransaction {
 	gas: Gas;
 	gasPrice: GasPrice;
 	nonce?: Nonce;
 	chainId?: ChainID;
 }
 
-export interface TX extends BaseTX {
+export interface TX extends BaseTransaction {
 	from: Address;
 	to?: Address;
 	value?: Value;
 	data?: Data;
 }
 
-export interface ParsedTX extends BaseTX {
+export interface ParsedTransaction extends BaseTransaction {
 	from: string;
 	to?: string;
 	value?: Value;
@@ -129,11 +129,11 @@ export default class Transaction extends TransactionClient {
 		this.assignTXValues(options);
 
 		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-			throw new Error('Gas or Gas Price not set');
+			throw new Error('Fields `gas` or `gasPrice` not set.');
 		}
 
 		if (!this.tx.data && !this.tx.value) {
-			throw new Error('Transaction does have a value to send.');
+			throw new Error('Transaction does not have a value to send.');
 		}
 
 		const timeout = ((options && options.timeout) || 1) * 1000;
@@ -144,7 +144,7 @@ export default class Transaction extends TransactionClient {
 			}
 
 			if (!this.signedTX) {
-				throw new Error('Transaction has not been signed locally yet.');
+				throw new Error('Transaction has not been signed locally.');
 			}
 
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
@@ -165,7 +165,7 @@ export default class Transaction extends TransactionClient {
 		if (this.hash) {
 			return this.getReceipt(this.hash);
 		} else {
-			throw new Error('Transaction hash not found');
+			throw new Error('Transaction hash not found.');
 		}
 	}
 
@@ -193,7 +193,7 @@ export default class Transaction extends TransactionClient {
 		delete tx.nonce;
 
 		const call = await this.callTX(JSON.stringify(tx));
-		const response = JSONBig.parse<CallTXResponse>(call);
+		const response = JSONBig.parse<CallTransactionResponse>(call);
 
 		if (!this.unpackfn) {
 			throw new Error('Unpacking function required.');
@@ -202,7 +202,7 @@ export default class Transaction extends TransactionClient {
 		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
-	public parse(): ParsedTX {
+	public parse(): ParsedTransaction {
 		let data: string | undefined = this.tx.data;
 
 		const parsedTX = {

@@ -1,15 +1,15 @@
 // @ts-ignore
 import * as coder from 'web3/lib/solidity/coder';
 
-import * as checks from '../utils/checks';
-import * as errors from '../utils/errors';
+import * as checks from '../../utils/checks';
+import * as errors from '../../utils/errors';
 
-import { TXReceipt } from '../client/TransactionClient';
-import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../types';
+import { TXReceipt } from '../../clients/TransactionClient';
+import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../../types';
 
-import Account from './Account';
+import Account from '../accounts/Account';
+import Transaction from '../transaction/Transaction';
 import SolidityFunction from './SolidityFunction';
-import Transaction from './Transaction';
 
 interface OverrideContractDeployParameters {
 	gas?: Gas;

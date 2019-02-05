@@ -1,20 +1,20 @@
 import { Address, AddressType, Gas, GasPrice, Value } from '../types';
 
-import Transaction, { BaseTX } from './Transaction';
+import Transaction, { BaseTransaction } from './transaction/Transaction';
 
 import SolidityContract, {
 	BaseContractSchema,
 	ContractABI
-} from './SolidityContract';
+} from './contract/SolidityContract';
 
-import Accounts from '../classes/Accounts';
-import DefaultClient from '../client/DefaultClient';
+import DefaultClient from '../clients/DefaultClient';
+import Accounts from './accounts/Accounts';
 
-interface UserDefinedDefaultTXOptions extends BaseTX {
+interface UserDefinedDefaultTXOptions extends BaseTransaction {
 	from: string;
 }
 
-interface DefaultTXOptions extends BaseTX {
+interface DefaultTXOptions extends BaseTransaction {
 	from: Address;
 }
 

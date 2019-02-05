@@ -4,9 +4,13 @@ import {
 	EncryptedKeystoreV3Json
 } from 'web3-eth-accounts';
 
-import { BaseAccount } from '../client/AccountClient';
+import { BaseAccount } from '../../clients/AccountClient';
 
-import Transaction, { ParsedTX, SignedTransaction, TX } from './Transaction';
+import Transaction, {
+	ParsedTransaction,
+	SignedTransaction,
+	TX
+} from '../transaction/Transaction';
 
 export type V3JSONKeyStore = EncryptedKeystoreV3Json;
 
@@ -31,7 +35,7 @@ export default class Account {
 		return this.account.sign!(message);
 	}
 
-	public signTransaction(tx: ParsedTX): Promise<SignedTransaction> {
+	public signTransaction(tx: ParsedTransaction): Promise<SignedTransaction> {
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 

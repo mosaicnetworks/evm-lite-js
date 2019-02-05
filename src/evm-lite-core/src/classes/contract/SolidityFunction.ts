@@ -3,7 +3,7 @@ import * as coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 import * as SolFunction from 'web3/lib/web3/function';
 
-import * as errors from '../utils/errors';
+import * as errors from '../../utils/errors';
 
 import {
 	AddressType,
@@ -11,11 +11,11 @@ import {
 	Gas,
 	GasPrice,
 	parseSolidityTypes
-} from '../types';
+} from '../../types';
 import { ABI, Input } from './SolidityContract';
 
-import AccountClient from '../client/AccountClient';
-import Transaction, { TX } from './Transaction';
+import AccountClient from '../../clients/AccountClient';
+import Transaction, { TX } from '../transaction/Transaction';
 
 export default class SolidityFunction extends AccountClient {
 	public readonly name: string;

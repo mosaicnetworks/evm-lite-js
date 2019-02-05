@@ -5,8 +5,6 @@ import ByteType from './src/ByteType';
 import EVMType from './src/EVMType';
 import StringType from './src/StringType';
 
-import { ParsedTX, TX } from '../classes/Transaction';
-
 export { AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType };
 
 export * from './src/TransactionTypes';
