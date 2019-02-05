@@ -1,3 +1,0 @@
-exports = {
-	preset: 'ts-jest'
-};

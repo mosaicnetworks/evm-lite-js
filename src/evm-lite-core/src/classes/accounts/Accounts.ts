@@ -4,14 +4,14 @@ import { Address, AddressType, Value } from '../../types';
 import Transaction, { BaseTransaction } from '../transaction/Transaction';
 import { V3JSONKeyStore } from './Account';
 
-import DefaultClient from '../../clients/DefaultClient';
+import AccountClient from '../../clients/AccountClient';
 import Account from './Account';
 
 interface AccountDefaultOptions extends BaseTransaction {
 	from: Address;
 }
 
-export default class Accounts extends DefaultClient {
+export default class Accounts extends AccountClient {
 	private accounts: Web3Accounts;
 
 	/**

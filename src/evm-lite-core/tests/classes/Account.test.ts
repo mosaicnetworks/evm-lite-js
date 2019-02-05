@@ -10,46 +10,22 @@ describe('Account.ts', () => {
 	it('should create a new account', async () => {
 		account = evmlc.accounts.create();
 
-		assert.notEqual(
-			account.privateKey,
-			undefined,
-			'account privatekey should be exposed'
-		);
-		assert.notEqual(
-			account.signTransaction,
-			undefined,
-			'account sign transaction function should also be exposed'
-		);
+		expect(account.privateKey).not.toBe(undefined);
+		expect(account.signTransaction).not.toBe(undefined);
 	});
 
 	it('should encrypt an account', async () => {
 		encrypted = account.encrypt('asd');
 
-		assert.notEqual(
-			encrypted,
-			undefined,
-			'encrypted keystore should be valid'
-		);
-		assert.notEqual(
-			encrypted.crypto,
-			undefined,
-			'cryptography params should be validd'
-		);
+		expect(encrypted).not.toBe(undefined);
+		expect(encrypted.crypto).not.toBe(undefined);
 	});
 
 	it('should decrypt an account', async () => {
 		decrypted = evmlc.accounts.decrypt(encrypted, 'asd');
 
-		assert.notEqual(
-			account.privateKey,
-			undefined,
-			'account privatekey should be exposed'
-		);
-		assert.notEqual(
-			account.signTransaction,
-			undefined,
-			'account sign transaction function should also be exposed'
-		);
+		expect(account.privateKey).not.toBe(undefined);
+		expect(account.signTransaction).not.toBe(undefined);
 	});
 
 	it('should sign a transaction', async () => {
@@ -58,28 +34,16 @@ describe('Account.ts', () => {
 			1
 		);
 
-		assert.equal(
-			transaction.parse().from,
-			evmlc.defaultFrom.toLowerCase(),
-			'`from` address should automatically be passed on from parent obj'
-		);
-		assert.equal(
-			transaction.signedTX,
-			undefined,
-			'signed transaction value should be undefined'
-		);
+		const parsed = transaction.parse();
+
+		expect(parsed.gas).toBe(evmlc.defaultGas);
+		expect(parsed.gasPrice).toBe(evmlc.defaultGasPrice);
+		expect(parsed.from).toBe(evmlc.defaultFrom.toLowerCase());
+		expect(transaction.signedTX).toBe(undefined);
 
 		const signed = await decrypted.signTransaction(transaction.parse());
 
-		assert.notEqual(
-			signed,
-			undefined,
-			'signed transaction should be generated'
-		);
-		assert.notEqual(
-			signed.rawTransaction,
-			undefined,
-			'signed raw transaction should be valid'
-		);
+		expect(signed).not.toBe(undefined);
+		expect(signed.rawTransaction).not.toBe(undefined);
 	});
 });

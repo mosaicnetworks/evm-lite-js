@@ -1,10 +1,10 @@
 import * as JSONBig from 'json-bigint';
 
-import { request } from './BaseClient';
+import BaseClient, { request } from './BaseClient';
 
 import AccountClient from './AccountClient';
 
-export default abstract class DefaultClient extends AccountClient {
+export default abstract class DefaultClient extends BaseClient {
 	protected constructor(host: string, port: number) {
 		super(host, port);
 	}

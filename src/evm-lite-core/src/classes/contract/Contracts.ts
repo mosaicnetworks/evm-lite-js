@@ -5,13 +5,13 @@ import SolidityContract, {
 	ContractABI
 } from './SolidityContract';
 
-import DefaultClient from '../../clients/DefaultClient';
+import AccountClient from '../../clients/AccountClient';
 
 interface ContractDefaultOptions extends BaseTransaction {
 	from: Address;
 }
 
-export default class Contracts extends DefaultClient {
+export default class Contracts extends AccountClient {
 	/**
 	 * The root cotnroller class for interacting with contracts.
 	 *
