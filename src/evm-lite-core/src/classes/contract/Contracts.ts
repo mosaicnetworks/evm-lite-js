@@ -12,6 +12,13 @@ interface ContractDefaultOptions extends BaseTransaction {
 }
 
 export default class Contracts extends DefaultClient {
+	/**
+	 * The root cotnroller class for interacting with contracts.
+	 *
+	 * @param host - The host of the active node.
+	 * @param port - The port of the HTTP service.
+	 * @param contractOptions - The default options for contracts
+	 */
 	constructor(
 		host: string,
 		port: number,

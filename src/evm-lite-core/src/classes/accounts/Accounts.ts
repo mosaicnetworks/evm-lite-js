@@ -15,7 +15,11 @@ export default class Accounts extends DefaultClient {
 	private accounts: Web3Accounts;
 
 	/**
-	 * Accounts controller class to interact with accounts within the EVM.
+	 * The root cotnroller class for interacting with accounts.
+	 *
+	 * @param host - The host of the active node.
+	 * @param port - The port of the HTTP service.
+	 * @param contractOptions - The default options for accounts
 	 */
 	constructor(
 		host: string,

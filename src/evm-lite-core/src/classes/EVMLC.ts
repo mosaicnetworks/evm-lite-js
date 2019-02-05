@@ -21,7 +21,7 @@ export default class EVMLC extends DefaultClient {
 	private readonly defaultTXOptions: DefaultTXOptions;
 
 	/**
-	 * The root controller class to interact with contracts and make transfers.
+	 * The root controller class to interact with contracts and accounts.
 	 *
 	 * @remarks
 	 * The `gas`, `gasPrice` and `from` address set in the options for this
@@ -113,6 +113,9 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
+	/**
+	 * The controller class for interacting with Smart Contracts.
+	 */
 	get contracts() {
 		if (
 			this.contractController.defaults.from !==
@@ -132,6 +135,9 @@ export default class EVMLC extends DefaultClient {
 		return this.contractController;
 	}
 
+	/**
+	 * The controller class for interacting with accounts.
+	 */
 	get accounts() {
 		if (
 			this.accountController.defaults.from !==
