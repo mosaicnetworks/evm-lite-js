@@ -51,13 +51,16 @@ export default class EVMLC extends DefaultClient {
 	) {
 		super(host, port);
 
-		this.accountController = new Accounts();
-
 		this.defaultTXOptions = {
 			...userDefaultTXOptions,
 			from: new AddressType(userDefaultTXOptions.from)
 		};
+
 		this.contractController = new Contracts(host, port, {
+			...this.defaultTXOptions
+		});
+
+		this.accountController = new Accounts(host, port, {
 			...this.defaultTXOptions
 		});
 	}
@@ -130,69 +133,20 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	get accounts() {
+		if (
+			this.accountController.defaults.from !==
+				this.defaultTXOptions.from.value ||
+			this.accountController.defaults.gas !== this.defaultTXOptions.gas ||
+			this.accountController.defaults.gasPrice !==
+				this.defaultTXOptions.gasPrice
+		) {
+			this.accountController = new Accounts(this.host, this.port, {
+				from: this.defaultTXOptions.from,
+				gas: this.defaultTXOptions.gas,
+				gasPrice: this.defaultTXOptions.gasPrice
+			});
+		}
+
 		return this.accountController;
-	}
-
-	/**
-	 * Should prepare a transaction to transfer `value` to the specified `to`
-	 * address.
-	 *
-	 * @remarks
-	 * This function will also fetch the nonce from the node with connection
-	 * details specified in the contructor for this class.
-	 *
-	 * ```typescript
-	 * const transfer = async () {
-	 *     // Prepare a transfer transaction to submitted after signing
-	 *     const transaction = await evmlc.prepareTransfer('TO_ADDRESS', 200);
-	 *     // Sign the transaction with a new  account and submit to node.
-	 *     await transaction.submit({}, evmlc.accounts.create())
-	 * }
-	 * ```
-	 *
-	 * @param to - The address to transfer funds to.
-	 * @param value - The amount to transfer.
-	 * @param from - Overrides `from` address set in the constructor.
-	 */
-	public prepareTransfer(
-		to: string,
-		value: Value,
-		from?: string
-	): Promise<Transaction> {
-		const fromObject = new AddressType((from || this.defaultFrom).trim());
-
-		if (!fromObject.value) {
-			throw new Error(
-				'Default `from` address cannot be left blank or empty.'
-			);
-		}
-
-		if (!to) {
-			throw new Error('Must provide a `to` address!');
-		}
-
-		if (value <= 0) {
-			throw new Error(
-				'A transfer of funds must have a `value` greater than 0.'
-			);
-		}
-
-		return this.getAccount(fromObject.value).then(
-			account =>
-				new Transaction(
-					{
-						from: fromObject,
-						to: new AddressType(to.trim()),
-						value,
-						gas: this.defaultGas,
-						gasPrice: this.defaultGasPrice,
-						nonce: account.nonce,
-						chainId: 1
-					},
-					this.host,
-					this.port,
-					false
-				)
-		);
 	}
 }

@@ -53,7 +53,7 @@ describe('Account.ts', () => {
 	});
 
 	it('should sign a transaction', async () => {
-		const transaction = await evmlc.prepareTransfer(
+		const transaction = await evmlc.accounts.prepareTransfer(
 			'0xa45fcfdf304fd82da69c88275e4f4b750ce582ac',
 			1
 		);

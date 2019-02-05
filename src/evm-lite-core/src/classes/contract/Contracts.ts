@@ -72,6 +72,9 @@ export default class Contracts extends DefaultClient {
 		);
 	}
 
+	/**
+	 * The defaults for contracts created from this object.
+	 */
 	get defaults() {
 		return {
 			from: this.contractOptions.from.value,
