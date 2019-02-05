@@ -26,9 +26,26 @@ export default class EVMLC extends DefaultClient {
 	/**
 	 * The root controller class to interact with contracts and make transfers.
 	 *
+	 * @remarks
+	 * The `gas`, `gasPrice` and `from` address set in the options for this
+	 * constrcutor will be used as a default for any contracts or transfer
+	 * transactions created from this object. Note that override capabilities
+	 * are provided in the respective functions if required.
+	 *
+	 * ```typescript
+	 * // Generate EVMLC connection object
+	 * const evmlc = new EVMLC('127.0.0.1', 8080, {
+	 *     from: 'DEFAULT_FROM_ADDRESS',
+	 *     gas: 1000000,
+	 *     gasPrice: 0
+	 * });
+	 * ```
+	 *
 	 * @param host - The host address of the node.
 	 * @param port - The port of the node.
 	 * @param userDefaultTXOptions - The default values for transactions.
+	 *
+	 * @alpha
 	 */
 	constructor(
 		host: string,
@@ -53,8 +70,8 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `from` to be used for any
-	 * transactions created from this object.
+	 * Set the default `from` to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultFrom(address: string) {
 		this.defaultTXOptions.from = new AddressType(address);
@@ -69,8 +86,8 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `gas` value to be used for any
-	 * transactions created from this object.
+	 * Set the default `gas` value to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultGas(gas: Gas) {
 		this.defaultTXOptions.gas = gas;
@@ -85,8 +102,8 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `gasPrice` to be used for any
-	 * transactions created from this object.
+	 * Set the default `gasPrice` to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultGasPrice(gasPrice: GasPrice) {
 		this.defaultTXOptions.gasPrice = gasPrice;
@@ -96,13 +113,22 @@ export default class EVMLC extends DefaultClient {
 	 * Should generate a contract abstraction class to interact with the
 	 * respective contract.
 	 *
-	 * @description
+	 * @remarks
 	 * Currently only support the compilation of a single solodity `contract`.
 	 * This function will also fetch the nonce from the node with connection
 	 * details specified in the contructor for this class.
 	 *
+	 * ```typescript
+	 * const contract = await evmlc.loadContract(ABI, {
+	 *     data: 'BYTE_CODE',
+	 *     contractAddress: 'IF_ALERADY_DEPLOYED'
+	 * });
+	 * ```
+	 *
 	 * @param abi - The interface of the respective contract.
 	 * @param options - (optional) The `data` and `contractAddress` options.
+	 *
+	 * @alpha
 	 */
 	public loadContract<ContractSchema extends BaseContractSchema>(
 		abi: ContractABI,
@@ -142,9 +168,18 @@ export default class EVMLC extends DefaultClient {
 	 * Should prepare a transaction to transfer `value` to the specified `to`
 	 * address.
 	 *
-	 * @description
+	 * @remarks
 	 * This function will also fetch the nonce from the node with connection
 	 * details specified in the contructor for this class.
+	 *
+	 * ```typescript
+	 * const transfer = async () {
+	 *     // Prepare a transfer transaction to submitted after signing
+	 *     const transaction = await evmlc.prepareTransfer('TO_ADDRESS', 200);
+	 *     // Sign the transaction with a new  account and submit to node.
+	 *     await transaction.submit({}, evmlc.accounts.create())
+	 * }
+	 * ```
 	 *
 	 * @param to - The address to transfer funds to.
 	 * @param value - The amount to transfer.

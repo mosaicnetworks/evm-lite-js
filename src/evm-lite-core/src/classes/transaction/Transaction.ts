@@ -78,6 +78,19 @@ export default class Transaction extends TransactionClient {
 	public signedTX?: SignedTransaction;
 	public hash?: string;
 
+	/**
+	 * All transactions used to interact with the EVM are parsed through this
+	 * object.
+	 *
+	 * @remarks
+	 * This class should not be directly instantiated.
+	 *
+	 * @param tx - The transaction parameters.
+	 * @param host - The host of active node.
+	 * @param port - The port the HTTP API is listening on that node.
+	 * @param constant - Whether the transaction is constant.
+	 * @param unpackfn = Unpacking function used to decode `call()` returns.
+	 */
 	constructor(
 		private tx: TX,
 		host: string,
@@ -89,7 +102,12 @@ export default class Transaction extends TransactionClient {
 	}
 
 	/**
-	 * Send a transaction to a node for a controlled account.
+	 * Should send a transaction to a node for a controlled account.
+	 *
+	 * @remarks
+	 * This function will not sign the transaction before sending meaning
+	 * that the `from` address has to have a corresponding keystore file
+	 * on the node.
 	 *
 	 * @param options - Override transactions options
 	 */
@@ -116,8 +134,11 @@ export default class Transaction extends TransactionClient {
 	}
 
 	/**
-	 * Should `send()` or `call()` the transaction or message dependent on
-	 * whether the transaction or message mutates the state.
+	 * Should `send()` or `call()` the transaction or message.
+	 *
+	 * @remarks
+	 * This function will automatically determine whether the function mutates
+	 * the state and decide whether to `call` or `send`.
 	 *
 	 * @param options - (optional) Override transaction options.
 	 * @param account - (optional) The account to sign this transaction.
@@ -161,6 +182,10 @@ export default class Transaction extends TransactionClient {
 		}
 	}
 
+	/**
+	 * Should fetch the receipt from the node with connection details specified
+	 * in the contructor of this class.
+	 */
 	public get receipt() {
 		if (this.hash) {
 			return this.getReceipt(this.hash);
@@ -169,12 +194,26 @@ export default class Transaction extends TransactionClient {
 		}
 	}
 
+	/**
+	 * Should sign this transaction with the given account.
+	 *
+	 * @param account - The account object to sign with.
+	 */
 	public async sign(account: Account): Promise<this> {
 		this.signedTX = await account.signTransaction(this.parse());
 
 		return this;
 	}
 
+	/**
+	 * Should submit a `call` action to the EVM to retrieve data from a
+	 * smart contract.
+	 *
+	 * @remarks
+	 * The transactions do not need to be signed nor does it mutate the state.
+	 *
+	 * @param options - The options to override transaction attributes.
+	 */
 	public async call(options?: OverrideTXOptions): Promise<any[]> {
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
@@ -202,6 +241,10 @@ export default class Transaction extends TransactionClient {
 		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
+	/**
+	 * Should return the parsed version of the transaction with native
+	 * types.
+	 */
 	public parse(): ParsedTransaction {
 		let data: string | undefined = this.tx.data;
 
@@ -224,49 +267,98 @@ export default class Transaction extends TransactionClient {
 		return parsedTX;
 	}
 
+	/**
+	 * Should return the stringified version of `.parse()`.
+	 */
 	public parseToString(): string {
 		return JSONBig.stringify(this.parse());
 	}
 
+	/**
+	 * Set the `from` address of the transaction.
+	 *
+	 * @param from - The `from` address of the transaction.
+	 */
 	public from(from: string): this {
 		this.tx.from = new AddressType(from);
 		return this;
 	}
 
+	/**
+	 * Set the `nonce` of the transaction.
+	 *
+	 * @param nonce - The `nonce` of the transaction.
+	 */
 	public nonce(nonce: number): this {
 		this.tx.nonce = nonce;
 		return this;
 	}
 
+	/**
+	 * Set the `chainId` of the transaction.
+	 *
+	 * @param chainId - The `chainId` of the transaction.
+	 */
 	public chainID(chainId: number): this {
 		this.tx.chainId = chainId;
 		return this;
 	}
 
+	/**
+	 * Set the `to` address of the transaction.
+	 *
+	 * @param to - The `to` address of the transaction.
+	 */
 	public to(to: string): this {
 		this.tx.to = new AddressType(to);
 		return this;
 	}
 
+	/**
+	 * Set the `value` of the transaction.
+	 *
+	 * @param value - The `value` of the transaction.
+	 */
 	public value(value: Value): this {
 		this.tx.value = value;
 		return this;
 	}
 
+	/**
+	 * Set the `gas` of the transaction.
+	 *
+	 * @param gas - The `gas` of the transaction.
+	 */
 	public gas(gas: Gas): this {
 		this.tx.gas = gas;
 		return this;
 	}
 
+	/**
+	 * Set the `gasPrice` of the transaction.
+	 *
+	 * @param gasPrice - The `gasPrice` of the transaction.
+	 */
 	public gasPrice(gasPrice: GasPrice): this {
 		this.tx.gasPrice = gasPrice;
 		return this;
 	}
 
+	/**
+	 * Set the `data` of the transaction.
+	 *
+	 * @param data - The `data` of the transaction.
+	 */
 	public data(data: Data): this {
 		this.tx.data = data;
 		return this;
 	}
+
+	/**
+	 * Assigns the override options to this transaction.
+	 *
+	 * @param options - The options to assign.
+	 */
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
 			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
