@@ -49,7 +49,7 @@ let contract: SolidityContract<CrowdFundingSchema>;
 
 describe('SolidityContract.ts', () => {
 	it('should create a new contract object with defaults', async () => {
-		const contract = await evmlc.loadContract<CrowdFundingSchema>(
+		const contract = await evmlc.contracts.load<CrowdFundingSchema>(
 			compiled.abi,
 			{
 				data: compiled.bytecode
@@ -66,15 +66,39 @@ describe('SolidityContract.ts', () => {
 			evmlc.defaultGasPrice,
 			'default gas price should be passed on'
 		);
+
+		evmlc.defaultGas = 123456789;
+		evmlc.defaultGasPrice = 1234;
+
+		const contractTwo = await evmlc.contracts.load<CrowdFundingSchema>(
+			compiled.abi,
+			{
+				data: compiled.bytecode
+			}
+		);
+
+		assert.equal(
+			contractTwo.options.gas,
+			evmlc.defaultGas,
+			'default gas should be passed on after change'
+		);
+		assert.equal(
+			contractTwo.options.gasPrice,
+			evmlc.defaultGasPrice,
+			'default gas price should be passed on after change'
+		);
+
 		assert.equal(
 			Object.keys(contract.methods).length === 0,
 			true,
 			'there should be no methods added'
 		);
+
+		evmlc.defaultGasPrice = 0;
 	});
 
 	it('should create contract with functions when address set', async () => {
-		const contract = await evmlc.loadContract<CrowdFundingSchema>(
+		const contract = await evmlc.contracts.load<CrowdFundingSchema>(
 			compiled.abi,
 			{
 				data: compiled.bytecode,
@@ -95,7 +119,7 @@ describe('SolidityContract.ts', () => {
 	});
 
 	it('should create contract with functions when address set after', async () => {
-		const contract = await evmlc.loadContract<CrowdFundingSchema>(
+		const contract = await evmlc.contracts.load<CrowdFundingSchema>(
 			compiled.abi,
 			{
 				data: compiled.bytecode
@@ -133,7 +157,7 @@ describe('SolidityContract.ts', () => {
 		const account = evmlc.accounts.create();
 		evmlc.defaultFrom = account.address;
 
-		const dummyContract = await evmlc.loadContract<CrowdFundingSchema>(
+		const dummyContract = await evmlc.contracts.load<CrowdFundingSchema>(
 			compiled.abi,
 			{
 				data: compiled.bytecode

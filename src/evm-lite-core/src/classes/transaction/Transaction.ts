@@ -140,8 +140,8 @@ export default class Transaction extends TransactionClient {
 	 * This function will automatically determine whether the function mutates
 	 * the state and decide whether to `call` or `send`.
 	 *
-	 * @param options - (optional) Override transaction options.
-	 * @param account - (optional) The account to sign this transaction.
+	 * @param options - Override transaction options.
+	 * @param account - The account to sign this transaction.
 	 */
 	public async submit(
 		options?: OverrideTXOptions,

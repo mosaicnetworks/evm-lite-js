@@ -2,13 +2,9 @@ import { Address, AddressType, Gas, GasPrice, Value } from '../types';
 
 import Transaction, { BaseTransaction } from './transaction/Transaction';
 
-import SolidityContract, {
-	BaseContractSchema,
-	ContractABI
-} from './contract/SolidityContract';
-
 import DefaultClient from '../clients/DefaultClient';
 import Accounts from './accounts/Accounts';
+import Contracts from './contract/Contracts';
 
 interface UserDefinedDefaultTXOptions extends BaseTransaction {
 	from: string;
@@ -19,7 +15,8 @@ interface DefaultTXOptions extends BaseTransaction {
 }
 
 export default class EVMLC extends DefaultClient {
-	public accounts: Accounts;
+	public accountController: Accounts;
+	public contractController: Contracts;
 
 	private readonly defaultTXOptions: DefaultTXOptions;
 
@@ -54,11 +51,15 @@ export default class EVMLC extends DefaultClient {
 	) {
 		super(host, port);
 
-		this.accounts = new Accounts();
+		this.accountController = new Accounts();
+
 		this.defaultTXOptions = {
 			...userDefaultTXOptions,
 			from: new AddressType(userDefaultTXOptions.from)
 		};
+		this.contractController = new Contracts(host, port, {
+			...this.defaultTXOptions
+		});
 	}
 
 	/**
@@ -109,59 +110,27 @@ export default class EVMLC extends DefaultClient {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
-	/**
-	 * Should generate a contract abstraction class to interact with the
-	 * respective contract.
-	 *
-	 * @remarks
-	 * Currently only support the compilation of a single solodity `contract`.
-	 * This function will also fetch the nonce from the node with connection
-	 * details specified in the contructor for this class.
-	 *
-	 * ```typescript
-	 * const contract = await evmlc.loadContract(ABI, {
-	 *     data: 'BYTE_CODE',
-	 *     contractAddress: 'IF_ALERADY_DEPLOYED'
-	 * });
-	 * ```
-	 *
-	 * @param abi - The interface of the respective contract.
-	 * @param options - (optional) The `data` and `contractAddress` options.
-	 *
-	 * @alpha
-	 */
-	public loadContract<ContractSchema extends BaseContractSchema>(
-		abi: ContractABI,
-		options?: { data?: string; contractAddress?: string }
-	): Promise<SolidityContract<ContractSchema>> {
-		if (!this.defaultTXOptions.from.value) {
-			throw new Error(
-				'Default from address cannot be left blank or empty!'
-			);
+	get contracts() {
+		if (
+			this.contractController.defaults.from !==
+				this.defaultTXOptions.from.value ||
+			this.contractController.defaults.gas !==
+				this.defaultTXOptions.gas ||
+			this.contractController.defaults.gasPrice !==
+				this.defaultTXOptions.gasPrice
+		) {
+			this.contractController = new Contracts(this.host, this.port, {
+				from: this.defaultTXOptions.from,
+				gas: this.defaultTXOptions.gas,
+				gasPrice: this.defaultTXOptions.gasPrice
+			});
 		}
 
-		const data: string = (options && options.data) || '';
-		const address =
-			options && options.contractAddress
-				? new AddressType(options.contractAddress)
-				: undefined;
+		return this.contractController;
+	}
 
-		return this.getAccount(this.defaultFrom.trim()).then(
-			account =>
-				new SolidityContract<ContractSchema>(
-					{
-						from: this.defaultTXOptions.from,
-						interface: abi,
-						gas: this.defaultTXOptions.gas,
-						gasPrice: this.defaultTXOptions.gasPrice,
-						nonce: account.nonce,
-						address,
-						data
-					},
-					this.host,
-					this.port
-				)
-		);
+	get accounts() {
+		return this.accountController;
 	}
 
 	/**
@@ -183,7 +152,7 @@ export default class EVMLC extends DefaultClient {
 	 *
 	 * @param to - The address to transfer funds to.
 	 * @param value - The amount to transfer.
-	 * @param from - (optional) Overrides `from` address set in the constructor.
+	 * @param from - Overrides `from` address set in the constructor.
 	 */
 	public prepareTransfer(
 		to: string,

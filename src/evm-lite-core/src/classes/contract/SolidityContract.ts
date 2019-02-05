@@ -118,13 +118,6 @@ export default class SolidityContract<
 		}
 	}
 
-	public setAddressAndPopulateFunctions(address: string): this {
-		this.address(address);
-		this.attachMethodsToContract();
-
-		return this;
-	}
-
 	public address(address: string): this {
 		this.options.address = new AddressType(address);
 		return this;
@@ -147,6 +140,13 @@ export default class SolidityContract<
 
 	public JSONInterface(abis: ABI[]): this {
 		this.options.interface = abis;
+		return this;
+	}
+
+	public setAddressAndPopulateFunctions(address: string): this {
+		this.address(address);
+		this.attachMethodsToContract();
+
 		return this;
 	}
 
