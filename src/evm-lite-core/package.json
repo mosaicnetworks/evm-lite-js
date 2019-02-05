@@ -7,7 +7,8 @@
 	"scripts": {
 		"tests": "mocha -r ts-node/register tests/**/*.test.ts",
 		"package": "webpack --config config/webpack.config.js",
-		"build": "tsc -p ./tsconfig.json"
+		"build": "tsc -p ./tsconfig.json",
+		"doc": "tsdoc"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.3.1",
@@ -28,10 +29,12 @@
 		"dts-bundle-webpack": "^1.0.2",
 		"file-loader": "^3.0.1",
 		"fork-ts-checker-webpack-plugin": "^0.5.2",
+		"jsdoc": "^3.5.5",
 		"mocha": "^5.2.0",
 		"solc": "^0.5.3",
 		"ts-loader": "^5.3.3",
 		"ts-node": "^8.0.2",
+		"tsdoc": "^0.0.4",
 		"tslint": "^5.12.1",
 		"tslint-config-prettier": "^1.17.0",
 		"typescript": "^3.3.1",

@@ -1,4 +1,6 @@
+docs
 lib
 dist/
 node_modules
-
+coverage
+tsdoc.json
