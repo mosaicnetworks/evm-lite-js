@@ -43,19 +43,19 @@ export default class Accounts extends AccountClient {
 	 * `signTransaction()` attribute. Allowing to sign transactions.
 	 *
 	 * ```typescript
-	 * // Create a new accounts controller instance
-	 * const controller = new Accounts();
 	 * // Create and encrypt a new account with a password
-	 * const keystore = controller.create().encrypt('password');
+	 * const keystore = evmlc.accounts.create().encrypt('password');
 	 * // Decrypt the account with corresponding password
-	 * const decrypted = controller.decrypt(keystore, 'password');
+	 * const decrypted = evmlc.accounts.decrypt(keystore, 'password');
 	 * ```
 	 *
-	 * @param v3JSONKeyStore - The `v3` JSON keystore of the address.
+	 * @param v3JSONKeyStore - The `v3` JSON keystore of the encrypted address.
 	 * @param password - The password used to encrypt to the keystore.
 	 */
 	public decrypt(v3JSONKeyStore: V3JSONKeyStore, password: string) {
 		const account = this.accounts.decrypt(v3JSONKeyStore, password);
+
+		// @ts-ignore
 		return new Account(account);
 	}
 
@@ -65,7 +65,7 @@ export default class Accounts extends AccountClient {
 	 * @remarks
 	 * ```typescript
 	 * // Create a new account
-	 * const account = new Accounts().create();
+	 * const account = evmlc.accounts.create();
 	 * ```
 	 *
 	 * @param entropy - The entropy of the accounts address.
@@ -73,6 +73,7 @@ export default class Accounts extends AccountClient {
 	public create(entropy?: string): Account {
 		const randomHex = require('crypto-random-hex');
 
+		// @ts-ignore
 		return new Account(this.accounts.create(entropy || randomHex(32)));
 	}
 

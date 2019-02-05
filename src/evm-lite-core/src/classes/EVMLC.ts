@@ -15,8 +15,8 @@ interface DefaultTXOptions extends BaseTransaction {
 }
 
 export default class EVMLC extends DefaultClient {
-	public accountController: Accounts;
-	public contractController: Contracts;
+	private accountController: Accounts;
+	private contractController: Contracts;
 
 	private readonly defaultTXOptions: DefaultTXOptions;
 

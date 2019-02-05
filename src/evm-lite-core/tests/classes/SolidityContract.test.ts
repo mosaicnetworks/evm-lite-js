@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
-import evmlc, { assert } from '../setup';
+import evmlc from '../setup';
 
 import { BaseContractSchema, SolidityContract, Transaction } from '../../src';
 
@@ -56,45 +56,8 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		assert.equal(
-			contract.options.gas,
-			evmlc.defaultGas,
-			'default gas should be passed on'
-		);
-		assert.equal(
-			contract.options.gasPrice,
-			evmlc.defaultGasPrice,
-			'default gas price should be passed on'
-		);
-
-		evmlc.defaultGas = 123456789;
-		evmlc.defaultGasPrice = 1234;
-
-		const contractTwo = await evmlc.contracts.load<CrowdFundingSchema>(
-			compiled.abi,
-			{
-				data: compiled.bytecode
-			}
-		);
-
-		assert.equal(
-			contractTwo.options.gas,
-			evmlc.defaultGas,
-			'default gas should be passed on after change'
-		);
-		assert.equal(
-			contractTwo.options.gasPrice,
-			evmlc.defaultGasPrice,
-			'default gas price should be passed on after change'
-		);
-
-		assert.equal(
-			Object.keys(contract.methods).length === 0,
-			true,
-			'there should be no methods added'
-		);
-
-		evmlc.defaultGasPrice = 0;
+		expect(contract.options.gas).toBe(evmlc.defaultGas);
+		expect(contract.options.gasPrice).toBe(evmlc.defaultGasPrice);
 	});
 
 	it('should create contract with functions when address set', async () => {
@@ -106,16 +69,8 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		assert.notEqual(
-			contract.options.address,
-			undefined,
-			'deployed contract should have an address set'
-		);
-		assert.equal(
-			Object.keys(contract.methods).length > 0,
-			true,
-			'there should be methods added'
-		);
+		expect(contract.options.address).not.toBe(undefined);
+		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
 	it('should create contract with functions when address set after', async () => {
@@ -126,31 +81,15 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		assert.equal(
-			contract.options.address,
-			undefined,
-			'not deployed contract should not have an address set'
-		);
-		assert.equal(
-			Object.keys(contract.methods).length === 0,
-			true,
-			'there should be no methods added'
-		);
+		expect(contract.options.address).toBe(undefined);
+		expect(Object.keys(contract.methods).length).toBe(0);
 
 		contract.setAddressAndPopulateFunctions(
 			'0x3d9f3699440744ca2dfce1ff40cd21ff4696d908'
 		);
 
-		assert.notEqual(
-			contract.options.address,
-			undefined,
-			'deployed contract should have an address set'
-		);
-		assert.equal(
-			Object.keys(contract.methods).length > 0,
-			true,
-			'there should be methods added'
-		);
+		expect(contract.options.address).not.toBe(undefined);
+		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
 	it('should create CrowdFunding.sol and deploy it to a node', async () => {
@@ -164,24 +103,12 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		assert.equal(
-			Object.keys(dummyContract.methods).length === 0,
-			true,
-			'there should be no methods added'
-		);
+		expect(Object.keys(dummyContract.methods).length).toBe(0);
 
 		await dummyContract.deploy(account, [10]);
 
-		assert.notEqual(
-			dummyContract.options.address,
-			undefined,
-			'deployed contract should have an address set'
-		);
-		assert.equal(
-			Object.keys(dummyContract.methods).length > 0,
-			true,
-			'there should be methods added'
-		);
+		expect(dummyContract.options.address).not.toBe(undefined);
+		expect(Object.keys(dummyContract.methods).length).toBeGreaterThan(0);
 
 		contract = dummyContract;
 	});
@@ -190,11 +117,9 @@ describe('SolidityContract.ts', () => {
 		const transaction = await contract.methods.checkGoalReached();
 		const response: any = await transaction.submit();
 
-		assert.equal(response[0], false, 'funding goal should not be reached');
-		assert.equal(
-			response[1].toLowerCase(),
-			contract.options.from.value.toLowerCase(),
-			'contract deployment address should be the beneficiary'
+		expect(response[0]).toBe(false);
+		expect(response[1].toLowerCase()).toBe(
+			contract.options.from.value.toLowerCase()
 		);
 	});
 });

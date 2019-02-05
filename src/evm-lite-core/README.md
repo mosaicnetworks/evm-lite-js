@@ -20,13 +20,9 @@ Or simply install it from npm:
 npm install evm-lite-core
 ```
 
-***Note:*** This library is web compatible.
-
-
 ## Usage
 
 ### Create an Account (ES5)
-
 
 ```javascript
 const evmlcore = require('evm-lite-core');
@@ -47,7 +43,6 @@ evmlc.defaultFrom = account.address;
 ```
 
 ### Create an Account (ES6)
-
 
 ```javascript
 import { EVMLC } from 'evm-lite-core';

@@ -1,6 +1,6 @@
 import { Account, V3JSONKeyStore } from '../../src';
 
-import evmlc, { assert } from '../setup';
+import evmlc from '../setup';
 
 let account: Account;
 let decrypted: Account;
@@ -36,9 +36,6 @@ describe('Account.ts', () => {
 
 		const parsed = transaction.parse();
 
-		expect(parsed.gas).toBe(evmlc.defaultGas);
-		expect(parsed.gasPrice).toBe(evmlc.defaultGasPrice);
-		expect(parsed.from).toBe(evmlc.defaultFrom.toLowerCase());
 		expect(transaction.signedTX).toBe(undefined);
 
 		const signed = await decrypted.signTransaction(transaction.parse());
