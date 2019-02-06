@@ -2,9 +2,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
-import evmlc from '../setup';
-
-import { BaseContractSchema, SolidityContract, Transaction } from '../../src';
+import {
+	BaseContractSchema,
+	EVMLC,
+	SolidityContract,
+	Transaction
+} from '../../src';
 
 interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Promise<Transaction>;
@@ -46,8 +49,17 @@ function compile(contractName: string, fileName: string) {
 const compiled = compile('CrowdFunding', 'contract');
 
 let contract: SolidityContract<CrowdFundingSchema>;
+let evmlc: EVMLC;
 
 describe('SolidityContract.ts', () => {
+	beforeEach(() => {
+		evmlc = new EVMLC('127.0.0.1', 8080, {
+			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
+			gas: 10000000,
+			gasPrice: 0
+		});
+	});
+
 	it('should create a new contract object with defaults', async () => {
 		const contract = await evmlc.contracts.load<CrowdFundingSchema>(
 			compiled.abi,
@@ -104,6 +116,7 @@ describe('SolidityContract.ts', () => {
 		);
 
 		expect(Object.keys(dummyContract.methods).length).toBe(0);
+		expect(dummyContract.options.from.value).toBe(account.address);
 
 		await dummyContract.deploy(account, [10]);
 

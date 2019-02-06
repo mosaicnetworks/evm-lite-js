@@ -1,12 +1,18 @@
-import evmlc from '../setup';
+import { EVMLC, Transaction } from '../../src';
 
-import { Transaction } from '../../src';
-
-const defaultFrom = evmlc.defaultFrom;
+let evmlc: EVMLC;
 let transaction: Transaction;
 let parsed: any;
 
 describe('Accounts.ts', async () => {
+	beforeEach(() => {
+		evmlc = new EVMLC('127.0.0.1', 8080, {
+			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
+			gas: 10000000,
+			gasPrice: 0
+		});
+	});
+
 	it('should default gas from EVMLC', async () => {
 		expect(evmlc.accounts.defaults.gas).toBe(evmlc.defaultGas);
 	});
@@ -20,23 +26,21 @@ describe('Accounts.ts', async () => {
 	});
 
 	it('should have the default gas from `EVMLC` after change', () => {
-		evmlc.defaultFrom = 'ASD';
 		evmlc.defaultGas = 9999;
-		evmlc.defaultGasPrice = 12;
 
 		expect(evmlc.accounts.defaults.gas).toBe(9999);
 	});
 
 	it('should have the default gasPrice from `EVMLC` after change', () => {
+		evmlc.defaultGasPrice = 12;
+
 		expect(evmlc.accounts.defaults.gasPrice).toBe(12);
 	});
 
 	it('should have the default `from` from `EVMLC` after change', () => {
-		expect(evmlc.accounts.defaults.from).toBe('ASD');
+		evmlc.defaultFrom = 'ASD';
 
-		evmlc.defaultFrom = defaultFrom;
-		evmlc.defaultGas = 1000000000;
-		evmlc.defaultGasPrice = 0;
+		expect(evmlc.accounts.defaults.from).toBe('ASD');
 	});
 
 	it('transaction has default gas', async () => {
