@@ -117,19 +117,16 @@ export default class EVMLC extends DefaultClient {
 	 * The controller class for interacting with Smart Contracts.
 	 */
 	get contracts() {
-		if (
-			this.contractController.defaults.from !==
-				this.defaultTXOptions.from.value ||
-			this.contractController.defaults.gas !==
-				this.defaultTXOptions.gas ||
-			this.contractController.defaults.gasPrice !==
-				this.defaultTXOptions.gasPrice
-		) {
-			this.contractController = new Contracts(this.host, this.port, {
-				from: this.defaultTXOptions.from,
-				gas: this.defaultTXOptions.gas,
-				gasPrice: this.defaultTXOptions.gasPrice
-			});
+		if (this.defaultGas !== this.contractController.defaultGas) {
+			this.contractController.defaultGas = this.defaultGas;
+		}
+
+		if (this.defaultGasPrice !== this.contractController.defaultGasPrice) {
+			this.contractController.defaultGasPrice = this.defaultGasPrice;
+		}
+
+		if (this.defaultFrom !== this.contractController.defaultFrom) {
+			this.contractController.defaultFrom = this.defaultFrom;
 		}
 
 		return this.contractController;
@@ -139,18 +136,16 @@ export default class EVMLC extends DefaultClient {
 	 * The controller class for interacting with accounts.
 	 */
 	get accounts() {
-		if (
-			this.accountController.defaults.from !==
-				this.defaultTXOptions.from.value ||
-			this.accountController.defaults.gas !== this.defaultTXOptions.gas ||
-			this.accountController.defaults.gasPrice !==
-				this.defaultTXOptions.gasPrice
-		) {
-			this.accountController = new Accounts(this.host, this.port, {
-				from: this.defaultTXOptions.from,
-				gas: this.defaultTXOptions.gas,
-				gasPrice: this.defaultTXOptions.gasPrice
-			});
+		if (this.defaultGas !== this.accountController.defaultGas) {
+			this.accountController.defaultGas = this.defaultGas;
+		}
+
+		if (this.defaultGasPrice !== this.accountController.defaultGasPrice) {
+			this.accountController.defaultGasPrice = this.defaultGasPrice;
+		}
+
+		if (this.defaultFrom !== this.accountController.defaultFrom) {
+			this.accountController.defaultFrom = this.defaultFrom;
 		}
 
 		return this.accountController;

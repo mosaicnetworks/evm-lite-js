@@ -2,22 +2,36 @@ import evmlc from '../setup';
 
 describe('Accounts.ts', () => {
 	describe('constructor', () => {
-		it('should have the defaults passed down from root EVMLC', () => {
-			const defaultFrom = evmlc.defaultFrom;
+		const defaultFrom = evmlc.defaultFrom;
 
-			expect(evmlc.accounts.defaults.from).toBe(evmlc.defaultFrom);
+		it('should default gas from EVMLC', () => {
 			expect(evmlc.accounts.defaults.gas).toBe(evmlc.defaultGas);
+		});
+
+		it('should default gasPrice from EVMLC', () => {
 			expect(evmlc.accounts.defaults.gasPrice).toBe(
 				evmlc.defaultGasPrice
 			);
+		});
 
+		it('should default from from EVMLC', () => {
+			expect(evmlc.accounts.defaults.from).toBe(evmlc.defaultFrom);
+		});
+
+		it('should have the default gas from `EVMLC` after change', () => {
 			evmlc.defaultFrom = 'ASD';
 			evmlc.defaultGas = 9999;
 			evmlc.defaultGasPrice = 12;
 
-			expect(evmlc.accounts.defaults.from).toBe('ASD');
 			expect(evmlc.accounts.defaults.gas).toBe(9999);
+		});
+
+		it('should have the default gasPrice from `EVMLC` after change', () => {
 			expect(evmlc.accounts.defaults.gasPrice).toBe(12);
+		});
+
+		it('should have the default `from` from `EVMLC` after change', () => {
+			expect(evmlc.accounts.defaults.from).toBe('ASD');
 
 			evmlc.defaultFrom = defaultFrom;
 			evmlc.defaultGas = 1000000;

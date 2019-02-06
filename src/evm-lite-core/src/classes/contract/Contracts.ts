@@ -1,4 +1,4 @@
-import { Address, AddressType } from '../../types';
+import { Address, AddressType, Gas, GasPrice } from '../../types';
 import { BaseTransaction } from '../transaction/Transaction';
 import SolidityContract, {
 	BaseContractSchema,
@@ -88,5 +88,53 @@ export default class Contracts extends AccountClient {
 			gas: this.contractOptions.gas,
 			gasPrice: this.contractOptions.gasPrice
 		};
+	}
+
+	/**
+	 * The default `from` address that will be used for any contracts
+	 * created from this object.
+	 */
+	get defaultFrom(): string {
+		return this.contractOptions.from.value;
+	}
+
+	/**
+	 * Set the default `from` to be used for any contracts created from
+	 * this object.
+	 */
+	set defaultFrom(address: string) {
+		this.contractOptions.from = new AddressType(address);
+	}
+
+	/**
+	 * The default `gas` value that will be used for any contracts created
+	 * from this object.
+	 */
+	get defaultGas(): Gas {
+		return this.contractOptions.gas;
+	}
+
+	/**
+	 * Set the default `gas` value to be used for any contracts created from
+	 * this object.
+	 */
+	set defaultGas(gas: Gas) {
+		this.contractOptions.gas = gas;
+	}
+
+	/**
+	 * The default `gasPrice` value that will be used for any contracts
+	 * created from this object.
+	 */
+	get defaultGasPrice(): GasPrice {
+		return this.contractOptions.gasPrice;
+	}
+
+	/**
+	 * Set the default `gasPrice` to be used for any contracts created from
+	 * this object.
+	 */
+	set defaultGasPrice(gasPrice: GasPrice) {
+		this.contractOptions.gasPrice = gasPrice;
 	}
 }

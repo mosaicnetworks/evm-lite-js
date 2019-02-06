@@ -1,6 +1,6 @@
 import { Accounts as Web3Accounts } from 'web3-eth-accounts';
 
-import { Address, AddressType, Value } from '../../types';
+import { Address, AddressType, Gas, GasPrice, Value } from '../../types';
 import Transaction, { BaseTransaction } from '../transaction/Transaction';
 import { V3JSONKeyStore } from './Account';
 
@@ -151,5 +151,53 @@ export default class Accounts extends AccountClient {
 			gas: this.accountOptions.gas,
 			gasPrice: this.accountOptions.gasPrice
 		};
+	}
+
+	/**
+	 * The default `from` address that will be used for any transactions
+	 * created from this object.
+	 */
+	get defaultFrom(): string {
+		return this.accountOptions.from.value;
+	}
+
+	/**
+	 * Set the default `from` to be used for any transactions created from
+	 * this object.
+	 */
+	set defaultFrom(address: string) {
+		this.accountOptions.from = new AddressType(address);
+	}
+
+	/**
+	 * The default `gas` value that will be used for any transactions created
+	 * from this object.
+	 */
+	get defaultGas(): Gas {
+		return this.accountOptions.gas;
+	}
+
+	/**
+	 * Set the default `gas` value to be used for any transactions created from
+	 * this object.
+	 */
+	set defaultGas(gas: Gas) {
+		this.accountOptions.gas = gas;
+	}
+
+	/**
+	 * The default `gasPrice` value that will be used for any transactions
+	 * created from this object.
+	 */
+	get defaultGasPrice(): GasPrice {
+		return this.accountOptions.gasPrice;
+	}
+
+	/**
+	 * Set the default `gasPrice` to be used for any transactions created from
+	 * this object.
+	 */
+	set defaultGasPrice(gasPrice: GasPrice) {
+		this.accountOptions.gasPrice = gasPrice;
 	}
 }
