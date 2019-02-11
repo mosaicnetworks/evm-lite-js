@@ -1,14 +1,22 @@
-import {
-	Account as Web3Account,
-	Accounts,
-	EncryptedKeystoreV3Json
-} from 'web3-eth-accounts';
+import { Accounts, EncryptedKeystoreV3Json } from 'web3-eth-accounts';
 
-import { BaseAccount } from '../client/AccountClient';
+import { BaseAccount } from '../../clients/AccountClient';
 
-import Transaction, { ParsedTX, SignedTransaction, TX } from './Transaction';
+import Transaction, {
+	ParsedTransaction,
+	SignedTransaction,
+	TX
+} from '../transaction/Transaction';
 
 export type V3JSONKeyStore = EncryptedKeystoreV3Json;
+
+export interface Web3Account {
+	address: string;
+	privateKey: string;
+	signTransaction: (tx: Transaction) => SignedTransaction;
+	sign: (data: string) => {};
+	encrypt: (password: string) => V3JSONKeyStore;
+}
 
 export default class Account {
 	get address(): string {
@@ -28,20 +36,19 @@ export default class Account {
 	}
 
 	public sign(message: string): any {
-		return this.account.sign!(message);
+		return this.account.sign(message);
 	}
 
-	public signTransaction(tx: ParsedTX): Promise<SignedTransaction> {
+	public signTransaction(tx: ParsedTransaction): Promise<SignedTransaction> {
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 
 		// @ts-ignore
-		return this.account.signTransaction!(tx);
+		return this.account.signTransaction(tx);
 	}
 
 	public encrypt(password: string): V3JSONKeyStore {
-		// @ts-ignore
-		return this.account.encrypt!(password);
+		return this.account.encrypt(password);
 	}
 
 	public toBaseAccount(): BaseAccount {

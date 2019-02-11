@@ -1,15 +1,15 @@
 // @ts-ignore
 import * as coder from 'web3/lib/solidity/coder';
 
-import * as checks from '../utils/checks';
-import * as errors from '../utils/errors';
+import * as checks from '../../utils/checks';
+import * as errors from '../../utils/errors';
 
-import { TXReceipt } from '../client/TransactionClient';
-import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../types';
+import { TXReceipt } from '../../clients/TransactionClient';
+import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../../types';
 
-import Account from './Account';
+import Account from '../accounts/Account';
+import Transaction from '../transaction/Transaction';
 import SolidityFunction from './SolidityFunction';
-import Transaction from './Transaction';
 
 interface OverrideContractDeployParameters {
 	gas?: Gas;
@@ -118,13 +118,6 @@ export default class SolidityContract<
 		}
 	}
 
-	public setAddressAndPopulateFunctions(address: string): this {
-		this.address(address);
-		this.attachMethodsToContract();
-
-		return this;
-	}
-
 	public address(address: string): this {
 		this.options.address = new AddressType(address);
 		return this;
@@ -147,6 +140,13 @@ export default class SolidityContract<
 
 	public JSONInterface(abis: ABI[]): this {
 		this.options.interface = abis;
+		return this;
+	}
+
+	public setAddressAndPopulateFunctions(address: string): this {
+		this.address(address);
+		this.attachMethodsToContract();
+
 		return this;
 	}
 

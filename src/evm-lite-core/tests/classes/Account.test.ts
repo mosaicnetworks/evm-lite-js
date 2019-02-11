@@ -1,85 +1,58 @@
-import { Account, V3JSONKeyStore } from '../../src';
+import { Account, EVMLC, V3JSONKeyStore } from '../../src';
 
-import evmlc, { assert } from '../setup';
+let evmlc: EVMLC;
 
 let account: Account;
 let decrypted: Account;
 let encrypted: V3JSONKeyStore;
 
 describe('Account.ts', () => {
+	beforeEach(() => {
+		evmlc = new EVMLC('127.0.0.1', 8080, {
+			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
+			gas: 10000000,
+			gasPrice: 0
+		});
+	});
+
 	it('should create a new account', async () => {
 		account = evmlc.accounts.create();
 
-		assert.notEqual(
-			account.privateKey,
-			undefined,
-			'account privatekey should be exposed'
-		);
-		assert.notEqual(
-			account.signTransaction,
-			undefined,
-			'account sign transaction function should also be exposed'
-		);
+		expect(account.privateKey).not.toBe(undefined);
+
+		expect(account.signTransaction).toBeInstanceOf(Function);
 	});
 
 	it('should encrypt an account', async () => {
 		encrypted = account.encrypt('asd');
 
-		assert.notEqual(
-			encrypted,
-			undefined,
-			'encrypted keystore should be valid'
-		);
-		assert.notEqual(
-			encrypted.crypto,
-			undefined,
-			'cryptography params should be validd'
-		);
+		expect(encrypted).not.toBe(undefined);
+
+		expect(encrypted.crypto).not.toBe(undefined);
 	});
 
 	it('should decrypt an account', async () => {
 		decrypted = evmlc.accounts.decrypt(encrypted, 'asd');
 
-		assert.notEqual(
-			account.privateKey,
-			undefined,
-			'account privatekey should be exposed'
-		);
-		assert.notEqual(
-			account.signTransaction,
-			undefined,
-			'account sign transaction function should also be exposed'
-		);
+		expect(account.privateKey).not.toBe(undefined);
+
+		expect(account.signTransaction).toBeInstanceOf(Function);
 	});
 
 	it('should sign a transaction', async () => {
-		const transaction = await evmlc.prepareTransfer(
+		const transaction = await evmlc.accounts.prepareTransfer(
 			'0xa45fcfdf304fd82da69c88275e4f4b750ce582ac',
 			1
 		);
 
-		assert.equal(
-			transaction.parse().from,
-			evmlc.defaultFrom.toLowerCase(),
-			'`from` address should automatically be passed on from parent obj'
-		);
-		assert.equal(
-			transaction.signedTX,
-			undefined,
-			'signed transaction value should be undefined'
-		);
+		const parsed = transaction.parse();
+
+		expect(transaction.signedTX).toBe(undefined);
 
 		const signed = await decrypted.signTransaction(transaction.parse());
 
-		assert.notEqual(
-			signed,
-			undefined,
-			'signed transaction should be generated'
-		);
-		assert.notEqual(
-			signed.rawTransaction,
-			undefined,
-			'signed raw transaction should be valid'
-		);
+		expect(signed).not.toBe(undefined);
+
+		expect(signed.rawTransaction).not.toBe(undefined);
 	});
 });

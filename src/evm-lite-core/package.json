@@ -1,13 +1,15 @@
 {
 	"name": "evm-lite-core",
-	"version": "0.0.1",
+	"version": "0.0.4",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"scripts": {
-		"tests": "mocha -r ts-node/register tests/**/*.test.ts",
+		"test:watch": "jest --watchAll",
+		"test": "jest",
 		"package": "webpack --config config/webpack.config.js",
-		"build": "tsc -p ./tsconfig.json"
+		"build": "tsc -p ./tsconfig.json",
+		"doc": "typedoc --out docs --mode file --target ES6 --exclude node_modules ./src"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.3.1",
@@ -19,6 +21,7 @@
 	},
 	"devDependencies": {
 		"@types/chai": "^4.1.7",
+		"@types/jest": "^24.0.0",
 		"@types/mocha": "^5.2.5",
 		"@types/node": "^10.12.21",
 		"babel-core": "^6.26.3",
@@ -28,17 +31,37 @@
 		"dts-bundle-webpack": "^1.0.2",
 		"file-loader": "^3.0.1",
 		"fork-ts-checker-webpack-plugin": "^0.5.2",
+		"jest": "^>=22.0.0 <24.0.0",
+		"jsdoc": "^3.5.5",
 		"mocha": "^5.2.0",
 		"solc": "^0.5.3",
+		"ts-jest": "^23.10.5",
 		"ts-loader": "^5.3.3",
 		"ts-node": "^8.0.2",
+		"tsdoc": "^0.0.4",
 		"tslint": "^5.12.1",
 		"tslint-config-prettier": "^1.17.0",
+		"typedoc": "^0.14.2",
 		"typescript": "^3.3.1",
 		"webpack": "^4.29.0",
 		"webpack-cli": "^3.2.1"
 	},
 	"resolutions": {
 		"terser": "3.14.1"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		]
 	}
 }

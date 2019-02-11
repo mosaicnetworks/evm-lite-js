@@ -1,34 +1,48 @@
 import { Address, AddressType, Gas, GasPrice, Value } from '../types';
 
-import Transaction, { BaseTX } from './Transaction';
+import Transaction, { BaseTransaction } from './transaction/Transaction';
 
-import SolidityContract, {
-	BaseContractSchema,
-	ContractABI
-} from './SolidityContract';
+import DefaultClient from '../clients/DefaultClient';
+import Accounts from './accounts/Accounts';
+import Contracts from './contract/Contracts';
 
-import Accounts from '../classes/Accounts';
-import DefaultClient from '../client/DefaultClient';
-
-interface UserDefinedDefaultTXOptions extends BaseTX {
+interface UserDefinedDefaultTXOptions extends BaseTransaction {
 	from: string;
 }
 
-interface DefaultTXOptions extends BaseTX {
+interface DefaultTXOptions extends BaseTransaction {
 	from: Address;
 }
 
 export default class EVMLC extends DefaultClient {
-	public accounts: Accounts;
+	private accountController: Accounts;
+	private contractController: Contracts;
 
 	private readonly defaultTXOptions: DefaultTXOptions;
 
 	/**
-	 * The root controller class to interact with contracts and make transfers.
+	 * The root controller class to interact with contracts and accounts.
+	 *
+	 * @remarks
+	 * The `gas`, `gasPrice` and `from` address set in the options for this
+	 * constrcutor will be used as a default for any contracts or transfer
+	 * transactions created from this object. Note that override capabilities
+	 * are provided in the respective functions if required.
+	 *
+	 * ```typescript
+	 * // Generate EVMLC connection object
+	 * const evmlc = new EVMLC('127.0.0.1', 8080, {
+	 *     from: 'DEFAULT_FROM_ADDRESS',
+	 *     gas: 1000000,
+	 *     gasPrice: 0
+	 * });
+	 * ```
 	 *
 	 * @param host - The host address of the node.
 	 * @param port - The port of the node.
 	 * @param userDefaultTXOptions - The default values for transactions.
+	 *
+	 * @alpha
 	 */
 	constructor(
 		host: string,
@@ -37,11 +51,18 @@ export default class EVMLC extends DefaultClient {
 	) {
 		super(host, port);
 
-		this.accounts = new Accounts();
 		this.defaultTXOptions = {
 			...userDefaultTXOptions,
 			from: new AddressType(userDefaultTXOptions.from)
 		};
+
+		this.contractController = new Contracts(host, port, {
+			...this.defaultTXOptions
+		});
+
+		this.accountController = new Accounts(host, port, {
+			...this.defaultTXOptions
+		});
 	}
 
 	/**
@@ -53,8 +74,8 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `from` to be used for any
-	 * transactions created from this object.
+	 * Set the default `from` to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultFrom(address: string) {
 		this.defaultTXOptions.from = new AddressType(address);
@@ -69,8 +90,8 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `gas` value to be used for any
-	 * transactions created from this object.
+	 * Set the default `gas` value to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultGas(gas: Gas) {
 		this.defaultTXOptions.gas = gas;
@@ -85,110 +106,48 @@ export default class EVMLC extends DefaultClient {
 	}
 
 	/**
-	 * Should allow you to set the default `gasPrice` to be used for any
-	 * transactions created from this object.
+	 * Set the default `gasPrice` to be used for any transactions created from
+	 * this object.
 	 */
 	set defaultGasPrice(gasPrice: GasPrice) {
 		this.defaultTXOptions.gasPrice = gasPrice;
 	}
 
 	/**
-	 * Should generate a contract abstraction class to interact with the
-	 * respective contract.
-	 *
-	 * @description
-	 * Currently only support the compilation of a single solodity `contract`.
-	 * This function will also fetch the nonce from the node with connection
-	 * details specified in the contructor for this class.
-	 *
-	 * @param abi - The interface of the respective contract.
-	 * @param options - (optional) The `data` and `contractAddress` options.
+	 * The controller class for interacting with Smart Contracts.
 	 */
-	public loadContract<ContractSchema extends BaseContractSchema>(
-		abi: ContractABI,
-		options?: { data?: string; contractAddress?: string }
-	): Promise<SolidityContract<ContractSchema>> {
-		if (!this.defaultTXOptions.from.value) {
-			throw new Error(
-				'Default from address cannot be left blank or empty!'
-			);
+	get contracts() {
+		if (this.defaultGas !== this.contractController.defaultGas) {
+			this.contractController.defaultGas = this.defaultGas;
 		}
 
-		const data: string = (options && options.data) || '';
-		const address =
-			options && options.contractAddress
-				? new AddressType(options.contractAddress)
-				: undefined;
+		if (this.defaultGasPrice !== this.contractController.defaultGasPrice) {
+			this.contractController.defaultGasPrice = this.defaultGasPrice;
+		}
 
-		return this.getAccount(this.defaultFrom.trim()).then(
-			account =>
-				new SolidityContract<ContractSchema>(
-					{
-						from: this.defaultTXOptions.from,
-						interface: abi,
-						gas: this.defaultTXOptions.gas,
-						gasPrice: this.defaultTXOptions.gasPrice,
-						nonce: account.nonce,
-						address,
-						data
-					},
-					this.host,
-					this.port
-				)
-		);
+		if (this.defaultFrom !== this.contractController.defaultFrom) {
+			this.contractController.defaultFrom = this.defaultFrom;
+		}
+
+		return this.contractController;
 	}
 
 	/**
-	 * Should prepare a transaction to transfer `value` to the specified `to`
-	 * address.
-	 *
-	 * @description
-	 * This function will also fetch the nonce from the node with connection
-	 * details specified in the contructor for this class.
-	 *
-	 * @param to - The address to transfer funds to.
-	 * @param value - The amount to transfer.
-	 * @param from - (optional) Overrides `from` address set in the constructor.
+	 * The controller class for interacting with accounts.
 	 */
-	public prepareTransfer(
-		to: string,
-		value: Value,
-		from?: string
-	): Promise<Transaction> {
-		const fromObject = new AddressType((from || this.defaultFrom).trim());
-
-		if (!fromObject.value) {
-			throw new Error(
-				'Default `from` address cannot be left blank or empty.'
-			);
+	get accounts() {
+		if (this.defaultGas !== this.accountController.defaultGas) {
+			this.accountController.defaultGas = this.defaultGas;
 		}
 
-		if (!to) {
-			throw new Error('Must provide a `to` address!');
+		if (this.defaultGasPrice !== this.accountController.defaultGasPrice) {
+			this.accountController.defaultGasPrice = this.defaultGasPrice;
 		}
 
-		if (value <= 0) {
-			throw new Error(
-				'A transfer of funds must have a `value` greater than 0.'
-			);
+		if (this.defaultFrom !== this.accountController.defaultFrom) {
+			this.accountController.defaultFrom = this.defaultFrom;
 		}
 
-		return this.getAccount(fromObject.value).then(
-			account =>
-				new Transaction(
-					{
-						from: fromObject,
-						to: new AddressType(to.trim()),
-						value,
-						gas: this.defaultGas,
-						gasPrice: this.defaultGasPrice,
-						nonce: account.nonce,
-						chainId: 1
-					},
-					this.host,
-					this.port,
-					false
-				)
-		);
+		return this.accountController;
 	}
 }

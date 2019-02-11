@@ -9,16 +9,16 @@ import {
 	GasPrice,
 	Nonce,
 	Value
-} from '../types';
+} from '../../types';
 
-import TransactionClient, { TXReceipt } from '../client/TransactionClient';
-import Account from './Account';
+import TransactionClient, { TXReceipt } from '../../clients/TransactionClient';
+import Account from '../accounts/Account';
 
-export interface CallTXResponse {
+export interface CallTransactionResponse {
 	data: string;
 }
 
-export interface SentTX {
+export interface SentTransaction {
 	from: string;
 	to: string;
 	value: Value;
@@ -29,21 +29,21 @@ export interface SentTX {
 	txHash: string;
 }
 
-export interface BaseTX {
+export interface BaseTransaction {
 	gas: Gas;
 	gasPrice: GasPrice;
 	nonce?: Nonce;
 	chainId?: ChainID;
 }
 
-export interface TX extends BaseTX {
+export interface TX extends BaseTransaction {
 	from: Address;
 	to?: Address;
 	value?: Value;
 	data?: Data;
 }
 
-export interface ParsedTX extends BaseTX {
+export interface ParsedTransaction extends BaseTransaction {
 	from: string;
 	to?: string;
 	value?: Value;
@@ -78,6 +78,19 @@ export default class Transaction extends TransactionClient {
 	public signedTX?: SignedTransaction;
 	public hash?: string;
 
+	/**
+	 * All transactions used to interact with the EVM are parsed through this
+	 * object.
+	 *
+	 * @remarks
+	 * This class should not be directly instantiated.
+	 *
+	 * @param tx - The transaction parameters.
+	 * @param host - The host of active node.
+	 * @param port - The port the HTTP API is listening on that node.
+	 * @param constant - Whether the transaction is constant.
+	 * @param unpackfn = Unpacking function used to decode `call()` returns.
+	 */
 	constructor(
 		private tx: TX,
 		host: string,
@@ -89,7 +102,12 @@ export default class Transaction extends TransactionClient {
 	}
 
 	/**
-	 * Send a transaction to a node for a controlled account.
+	 * Should send a transaction to a node for a controlled account.
+	 *
+	 * @remarks
+	 * This function will not sign the transaction before sending meaning
+	 * that the `from` address has to have a corresponding keystore file
+	 * on the node.
 	 *
 	 * @param options - Override transactions options
 	 */
@@ -116,11 +134,14 @@ export default class Transaction extends TransactionClient {
 	}
 
 	/**
-	 * Should `send()` or `call()` the transaction or message dependent on
-	 * whether the transaction or message mutates the state.
+	 * Should `send()` or `call()` the transaction or message.
 	 *
-	 * @param options - (optional) Override transaction options.
-	 * @param account - (optional) The account to sign this transaction.
+	 * @remarks
+	 * This function will automatically determine whether the function mutates
+	 * the state and decide whether to `call` or `send`.
+	 *
+	 * @param options - Override transaction options.
+	 * @param account - The account to sign this transaction.
 	 */
 	public async submit(
 		options?: OverrideTXOptions,
@@ -129,11 +150,11 @@ export default class Transaction extends TransactionClient {
 		this.assignTXValues(options);
 
 		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
-			throw new Error('Gas or Gas Price not set');
+			throw new Error('Fields `gas` or `gasPrice` not set.');
 		}
 
 		if (!this.tx.data && !this.tx.value) {
-			throw new Error('Transaction does have a value to send.');
+			throw new Error('Transaction does not have a value to send.');
 		}
 
 		const timeout = ((options && options.timeout) || 1) * 1000;
@@ -144,7 +165,7 @@ export default class Transaction extends TransactionClient {
 			}
 
 			if (!this.signedTX) {
-				throw new Error('Transaction has not been signed locally yet.');
+				throw new Error('Transaction has not been signed locally.');
 			}
 
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
@@ -155,26 +176,42 @@ export default class Transaction extends TransactionClient {
 
 			return this;
 		} else {
-			await delay(timeout);
-
-			return await this.call();
+			return await this.call({ timeout });
 		}
 	}
 
+	/**
+	 * Should fetch the receipt from the node with connection details specified
+	 * in the contructor of this class.
+	 */
 	public get receipt() {
 		if (this.hash) {
 			return this.getReceipt(this.hash);
 		} else {
-			throw new Error('Transaction hash not found');
+			throw new Error('Transaction hash not found.');
 		}
 	}
 
+	/**
+	 * Should sign this transaction with the given account.
+	 *
+	 * @param account - The account object to sign with.
+	 */
 	public async sign(account: Account): Promise<this> {
 		this.signedTX = await account.signTransaction(this.parse());
 
 		return this;
 	}
 
+	/**
+	 * Should submit a `call` action to the EVM to retrieve data from a
+	 * smart contract.
+	 *
+	 * @remarks
+	 * The transactions do not need to be signed nor does it mutate the state.
+	 *
+	 * @param options - The options to override transaction attributes.
+	 */
 	public async call(options?: OverrideTXOptions): Promise<any[]> {
 		if (!this.constant) {
 			throw new Error('Transaction mutates state. Use `send()` instead');
@@ -193,7 +230,7 @@ export default class Transaction extends TransactionClient {
 		delete tx.nonce;
 
 		const call = await this.callTX(JSON.stringify(tx));
-		const response = JSONBig.parse<CallTXResponse>(call);
+		const response = JSONBig.parse<CallTransactionResponse>(call);
 
 		if (!this.unpackfn) {
 			throw new Error('Unpacking function required.');
@@ -202,7 +239,11 @@ export default class Transaction extends TransactionClient {
 		return this.unpackfn(Buffer.from(response.data).toString());
 	}
 
-	public parse(): ParsedTX {
+	/**
+	 * Should return the parsed version of the transaction with native
+	 * types.
+	 */
+	public parse(): ParsedTransaction {
 		let data: string | undefined = this.tx.data;
 
 		const parsedTX = {
@@ -224,49 +265,105 @@ export default class Transaction extends TransactionClient {
 		return parsedTX;
 	}
 
+	/**
+	 * Should return the stringified version of `.parse()`.
+	 */
 	public parseToString(): string {
 		return JSONBig.stringify(this.parse());
 	}
 
+	/**
+	 * Should return the non-parsed transaction details.
+	 */
+	public details(): TX {
+		return this.tx;
+	}
+
+	/**
+	 * Set the `from` address of the transaction.
+	 *
+	 * @param from - The `from` address of the transaction.
+	 */
 	public from(from: string): this {
 		this.tx.from = new AddressType(from);
 		return this;
 	}
 
+	/**
+	 * Set the `nonce` of the transaction.
+	 *
+	 * @param nonce - The `nonce` of the transaction.
+	 */
 	public nonce(nonce: number): this {
 		this.tx.nonce = nonce;
 		return this;
 	}
 
+	/**
+	 * Set the `chainId` of the transaction.
+	 *
+	 * @param chainId - The `chainId` of the transaction.
+	 */
 	public chainID(chainId: number): this {
 		this.tx.chainId = chainId;
 		return this;
 	}
 
+	/**
+	 * Set the `to` address of the transaction.
+	 *
+	 * @param to - The `to` address of the transaction.
+	 */
 	public to(to: string): this {
 		this.tx.to = new AddressType(to);
 		return this;
 	}
 
+	/**
+	 * Set the `value` of the transaction.
+	 *
+	 * @param value - The `value` of the transaction.
+	 */
 	public value(value: Value): this {
 		this.tx.value = value;
 		return this;
 	}
 
+	/**
+	 * Set the `gas` of the transaction.
+	 *
+	 * @param gas - The `gas` of the transaction.
+	 */
 	public gas(gas: Gas): this {
 		this.tx.gas = gas;
 		return this;
 	}
 
+	/**
+	 * Set the `gasPrice` of the transaction.
+	 *
+	 * @param gasPrice - The `gasPrice` of the transaction.
+	 */
 	public gasPrice(gasPrice: GasPrice): this {
 		this.tx.gasPrice = gasPrice;
 		return this;
 	}
 
+	/**
+	 * Set the `data` of the transaction.
+	 *
+	 * @param data - The `data` of the transaction.
+	 */
 	public data(data: Data): this {
 		this.tx.data = data;
 		return this;
 	}
+
+	/**
+	 * Assigns the override options to this transaction.
+	 *
+	 * @param options - The options to assign.
+	 */
 	private assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
 			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;

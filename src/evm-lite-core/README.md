@@ -20,13 +20,9 @@ Or simply install it from npm:
 npm install evm-lite-core
 ```
 
-***Note:*** This library is web compatible.
-
-
 ## Usage
 
 ### Create an Account (ES5)
-
 
 ```javascript
 const evmlcore = require('evm-lite-core');
@@ -47,7 +43,6 @@ evmlc.defaultFrom = account.address;
 ```
 
 ### Create an Account (ES6)
-
 
 ```javascript
 import { EVMLC } from 'evm-lite-core';
@@ -90,17 +85,17 @@ evmlc.defaultFrom = account.address;
 async function transfer(value) {
    // Prepare a transfer (returns Promise)
    // `from`, `gas`, `gasPrice` are passed down from the EVMLC object
-   const transferTransaction = await evmlc.prepareTransfer('TO_ADDRESS', 100);
+   const transaction = await evmlc.accounts.prepareTransfer('TO_ADDRESS', 100);
 
    // Sign the transaction locally
-   // await transferTransaction.sign(account);
+   // await transaction.sign(account);
 
    // Send transaction
-   // await transferTransaction.submit({ timeout: 2 });
+   // await transaction.submit({ timeout: 2 });
 
    // Could also be done like this with a `timeout` of 2 seconds
-   await transferTransaction.submit({ timeout: 2 }, account);
+   await transaction.submit({ timeout: 2 }, account);
 
-   return transferTransaction;
+   return transaction;
 }
 ```
