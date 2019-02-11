@@ -176,9 +176,7 @@ export default class Transaction extends TransactionClient {
 
 			return this;
 		} else {
-			await delay(timeout);
-
-			return await this.call();
+			return await this.call({ timeout });
 		}
 	}
 
@@ -272,6 +270,13 @@ export default class Transaction extends TransactionClient {
 	 */
 	public parseToString(): string {
 		return JSONBig.stringify(this.parse());
+	}
+
+	/**
+	 * Should return the non-parsed transaction details.
+	 */
+	public details(): TX {
+		return this.tx;
 	}
 
 	/**

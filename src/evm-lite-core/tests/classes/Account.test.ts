@@ -36,7 +36,7 @@ describe('Account.ts', () => {
 
 		expect(account.privateKey).not.toBe(undefined);
 
-		expect(account.signTransaction).not.toBe(undefined);
+		expect(account.signTransaction).toBeInstanceOf(Function);
 	});
 
 	it('should sign a transaction', async () => {

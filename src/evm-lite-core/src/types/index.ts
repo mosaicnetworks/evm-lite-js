@@ -1,13 +1,13 @@
-import AddressType from './src/AddressType';
-import ArrayType from './src/ArrayType';
-import BooleanType from './src/BooleanType';
-import ByteType from './src/ByteType';
-import EVMType from './src/EVMType';
-import StringType from './src/StringType';
+import AddressType from './typings/AddressType';
+import ArrayType from './typings/ArrayType';
+import BooleanType from './typings/BooleanType';
+import ByteType from './typings/ByteType';
+import EVMType from './typings/EVMType';
+import StringType from './typings/StringType';
 
 export { AddressType, ArrayType, BooleanType, ByteType, StringType, EVMType };
 
-export * from './src/TransactionTypes';
+export * from './typings/TransactionTypes';
 
 export function parseSolidityTypes(raw: string) {
 	switch (raw) {
