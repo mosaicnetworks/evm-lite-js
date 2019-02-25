@@ -1,5 +1,7 @@
 import * as JSONBig from 'json-bigint';
 
+import { BN } from 'web3-utils';
+
 import {
 	Address,
 	AddressType,
@@ -29,7 +31,11 @@ export interface SentTransaction {
 	txHash: string;
 }
 
-export interface BaseTransaction {
+interface AbstractTransaction {
+	[key: string]: number | string | undefined | AddressType;
+}
+
+export interface BaseTransaction extends AbstractTransaction {
 	gas: Gas;
 	gasPrice: GasPrice;
 	nonce?: Nonce;

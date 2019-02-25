@@ -29,6 +29,7 @@ declare class BN {
 		base?: number | 'hex',
 		endian?: Endianness
 	);
+
 	constructor(
 		number: number | string | number[] | Buffer | BN,
 		endian?: Endianness
