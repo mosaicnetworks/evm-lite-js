@@ -541,10 +541,10 @@ eventemitter3@3.1.0, eventemitter3@^3.1.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
   integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
 
-evm-lite-core@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/evm-lite-core/-/evm-lite-core-0.0.7.tgz#5d7a6225c754b548c6389987bf37ca166cda62e5"
-  integrity sha512-dA5AcCbj3twEh1FYGtRDXgDuBBjNGexnUZKRDUQ+sst/xHHaBnzy3IRzLLd1f28Xqi0+pcpWJUgeKXV3tz69rQ==
+evm-lite-core@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/evm-lite-core/-/evm-lite-core-0.0.8.tgz#f72b83a8f695f51824c9fc430a93fa6d1ca2aa52"
+  integrity sha512-Eq5rr22HgJig0UWCOdpDalloTJDKEU90O6yKg5yKZ2UZtSfN0kgtLD5gWnTpcHtjN8WpaYwMK88+ikSFIyRkHw==
   dependencies:
     "@babel/runtime" "^7.3.1"
     crypto-random-hex "^1.0.0"

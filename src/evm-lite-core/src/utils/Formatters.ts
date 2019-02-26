@@ -38,7 +38,7 @@ export default class Formatters {
 		};
 
 		if (txObject.to) {
-			txObject.to = Formatters.inputAddressFormatter(txObject.to);
+			formatted.to = Formatters.inputAddressFormatter(txObject.to);
 		}
 
 		if (txObject.data && !Utils.isHex(txObject.data)) {
