@@ -97,7 +97,8 @@ export default class SolidityContract<
 					data,
 					gas: options.gas || this.options.gas,
 					gasPrice: options.gasPrice || this.options.gasPrice,
-					nonce: this.options.nonce
+					nonce: this.options.nonce,
+					chainId: 1
 				},
 				this.host,
 				this.port,

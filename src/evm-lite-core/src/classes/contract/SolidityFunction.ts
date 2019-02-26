@@ -63,7 +63,8 @@ export default class SolidityFunction extends AccountClient {
 			from: options.from,
 			to: this.contractAddress,
 			gas: options.gas,
-			gasPrice: options.gasPrice
+			gasPrice: options.gasPrice,
+			chainId: 1
 		};
 
 		tx.data = payload.data;

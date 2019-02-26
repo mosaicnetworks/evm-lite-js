@@ -29,7 +29,7 @@ const account = dataDirectory.keystore.decryptAccount(from, 'password');
 
 const loadContract = async () => {
 	// Generate contract object with ABI and data
-	const contract = await evmlc.loadContract(ABI, {
+	const contract = await evmlc.contracts.load(ABI, {
 		data
 		// Will generate functions for the deployed contract at the address if set.
 		/* contractAddress: '' */
