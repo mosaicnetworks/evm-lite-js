@@ -1,6 +1,6 @@
 {
 		"name": "evm-lite-lib",
-		"version": "0.2.12",
+		"version": "0.2.13",
 		"description": "A Node.js module for interacting with EVM-Lite.",
 		"main": "./dist/index.js",
 		"typings": "./dist/index.d.ts",
@@ -11,7 +11,7 @@
 		"author": "Danu Kumanan",
 		"license": "MIT",
 		"dependencies": {
-				"evm-lite-core": "^0.0.9",
+				"evm-lite-core": "^0.0.10",
 				"json-bigint": "^0.3.0",
 				"lowdb": "1.0.0",
 				"mkdirp": "0.5.1",
