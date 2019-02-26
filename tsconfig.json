@@ -9,6 +9,6 @@
     "lib": ["es6", "dom"],
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./src/index.ts"],
+  "include": ["./src/evm-lite-lib"],
   "exclude": ["*.test.ts", "node_modules"]
 }

@@ -5,6 +5,7 @@ import * as path from 'path';
 import {
 	Account,
 	Accounts,
+	AddressType,
 	BaseAccount,
 	EVMLC,
 	V3JSONKeyStore
@@ -14,7 +15,11 @@ import Static from './Static';
 
 export default class Keystore {
 	public readonly path: string;
-	private readonly accounts = new Accounts();
+	public readonly accounts = new Accounts('127.0.0.1', 8080, {
+		from: new AddressType('0X0000000000000000000000000000000000000000'),
+		gas: 1000000,
+		gasPrice: 0
+	});
 
 	constructor(
 		public readonly directory: string,
@@ -28,7 +33,7 @@ export default class Keystore {
 	public async decryptAccount(
 		address: string,
 		password: string,
-		connection?: EVMLC
+		connection: EVMLC
 	): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 		const decrypted = await this.accounts.decrypt(keystore, password);
@@ -146,7 +151,7 @@ export default class Keystore {
 		connection: EVMLC
 	): Promise<BaseAccount> {
 		return new Promise<BaseAccount>(async resolve => {
-			const account = await connection.getAccount(address);
+			const account = await connection.accounts.getAccount(address);
 
 			if (account) {
 				resolve(account);
