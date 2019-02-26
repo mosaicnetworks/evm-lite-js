@@ -33,7 +33,7 @@ export default class Keystore {
 	public async decryptAccount(
 		address: string,
 		password: string,
-		connection: EVMLC
+		connection?: EVMLC
 	): Promise<Account> {
 		const keystore = await this.get(address.toLowerCase());
 		const decrypted = await this.accounts.decrypt(keystore, password);

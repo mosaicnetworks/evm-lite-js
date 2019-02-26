@@ -6,7 +6,7 @@ import {
 	DataDirectory,
 	EVMLC,
 	Transaction
-} from '../../src';
+} from '../../src/evm-lite-lib';
 
 interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Promise<Transaction>;
@@ -54,7 +54,9 @@ loadContract()
 		return contract;
 	})
 	.then(async contract => {
-		const account = await evmlc.getAccount(contract.options.address!.value);
+		const account = await evmlc.accounts.getAccount(
+			contract.options.address!.value
+		);
 
 		console.log(account);
 

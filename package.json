@@ -26,6 +26,7 @@
 				"@types/node": "^10.12.21",
 				"chai": "^4.2.0",
 				"mocha": "^5.2.0",
+				"solc": "^0.5.4",
 				"tslint": "^5.12.1",
 				"tslint-config-prettier": "^1.17.0",
 				"typescript": "^3.3.1"
