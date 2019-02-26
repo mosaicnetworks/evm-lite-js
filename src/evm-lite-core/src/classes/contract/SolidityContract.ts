@@ -1,10 +1,12 @@
 // @ts-ignore
 import * as coder from 'web3/lib/solidity/coder';
+// @ts-ignore
+import * as SolidityEvent from 'web3/lib/web3/event.js';
 
 import * as checks from '../../utils/checks';
 import * as errors from '../../utils/errors';
 
-import { TXReceipt } from '../../clients/TransactionClient';
+import { Log, TXReceipt } from '../../clients/TransactionClient';
 import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../../types';
 
 import Account from '../accounts/Account';
@@ -15,6 +17,7 @@ interface OverrideContractDeployParameters {
 	gas?: Gas;
 	gasPrice?: GasPrice;
 	data?: Data;
+	timeout?: number;
 }
 
 export interface ContractOptions {
@@ -107,7 +110,7 @@ export default class SolidityContract<
 				.gas(this.options.gas)
 				.gasPrice(this.options.gasPrice);
 
-			await transaction.submit({}, account);
+			await transaction.submit({ timeout: options.timeout }, account);
 
 			this.receipt = await transaction.receipt;
 
@@ -149,6 +152,49 @@ export default class SolidityContract<
 		this.attachMethodsToContract();
 
 		return this;
+	}
+
+	public parseLogs(logs: Log[]): Log[] {
+		const decoders = this.options.interface
+			.filter(json => {
+				return json.type === 'event';
+			})
+			.map(json => {
+				return new SolidityEvent(null, json, null);
+			});
+
+		return logs
+			.map((log: Log) => {
+				const decoder = decoders.find(decoder => {
+					return (
+						decoder.signature() === log.topics[0].replace('0x', '')
+					);
+				});
+
+				if (decoder) {
+					return decoder.decode(log);
+				} else {
+					return log;
+				}
+			})
+			.map((log: Log) => {
+				const abis = this.options.interface.find(json => {
+					return json.type === 'event' && log.event === json.name;
+				});
+
+				// TODO: Convert bytes to ASCII then put back in `Log`
+				// if (abis && abis.inputs) {
+				// 	abis.inputs.forEach((param, i) => {
+				// 		if (param.type === 'bytes32') {
+				// 			log.args[param.name] = toAscii(
+				// 				log.args[param.name]
+				// 			);
+				// 		}
+				// 	});
+				// }
+
+				return log;
+			});
 	}
 
 	private attachMethodsToContract(): void {

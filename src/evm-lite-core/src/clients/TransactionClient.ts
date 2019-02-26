@@ -2,6 +2,20 @@ import * as JSONBig from 'json-bigint';
 
 import BaseClient, { request } from './BaseClient';
 
+export interface Log {
+	topics: string[];
+	address: string;
+	data: string;
+	blockNumber: string;
+	transactionHash: string;
+	transactionIndex: string;
+	blockHash: string;
+	logIndex: string;
+	removed: boolean;
+	event?: string;
+	args: any;
+}
+
 export interface TXReceipt {
 	root: string;
 	transactionHash: string;
@@ -10,7 +24,7 @@ export interface TXReceipt {
 	gasUsed: number;
 	cumulativeGasUsed: number;
 	contractAddress: string;
-	logs: [];
+	logs: Log[];
 	logsBloom: string;
 	status: number;
 }
