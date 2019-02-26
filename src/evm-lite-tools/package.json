@@ -1,6 +1,6 @@
 {
 	"name": "evm-lite-tools",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"license": "MIT",
@@ -10,7 +10,7 @@
 		"package": "webpack --config config/webpack.config.js"
 	},
 	"dependencies": {
-		"evm-lite-core": "0.0.5",
+		"evm-lite-core": "^0.0.5",
 		"json-bigint": "^0.3.0",
 		"lowdb": "1.0.0",
 		"mkdirp": "0.5.1",
