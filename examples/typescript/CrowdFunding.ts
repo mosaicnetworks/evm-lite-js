@@ -35,7 +35,7 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 });
 
 const loadContract = async () => {
-	return await evmlc.loadContract<CrowdFundingSchema>(compiled.abi, {
+	return await evmlc.contracts.load<CrowdFundingSchema>(compiled.abi, {
 		data: compiled.bytecode,
 		contractAddress
 	});
