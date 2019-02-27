@@ -24,7 +24,7 @@ export default class Keystore {
 		Static.createDirectoryIfNotExists(this.path);
 	}
 
-	public async decryptAccount(
+	public async decrypt(
 		address: string,
 		password: string,
 		connection?: EVMLC
