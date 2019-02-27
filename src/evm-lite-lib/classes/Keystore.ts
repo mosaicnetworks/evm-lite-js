@@ -14,19 +14,13 @@ import {
 import Static from './Static';
 
 export default class Keystore {
-	public readonly path: string;
 	public readonly accounts = new Accounts('127.0.0.1', 8080, {
 		from: new AddressType('0X0000000000000000000000000000000000000000'),
 		gas: 1000000,
 		gasPrice: 0
 	});
 
-	constructor(
-		public readonly directory: string,
-		public readonly name: string
-	) {
-		this.path = path.join(directory, name);
-
+	constructor(public readonly path: string) {
 		Static.createDirectoryIfNotExists(this.path);
 	}
 
@@ -111,17 +105,14 @@ export default class Keystore {
 		});
 	}
 
-	public list(
-		fetch: boolean = false,
-		connection?: EVMLC
-	): Promise<BaseAccount[]> {
+	public list(connection?: EVMLC): Promise<BaseAccount[]> {
 		return new Promise<BaseAccount[]>(async resolve => {
 			const accounts: BaseAccount[] = [];
 			const files = this.allKeystoreFiles();
 			if (files.length) {
 				for (const file of files) {
 					const address = file.address;
-					if (fetch && connection) {
+					if (connection) {
 						accounts.push(
 							await this.fetchBalanceAndNonce(address, connection)
 						);

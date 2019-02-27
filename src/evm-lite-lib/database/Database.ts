@@ -14,17 +14,11 @@ export interface DatabaseSchema {
 }
 
 export default class Database {
-	public readonly path: string;
 	public readonly transactions: TransactionController;
 
 	private readonly database: LowDB.LowdbSync<DatabaseSchema>;
 
-	constructor(
-		private readonly directory: string,
-		private readonly name: string
-	) {
-		this.path = path.join(directory, name);
-
+	constructor(private readonly path: string) {
 		if (Static.exists(this.path)) {
 			this.database = LowDB(new FileSync(this.path));
 		} else {

@@ -23,17 +23,10 @@ export interface ConfigSchema {
 }
 
 export default class Config {
-	public readonly path: string;
-
 	public data: ConfigSchema;
 
-	constructor(
-		public readonly directory: string,
-		public readonly name: string
-	) {
+	constructor(public readonly path: string) {
 		this.data = this.default();
-		this.path = path.join(directory, name);
-
 		if (Static.exists(this.path)) {
 			const tomlData: string = fs.readFileSync(this.path, 'utf8');
 
@@ -48,6 +41,11 @@ export default class Config {
 	}
 
 	public default(): ConfigSchema {
+		const list = this.path.split('/');
+		list.pop();
+
+		const keystoreParent = list.join('/');
+
 		return {
 			connection: {
 				host: '127.0.0.1',
@@ -59,7 +57,7 @@ export default class Config {
 				gasPrice: 0
 			},
 			storage: {
-				keystore: path.join(this.directory, 'keystore')
+				keystore: path.join(keystoreParent, 'keystore')
 			}
 		};
 	}

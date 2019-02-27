@@ -1,3 +1,5 @@
+import * as nodePath from 'path';
+
 import Database from '../database/Database';
 import Config from './Config';
 import Keystore from './Keystore';
@@ -30,23 +32,23 @@ export default class DataDirectory {
 	constructor(readonly path: string) {
 		Static.createDirectoryIfNotExists(path);
 
-		this.config = new Config(this.path, 'config.toml');
+		const configPath = nodePath.join(this.path, 'config.toml');
+		const databasePath = nodePath.join(this.path, 'db.json');
 
-		const keys = Static.getParentAndName(this.config.data.storage.keystore);
-
-		this.keystore = new Keystore(keys.parent, keys.name);
-		this.database = new Database(this.path, 'db.json');
+		this.config = new Config(configPath);
+		this.keystore = new Keystore(this.config.data.storage.keystore);
+		this.database = new Database(databasePath);
 	}
 
-	public newKeystore(dataDirectory: string, name: string): void {
-		this.keystore = new Keystore(dataDirectory, name);
+	public newKeystore(path: string): void {
+		this.keystore = new Keystore(path);
 	}
 
-	public newConfig(dataDirectory: string, name: string): void {
-		this.config = new Config(dataDirectory, name);
+	public newConfig(path: string): void {
+		this.config = new Config(path);
 	}
 
-	public newDatabase(dataDirectory: string, name: string): void {
-		this.database = new Database(dataDirectory, name);
+	public newDatabase(path: string): void {
+		this.database = new Database(path);
 	}
 }
