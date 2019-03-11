@@ -25,7 +25,7 @@ const compiled = {
 
 const from = '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase();
 const directory = new DataDirectory('/Users/danu/.evmlc');
-const account = directory.keystore.decryptAccount(from, 'asd');
+const account = directory.keystore.decrypt(from, 'asd');
 const contractAddress = '0x38CB86c8123e68164390259D022b5D2afffCB273';
 
 const evmlc = new EVMLC('127.0.0.1', 8080, {
