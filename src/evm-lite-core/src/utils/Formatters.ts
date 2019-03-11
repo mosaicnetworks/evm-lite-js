@@ -23,7 +23,6 @@ export default class Formatters {
 			txObject.from = Formatters.inputAddressFormatter(txObject.from);
 		}
 
-		// console.log('FORMATTED: ', formatted);
 		return formatted;
 	}
 

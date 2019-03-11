@@ -118,8 +118,6 @@ export default class Account {
 
 			transaction.to = transaction.to || '0x';
 
-			// console.log('HEXED: ', transaction);
-
 			const rlpEncoded = ethlib.RLP.encode([
 				ethlib.bytes.fromNat(transaction.nonce),
 				ethlib.bytes.fromNat(transaction.gasPrice),

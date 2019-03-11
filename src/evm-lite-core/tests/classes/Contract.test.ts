@@ -1,5 +1,3 @@
-// TODO: Change ABI. Current is for the wrong contract.
-
 import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
