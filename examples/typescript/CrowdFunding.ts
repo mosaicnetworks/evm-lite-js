@@ -6,7 +6,7 @@ import {
 	DataDirectory,
 	EVMLC,
 	Transaction
-} from '../../src/evm-lite-lib';
+} from 'evm-lite-lib';
 
 interface CrowdFundingSchema extends BaseContractSchema {
 	contribute: () => Promise<Transaction>;
@@ -14,8 +14,7 @@ interface CrowdFundingSchema extends BaseContractSchema {
 	settle: () => Promise<Transaction>;
 }
 
-const contractPath = '../assets/CrowdFunding.sol';
-const contractFile = fs.readFileSync(contractPath, 'utf8');
+const contractFile = fs.readFileSync('../assets/CrowdFunding.sol', 'utf8');
 const contractName = ':' + 'CrowdFunding';
 const output = solc.compile(contractFile, 1);
 const compiled = {
@@ -47,7 +46,7 @@ loadContract()
 
 		transaction.value(10);
 
-		await transaction.submit({ timeout: 2 }, await account);
+		await transaction.submit(await account, { timeout: 2 });
 
 		console.log(transaction.receipt);
 
@@ -64,10 +63,9 @@ loadContract()
 	})
 	.then(async contract => {
 		const transaction = await contract.methods.checkGoalReached();
-		const response = await transaction.submit(
-			{ timeout: 2 },
-			await account
-		);
+		const response = await transaction.submit(await account, {
+			timeout: 2
+		});
 
 		console.log(response);
 

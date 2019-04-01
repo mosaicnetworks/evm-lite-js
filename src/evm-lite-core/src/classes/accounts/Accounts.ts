@@ -43,9 +43,7 @@ export default class Accounts extends AccountClient {
 	 * `signTransaction()` attribute. Allowing to sign transactions.
 	 *
 	 * ```typescript
-	 * // Create and encrypt a new account with a password
 	 * const keystore = evmlc.accounts.create().encrypt('password');
-	 * // Decrypt the account with corresponding password
 	 * const decrypted = evmlc.accounts.decrypt(keystore, 'password');
 	 * ```
 	 *
@@ -64,7 +62,6 @@ export default class Accounts extends AccountClient {
 	 *
 	 * @remarks
 	 * ```typescript
-	 * // Create a new account
 	 * const account = evmlc.accounts.create();
 	 * ```
 	 *
@@ -87,10 +84,8 @@ export default class Accounts extends AccountClient {
 	 *
 	 * ```typescript
 	 * const transfer = async () {
-	 *     // Prepare a transfer transaction to submitted after signing
 	 *     const transaction = await evmlc.prepareTransfer('TO_ADDRESS', 200);
-	 *     // Sign the transaction with a new  account and submit to node.
-	 *     await transaction.submit({}, evmlc.accounts.create())
+	 *     await transaction.submit(evmlc.accounts.create())
 	 * }
 	 * ```
 	 *

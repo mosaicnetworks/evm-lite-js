@@ -27,6 +27,7 @@ export default class Config {
 
 	constructor(public readonly path: string) {
 		this.data = this.default();
+
 		if (Static.exists(this.path)) {
 			const tomlData: string = fs.readFileSync(this.path, 'utf8');
 

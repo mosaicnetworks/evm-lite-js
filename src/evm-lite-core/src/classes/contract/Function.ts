@@ -12,12 +12,12 @@ import {
 	GasPrice,
 	parseSolidityTypes
 } from '../../types';
-import { ABI, Input } from './SolidityContract';
+import { ABI, Input } from './Contract';
 
 import AccountClient from '../../clients/AccountClient';
 import Transaction, { TX } from '../transaction/Transaction';
 
-export default class SolidityFunction extends AccountClient {
+export default class Function extends AccountClient {
 	public readonly name: string;
 	public readonly inputTypes: EVMType[];
 	public readonly outputTypes: EVMType[];
@@ -52,10 +52,10 @@ export default class SolidityFunction extends AccountClient {
 			[];
 	}
 
-	public async generateTransaction(
+	public generateTransaction(
 		options: { from: AddressType; gas: Gas; gasPrice: GasPrice },
 		...funcArgs: any[]
-	): Promise<Transaction> {
+	): Transaction {
 		this.validateArgs(funcArgs);
 
 		const payload = this.solFunction.toPayload(funcArgs);
@@ -82,12 +82,9 @@ export default class SolidityFunction extends AccountClient {
 			unpackfn = this.unpackOutput.bind(this);
 		}
 
-		const account = await this.getAccount(tx.from.value);
-
 		return new Transaction(
 			{
-				...tx,
-				nonce: account.nonce
+				...tx
 			},
 			this.host,
 			this.port,

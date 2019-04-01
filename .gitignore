@@ -3,4 +3,4 @@ node_modules
 .vscode
 dist
 TODO.md
-
+yarn-error.log
