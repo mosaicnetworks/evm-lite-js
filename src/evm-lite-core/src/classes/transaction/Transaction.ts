@@ -152,7 +152,7 @@ export default class Transaction extends TransactionClient {
 	 * @param account - The account to sign this transaction.
 	 */
 	public async submit(
-		account: Account | null,
+		account?: Account,
 		options?: OverrideTXOptions
 	): Promise<this | any[]> {
 		await this.assignTXValues(options);

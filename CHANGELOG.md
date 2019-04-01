@@ -13,8 +13,9 @@ IMPROVEMENTS:
 - Renamed `Keystore.decryptAccount` to `Keystore.decrypt`.
 - Removed one param from `Keystore.list`. Now only accepts one param
   representing a `EVMLC` object to fetch balance and nonce from the node.
-- `Transaction` submittion now only signed one way requiring non optional
-  `account` object
+- `Transaction` submittion now only signed one way.
+- `Transaction` object requires an optional `Account` object to be signed
+  only for non-constant transactions.
 
 SECURITY:
 
