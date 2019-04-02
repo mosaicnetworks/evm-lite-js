@@ -174,8 +174,6 @@ export default class Transaction extends TransactionClient {
 				throw new Error('Transaction has not been signed locally.');
 			}
 
-			console.log('SIGNED', this.signedTX);
-
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
 			await delay(timeout);
@@ -391,7 +389,5 @@ export default class Transaction extends TransactionClient {
 		).getAccount(this.tx.from.value);
 
 		this.tx.nonce = account.nonce;
-
-		console.log('ASSIGNING NONCE', this.tx.nonce);
 	}
 }
