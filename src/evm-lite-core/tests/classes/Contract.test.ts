@@ -2,17 +2,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
-import {
-	BaseContractSchema,
-	EVMLC,
-	SolidityContract,
-	Transaction
-} from '../../src';
+import { BaseContractSchema, Contract, EVMLC, Transaction } from '../../src';
 
 interface CrowdFundingSchema extends BaseContractSchema {
-	contribute: () => Promise<Transaction>;
-	checkGoalReached: () => Promise<Transaction>;
-	settle: () => Promise<Transaction>;
+	contribute: () => Transaction;
+	checkGoalReached: () => Transaction;
+	settle: () => Transaction;
 }
 
 function compile(contractName: string, fileName: string) {
@@ -99,7 +94,7 @@ const compiled = {
 	)
 };
 
-let contract: SolidityContract<CrowdFundingSchema>;
+let contract: Contract<CrowdFundingSchema>;
 let evmlc: EVMLC;
 
 describe('SolidityContract.ts', () => {

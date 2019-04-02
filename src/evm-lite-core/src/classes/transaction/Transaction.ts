@@ -1,7 +1,5 @@
 import * as JSONBig from 'json-bigint';
 
-import { BN } from 'web3-utils';
-
 import {
 	Address,
 	AddressType,
@@ -364,7 +362,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param account - The account object to sign with.
 	 */
-	private async sign(account: Account): Promise<this> {
+	public async sign(account: Account): Promise<this> {
 		this.signedTX = await account.signTransaction(this.parse());
 
 		return this;

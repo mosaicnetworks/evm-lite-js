@@ -163,7 +163,7 @@ export default class Account {
 
 	public encrypt(password: string): V3JSONKeyStore {
 		// @ts-ignore
-		return this.account.toV3Keystore(password);
+		return this.account.encrypt(password);
 	}
 
 	public toBaseAccount(): BaseAccount {
