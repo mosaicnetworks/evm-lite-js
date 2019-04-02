@@ -11,7 +11,7 @@ import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../../types';
 
 import Account from '../accounts/Account';
 import Transaction from '../transaction/Transaction';
-import SolidityFunction from './SolidityFunction';
+import Function from './Function';
 
 interface OverrideContractDeployParameters {
 	gas?: Gas;
@@ -48,10 +48,10 @@ export interface ABI {
 export type ContractABI = ABI[];
 
 export interface BaseContractSchema {
-	[key: string]: (...args: any[]) => Promise<Transaction>;
+	[key: string]: (...args: any[]) => Transaction;
 }
 
-export default class SolidityContract<
+export default class Contract<
 	ContractFunctionSchema extends BaseContractSchema
 > {
 	public methods: ContractFunctionSchema | BaseContractSchema;
@@ -110,7 +110,7 @@ export default class SolidityContract<
 				.gas(this.options.gas)
 				.gasPrice(this.options.gasPrice);
 
-			await transaction.submit({ timeout: options.timeout }, account);
+			await transaction.submit(account, { timeout: options.timeout });
 
 			this.receipt = await transaction.receipt;
 
@@ -182,16 +182,15 @@ export default class SolidityContract<
 					return json.type === 'event' && log.event === json.name;
 				});
 
-				// TODO: Convert bytes to ASCII then put back in `Log`
-				// if (abis && abis.inputs) {
-				// 	abis.inputs.forEach((param, i) => {
-				// 		if (param.type === 'bytes32') {
-				// 			log.args[param.name] = toAscii(
-				// 				log.args[param.name]
-				// 			);
-				// 		}
-				// 	});
-				// }
+				if (abis && abis.inputs) {
+					abis.inputs.forEach((param, i) => {
+						if (param.type === 'bytes32') {
+							log.args[param.name] = log.args[
+								param.name
+							].toString();
+						}
+					});
+				}
 
 				return log;
 			});
@@ -211,13 +210,13 @@ export default class SolidityContract<
 					throw new Error('Cannot attach function');
 				}
 
-				const solFunction = new SolidityFunction(
+				const solFunction = new Function(
 					funcABI,
 					this.options.address,
 					this.host,
 					this.port
 				);
-
+				// this.methods.hello()
 				this.methods[
 					funcABI.name
 				] = solFunction.generateTransaction.bind(solFunction, {

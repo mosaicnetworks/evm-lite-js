@@ -1,9 +1,6 @@
 import { Address, AddressType, Gas, GasPrice } from '../../types';
 import { BaseTransaction } from '../transaction/Transaction';
-import SolidityContract, {
-	BaseContractSchema,
-	ContractABI
-} from './SolidityContract';
+import Contract, { BaseContractSchema, ContractABI } from './Contract';
 
 import AccountClient from '../../clients/AccountClient';
 
@@ -63,7 +60,7 @@ export default class Contracts extends AccountClient {
 
 		return this.getAccount(this.contractOptions.from.value.trim()).then(
 			account =>
-				new SolidityContract<ContractSchema>(
+				new Contract<ContractSchema>(
 					{
 						from: this.contractOptions.from,
 						interface: abi,

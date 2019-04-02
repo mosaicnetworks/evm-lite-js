@@ -1,7 +1,5 @@
 import * as JSONBig from 'json-bigint';
 
-import { BN } from 'web3-utils';
-
 import {
 	Address,
 	AddressType,
@@ -13,6 +11,7 @@ import {
 	Value
 } from '../../types';
 
+import AccountClient from '../../clients/AccountClient';
 import TransactionClient, { TXReceipt } from '../../clients/TransactionClient';
 import Account from '../accounts/Account';
 
@@ -54,6 +53,7 @@ export interface ParsedTransaction extends BaseTransaction {
 	to?: string;
 	value?: Value;
 	data?: Data;
+	nonce?: Nonce;
 }
 
 interface OverrideTXOptions {
@@ -150,10 +150,10 @@ export default class Transaction extends TransactionClient {
 	 * @param account - The account to sign this transaction.
 	 */
 	public async submit(
-		options?: OverrideTXOptions,
-		account?: Account
+		account?: Account,
+		options?: OverrideTXOptions
 	): Promise<this | any[]> {
-		this.assignTXValues(options);
+		await this.assignTXValues(options);
 
 		if (!this.tx.gas || (!this.tx.gasPrice && this.tx.gasPrice !== 0)) {
 			throw new Error('Fields `gas` or `gasPrice` not set.');
@@ -173,6 +173,8 @@ export default class Transaction extends TransactionClient {
 			if (!this.signedTX) {
 				throw new Error('Transaction has not been signed locally.');
 			}
+
+			console.log('SIGNED', this.signedTX);
 
 			const { txHash } = await this.sendRaw(this.signedTX.rawTransaction);
 
@@ -196,17 +198,6 @@ export default class Transaction extends TransactionClient {
 		} else {
 			throw new Error('Transaction hash not found.');
 		}
-	}
-
-	/**
-	 * Should sign this transaction with the given account.
-	 *
-	 * @param account - The account object to sign with.
-	 */
-	public async sign(account: Account): Promise<this> {
-		this.signedTX = await account.signTransaction(this.parse());
-
-		return this;
 	}
 
 	/**
@@ -257,7 +248,8 @@ export default class Transaction extends TransactionClient {
 
 			from: this.tx.from && this.tx.from.value.toLowerCase(),
 			to: (this.tx.to && this.tx.to.value.toLowerCase()) || '',
-			value: this.tx.value || 0
+			value: this.tx.value || 0,
+			nonce: this.tx.nonce
 		};
 
 		if (data) {
@@ -366,11 +358,22 @@ export default class Transaction extends TransactionClient {
 	}
 
 	/**
+	 * Should sign this transaction with the given account.
+	 *
+	 * @param account - The account object to sign with.
+	 */
+	public async sign(account: Account): Promise<this> {
+		this.signedTX = await account.signTransaction(this.parse());
+
+		return this;
+	}
+
+	/**
 	 * Assigns the override options to this transaction.
 	 *
 	 * @param options - The options to assign.
 	 */
-	private assignTXValues(options?: OverrideTXOptions) {
+	private async assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
 			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
 			this.tx.from = options.from
@@ -381,5 +384,14 @@ export default class Transaction extends TransactionClient {
 			this.tx.value = options.value || this.tx.value;
 			this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
 		}
+
+		const account = await new AccountClient(
+			this.host,
+			this.port
+		).getAccount(this.tx.from.value);
+
+		this.tx.nonce = account.nonce;
+
+		console.log('ASSIGNING NONCE', this.tx.nonce);
 	}
 }

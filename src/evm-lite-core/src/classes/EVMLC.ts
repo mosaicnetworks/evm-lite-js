@@ -30,7 +30,6 @@ export default class EVMLC extends DefaultClient {
 	 * are provided in the respective functions if required.
 	 *
 	 * ```typescript
-	 * // Generate EVMLC connection object
 	 * const evmlc = new EVMLC('127.0.0.1', 8080, {
 	 *     from: 'DEFAULT_FROM_ADDRESS',
 	 *     gas: 1000000,

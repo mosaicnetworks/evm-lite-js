@@ -37,7 +37,7 @@ export interface SendTXResponse {
 	txHash: string;
 }
 
-export default class TransactionClient extends BaseClient {
+export default abstract class TransactionClient extends BaseClient {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
