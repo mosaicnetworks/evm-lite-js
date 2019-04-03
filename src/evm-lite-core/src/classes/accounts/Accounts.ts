@@ -84,7 +84,7 @@ export default class Accounts extends AccountClient {
 	 *
 	 * ```typescript
 	 * const transfer = async () {
-	 *     const transaction = await evmlc.prepareTransfer('TO_ADDRESS', 200);
+	 *     const transaction = evmlc.prepareTransfer('TO_ADDRESS', 200);
 	 *     await transaction.submit(evmlc.accounts.create())
 	 * }
 	 * ```
@@ -97,7 +97,7 @@ export default class Accounts extends AccountClient {
 		to: string,
 		value: Value,
 		from?: string
-	): Promise<Transaction> {
+	): Transaction {
 		const fromObject = new AddressType(
 			(from || this.accountOptions.from.value).trim()
 		);
@@ -118,22 +118,18 @@ export default class Accounts extends AccountClient {
 			);
 		}
 
-		return this.getAccount(fromObject.value).then(
-			account =>
-				new Transaction(
-					{
-						from: fromObject,
-						to: new AddressType(to.trim()),
-						value,
-						gas: this.accountOptions.gas,
-						gasPrice: this.accountOptions.gasPrice,
-						nonce: account.nonce,
-						chainId: 1
-					},
-					this.host,
-					this.port,
-					false
-				)
+		return new Transaction(
+			{
+				from: fromObject,
+				to: new AddressType(to.trim()),
+				value,
+				gas: this.accountOptions.gas,
+				gasPrice: this.accountOptions.gasPrice,
+				chainId: 1
+			},
+			this.host,
+			this.port,
+			false
 		);
 	}
 

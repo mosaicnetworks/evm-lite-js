@@ -163,7 +163,7 @@ export default class Transaction extends TransactionClient {
 			throw new Error('Transaction does not have a value to send.');
 		}
 
-		const timeout = ((options && options.timeout) || 1) * 1000;
+		const timeout = ((options && options.timeout) || 0) * 1000;
 
 		if (!this.constant) {
 			if (account) {
@@ -361,6 +361,10 @@ export default class Transaction extends TransactionClient {
 	 * @param account - The account object to sign with.
 	 */
 	public async sign(account: Account): Promise<this> {
+		if (!this.tx.nonce) {
+			await this.assignNonce();
+		}
+
 		this.signedTX = await account.signTransaction(this.parse());
 
 		return this;
@@ -382,7 +386,12 @@ export default class Transaction extends TransactionClient {
 			this.tx.value = options.value || this.tx.value;
 			this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
 		}
+	}
 
+	/**
+	 * Assigns the nonce of the transaction if not set.
+	 */
+	private async assignNonce() {
 		const account = await new AccountClient(
 			this.host,
 			this.port

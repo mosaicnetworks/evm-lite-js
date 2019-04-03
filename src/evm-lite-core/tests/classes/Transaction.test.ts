@@ -13,10 +13,11 @@ describe('Transaction.ts', () => {
 			gasPrice: 0
 		});
 
-		transaction = await evmlc.accounts.prepareTransfer(
+		transaction = evmlc.accounts.prepareTransfer(
 			'0X4F44B1907162D64F9C4C7A46E3547084023DA2A0',
 			200
 		);
+
 		parsed = transaction.parse();
 		details = transaction.details();
 	});

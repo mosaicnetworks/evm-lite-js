@@ -49,7 +49,7 @@ describe('Account.ts', () => {
 
 		expect(transaction.signedTX).toBe(undefined);
 
-		const signed = await decrypted.signTransaction(transaction.parse());
+		const signed = (await transaction.sign(account)).signedTX!;
 
 		expect(signed).not.toBe(undefined);
 
