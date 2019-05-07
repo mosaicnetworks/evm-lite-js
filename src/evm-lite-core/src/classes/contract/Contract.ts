@@ -99,7 +99,6 @@ export default class Contract<
 			}
 
 			const { nonce } = await this.getAccount(account.address);
-			console.log(nonce);
 			const transaction = new Transaction(
 				{
 					from: this.contractOptions.from,
@@ -113,8 +112,6 @@ export default class Contract<
 				this.port,
 				false
 			);
-
-			console.log(transaction.parse());
 
 			await transaction.submit(account, {
 				timeout: options.timeout
