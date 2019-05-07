@@ -114,8 +114,8 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.gas).toBe(evmlc.defaultGas);
-		expect(contract.options.gasPrice).toBe(evmlc.defaultGasPrice);
+		expect(contract.contractOptions.gas).toBe(evmlc.defaultGas);
+		expect(contract.contractOptions.gasPrice).toBe(evmlc.defaultGasPrice);
 	});
 
 	it('should create contract with functions when address set', async () => {
@@ -127,7 +127,7 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.address).not.toBe(undefined);
+		expect(contract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
@@ -139,14 +139,14 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.address).toBe(undefined);
+		expect(contract.contractOptions.address).toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBe(0);
 
 		contract.setAddressAndPopulateFunctions(
 			'0x3d9f3699440744ca2dfce1ff40cd21ff4696d908'
 		);
 
-		expect(contract.options.address).not.toBe(undefined);
+		expect(contract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
@@ -162,11 +162,11 @@ describe('SolidityContract.ts', () => {
 		);
 
 		expect(Object.keys(dummyContract.methods).length).toBe(0);
-		expect(dummyContract.options.from.value).toBe(account.address);
+		expect(dummyContract.contractOptions.from.value).toBe(account.address);
 
 		await dummyContract.deploy(account);
 
-		expect(dummyContract.options.address).not.toBe(undefined);
+		expect(dummyContract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(dummyContract.methods).length).toBeGreaterThan(0);
 
 		contract = dummyContract;

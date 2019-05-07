@@ -10,7 +10,8 @@ import {
 	EVMType,
 	Gas,
 	GasPrice,
-	parseSolidityTypes
+	parseSolidityTypes,
+	Value
 } from '../../types';
 import { ABI, Input } from './Contract';
 
@@ -53,7 +54,12 @@ export default class Function extends AccountClient {
 	}
 
 	public generateTransaction(
-		options: { from: AddressType; gas: Gas; gasPrice: GasPrice },
+		options: {
+			from: AddressType;
+			gas: Gas;
+			gasPrice: GasPrice;
+			// value: Value
+		},
 		...funcArgs: any[]
 	): Transaction {
 		this.validateArgs(funcArgs);

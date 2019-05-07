@@ -89,7 +89,7 @@ export default class Transaction extends TransactionClient {
 	 * object.
 	 *
 	 * @remarks
-	 * This class should not be directly instantiated.
+	 * This class should not be directly instantiated from outide this library.
 	 *
 	 * @param tx - The transaction parameters.
 	 * @param host - The host of active node.

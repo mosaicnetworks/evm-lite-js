@@ -79,8 +79,8 @@ export default class Accounts extends AccountClient {
 	 * address.
 	 *
 	 * @remarks
-	 * This function will also fetch the nonce from the node with connection
-	 * details specified in the contructor for this class.
+	 * This function will not fetch nonce from the node. The example shows
+	 * how to make a trnasfer of 200 tokens.
 	 *
 	 * ```typescript
 	 * const transfer = async () {

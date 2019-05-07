@@ -43,16 +43,16 @@ describe('Contracts.ts', () => {
 	});
 
 	it('contract should have default gas', async () => {
-		contract = await evmlc.contracts.load([]);
+		contract = evmlc.contracts.load([]);
 
-		expect(contract.options.gas).toBe(evmlc.defaultGas);
+		expect(contract.contractOptions.gas).toBe(evmlc.defaultGas);
 	});
 
 	it('contract should have default gasPrice', async () => {
-		expect(contract.options.gasPrice).toBe(evmlc.defaultGasPrice);
+		expect(contract.contractOptions.gasPrice).toBe(evmlc.defaultGasPrice);
 	});
 
 	it('contract should have default from', async () => {
-		expect(contract.options.from.value).toBe(evmlc.defaultFrom);
+		expect(contract.contractOptions.from.value).toBe(evmlc.defaultFrom);
 	});
 });

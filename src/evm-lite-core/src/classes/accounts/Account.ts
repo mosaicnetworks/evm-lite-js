@@ -66,6 +66,7 @@ export default class Account {
 
 	public balance: number = 0;
 	public nonce: number = 0;
+
 	private readonly account: Web3Account;
 
 	constructor(data: Web3Account) {

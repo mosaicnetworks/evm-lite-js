@@ -2,13 +2,11 @@ import { Address, AddressType, Gas, GasPrice } from '../../types';
 import { BaseTransaction } from '../transaction/Transaction';
 import Contract, { BaseContractSchema, ContractABI } from './Contract';
 
-import AccountClient from '../../clients/AccountClient';
-
 interface ContractDefaultOptions extends BaseTransaction {
 	from: Address;
 }
 
-export default class Contracts extends AccountClient {
+export default class Contracts {
 	/**
 	 * The root cotnroller class for interacting with contracts.
 	 *
@@ -17,12 +15,10 @@ export default class Contracts extends AccountClient {
 	 * @param contractOptions - The default options for contracts
 	 */
 	constructor(
-		host: string,
-		port: number,
+		public readonly host: string,
+		public readonly port: number,
 		private contractOptions: ContractDefaultOptions
-	) {
-		super(host, port);
-	}
+	) {}
 
 	/**
 	 * Should generate a contract abstraction class to interact with the
@@ -51,28 +47,24 @@ export default class Contracts extends AccountClient {
 			data?: string;
 			contractAddress?: string;
 		}
-	) {
+	): Contract<ContractSchema> {
 		const data: string = (options && options.data) || '';
 		const address =
 			options && options.contractAddress
 				? new AddressType(options.contractAddress)
 				: undefined;
 
-		return this.getAccount(this.contractOptions.from.value.trim()).then(
-			account =>
-				new Contract<ContractSchema>(
-					{
-						from: this.contractOptions.from,
-						interface: abi,
-						gas: this.contractOptions.gas,
-						gasPrice: this.contractOptions.gasPrice,
-						nonce: account.nonce,
-						address,
-						data
-					},
-					this.host,
-					this.port
-				)
+		return new Contract<ContractSchema>(
+			{
+				from: this.contractOptions.from,
+				interface: abi,
+				gas: this.contractOptions.gas,
+				gasPrice: this.contractOptions.gasPrice,
+				address,
+				data
+			},
+			this.host,
+			this.port
 		);
 	}
 
