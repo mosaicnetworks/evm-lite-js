@@ -20,6 +20,7 @@
 		"./src/**/*.ts"
 	],
 	"exclude": [
+		"./src/evm-lite-core/**/*.ts",
 		"*.test.ts",
 		"node_modules"
 	]

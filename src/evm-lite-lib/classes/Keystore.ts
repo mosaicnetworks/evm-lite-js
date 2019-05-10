@@ -174,7 +174,7 @@ export default class Keystore {
 	}
 
 	private allKeystoreFiles() {
-		const json = [];
+		const json: V3JSONKeyStore[] = [];
 		const files = fs.readdirSync(this.path).filter(file => {
 			return !file.startsWith('.');
 		});
