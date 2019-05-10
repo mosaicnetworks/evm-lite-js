@@ -57,6 +57,8 @@ export interface BaseContractSchema {
 export default class Contract<
 	ContractFunctionSchema extends BaseContractSchema
 > extends AccountClient {
+	private signingAccount?: Account
+
 	public methods: ContractFunctionSchema | BaseContractSchema;
 	public web3Contract: any;
 	public receipt?: TXReceipt;
@@ -75,11 +77,16 @@ export default class Contract<
 	}
 
 	public async deploy(
-		account: Account,
 		params?: any[],
-		options?: OverrideContractDeployParameters
+		options?: OverrideContractDeployParameters,
+		account?: Account,
 	): Promise<this> {
 		options = { ...options };
+		const acc = account || this.signingAccount;
+
+		if (!acc) {
+			return Promise.reject(new Error('Must provide an account to sign with.'));
+		}
 
 		if (this.contractOptions.address) {
 			return Promise.reject(errors.ContractAddressFieldSetAndDeployed());
@@ -98,7 +105,7 @@ export default class Contract<
 				data = data + this.encodeConstructorParams(params);
 			}
 
-			const { nonce } = await this.getAccount(account.address);
+			const { nonce } = await this.getAccount(acc.address);
 			const transaction = new Transaction(
 				{
 					from: this.contractOptions.from,
@@ -112,7 +119,7 @@ export default class Contract<
 				false
 			);
 
-			await transaction.submit(account, {
+			await transaction.submit(acc, {
 				timeout: options.timeout
 			});
 
@@ -156,6 +163,12 @@ export default class Contract<
 		this.attachMethodsToContract();
 
 		return this;
+	}
+
+	public setSigningAccount(account: Account): this {
+		this.signingAccount = account;
+
+		return this
 	}
 
 	public parseLogs(logs: Log[]): Log[] {

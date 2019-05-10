@@ -159,12 +159,12 @@ describe('SolidityContract.ts', () => {
 			{
 				data: compiled.bytecode
 			}
-		);
+		).setSigningAccount(account);
 
 		expect(Object.keys(dummyContract.methods).length).toBe(0);
 		expect(dummyContract.contractOptions.from).toBe(account.address.toLowerCase());
 
-		await dummyContract.deploy(account);
+		await dummyContract.deploy();
 
 		expect(dummyContract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(dummyContract.methods).length).toBeGreaterThan(0);
