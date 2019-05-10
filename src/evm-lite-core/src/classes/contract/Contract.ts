@@ -106,7 +106,6 @@ export default class Contract<
 					gas: options.gas || this.contractOptions.gas,
 					gasPrice: options.gasPrice || this.contractOptions.gasPrice,
 					nonce: this.contractOptions.nonce || nonce,
-					chainId: 1
 				},
 				this.host,
 				this.port,

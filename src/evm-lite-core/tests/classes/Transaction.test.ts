@@ -19,15 +19,14 @@ describe('Transaction.ts', () => {
 		);
 
 		parsed = transaction.parse();
-		details = transaction.details();
 	});
 
 	it('should parse `from` to native JS types', () => {
-		expect(parsed.from.toUpperCase()).toBe(details.from);
+		expect(parsed.from).toBe(evmlc.defaultFrom);
 	});
 
 	it('should parse `to` to native JS types', () => {
-		expect(parsed.to.toUpperCase()).toBe(details.to);
+		expect(parsed.to).toBe('0X4F44B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase());
 	});
 
 	it('should sign a transaction', async () => {

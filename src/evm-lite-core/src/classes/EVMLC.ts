@@ -40,6 +40,8 @@ export default class EVMLC extends DefaultClient {
 		private readonly defaults: Defaults
 	) {
 		super(host, port);
+
+		this.defaults.from = defaults.from.toLowerCase()
 	}
 
 	/**
@@ -79,7 +81,7 @@ export default class EVMLC extends DefaultClient {
 	 * this object.
 	 */
 	set defaultFrom(address: EVM.Address) {
-		this.defaults.from = address;
+		this.defaults.from = address.toLowerCase();
 	}
 
 	/**

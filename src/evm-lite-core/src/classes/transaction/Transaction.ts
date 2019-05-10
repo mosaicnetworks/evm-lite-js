@@ -78,6 +78,9 @@ export default class Transaction extends TransactionClient {
 		private readonly unpackfn?: (data: string) => any
 	) {
 		super(host, port);
+
+		// Default to 1
+		this.chainID(this.tx.chainId || 1)
 	}
 
 	/**
@@ -239,13 +242,6 @@ export default class Transaction extends TransactionClient {
 	 */
 	public parseToString(): string {
 		return JSONBig.stringify(this.parse());
-	}
-
-	/**
-	 * Should return the non-parsed transaction details.
-	 */
-	public details(): TX {
-		return this.tx;
 	}
 
 	/**

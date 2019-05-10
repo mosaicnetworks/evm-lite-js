@@ -22,7 +22,7 @@ export default class Accounts {
 	constructor(
 		private readonly host: string,
 		private readonly port: number,
-		private defaults: Defaults
+		public defaults: Defaults
 	) {
 		this.accounts = new Web3Accounts('http://', {
 			defaultAccount: '0X0000000000000000000000000000000000000000',
@@ -119,7 +119,6 @@ export default class Accounts {
 				value,
 				gas: this.defaults.gas,
 				gasPrice: this.defaults.gasPrice,
-				chainId: 1
 			},
 			this.host,
 			this.port,
