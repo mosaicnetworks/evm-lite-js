@@ -1,5 +1,4 @@
 import { Defaults } from '../EVMLC';
-import { BaseTransaction } from '../transaction/Transaction';
 
 import Contract, { BaseContractSchema, ContractABI } from './Contract';
 

@@ -1,13 +1,13 @@
-import { EVMLC, Transaction } from '../../src';
+import { EVMLC, Transaction, TX } from '../../src';
 
 let evmlc: EVMLC;
 let transaction: Transaction;
 let parsed: any;
-let details: any;
+let details: TX;
 
 describe('Transaction.ts', () => {
 	beforeEach(async () => {
-		evmlc = new EVMLC('127.0.0.1', 8080, {
+		evmlc = new EVMLC('n0.monet.network', 8080, {
 			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
 			gas: 10000000,
 			gasPrice: 0
@@ -23,11 +23,11 @@ describe('Transaction.ts', () => {
 	});
 
 	it('should parse `from` to native JS types', () => {
-		expect(parsed.from.toUpperCase()).toBe(details.from.value);
+		expect(parsed.from.toUpperCase()).toBe(details.from);
 	});
 
 	it('should parse `to` to native JS types', () => {
-		expect(parsed.to.toUpperCase()).toBe(details.to.value);
+		expect(parsed.to.toUpperCase()).toBe(details.to);
 	});
 
 	it('should sign a transaction', async () => {

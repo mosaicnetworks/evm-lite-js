@@ -2,7 +2,7 @@ import * as Utils from 'web3-utils';
 
 import { Iban } from 'web3-eth-iban';
 
-import { ParsedTransaction } from '../classes/transaction/Transaction';
+import { TX } from '../classes/transaction/Transaction';
 
 export interface FormattedTransaction {
 	from: string;
@@ -16,7 +16,7 @@ export interface FormattedTransaction {
 }
 
 export default class Formatters {
-	public static inputCallFormatter(txObject: ParsedTransaction) {
+	public static inputCallFormatter(txObject: TX) {
 		const formatted = Formatters.txInputFormatter(txObject);
 
 		if (txObject.from) {
@@ -27,7 +27,7 @@ export default class Formatters {
 	}
 
 	public static txInputFormatter(
-		txObject: ParsedTransaction
+		txObject: TX
 	): FormattedTransaction {
 		const formatted: FormattedTransaction = {
 			from: txObject.from,
@@ -46,6 +46,7 @@ export default class Formatters {
 
 		['gasPrice', 'gas', 'value', 'nonce', 'chainId']
 			.filter(key => {
+				// @ts-ignore
 				return txObject[key] !== undefined;
 			})
 			.forEach(key => {

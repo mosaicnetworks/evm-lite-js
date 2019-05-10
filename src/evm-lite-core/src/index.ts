@@ -11,9 +11,10 @@ export { TXReceipt } from './clients/TransactionClient';
 export { BaseAccount } from './clients/AccountClient';
 export {
 	SentTransaction as SentTX,
-	SignedTransaction
+	SignedTransaction,
+	TX
 } from './classes/transaction/Transaction';
 export { BaseContractSchema, ContractABI } from './classes/contract/Contract';
 export { V3JSONKeyStore } from './classes/accounts/Account';
 
-export * from './types/index';
+export { default as EVM } from './types'

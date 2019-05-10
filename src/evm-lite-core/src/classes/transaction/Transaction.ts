@@ -10,17 +10,6 @@ export interface CallTransactionResponse {
 	data: string;
 }
 
-export interface SentTransaction {
-	from: EVM.Address;
-	to: EVM.Address;
-	value: EVM.Value;
-	gas: EVM.Gas;
-	nonce: EVM.Nonce;
-	gasPrice: EVM.GasPrice;
-	date: any;
-	txHash: string;
-}
-
 export interface BaseTransaction {
 	gas: EVM.Gas;
 	gasPrice: EVM.GasPrice;
@@ -35,12 +24,9 @@ export interface TX extends BaseTransaction {
 	data?: EVM.Data;
 }
 
-export interface ParsedTransaction extends BaseTransaction {
-	from: EVM.Address;
-	to?: EVM.Address;
-	value?: EVM.Value;
-	data?: EVM.Data;
-	nonce?: EVM.Nonce;
+export interface SentTransaction extends TX {
+	date: any;
+	txHash: string;
 }
 
 interface OverrideTXOptions {
@@ -225,7 +211,7 @@ export default class Transaction extends TransactionClient {
 	 * Should return the parsed version of the transaction with native
 	 * types.
 	 */
-	public parse(): ParsedTransaction {
+	public parse(): TX {
 		let data: string | undefined = this.tx.data;
 
 		const parsedTX = {

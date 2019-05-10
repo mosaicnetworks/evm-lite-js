@@ -7,7 +7,6 @@ import Formatters from '../../utils/Formatters';
 import { BaseAccount } from '../../clients/AccountClient';
 
 import Transaction, {
-	ParsedTransaction,
 	SignedTransaction,
 	TX
 } from '../transaction/Transaction';
@@ -79,7 +78,7 @@ export default class Account {
 		return this.account.sign(message);
 	}
 
-	public signTransaction1(tx: ParsedTransaction): Promise<SignedTransaction> {
+	public signTransaction1(tx: TX): Promise<SignedTransaction> {
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 
@@ -88,7 +87,7 @@ export default class Account {
 	}
 
 	// web3 sign function
-	public signTransaction(tx: ParsedTransaction) {
+	public signTransaction(tx: TX) {
 		const _this = this;
 		let error: Error | null = null;
 		let result;
