@@ -42,25 +42,23 @@ export default abstract class TransactionClient extends AbstractClient {
 		super(host, port);
 	}
 
-	protected async callTX(tx: string): Promise<Readonly<string>> {
+	protected async callTX(tx: string): Promise<string> {
 		return await this.post('/call', tx);
 	}
 
-	protected async sendTX(tx: string): Promise<Readonly<SendTXResponse>> {
-		return await this.post('/call', tx).then(response =>
+	protected async sendTX(tx: string): Promise<SendTXResponse> {
+		return await this.post('/send', tx).then(response =>
 			JSON.parse(response)
 		);
 	}
 
-	protected async sendRaw(
-		tx: string
-	): Promise<Readonly<RawTXSubmitResponse>> {
+	protected async sendRaw(tx: string): Promise<RawTXSubmitResponse> {
 		return this.post('/rawtx', tx).then(
 			response => JSONBig.parse(response) as RawTXSubmitResponse
 		);
 	}
 
-	protected async getReceipt(txHash: string): Promise<Readonly<TXReceipt>> {
+	protected async getReceipt(txHash: string): Promise<TXReceipt> {
 		return this.get(`/tx/${txHash}`).then(
 			(response: string) => JSONBig.parse(response) as TXReceipt
 		);

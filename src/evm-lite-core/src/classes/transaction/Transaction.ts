@@ -1,18 +1,9 @@
 import * as JSONBig from 'json-bigint';
 
-import {
-	Address,
-	AddressType,
-	ChainID,
-	Data,
-	Gas,
-	GasPrice,
-	Nonce,
-	Value
-} from '../../types';
+import TransactionClient, { TXReceipt } from '../../clients/TransactionClient';
 
 import AccountClient from '../../clients/AccountClient';
-import TransactionClient, { TXReceipt } from '../../clients/TransactionClient';
+import EVM from '../../types';
 import Account from '../accounts/Account';
 
 export interface CallTransactionResponse {
@@ -20,48 +11,44 @@ export interface CallTransactionResponse {
 }
 
 export interface SentTransaction {
-	from: string;
-	to: string;
-	value: Value;
-	gas: Gas;
-	nonce: Nonce;
-	gasPrice: GasPrice;
+	from: EVM.Address;
+	to: EVM.Address;
+	value: EVM.Value;
+	gas: EVM.Gas;
+	nonce: EVM.Nonce;
+	gasPrice: EVM.GasPrice;
 	date: any;
 	txHash: string;
 }
 
-interface AbstractTransaction {
-	[key: string]: number | string | undefined | AddressType;
-}
-
-export interface BaseTransaction extends AbstractTransaction {
-	gas: Gas;
-	gasPrice: GasPrice;
-	nonce?: Nonce;
-	chainId?: ChainID;
+export interface BaseTransaction {
+	gas: EVM.Gas;
+	gasPrice: EVM.GasPrice;
+	nonce?: EVM.Nonce;
+	chainId?: EVM.ChainID;
 }
 
 export interface TX extends BaseTransaction {
-	from: Address;
-	to?: Address;
-	value?: Value;
-	data?: Data;
+	from: EVM.Address;
+	to?: EVM.Address;
+	value?: EVM.Value;
+	data?: EVM.Data;
 }
 
 export interface ParsedTransaction extends BaseTransaction {
-	from: string;
-	to?: string;
-	value?: Value;
-	data?: Data;
-	nonce?: Nonce;
+	from: EVM.Address;
+	to?: EVM.Address;
+	value?: EVM.Value;
+	data?: EVM.Data;
+	nonce?: EVM.Nonce;
 }
 
 interface OverrideTXOptions {
-	to?: string;
-	from?: string;
-	value?: Value;
-	gas?: Gas;
-	gasPrice?: GasPrice;
+	to?: EVM.Address;
+	from?: EVM.Address;
+	value?: EVM.Value;
+	gas?: EVM.Gas;
+	gasPrice?: EVM.GasPrice;
 	timeout?: number;
 }
 
@@ -244,8 +231,8 @@ export default class Transaction extends TransactionClient {
 		const parsedTX = {
 			...this.tx,
 
-			from: this.tx.from && this.tx.from.value.toLowerCase(),
-			to: (this.tx.to && this.tx.to.value.toLowerCase()) || '',
+			from: this.tx.from && this.tx.from.toLowerCase(),
+			to: (this.tx.to && this.tx.to.toLowerCase()) || '',
 			value: this.tx.value || 0,
 			nonce: this.tx.nonce
 		};
@@ -280,8 +267,8 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param from - The `from` address of the transaction.
 	 */
-	public from(from: string): this {
-		this.tx.from = new AddressType(from);
+	public from(from: EVM.Address): this {
+		this.tx.from = from;
 		return this;
 	}
 
@@ -290,7 +277,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param nonce - The `nonce` of the transaction.
 	 */
-	public nonce(nonce: number): this {
+	public nonce(nonce: EVM.Nonce): this {
 		this.tx.nonce = nonce;
 		return this;
 	}
@@ -300,7 +287,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param chainId - The `chainId` of the transaction.
 	 */
-	public chainID(chainId: number): this {
+	public chainID(chainId: EVM.ChainID): this {
 		this.tx.chainId = chainId;
 		return this;
 	}
@@ -311,7 +298,7 @@ export default class Transaction extends TransactionClient {
 	 * @param to - The `to` address of the transaction.
 	 */
 	public to(to: string): this {
-		this.tx.to = new AddressType(to);
+		this.tx.to = to;
 		return this;
 	}
 
@@ -320,7 +307,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param value - The `value` of the transaction.
 	 */
-	public value(value: Value): this {
+	public value(value: EVM.Value): this {
 		this.tx.value = value;
 		return this;
 	}
@@ -330,7 +317,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param gas - The `gas` of the transaction.
 	 */
-	public gas(gas: Gas): this {
+	public gas(gas: EVM.Gas): this {
 		this.tx.gas = gas;
 		return this;
 	}
@@ -340,7 +327,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param gasPrice - The `gasPrice` of the transaction.
 	 */
-	public gasPrice(gasPrice: GasPrice): this {
+	public gasPrice(gasPrice: EVM.GasPrice): this {
 		this.tx.gasPrice = gasPrice;
 		return this;
 	}
@@ -350,7 +337,7 @@ export default class Transaction extends TransactionClient {
 	 *
 	 * @param data - The `data` of the transaction.
 	 */
-	public data(data: Data): this {
+	public data(data: EVM.Data): this {
 		this.tx.data = data;
 		return this;
 	}
@@ -377,11 +364,8 @@ export default class Transaction extends TransactionClient {
 	 */
 	private async assignTXValues(options?: OverrideTXOptions) {
 		if (options) {
-			this.tx.to = options.to ? new AddressType(options.to) : this.tx.to;
-			this.tx.from = options.from
-				? new AddressType(options.from)
-				: this.tx.from;
-
+			this.tx.to = options.to ? options.to : this.tx.to;
+			this.tx.from = options.from ? options.from : this.tx.from;
 			this.tx.gas = options.gas || this.tx.gas;
 			this.tx.value = options.value || this.tx.value;
 			this.tx.gasPrice = options.gasPrice || this.tx.gasPrice;
@@ -395,7 +379,7 @@ export default class Transaction extends TransactionClient {
 		const account = await new AccountClient(
 			this.host,
 			this.port
-		).getAccount(this.tx.from.value);
+		).getAccount(this.tx.from);
 
 		this.tx.nonce = account.nonce;
 	}

@@ -1,4 +1,4 @@
-import { Address, AddressType, Gas, GasPrice, Value } from '../types';
+import EVM from '../types';
 
 import Transaction, { BaseTransaction } from './transaction/Transaction';
 
@@ -6,20 +6,11 @@ import DefaultClient from '../clients/DefaultClient';
 import Accounts from './accounts/Accounts';
 import Contracts from './contract/Contracts';
 
-interface UserDefinedDefaultTXOptions extends BaseTransaction {
-	from: string;
-}
-
-interface DefaultTXOptions extends BaseTransaction {
-	from: Address;
+export interface Defaults extends BaseTransaction {
+	from: EVM.Address;
 }
 
 export default class EVMLC extends DefaultClient {
-	private accountController: Accounts;
-	private contractController: Contracts;
-
-	private readonly defaultTXOptions: DefaultTXOptions;
-
 	/**
 	 * The root controller class to interact with contracts and accounts.
 	 *
@@ -39,28 +30,39 @@ export default class EVMLC extends DefaultClient {
 	 *
 	 * @param host - The host address of the node.
 	 * @param port - The port of the node.
-	 * @param userDefaultTXOptions - The default values for transactions.
+	 * @param defaults - The default values for transactions.
 	 *
 	 * @alpha
 	 */
 	constructor(
 		host: string,
 		port: number,
-		private readonly userDefaultTXOptions: UserDefinedDefaultTXOptions
+		private readonly defaults: Defaults
 	) {
 		super(host, port);
+	}
 
-		this.defaultTXOptions = {
-			...userDefaultTXOptions,
-			from: new AddressType(userDefaultTXOptions.from)
-		};
-
-		this.contractController = new Contracts(host, port, {
-			...this.defaultTXOptions
+	/**
+	 * Should return a new instance of the `Accounts` class with default
+	 * values set.
+	 */
+	get accounts(): Accounts {
+		return new Accounts(this.host, this.port, {
+			from: this.defaultFrom,
+			gas: this.defaultGas,
+			gasPrice: this.defaultGasPrice
 		});
+	}
 
-		this.accountController = new Accounts(host, port, {
-			...this.defaultTXOptions
+	/**
+	 * Should return a new instance of the `Contracts` class with default
+	 * values set.
+	 */
+	get contracts(): Contracts {
+		return new Contracts(this.host, this.port, {
+			from: this.defaultFrom,
+			gas: this.defaultGas,
+			gasPrice: this.defaultGasPrice
 		});
 	}
 
@@ -68,85 +70,47 @@ export default class EVMLC extends DefaultClient {
 	 * The default `from` address that will be used for any transactions
 	 * created from this object.
 	 */
-	get defaultFrom(): string {
-		return this.defaultTXOptions.from.value;
+	get defaultFrom(): EVM.Address {
+		return this.defaults.from;
 	}
 
 	/**
 	 * Set the default `from` to be used for any transactions created from
 	 * this object.
 	 */
-	set defaultFrom(address: string) {
-		this.defaultTXOptions.from = new AddressType(address);
+	set defaultFrom(address: EVM.Address) {
+		this.defaults.from = address;
 	}
 
 	/**
 	 * The default `gas` value that will be used for any transactions created
 	 * from this object.
 	 */
-	get defaultGas(): Gas {
-		return this.defaultTXOptions.gas;
+	get defaultGas(): EVM.Gas {
+		return this.defaults.gas;
 	}
 
 	/**
 	 * Set the default `gas` value to be used for any transactions created from
 	 * this object.
 	 */
-	set defaultGas(gas: Gas) {
-		this.defaultTXOptions.gas = gas;
+	set defaultGas(gas: EVM.Gas) {
+		this.defaults.gas = gas;
 	}
 
 	/**
 	 * The default `gasPrice` value that will be used for any transactions
 	 * created from this object.
 	 */
-	get defaultGasPrice(): GasPrice {
-		return this.defaultTXOptions.gasPrice;
+	get defaultGasPrice(): EVM.GasPrice {
+		return this.defaults.gasPrice;
 	}
 
 	/**
 	 * Set the default `gasPrice` to be used for any transactions created from
 	 * this object.
 	 */
-	set defaultGasPrice(gasPrice: GasPrice) {
-		this.defaultTXOptions.gasPrice = gasPrice;
-	}
-
-	/**
-	 * The controller class for interacting with Smart Contracts.
-	 */
-	get contracts() {
-		if (this.defaultGas !== this.contractController.defaultGas) {
-			this.contractController.defaultGas = this.defaultGas;
-		}
-
-		if (this.defaultGasPrice !== this.contractController.defaultGasPrice) {
-			this.contractController.defaultGasPrice = this.defaultGasPrice;
-		}
-
-		if (this.defaultFrom !== this.contractController.defaultFrom) {
-			this.contractController.defaultFrom = this.defaultFrom;
-		}
-
-		return this.contractController;
-	}
-
-	/**
-	 * The controller class for interacting with accounts.
-	 */
-	get accounts() {
-		if (this.defaultGas !== this.accountController.defaultGas) {
-			this.accountController.defaultGas = this.defaultGas;
-		}
-
-		if (this.defaultGasPrice !== this.accountController.defaultGasPrice) {
-			this.accountController.defaultGasPrice = this.defaultGasPrice;
-		}
-
-		if (this.defaultFrom !== this.accountController.defaultFrom) {
-			this.accountController.defaultFrom = this.defaultFrom;
-		}
-
-		return this.accountController;
+	set defaultGasPrice(gasPrice: EVM.GasPrice) {
+		this.defaults.gasPrice = gasPrice;
 	}
 }

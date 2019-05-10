@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-export interface HTTPOptions {
+interface RequestOptions {
 	host: string;
 	port: number;
 	method: string;
@@ -9,8 +9,8 @@ export interface HTTPOptions {
 
 export default abstract class AbstractClient {
 	protected constructor(
-		public readonly host: Readonly<string>,
-		public readonly port: Readonly<number>
+		public readonly host: string,
+		public readonly port: number
 	) {}
 
 	protected async get(path: string) {
@@ -18,10 +18,10 @@ export default abstract class AbstractClient {
 	}
 
 	protected async post(path: string, tx: string) {
-		return await this.request(this.options('GET', path), tx);
+		return await this.request(this.options('POST', path), tx);
 	}
 
-	private options(method: string, path: string): HTTPOptions {
+	private options(method: string, path: string): RequestOptions {
 		return {
 			host: this.host,
 			port: this.port,
@@ -30,18 +30,22 @@ export default abstract class AbstractClient {
 		};
 	}
 
-	private request(options: HTTPOptions, tx?: string): Promise<string> {
+	private request(options: RequestOptions, tx?: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const req = http.request(options, response => {
 				let data = '';
+
 				response.on('data', chunk => (data += chunk));
 				response.on('end', () => resolve(data));
 				response.on('error', err => reject(err));
 			});
+
 			req.on('error', err => reject(err));
+
 			if (tx) {
 				req.write(tx);
 			}
+
 			req.end();
 		});
 	}

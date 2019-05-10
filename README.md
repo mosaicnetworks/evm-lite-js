@@ -19,7 +19,3 @@ npm install evm-lite-lib
 ```
 
 Note: Type definitions are provided for Typescript users.
-
-## Example
-
-Refer to the exmaples folder.

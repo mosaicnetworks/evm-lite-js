@@ -4,7 +4,6 @@
 		"exclude": ["node_modules/**/*.ts"]
 	},
 	"rules": {
-		"no-shadowed-variable": false,
 		"no-console": false,
 		"interface-name": false,
 		"variable-name": false,

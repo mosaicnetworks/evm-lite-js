@@ -7,9 +7,9 @@ import * as checks from '../../utils/checks';
 import * as errors from '../../utils/errors';
 
 import { Log, TXReceipt } from '../../clients/TransactionClient';
-import { Address, AddressType, Data, Gas, GasPrice, Nonce } from '../../types';
 
 import AccountClient from '../../clients/AccountClient';
+import EVM from '../../types';
 
 import Account from '../accounts/Account';
 import Transaction from '../transaction/Transaction';
@@ -17,19 +17,19 @@ import Transaction from '../transaction/Transaction';
 import Function from './Function';
 
 interface OverrideContractDeployParameters {
-	gas?: Gas;
-	gasPrice?: GasPrice;
-	data?: Data;
+	gas?: EVM.Gas;
+	gasPrice?: EVM.GasPrice;
+	data?: EVM.Data;
 	timeout?: number;
 }
 
 export interface ContractOptions {
-	gas: Gas;
-	gasPrice: GasPrice;
-	from: Address;
-	address?: Address;
-	nonce?: Nonce;
-	data?: Data;
+	gas: EVM.Gas;
+	gasPrice: EVM.GasPrice;
+	from: EVM.Address;
+	address?: EVM.Address;
+	nonce?: EVM.Nonce;
+	data?: EVM.Data;
 	interface: ABI[];
 }
 
@@ -128,21 +128,21 @@ export default class Contract<
 	}
 
 	public address(address: string): this {
-		this.contractOptions.address = new AddressType(address);
+		this.contractOptions.address = address;
 		return this;
 	}
 
-	public gas(gas: Gas): this {
+	public gas(gas: EVM.Gas): this {
 		this.contractOptions.gas = gas;
 		return this;
 	}
 
-	public gasPrice(gasPrice: GasPrice): this {
+	public gasPrice(gasPrice: EVM.GasPrice): this {
 		this.contractOptions.gasPrice = gasPrice;
 		return this;
 	}
 
-	public data(data: Data): this {
+	public data(data: EVM.Data): this {
 		this.contractOptions.data = data;
 		return this;
 	}

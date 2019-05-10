@@ -12,6 +12,8 @@ import Transaction, {
 	TX
 } from '../transaction/Transaction';
 
+import EVM from '../../types';
+
 export interface V3JSONKeyStore {
 	version: number;
 	id: string;
@@ -48,7 +50,7 @@ const makeEven = (hex: string) => {
 };
 
 export interface Web3Account {
-	address: string;
+	address: EVM.Address;
 	privateKey: string;
 	signTransaction: (tx: Transaction) => SignedTransaction;
 	sign: (data: string) => {};
@@ -56,7 +58,7 @@ export interface Web3Account {
 }
 
 export default class Account {
-	get address(): string {
+	get address(): EVM.Address {
 		return this.account.address;
 	}
 

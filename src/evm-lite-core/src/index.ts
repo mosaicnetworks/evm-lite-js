@@ -5,9 +5,8 @@ export { default as Accounts } from './classes/accounts/Accounts';
 export { default as Contract } from './classes/contract/Contract';
 export { default as Transaction } from './classes/transaction/Transaction';
 
-export { ABI } from './classes/contract/Contract';
-
 // Types
+export { ABI } from './classes/contract/Contract';
 export { TXReceipt } from './clients/TransactionClient';
 export { BaseAccount } from './clients/AccountClient';
 export {

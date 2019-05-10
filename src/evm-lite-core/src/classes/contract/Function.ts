@@ -5,30 +5,23 @@ import * as SolFunction from 'web3/lib/web3/function';
 
 import * as errors from '../../utils/errors';
 
-import {
-	AddressType,
-	EVMType,
-	Gas,
-	GasPrice,
-	parseSolidityTypes,
-	Value
-} from '../../types';
 import { ABI, Input } from './Contract';
 
 import AccountClient from '../../clients/AccountClient';
+import EVM from '../../types';
 import Transaction, { TX } from '../transaction/Transaction';
 
 export default class Function extends AccountClient {
 	public readonly name: string;
-	public readonly inputTypes: EVMType[];
-	public readonly outputTypes: EVMType[];
+	public readonly inputTypes: any[];
+	public readonly outputTypes: any[];
 	public readonly solFunction: SolFunction;
 	public readonly constant: boolean;
 	public readonly payable: boolean;
 
 	constructor(
 		abi: ABI,
-		readonly contractAddress: AddressType,
+		readonly contractAddress: EVM.Address,
 		host: string,
 		port: number
 	) {
@@ -55,9 +48,9 @@ export default class Function extends AccountClient {
 
 	public generateTransaction(
 		options: {
-			from: AddressType;
-			gas: Gas;
-			gasPrice: GasPrice;
+			from: EVM.Address;
+			gas: EVM.Gas;
+			gasPrice: EVM.GasPrice;
 			// value: Value
 		},
 		...funcArgs: any[]
@@ -123,7 +116,7 @@ export default class Function extends AccountClient {
 
 	private requireSolidityTypes(args: any[]): void {
 		args.map((a, i) => {
-			if (parseSolidityTypes(typeof a) === this.inputTypes[i]) {
+			if (typeof a === this.inputTypes[i]) {
 				throw errors.InvalidSolidityType();
 			}
 		});
