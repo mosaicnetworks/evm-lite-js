@@ -11,7 +11,6 @@
 		"author": "Danu Kumanan",
 		"license": "MIT",
 		"dependencies": {
-				"evm-lite-core": "^0.0.13",
 				"json-bigint": "^0.3.0",
 				"lowdb": "1.0.0",
 				"mkdirp": "0.5.1",

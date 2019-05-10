@@ -6,10 +6,11 @@ import { Defaults } from '../EVMLC';
 
 import Transaction, { BaseTransaction } from '../transaction/Transaction';
 
+import AccountClient from '../../clients/AccountClient';
 import EVM from '../../types';
 import Account from './Account';
 
-export default class Accounts {
+export default class Accounts extends AccountClient {
 	private accounts: Web3Accounts;
 
 	/**
@@ -19,11 +20,9 @@ export default class Accounts {
 	 * @param port - The port of the HTTP service.
 	 * @param defaults - The default options for accounts
 	 */
-	constructor(
-		private readonly host: string,
-		private readonly port: number,
-		public defaults: Defaults
-	) {
+	constructor(host: string, port: number, public defaults: Defaults) {
+		super(host, port);
+
 		this.accounts = new Web3Accounts('http://', {
 			defaultAccount: '0X0000000000000000000000000000000000000000',
 			defaultGas: 0,

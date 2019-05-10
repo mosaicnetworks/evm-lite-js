@@ -5,7 +5,6 @@ import * as path from 'path';
 import {
 	Account,
 	Accounts,
-	AddressType,
 	BaseAccount,
 	EVMLC,
 	V3JSONKeyStore
@@ -15,7 +14,7 @@ import Static from './Static';
 
 export default class Keystore {
 	public readonly accounts = new Accounts('127.0.0.1', 8080, {
-		from: new AddressType('0X0000000000000000000000000000000000000000'),
+		from: '0X0000000000000000000000000000000000000000',
 		gas: 1000000,
 		gasPrice: 0
 	});
@@ -111,6 +110,7 @@ export default class Keystore {
 			const files = this.allKeystoreFiles();
 			if (files.length) {
 				for (const file of files) {
+					// @ts-ignore
 					const address = file.address;
 					if (connection) {
 						accounts.push(
@@ -194,10 +194,13 @@ export default class Keystore {
 			address = address.substr(2);
 		}
 		address = address.toLowerCase();
+
+		// @ts-ignore
 		return (
 			this.allKeystoreFiles().filter(
+				// @ts-ignore
 				file => file.address === address
-			)[0] || null
+			)[0] || undefined
 		);
 	}
 }
