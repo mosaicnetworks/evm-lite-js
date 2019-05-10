@@ -1,6 +1,20 @@
 # Change Log
 
-## UNRELEASED
+## UNREALEASED
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- `.prepareTransfer` no longer returns a promise.
+  
+SECURITY:
+
+BUG FIXES:
+
+---
+
+## 0.2.16
 
 FEATURES:
 

@@ -1,32 +1,35 @@
-import { EVMLC, Transaction } from '../../src';
+import Defaults from '../vars';
+
+import { EVMLC, Transaction, TX } from '../../src';
 
 let evmlc: EVMLC;
 let transaction: Transaction;
 let parsed: any;
-let details: any;
 
 describe('Transaction.ts', () => {
 	beforeEach(async () => {
-		evmlc = new EVMLC('127.0.0.1', 8080, {
-			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
-			gas: 10000000,
-			gasPrice: 0
+		evmlc = new EVMLC(Defaults.HOST, Defaults.POST, {
+			from: Defaults.FROM,
+			gas: Defaults.GAS,
+			gasPrice: Defaults.GAS_PRICE
 		});
 
-		transaction = await evmlc.accounts.prepareTransfer(
+		transaction = evmlc.accounts.prepareTransfer(
 			'0X4F44B1907162D64F9C4C7A46E3547084023DA2A0',
 			200
 		);
+
 		parsed = transaction.parse();
-		details = transaction.details();
 	});
 
 	it('should parse `from` to native JS types', () => {
-		expect(parsed.from.toUpperCase()).toBe(details.from.value);
+		expect(parsed.from).toBe(evmlc.defaultFrom);
 	});
 
 	it('should parse `to` to native JS types', () => {
-		expect(parsed.to.toUpperCase()).toBe(details.to.value);
+		expect(parsed.to).toBe(
+			'0X4F44B1907162D64F9C4C7A46E3547084023DA2A0'.toLowerCase()
+		);
 	});
 
 	it('should sign a transaction', async () => {

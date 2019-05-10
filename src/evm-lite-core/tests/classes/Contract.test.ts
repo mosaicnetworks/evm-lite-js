@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
+import Defaults from '../vars';
+
 import { BaseContractSchema, Contract, EVMLC, Transaction } from '../../src';
 
 interface CrowdFundingSchema extends BaseContractSchema {
@@ -99,10 +101,10 @@ let evmlc: EVMLC;
 
 describe('SolidityContract.ts', () => {
 	beforeEach(() => {
-		evmlc = new EVMLC('127.0.0.1', 8080, {
-			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
-			gas: 10000000,
-			gasPrice: 0
+		evmlc = new EVMLC(Defaults.HOST, Defaults.POST, {
+			from: Defaults.FROM,
+			gas: Defaults.GAS,
+			gasPrice: Defaults.GAS_PRICE
 		});
 	});
 
@@ -114,8 +116,8 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.gas).toBe(evmlc.defaultGas);
-		expect(contract.options.gasPrice).toBe(evmlc.defaultGasPrice);
+		expect(contract.contractOptions.gas).toBe(evmlc.defaultGas);
+		expect(contract.contractOptions.gasPrice).toBe(evmlc.defaultGasPrice);
 	});
 
 	it('should create contract with functions when address set', async () => {
@@ -127,7 +129,7 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.address).not.toBe(undefined);
+		expect(contract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
@@ -139,14 +141,14 @@ describe('SolidityContract.ts', () => {
 			}
 		);
 
-		expect(contract.options.address).toBe(undefined);
+		expect(contract.contractOptions.address).toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBe(0);
 
 		contract.setAddressAndPopulateFunctions(
 			'0x3d9f3699440744ca2dfce1ff40cd21ff4696d908'
 		);
 
-		expect(contract.options.address).not.toBe(undefined);
+		expect(contract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(contract.methods).length).toBeGreaterThan(0);
 	});
 
@@ -154,19 +156,20 @@ describe('SolidityContract.ts', () => {
 		const account = evmlc.accounts.create();
 		evmlc.defaultFrom = account.address;
 
-		const dummyContract = await evmlc.contracts.load<CrowdFundingSchema>(
-			compiled.abi,
-			{
+		const dummyContract = await evmlc.contracts
+			.load<CrowdFundingSchema>(compiled.abi, {
 				data: compiled.bytecode
-			}
-		);
+			})
+			.setSigningAccount(account);
 
 		expect(Object.keys(dummyContract.methods).length).toBe(0);
-		expect(dummyContract.options.from.value).toBe(account.address);
+		expect(dummyContract.contractOptions.from).toBe(
+			account.address.toLowerCase()
+		);
 
-		await dummyContract.deploy(account);
+		await dummyContract.deploy();
 
-		expect(dummyContract.options.address).not.toBe(undefined);
+		expect(dummyContract.contractOptions.address).not.toBe(undefined);
 		expect(Object.keys(dummyContract.methods).length).toBeGreaterThan(0);
 
 		contract = dummyContract;

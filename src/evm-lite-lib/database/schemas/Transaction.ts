@@ -1,4 +1,4 @@
-import { Gas, GasPrice, Nonce, SentTX, Value } from 'evm-lite-core';
+import { EVM, SentTX } from 'evm-lite-core';
 
 export type TransactionSchema = SentTX;
 
@@ -27,27 +27,27 @@ export default class Transaction {
 		return this;
 	}
 
-	public from(value: string): this {
+	public from(value: EVM.Address): this {
 		this.data.from = value;
 		return this;
 	}
 
-	public gas(value: Gas): this {
+	public gas(value: EVM.Gas): this {
 		this.data.gas = value;
 		return this;
 	}
 
-	public gasPrice(value: GasPrice): this {
+	public gasPrice(value: EVM.GasPrice): this {
 		this.data.gasPrice = value;
 		return this;
 	}
 
-	public nonce(value: Nonce): this {
+	public nonce(value: EVM.Nonce): this {
 		this.data.nonce = value;
 		return this;
 	}
 
-	public to(value: string): this {
+	public to(value: EVM.Address): this {
 		this.data.to = value;
 		return this;
 	}
@@ -57,7 +57,7 @@ export default class Transaction {
 		return this;
 	}
 
-	public value(value: Value): this {
+	public value(value: EVM.Value): this {
 		this.data.value = value;
 		return this;
 	}

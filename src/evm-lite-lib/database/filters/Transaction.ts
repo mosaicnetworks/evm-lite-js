@@ -20,7 +20,7 @@ export default class Transactions extends Filter<TransactionSchema> {
 	public receiver(address: string): TransactionSchema[] {
 		return this.objects.filter(transaction => {
 			return (
-				Static.cleanAddress(transaction.to) ===
+				Static.cleanAddress(transaction.to || '') ===
 				Static.cleanAddress(address)
 			);
 		});

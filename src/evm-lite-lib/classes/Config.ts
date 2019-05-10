@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as toml from 'toml';
 import * as tomlify from 'tomlify-j0.4';
 
-import { Gas, GasPrice } from 'evm-lite-core';
+import { EVM } from 'evm-lite-core';
 
 import Static from './Static';
 
@@ -13,9 +13,9 @@ export interface ConfigSchema {
 		port: number;
 	};
 	defaults: {
-		from: string;
-		gas: Gas;
-		gasPrice: GasPrice;
+		from: EVM.Address;
+		gas: EVM.Gas;
+		gasPrice: EVM.GasPrice;
 	};
 	storage: {
 		keystore: string;
