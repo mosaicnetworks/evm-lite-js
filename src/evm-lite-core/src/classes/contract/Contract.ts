@@ -57,7 +57,7 @@ export interface BaseContractSchema {
 export default class Contract<
 	ContractFunctionSchema extends BaseContractSchema
 > extends AccountClient {
-	private signingAccount?: Account
+	private signingAccount?: Account;
 
 	public methods: ContractFunctionSchema | BaseContractSchema;
 	public web3Contract: any;
@@ -79,13 +79,15 @@ export default class Contract<
 	public async deploy(
 		params?: any[],
 		options?: OverrideContractDeployParameters,
-		account?: Account,
+		account?: Account
 	): Promise<this> {
 		options = { ...options };
 		const acc = account || this.signingAccount;
 
 		if (!acc) {
-			return Promise.reject(new Error('Must provide an account to sign with.'));
+			return Promise.reject(
+				new Error('Must provide an account to sign with.')
+			);
 		}
 
 		if (this.contractOptions.address) {
@@ -112,7 +114,7 @@ export default class Contract<
 					data,
 					gas: options.gas || this.contractOptions.gas,
 					gasPrice: options.gasPrice || this.contractOptions.gasPrice,
-					nonce: this.contractOptions.nonce || nonce,
+					nonce: this.contractOptions.nonce || nonce
 				},
 				this.host,
 				this.port,
@@ -168,7 +170,7 @@ export default class Contract<
 	public setSigningAccount(account: Account): this {
 		this.signingAccount = account;
 
-		return this
+		return this;
 	}
 
 	public parseLogs(logs: Log[]): Log[] {

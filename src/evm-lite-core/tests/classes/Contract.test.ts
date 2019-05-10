@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as solc from 'solc';
 
+import Defaults from '../vars';
+
 import { BaseContractSchema, Contract, EVMLC, Transaction } from '../../src';
 
 interface CrowdFundingSchema extends BaseContractSchema {
@@ -99,10 +101,10 @@ let evmlc: EVMLC;
 
 describe('SolidityContract.ts', () => {
 	beforeEach(() => {
-		evmlc = new EVMLC('n0.monet.network', 8080, {
-			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
-			gas: 10000000,
-			gasPrice: 0
+		evmlc = new EVMLC(Defaults.HOST, Defaults.POST, {
+			from: Defaults.FROM,
+			gas: Defaults.GAS,
+			gasPrice: Defaults.GAS_PRICE
 		});
 	});
 
@@ -154,15 +156,16 @@ describe('SolidityContract.ts', () => {
 		const account = evmlc.accounts.create();
 		evmlc.defaultFrom = account.address;
 
-		const dummyContract = await evmlc.contracts.load<CrowdFundingSchema>(
-			compiled.abi,
-			{
+		const dummyContract = await evmlc.contracts
+			.load<CrowdFundingSchema>(compiled.abi, {
 				data: compiled.bytecode
-			}
-		).setSigningAccount(account);
+			})
+			.setSigningAccount(account);
 
 		expect(Object.keys(dummyContract.methods).length).toBe(0);
-		expect(dummyContract.contractOptions.from).toBe(account.address.toLowerCase());
+		expect(dummyContract.contractOptions.from).toBe(
+			account.address.toLowerCase()
+		);
 
 		await dummyContract.deploy();
 

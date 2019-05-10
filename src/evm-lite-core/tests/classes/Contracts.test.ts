@@ -1,3 +1,5 @@
+import Defaults from '../vars';
+
 import { EVMLC } from '../../src';
 
 let contract: any;
@@ -5,10 +7,10 @@ let evmlc: EVMLC;
 
 describe('Contracts.ts', () => {
 	beforeEach(() => {
-		evmlc = new EVMLC('n0.monet.network', 8080, {
-			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
-			gas: 10000000,
-			gasPrice: 0
+		evmlc = new EVMLC(Defaults.HOST, Defaults.POST, {
+			from: Defaults.FROM,
+			gas: Defaults.GAS,
+			gasPrice: Defaults.GAS_PRICE
 		});
 	});
 

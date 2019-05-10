@@ -41,7 +41,7 @@ export default class EVMLC extends DefaultClient {
 	) {
 		super(host, port);
 
-		this.defaults.from = defaults.from.toLowerCase()
+		this.defaults.from = defaults.from.toLowerCase();
 	}
 
 	/**

@@ -17,4 +17,4 @@ export {
 export { BaseContractSchema, ContractABI } from './classes/contract/Contract';
 export { V3JSONKeyStore } from './classes/accounts/Account';
 
-export { default as EVM } from './types'
+export { default as EVM } from './types';

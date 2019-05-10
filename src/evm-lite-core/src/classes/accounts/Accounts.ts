@@ -118,7 +118,7 @@ export default class Accounts {
 				to: to.trim(),
 				value,
 				gas: this.defaults.gas,
-				gasPrice: this.defaults.gasPrice,
+				gasPrice: this.defaults.gasPrice
 			},
 			this.host,
 			this.port,

@@ -80,7 +80,7 @@ export default class Transaction extends TransactionClient {
 		super(host, port);
 
 		// Default to 1
-		this.chainID(this.tx.chainId || 1)
+		this.chainID(this.tx.chainId || 1);
 	}
 
 	/**

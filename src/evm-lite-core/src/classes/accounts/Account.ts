@@ -6,10 +6,7 @@ import Formatters from '../../utils/Formatters';
 
 import { BaseAccount } from '../../clients/AccountClient';
 
-import Transaction, {
-	SignedTransaction,
-	TX
-} from '../transaction/Transaction';
+import Transaction, { SignedTransaction, TX } from '../transaction/Transaction';
 
 import EVM from '../../types';
 

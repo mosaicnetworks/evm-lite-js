@@ -62,7 +62,7 @@ export default class Function extends AccountClient {
 			from: options.from,
 			to: this.contractAddress,
 			gas: options.gas,
-			gasPrice: options.gasPrice,
+			gasPrice: options.gasPrice
 		};
 
 		tx.data = payload.data;
