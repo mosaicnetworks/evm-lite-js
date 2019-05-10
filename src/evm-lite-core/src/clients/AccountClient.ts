@@ -1,49 +1,44 @@
 import * as JSONBig from 'json-bigint';
 
-import { Nonce } from '../types';
-
-import BaseClient, { request } from './BaseClient';
+import AbstractClient from './AbstractClient';
 
 export interface BaseAccount {
 	address: string;
-	nonce: Nonce;
+	nonce: number;
 	balance: any;
 }
 
-export default class AccountClient extends BaseClient {
+export default class AccountClient extends AbstractClient {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
 
-	public getAccount(address: string): Promise<Readonly<BaseAccount>> {
-		return request(this.options('GET', `/account/${address}`)).then(
-			(response: string) => {
-				const account: BaseAccount = JSONBig.parse(response);
+	public async getAccount(address: string): Promise<BaseAccount> {
+		const response = await this.get(`/account/${address}`);
+		const account = JSONBig.parse(response) as BaseAccount;
+
+		if (typeof account.balance === 'object') {
+			account.balance = account.balance.toFormat(0);
+		}
+
+		return account;
+	}
+
+	public async getAccounts(): Promise<BaseAccount[]> {
+		const response = await this.get('/accounts');
+		const json = JSONBig.parse(response) as {
+			accounts: BaseAccount[];
+		};
+
+		if (json.accounts) {
+			return json.accounts.map((account: BaseAccount) => {
 				if (typeof account.balance === 'object') {
 					account.balance = account.balance.toFormat(0);
 				}
 				return account;
-			}
-		);
-	}
-
-	public getAccounts(): Promise<Readonly<BaseAccount[]>> {
-		return request(this.options('GET', '/accounts')).then(
-			(response: string) => {
-				const json: { accounts: BaseAccount[] } = JSONBig.parse(
-					response
-				);
-				if (json.accounts) {
-					return json.accounts.map((account: BaseAccount) => {
-						if (typeof account.balance === 'object') {
-							account.balance = account.balance.toFormat(0);
-						}
-						return account;
-					});
-				} else {
-					return [];
-				}
-			}
-		);
+			});
+		} else {
+			return [];
+		}
 	}
 }

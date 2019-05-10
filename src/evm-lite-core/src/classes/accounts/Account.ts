@@ -6,11 +6,9 @@ import Formatters from '../../utils/Formatters';
 
 import { BaseAccount } from '../../clients/AccountClient';
 
-import Transaction, {
-	ParsedTransaction,
-	SignedTransaction,
-	TX
-} from '../transaction/Transaction';
+import Transaction, { SignedTransaction, TX } from '../transaction/Transaction';
+
+import EVM from '../../types';
 
 export interface V3JSONKeyStore {
 	version: number;
@@ -48,7 +46,7 @@ const makeEven = (hex: string) => {
 };
 
 export interface Web3Account {
-	address: string;
+	address: EVM.Address;
 	privateKey: string;
 	signTransaction: (tx: Transaction) => SignedTransaction;
 	sign: (data: string) => {};
@@ -56,7 +54,7 @@ export interface Web3Account {
 }
 
 export default class Account {
-	get address(): string {
+	get address(): EVM.Address {
 		return this.account.address;
 	}
 
@@ -66,6 +64,7 @@ export default class Account {
 
 	public balance: number = 0;
 	public nonce: number = 0;
+
 	private readonly account: Web3Account;
 
 	constructor(data: Web3Account) {
@@ -76,7 +75,7 @@ export default class Account {
 		return this.account.sign(message);
 	}
 
-	public signTransaction1(tx: ParsedTransaction): Promise<SignedTransaction> {
+	public signTransaction1(tx: TX): Promise<SignedTransaction> {
 		tx.nonce = tx.nonce || this.nonce;
 		tx.chainId = tx.chainId || 1;
 
@@ -85,7 +84,7 @@ export default class Account {
 	}
 
 	// web3 sign function
-	public signTransaction(tx: ParsedTransaction) {
+	public signTransaction(tx: TX) {
 		const _this = this;
 		let error: Error | null = null;
 		let result;
@@ -117,8 +116,6 @@ export default class Account {
 			const transaction = Formatters.inputCallFormatter(tx);
 
 			transaction.to = transaction.to || '0x';
-
-			// console.log('HEXED: ', transaction);
 
 			const rlpEncoded = ethlib.RLP.encode([
 				ethlib.bytes.fromNat(transaction.nonce),
@@ -164,6 +161,7 @@ export default class Account {
 	}
 
 	public encrypt(password: string): V3JSONKeyStore {
+		// @ts-ignore
 		return this.account.encrypt(password);
 	}
 

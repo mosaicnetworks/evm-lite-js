@@ -5,7 +5,6 @@ import * as path from 'path';
 import {
 	Account,
 	Accounts,
-	AddressType,
 	BaseAccount,
 	EVMLC,
 	V3JSONKeyStore
@@ -14,23 +13,17 @@ import {
 import Static from './Static';
 
 export default class Keystore {
-	public readonly path: string;
 	public readonly accounts = new Accounts('127.0.0.1', 8080, {
-		from: new AddressType('0X0000000000000000000000000000000000000000'),
+		from: '0X0000000000000000000000000000000000000000',
 		gas: 1000000,
 		gasPrice: 0
 	});
 
-	constructor(
-		public readonly directory: string,
-		public readonly name: string
-	) {
-		this.path = path.join(directory, name);
-
+	constructor(public readonly path: string) {
 		Static.createDirectoryIfNotExists(this.path);
 	}
 
-	public async decryptAccount(
+	public async decrypt(
 		address: string,
 		password: string,
 		connection?: EVMLC
@@ -111,17 +104,15 @@ export default class Keystore {
 		});
 	}
 
-	public list(
-		fetch: boolean = false,
-		connection?: EVMLC
-	): Promise<BaseAccount[]> {
+	public list(connection?: EVMLC): Promise<BaseAccount[]> {
 		return new Promise<BaseAccount[]>(async resolve => {
 			const accounts: BaseAccount[] = [];
 			const files = this.allKeystoreFiles();
 			if (files.length) {
 				for (const file of files) {
+					// @ts-ignore
 					const address = file.address;
-					if (fetch && connection) {
+					if (connection) {
 						accounts.push(
 							await this.fetchBalanceAndNonce(address, connection)
 						);
@@ -183,7 +174,7 @@ export default class Keystore {
 	}
 
 	private allKeystoreFiles() {
-		const json = [];
+		const json: V3JSONKeyStore[] = [];
 		const files = fs.readdirSync(this.path).filter(file => {
 			return !file.startsWith('.');
 		});
@@ -203,10 +194,13 @@ export default class Keystore {
 			address = address.substr(2);
 		}
 		address = address.toLowerCase();
+
+		// @ts-ignore
 		return (
 			this.allKeystoreFiles().filter(
+				// @ts-ignore
 				file => file.address === address
-			)[0] || null
+			)[0] || undefined
 		);
 	}
 }

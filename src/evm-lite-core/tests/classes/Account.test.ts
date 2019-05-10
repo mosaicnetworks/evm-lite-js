@@ -1,3 +1,5 @@
+import Defaults from '../vars';
+
 import { Account, EVMLC, V3JSONKeyStore } from '../../src';
 
 let evmlc: EVMLC;
@@ -8,10 +10,10 @@ let encrypted: V3JSONKeyStore;
 
 describe('Account.ts', () => {
 	beforeEach(() => {
-		evmlc = new EVMLC('127.0.0.1', 8080, {
-			from: '0X5E54B1907162D64F9C4C7A46E3547084023DA2A0',
-			gas: 10000000,
-			gasPrice: 0
+		evmlc = new EVMLC(Defaults.HOST, Defaults.POST, {
+			from: Defaults.FROM,
+			gas: Defaults.GAS,
+			gasPrice: Defaults.GAS_PRICE
 		});
 	});
 
@@ -49,7 +51,7 @@ describe('Account.ts', () => {
 
 		expect(transaction.signedTX).toBe(undefined);
 
-		const signed = await decrypted.signTransaction(transaction.parse());
+		const signed = (await transaction.sign(account)).signedTX!;
 
 		expect(signed).not.toBe(undefined);
 

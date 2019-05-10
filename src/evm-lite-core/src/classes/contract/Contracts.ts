@@ -1,31 +1,22 @@
-import { Address, AddressType, Gas, GasPrice } from '../../types';
-import { BaseTransaction } from '../transaction/Transaction';
-import SolidityContract, {
-	BaseContractSchema,
-	ContractABI
-} from './SolidityContract';
+import { Defaults } from '../EVMLC';
 
-import AccountClient from '../../clients/AccountClient';
+import Contract, { BaseContractSchema, ContractABI } from './Contract';
 
-interface ContractDefaultOptions extends BaseTransaction {
-	from: Address;
-}
+import EVM from '../../types';
 
-export default class Contracts extends AccountClient {
+export default class Contracts {
 	/**
 	 * The root cotnroller class for interacting with contracts.
 	 *
 	 * @param host - The host of the active node.
 	 * @param port - The port of the HTTP service.
-	 * @param contractOptions - The default options for contracts
+	 * @param defaults - The default options for contracts
 	 */
 	constructor(
-		host: string,
-		port: number,
-		private contractOptions: ContractDefaultOptions
-	) {
-		super(host, port);
-	}
+		public readonly host: string,
+		public readonly port: number,
+		private defaults: Defaults
+	) {}
 
 	/**
 	 * Should generate a contract abstraction class to interact with the
@@ -51,90 +42,27 @@ export default class Contracts extends AccountClient {
 	public load<ContractSchema extends BaseContractSchema>(
 		abi: ContractABI,
 		options?: {
-			data?: string;
-			contractAddress?: string;
+			data?: EVM.Data;
+			contractAddress?: EVM.Address;
 		}
-	) {
-		const data: string = (options && options.data) || '';
+	): Contract<ContractSchema> {
+		const data: EVM.Data = (options && options.data) || '';
 		const address =
 			options && options.contractAddress
-				? new AddressType(options.contractAddress)
+				? options.contractAddress
 				: undefined;
 
-		return this.getAccount(this.contractOptions.from.value.trim()).then(
-			account =>
-				new SolidityContract<ContractSchema>(
-					{
-						from: this.contractOptions.from,
-						interface: abi,
-						gas: this.contractOptions.gas,
-						gasPrice: this.contractOptions.gasPrice,
-						nonce: account.nonce,
-						address,
-						data
-					},
-					this.host,
-					this.port
-				)
+		return new Contract<ContractSchema>(
+			{
+				from: this.defaults.from,
+				interface: abi,
+				gas: this.defaults.gas,
+				gasPrice: this.defaults.gasPrice,
+				address,
+				data
+			},
+			this.host,
+			this.port
 		);
-	}
-
-	/**
-	 * The defaults for contracts created from this object.
-	 */
-	get defaults() {
-		return {
-			from: this.contractOptions.from.value,
-			gas: this.contractOptions.gas,
-			gasPrice: this.contractOptions.gasPrice
-		};
-	}
-
-	/**
-	 * The default `from` address that will be used for any contracts
-	 * created from this object.
-	 */
-	get defaultFrom(): string {
-		return this.contractOptions.from.value;
-	}
-
-	/**
-	 * Set the default `from` to be used for any contracts created from
-	 * this object.
-	 */
-	set defaultFrom(address: string) {
-		this.contractOptions.from = new AddressType(address);
-	}
-
-	/**
-	 * The default `gas` value that will be used for any contracts created
-	 * from this object.
-	 */
-	get defaultGas(): Gas {
-		return this.contractOptions.gas;
-	}
-
-	/**
-	 * Set the default `gas` value to be used for any contracts created from
-	 * this object.
-	 */
-	set defaultGas(gas: Gas) {
-		this.contractOptions.gas = gas;
-	}
-
-	/**
-	 * The default `gasPrice` value that will be used for any contracts
-	 * created from this object.
-	 */
-	get defaultGasPrice(): GasPrice {
-		return this.contractOptions.gasPrice;
-	}
-
-	/**
-	 * Set the default `gasPrice` to be used for any contracts created from
-	 * this object.
-	 */
-	set defaultGasPrice(gasPrice: GasPrice) {
-		this.contractOptions.gasPrice = gasPrice;
 	}
 }

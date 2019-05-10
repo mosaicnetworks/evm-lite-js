@@ -1,6 +1,10 @@
 {
 		"name": "evm-lite-lib",
+<<<<<<< HEAD
 		"version": "0.2.15",
+=======
+		"version": "0.2.18",
+>>>>>>> 53b3ae824ab796fae06cc1fbc8b1bd6ff7e30ac0
 		"description": "A Node.js module for interacting with EVM-Lite.",
 		"main": "./dist/index.js",
 		"typings": "./dist/index.d.ts",
@@ -11,7 +15,7 @@
 		"author": "Danu Kumanan",
 		"license": "MIT",
 		"dependencies": {
-				"evm-lite-core": "^0.0.12",
+				"evm-lite-core": "latest",
 				"json-bigint": "^0.3.0",
 				"lowdb": "1.0.0",
 				"mkdirp": "0.5.1",
@@ -26,7 +30,6 @@
 				"@types/node": "^10.12.21",
 				"chai": "^4.2.0",
 				"mocha": "^5.2.0",
-				"solc": "^0.5.4",
 				"tslint": "^5.12.1",
 				"tslint-config-prettier": "^1.17.0",
 				"typescript": "^3.3.1"

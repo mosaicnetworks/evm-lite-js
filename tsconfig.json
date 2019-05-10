@@ -1,14 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "declaration": true,
-    "strict": true,
-    "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
-    "typeRoots": ["./node_modules/@types", "./types"]
-  },
-  "include": ["./src/evm-lite-lib"],
-  "exclude": ["*.test.ts", "node_modules"]
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"outDir": "./dist",
+		"declaration": true,
+		"strict": true,
+		"noImplicitAny": false,
+		"experimentalDecorators": true,
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"typeRoots": [
+			"./node_modules/@types",
+			"./@types"
+		]
+	},
+	"include": [
+		"./src/**/*.ts"
+	],
+	"exclude": [
+		"./src/evm-lite-core/**/*.ts",
+		"*.test.ts",
+		"node_modules"
+	]
 }

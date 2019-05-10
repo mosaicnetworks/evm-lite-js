@@ -1,6 +1,6 @@
 import * as JSONBig from 'json-bigint';
 
-import BaseClient, { request } from './BaseClient';
+import AbstractClient from './AbstractClient';
 
 export interface Log {
 	topics: string[];
@@ -37,30 +37,30 @@ export interface SendTXResponse {
 	txHash: string;
 }
 
-export default class TransactionClient extends BaseClient {
+export default abstract class TransactionClient extends AbstractClient {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
 
-	protected callTX(tx: string): Promise<Readonly<string>> {
-		return request(this.options('POST', '/call'), tx);
+	protected async callTX(tx: string): Promise<string> {
+		return await this.post('/call', tx);
 	}
 
-	protected sendTX(tx: string): Promise<Readonly<SendTXResponse>> {
-		return request(this.options('POST', '/tx'), tx).then(response =>
+	protected async sendTX(tx: string): Promise<SendTXResponse> {
+		return await this.post('/send', tx).then(response =>
 			JSON.parse(response)
 		);
 	}
 
-	protected sendRaw(tx: string): Promise<Readonly<RawTXSubmitResponse>> {
-		return request(this.options('POST', '/rawtx'), tx).then(response =>
-			JSONBig.parse<RawTXSubmitResponse>(response)
+	protected async sendRaw(tx: string): Promise<RawTXSubmitResponse> {
+		return this.post('/rawtx', tx).then(
+			response => JSONBig.parse(response) as RawTXSubmitResponse
 		);
 	}
 
-	protected getReceipt(txHash: string): Promise<Readonly<TXReceipt>> {
-		return request(this.options('GET', `/tx/${txHash}`)).then(
-			(response: string) => JSONBig.parse<TXReceipt>(response)
+	protected async getReceipt(txHash: string): Promise<TXReceipt> {
+		return this.get(`/tx/${txHash}`).then(
+			(response: string) => JSONBig.parse(response) as TXReceipt
 		);
 	}
 }

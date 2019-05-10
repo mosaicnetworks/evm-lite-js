@@ -24,6 +24,9 @@ IMPROVEMENTS:
 - `Contract` class now has the ability to set a
   `.signingAccount(account: Account)` to make deployment and method execution
   cleaner.
+- Redundant types have no been removed.
+- Nonce is only fetch before `Transaction` submission
+- ChaidID also set before `Transaction` submission
   
 SECURITY:
 

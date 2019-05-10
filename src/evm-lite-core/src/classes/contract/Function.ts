@@ -5,29 +5,23 @@ import * as SolFunction from 'web3/lib/web3/function';
 
 import * as errors from '../../utils/errors';
 
-import {
-	AddressType,
-	EVMType,
-	Gas,
-	GasPrice,
-	parseSolidityTypes
-} from '../../types';
-import { ABI, Input } from './SolidityContract';
+import { ABI, Input } from './Contract';
 
 import AccountClient from '../../clients/AccountClient';
+import EVM from '../../types';
 import Transaction, { TX } from '../transaction/Transaction';
 
-export default class SolidityFunction extends AccountClient {
+export default class Function extends AccountClient {
 	public readonly name: string;
-	public readonly inputTypes: EVMType[];
-	public readonly outputTypes: EVMType[];
+	public readonly inputTypes: any[];
+	public readonly outputTypes: any[];
 	public readonly solFunction: SolFunction;
 	public readonly constant: boolean;
 	public readonly payable: boolean;
 
 	constructor(
 		abi: ABI,
-		readonly contractAddress: AddressType,
+		readonly contractAddress: EVM.Address,
 		host: string,
 		port: number
 	) {
@@ -52,10 +46,15 @@ export default class SolidityFunction extends AccountClient {
 			[];
 	}
 
-	public async generateTransaction(
-		options: { from: AddressType; gas: Gas; gasPrice: GasPrice },
+	public generateTransaction(
+		options: {
+			from: EVM.Address;
+			gas: EVM.Gas;
+			gasPrice: EVM.GasPrice;
+			// value: Value
+		},
 		...funcArgs: any[]
-	): Promise<Transaction> {
+	): Transaction {
 		this.validateArgs(funcArgs);
 
 		const payload = this.solFunction.toPayload(funcArgs);
@@ -63,8 +62,7 @@ export default class SolidityFunction extends AccountClient {
 			from: options.from,
 			to: this.contractAddress,
 			gas: options.gas,
-			gasPrice: options.gasPrice,
-			chainId: 1
+			gasPrice: options.gasPrice
 		};
 
 		tx.data = payload.data;
@@ -82,12 +80,9 @@ export default class SolidityFunction extends AccountClient {
 			unpackfn = this.unpackOutput.bind(this);
 		}
 
-		const account = await this.getAccount(tx.from.value);
-
 		return new Transaction(
 			{
-				...tx,
-				nonce: account.nonce
+				...tx
 			},
 			this.host,
 			this.port,
@@ -120,7 +115,7 @@ export default class SolidityFunction extends AccountClient {
 
 	private requireSolidityTypes(args: any[]): void {
 		args.map((a, i) => {
-			if (parseSolidityTypes(typeof a) === this.inputTypes[i]) {
+			if (typeof a === this.inputTypes[i]) {
 				throw errors.InvalidSolidityType();
 			}
 		});
