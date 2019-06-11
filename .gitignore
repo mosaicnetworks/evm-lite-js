@@ -1,7 +1,3 @@
 node_modules
-.idea
-.vscode
+.DS_Store
 dist
-TODO.md
-yarn-error.log
-examples
