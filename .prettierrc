@@ -7,5 +7,6 @@
 	"jsxBracketSameLine": false,
 	"bracketSpacing": true,
 	"noSemi": true,
-	"rcVerbose": true
+	"rcVerbose": true,
+	"parser": "typescript"
 }

@@ -1,21 +1,21 @@
 # EVM-Lite Library
 
-## Development
+[![npm version](https://badge.fury.io/js/evm-lite-lib.svg)](https://badge.fury.io/js/evm-lite-lib)
 
-Install `lerna`
+A javascript library to interact with EVM-Lite.
 
-```bash
-npm -g install lerna
+<!-- ## Introduction
+
+![alt text][uml]
+
+[uml]: assets/keyed-dia-new.png "Dependency Diagram" -->
+
+## Installation
+
+To install `evm-lite-lib` by using `npm`:
+
+```console
+npm install evm-lite-lib
 ```
 
-Install dependencies
-
-```bash
-lerna bootstrap
-```
-
-Compile `Typescript` files
-```bash
-lerna run compile
-```
-
+Note: Type definitions are provided for Typescript users.
