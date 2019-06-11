@@ -1,0 +1,9 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"declarationDir": "./dist/typings",
+		"composite": true
+	},
+	"references": [{ "path": "../keystore" }]
+}
