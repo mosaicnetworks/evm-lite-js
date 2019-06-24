@@ -1,7 +1,7 @@
 {
 	"name": "evm-lite-keystore",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
