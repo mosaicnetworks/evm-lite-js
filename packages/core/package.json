@@ -13,7 +13,8 @@
 		"code": "ts-node tests/code.ts",
 		"test": "jest",
 		"package": "webpack --config config/webpack.config.js",
-		"compile": "tsc -p ./tsconfig.json"
+		"compile": "tsc -p ./tsconfig.json",
+		"prepublish": "tsc -p ./tsconfig.json"
 	},
 	"dependencies": {
 		"browserify-cipher": "^1.0.1",

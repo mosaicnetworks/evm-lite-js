@@ -12,7 +12,8 @@
 		"code": "ts-node tests/code.ts",
 		"test:watch": "jest --watchAll",
 		"test": "jest",
-		"compile": "tsc -p ./tsconfig.json"
+		"compile": "tsc -p ./tsconfig.json",
+		"prepublish": "tsc -p ./tsconfig.json"
 	},
 	"dependencies": {
 		"evm-lite-core": "file:../core",
