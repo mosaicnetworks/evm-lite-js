@@ -15,13 +15,12 @@
 		"compile": "tsc -p ./tsconfig.json"
 	},
 	"dependencies": {
+		"evm-lite-core": "file:../core",
+		"evm-lite-keystore": "file:../keystore",
 		"mkdirp": "^0.5.1",
 		"toml": "^3.0.0",
-		"tomlify-j0.4": "^3.0.0",
-		"evm-lite-keystore": "^0.0.0",
-		"evm-lite-core": "^0.0.0"
+		"tomlify-j0.4": "^3.0.0"
 	},
-	"devDependencies": {},
 	"resolutions": {
 		"terser": "3.14.1"
 	},
