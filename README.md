@@ -4,7 +4,7 @@
 
 There are three modules to interact with an EVM-Lite node.
 
-You can install each one of them depending on what requirements your projec has.
+You can install each one of them depending on what requirements your project has
 
 ```bash
 npm install evm-lite-core evm-lite-keystore evm-lite-datadir
@@ -87,7 +87,7 @@ lerna bootstrap
 
 Bootstrap the packages in the current Lerna repo. Installing all their dependencies and linking any cross-dependencies.
 
-This command is crucial, as it allows you to use your package names in require() as if the packages were already existing and available in your node_modules folder.
+This command is crucial, as it allows you to use your package names in `require()` as if the packages were already existing and available in your `node_modules` folder.
 
 We will need to transpile all the `Typescript` files to `Javascript` for each of the packages
 
