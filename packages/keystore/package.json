@@ -27,6 +27,10 @@
 		"scryptsy": "^2.0.0",
 		"uuid": "^3.3.2"
 	},
+	"bugs": {
+		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
+	},
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/keystore#readme",
 	"resolutions": {
 		"terser": "3.14.1"
 	},

@@ -22,6 +22,10 @@
 		"toml": "^3.0.0",
 		"tomlify-j0.4": "^3.0.0"
 	},
+	"bugs": {
+		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
+	},
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/datadir#readme",
 	"resolutions": {
 		"terser": "3.14.1"
 	},
