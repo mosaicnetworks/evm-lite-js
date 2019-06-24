@@ -1,9 +1,10 @@
 {
 	"name": "evm-lite-lib",
 	"private": true,
-	"main": "index.js",
+	"main": "packages/lib/dist/src/index.js",
 	"scripts": {
-		"clean": "rm -rf node_modules"
+		"clean": "rm -rf node_modules && lerna run clean",
+		"compile": "tsc -b packages/core"
 	},
 	"devDependencies": {
 		"@babel/runtime": "^7.3.1",

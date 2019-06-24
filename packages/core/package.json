@@ -1,5 +1,6 @@
 {
 	"name": "evm-lite-core",
+	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
 	"version": "0.0.0",
 	"license": "MIT",
@@ -7,7 +8,7 @@
 	"typings": "./dist/typings/index.d.ts",
 	"scripts": {
 		"dev": "npm install && npm run build && npm link",
-		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json",
+		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean-yarn": "rm -rf ./node_modules/ && rm -rf yarn.lock && rm -rf dist/",
 		"code": "ts-node tests/code.ts",
 		"test": "jest",

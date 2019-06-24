@@ -9,7 +9,7 @@ import { BaseAccount } from './client/AbstractClient';
 
 import Transaction, { SignedTransaction, TX } from './Transaction';
 
-import EVM from './utils/types';
+import EVMTypes from './utils/types';
 
 const trimLeadingZero = (hex: string) => {
 	while (hex.startsWith('0x0')) {
@@ -39,11 +39,11 @@ export default class Account {
 	}
 
 	public static prepareTransfer(
-		from: EVM.Address,
-		to: EVM.Address,
-		value: EVM.Value,
-		gas: EVM.Gas,
-		gasPrice: EVM.GasPrice
+		from: EVMTypes.Address,
+		to: EVMTypes.Address,
+		value: EVMTypes.Value,
+		gas: EVMTypes.Gas,
+		gasPrice: EVMTypes.GasPrice
 	): Transaction {
 		if (!from) {
 			throw new Error(
@@ -73,7 +73,7 @@ export default class Account {
 		);
 	}
 
-	public readonly address: EVM.Address;
+	public readonly address: EVMTypes.Address;
 	public readonly privateKey: string;
 
 	public balance: number = 0;
