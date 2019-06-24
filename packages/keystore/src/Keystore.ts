@@ -18,7 +18,10 @@ export default class Keystore extends AbstractKeystore {
 		}
 	}
 
-	public create(password: string): Promise<V3JSONKeyStore> {
+	public create(
+		password: string,
+		overridePath?: string
+	): Promise<V3JSONKeyStore> {
 		const account = Account.create();
 		const keystore = Keystore.encrypt(account, password);
 		const filename = `UTC--${JSONBig.stringify(new Date())}--${
@@ -29,7 +32,7 @@ export default class Keystore extends AbstractKeystore {
 
 		return new Promise<V3JSONKeyStore>((resolve, reject) => {
 			fs.writeFile(
-				nodePath.join(this.path, filename),
+				nodePath.join(overridePath || this.path, filename),
 				JSON.stringify(keystore),
 				err => {
 					if (err) {

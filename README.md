@@ -1,5 +1,21 @@
 # EVM-Lite Library
 
+## Installation
+
+There are three modules to interact with an EVM-Lite node.
+
+You can install each one of them depending on what requirements your projec has.
+
+```bash
+npm install evm-lite-core evm-lite-keystore evm-lite-datadir
+```
+
+Current module versions:
+
+-   `evm-lite-core@1.0.0-alpha.1`
+-   `evm-lite-keystore@1.0.0-alpha.1`
+-   `evm-lite-datadir@1.0.0-alpha.1`
+
 ## Development
 
 ### Prerequisites
