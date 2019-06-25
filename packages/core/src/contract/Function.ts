@@ -1,7 +1,7 @@
 // @ts-ignore
 import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
-import SolFunction from 'web3/lib/web3/function';
+const SolFunction = require('web3/lib/web3/function');
 
 import { Log } from '../client/AbstractClient';
 import { ABI, Input } from '../Contract';
@@ -12,7 +12,7 @@ export default class Function {
 	public readonly name: string;
 	public readonly inputTypes: any[];
 	public readonly outputTypes: any[];
-	public readonly solFunction: SolFunction;
+	public readonly solFunction: any;
 	public readonly constant: boolean;
 	public readonly payable: boolean;
 

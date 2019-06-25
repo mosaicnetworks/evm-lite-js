@@ -6,14 +6,9 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
 	"scripts": {
-		"dev": "npm install && npm link evm-lite-core && npm run build && npm link",
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
-		"clean-yarn": "rm -rf ./node_modules/ && rm -rf yarn.lock && rm -rf dist/",
-		"code": "ts-node tests/code.ts",
-		"test:watch": "jest --watchAll",
-		"test": "jest",
 		"compile": "tsc -p ./tsconfig.json",
-		"prepublish": "tsc -p ./tsconfig.json"
+		"prepublishOnly": "tsc"
 	},
 	"dependencies": {
 		"browserify-cipher": "^1.0.1",
@@ -30,23 +25,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/keystore#readme",
-	"resolutions": {
-		"terser": "3.14.1"
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"transform": {
-			"^.+\\.tsx?$": "ts-jest"
-		},
-		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-		"moduleFileExtensions": [
-			"ts",
-			"tsx",
-			"js",
-			"jsx",
-			"json",
-			"node"
-		]
-	}
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/keystore#readme"
 }

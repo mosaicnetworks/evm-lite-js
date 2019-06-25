@@ -3,13 +3,15 @@
 	"private": true,
 	"main": "packages/lib/dist/src/index.js",
 	"scripts": {
+		"test": "jest",
 		"clean": "rm -rf node_modules && lerna run clean",
-		"publish": "lerna bootstrap && lerna run compile && lerna run publish"
+		"compile": "lerna run compile",
+		"bootstrap": "lerna bootstrap"
 	},
 	"devDependencies": {
 		"@babel/runtime": "^7.3.1",
 		"@types/chai": "^4.1.7",
-		"@types/jest": "^24.0.0",
+		"@types/jest": "^24.0.15",
 		"@types/mocha": "^5.2.7",
 		"@types/node": "^10.12.21",
 		"babel-core": "^6.26.3",
@@ -19,11 +21,11 @@
 		"dts-bundle-webpack": "^1.0.2",
 		"file-loader": "^3.0.1",
 		"fork-ts-checker-webpack-plugin": "^0.5.2",
-		"jest": "^>=22.0.0 <24.0.0",
+		"jest": "^24.8.0",
 		"jsdoc": "^3.5.5",
 		"lerna": "^3.15.0",
 		"mocha": "^5.2.0",
-		"ts-jest": "^23.10.5",
+		"ts-jest": "^24.0.2",
 		"ts-loader": "^5.3.3",
 		"ts-node": "^8.0.2",
 		"tsdoc": "^0.0.4",

@@ -54,7 +54,7 @@ interface CallTransactionResponse {
 	data: string;
 }
 
-interface CoreContract {
+interface POAContract {
 	readonly address: string;
 	readonly abi: ContractABI;
 	readonly bytecode: string;
@@ -66,9 +66,9 @@ export default abstract class AbstractClient {
 		public readonly port: number
 	) {}
 
-	public async getContract(): Promise<CoreContract> {
-		return this.get(`/contract`).then(
-			(response: string) => JSONBig.parse(response) as CoreContract
+	public async getPOAContract(): Promise<POAContract> {
+		return this.get(`/poa`).then(
+			(response: string) => JSONBig.parse(response) as POAContract
 		);
 	}
 

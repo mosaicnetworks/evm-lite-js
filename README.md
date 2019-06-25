@@ -4,10 +4,16 @@
 
 There are three modules to interact with an EVM-Lite node.
 
-You can install each one of them depending on what requirements your project has
+You can install each one of them depending on what requirements your project needs
 
 ```bash
 npm install evm-lite-core evm-lite-keystore evm-lite-datadir
+```
+
+or with `yarn`
+
+```bash
+yarn add evm-lite-core evm-lite-keystore evm-lite-datadir
 ```
 
 Current module versions:
@@ -15,6 +21,8 @@ Current module versions:
 -   `evm-lite-core@1.0.0-alpha.1`
 -   `evm-lite-keystore@1.0.0-alpha.1`
 -   `evm-lite-datadir@1.0.0-alpha.1`
+
+_Further module descriptions can be found within thier respective package directories._
 
 ## Development
 
@@ -82,15 +90,15 @@ This will install all package dependencies including the dependencies of the eac
 Now we will need to symlink all related packages to each other
 
 ```bash
-lerna bootstrap
+yarn run bootstrap
 ```
 
-Bootstrap the packages in the current Lerna repo. Installing all their dependencies and linking any cross-dependencies.
+Bootstrap the packages in the current monorepo. Installing all their dependencies and linking any cross-dependencies.
 
 This command is crucial, as it allows you to use your package names in `require()` as if the packages were already existing and available in your `node_modules` folder.
 
 We will need to transpile all the `Typescript` files to `Javascript` for each of the packages
 
 ```bash
-lerna run compile
+yarn run compile
 ```
