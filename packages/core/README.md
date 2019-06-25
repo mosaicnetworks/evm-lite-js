@@ -37,7 +37,7 @@ The `npm run dev` will install all dependecies, compile typescript files into th
 
 ## EVMLC
 
-### Constructor
+### `constructor`
 
 ```typescript
 constructor(host: string, port: number)
@@ -45,7 +45,7 @@ constructor(host: string, port: number)
 
 ### Methods
 
-#### getAccount
+#### `getAccount`
 
 Get an account's `balance` and `nonce` from the node. The returned object will be of the form
 
@@ -62,7 +62,7 @@ interface BaseAccount {
 getAccount(address: string): BaseAccount;
 ```
 
-#### getAccounts
+#### `getAccounts`
 
 List all controlled accounts on the respective node.
 
@@ -70,7 +70,7 @@ List all controlled accounts on the respective node.
 getAccounts(): BaseAccount[];
 ```
 
-#### getReceipt
+#### `getReceipt`
 
 Fetch the receipt of a given `transaction hash`.
 
@@ -78,7 +78,7 @@ Fetch the receipt of a given `transaction hash`.
 getReceipt(hash: string): TransactionReceipt;
 ```
 
-#### getInfo
+#### `getInfo`
 
 Get the information of the connected node.
 
@@ -86,7 +86,7 @@ Get the information of the connected node.
 getInfo(): EVMBabbleInfo;
 ```
 
-#### callTransaction
+#### `callTransaction`
 
 Submits a non state mutating transaction to the node.
 
@@ -96,12 +96,12 @@ callTransaction(tx: Transaction): Response;
 
 -   Automtically parses return from any constant/pure contract function
 
-#### submitTransaction
+#### `sendTransaction`
 
 Submits a transaction that mutates state to the node.
 
 ```typescript
-submitTransaction(tx: Transaction, account: Account): TransactionReceipt;
+sendTransaction(tx: Transaction, account: Account): TransactionReceipt;
 ```
 
 -   Parses any events returned with the receipt
@@ -113,7 +113,7 @@ This module can be used to create accounts, prepare a transfer and sign transact
 
 ### Methods
 
-#### Create
+#### `create`
 
 Creates a new keypair.
 
@@ -130,7 +130,7 @@ const account = Account.create();
 }
 ```
 
-#### prepareTransfer
+#### `prepareTransfer`
 
 Creates the transaction object represeting a transfer with the specified attributes.
 The `nonce` will be fetched before the submission of the transaction which can be done by creating an instance of `EVMLC` and calling the `.sendTransaction(tx, account)` method with this `Transaction` and the associated signatory `Account`.
@@ -162,7 +162,7 @@ This module allows you to deploy new and interact with contracts that already ex
 
 ### Methods
 
-#### create
+#### `create`
 
 Creates a new `Contract` and allows for deployment to the network.
 
@@ -178,7 +178,7 @@ const transaction = contract.deployTransaction(
 );
 ```
 
-#### load
+#### `load`
 
 Loads a contract to interact with.
 

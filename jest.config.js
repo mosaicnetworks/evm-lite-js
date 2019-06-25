@@ -5,7 +5,9 @@ module.exports = {
 	},
 	testRegex: '(/tests/.*|(\\.|/)(test))\\.ts?$',
 	moduleFileExtensions: ['ts', 'js'],
-	collectCoverage: true,
-	collectCoverageFrom: ['packages/**/*.{ts}', '!**/node_modules/**'],
+
+	// collectCoverage: true,
+	// collectCoverageFrom: ['packages/**/*.{ts}', '!**/node_modules/**'],
+
 	roots: ['packages/']
 };
