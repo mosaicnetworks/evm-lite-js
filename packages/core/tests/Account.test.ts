@@ -17,8 +17,9 @@ describe('Account.ts', () => {
 
 		expect(privAccount.address.slice(0, 2)).toBe('0x');
 		expect(privAccount.address).toBe(account.address);
-		expect(account.address.length).toBe(42);
-		expect(account.privateKey).not.toBe(undefined);
+		expect(privAccount.address.length).toBe(42);
+		expect(privAccount.privateKey).not.toBe(undefined);
+		expect(privAccount.privateKey).toBe(account.privateKey)
 	});
 
 	it('should sign a transaction correctly', () => {

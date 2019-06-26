@@ -1,5 +1,6 @@
 import Contract, { AbstractSchema } from '../src/Contract';
 import Transaction, { TX } from '../src/Transaction';
+import EVMLC from '../src/EVMLC';
 
 interface KeybaseSchema extends AbstractSchema {
 	addKey: (txOptions: TX, address: string, rating: number) => Transaction;
@@ -47,6 +48,7 @@ export const BYTECODE =
 	'd8482e686096a544266fb8e5608ced2f0029';
 
 let contract: Contract<KeybaseSchema>;
+const node = new EVMLC('localhost', 8080);
 
 describe('Contract.ts', () => {
 	it('should create contract with address set', async () => {

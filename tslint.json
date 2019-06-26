@@ -1,5 +1,9 @@
 {
-	"extends": ["tslint:recommended", "tslint-config-prettier"],
+	"extends": [
+		"tslint:recommended",
+		"tslint-config-prettier",
+		"tslint-config-airbnb"
+	],
 	"linterOptions": {
 		"exclude": ["node_modules/**/*.ts"]
 	},

@@ -72,14 +72,14 @@ export default class Contract<Schema extends AbstractSchema> {
 		}
 
 		let data = this.bytcode;
-		if (parameters) {
+		if (parameters.length) {
 			data = data + this.encodeConstructorParams(parameters);
 		}
 
 		return new Transaction(
 			{
 				from,
-				data: this.bytcode,
+				data,
 				gas,
 				gasPrice
 			},

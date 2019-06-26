@@ -64,6 +64,7 @@ export default class Transaction implements TX {
 	}
 
 	public afterSubmission() {
+		console.log('Receipt after tx');
 		this.parseReceipt();
 	}
 

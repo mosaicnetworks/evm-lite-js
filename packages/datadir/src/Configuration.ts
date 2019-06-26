@@ -5,6 +5,7 @@ import * as tomlify from 'tomlify-j0.4';
 import { EVMTypes } from 'evm-lite-core';
 
 import Utils from './Utils';
+import { fixMarkup } from 'highlight.js';
 
 export interface ConfigurationSchema {
 	connection: {
@@ -24,13 +25,12 @@ export default class Configuration {
 	constructor(public readonly path: string) {
 		this.state = this.default();
 
-		Utils.createDirectoryIfNotExists(this.path);
-
-		if (!Utils.isDirectory(this.path)) {
+		if (Utils.exists(this.path)) {
 			const tomlData: string = fs.readFileSync(this.path, 'utf8');
+
 			this.state = toml.parse(tomlData);
 		} else {
-			throw Error('Configuration path provided is a directory.');
+			fs.writeFileSync(this.path, this.toTOML());
 		}
 	}
 

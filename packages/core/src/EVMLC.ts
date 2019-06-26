@@ -99,7 +99,8 @@ export default class EVMLC extends AbstractClient {
 		return Promise.resolve(tx.receipt);
 	}
 
-	public async callTransaction(transaction: Transaction): Promise<any[]> {
+	// TODO: Define what this generic `R` means!
+	public async callTransaction<R>(transaction: Transaction): Promise<R> {
 		// cleans transaction attributes
 		transaction.beforeSubmission();
 

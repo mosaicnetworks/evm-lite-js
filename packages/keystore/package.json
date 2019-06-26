@@ -7,7 +7,8 @@
 	"typings": "./dist/typings/index.d.ts",
 	"scripts": {
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
-		"compile": "tsc -p ./tsconfig.json",
+		"clean:build": "rm -rf dist/",
+		"build": "tsc -p ./tsconfig.json",
 		"prepublishOnly": "tsc"
 	},
 	"dependencies": {

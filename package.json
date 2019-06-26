@@ -4,16 +4,23 @@
 	"main": "packages/lib/dist/src/index.js",
 	"scripts": {
 		"test": "jest",
-		"clean": "rm -rf node_modules && lerna run clean",
-		"compile": "lerna run compile",
-		"bootstrap": "lerna bootstrap"
+		"clean": "lerna run clean && rm -rf node_modules",
+		"clean:build": "lerna run clean:build",
+		"build": "lerna run build",
+		"bootstrap": "lerna bootstrap",
+		"convert": "lerna link convert"
 	},
 	"devDependencies": {
 		"@babel/runtime": "^7.3.1",
-		"@types/chai": "^4.1.7",
+		"@types/chai": "^4.1.6",
+		"@types/chalk": "^2.2.0",
+		"@types/figlet": "^1.2.0",
+		"@types/inquirer": "0.0.43",
 		"@types/jest": "^24.0.15",
-		"@types/mocha": "^5.2.7",
-		"@types/node": "^10.12.21",
+		"@types/lowdb": "^1.0.6",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.11.0",
+		"@types/vorpal": "^1.11.0",
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.5",
 		"babel-preset-es2015": "^6.24.1",
@@ -27,13 +34,13 @@
 		"mocha": "^5.2.0",
 		"ts-jest": "^24.0.2",
 		"ts-loader": "^5.3.3",
-		"ts-node": "^8.0.2",
+		"ts-node": "^8.3.0",
 		"tsdoc": "^0.0.4",
-		"tslint": "^5.12.1",
+		"tslint": "^5.11.0",
 		"tslint-config-airbnb": "^5.11.1",
-		"tslint-config-prettier": "^1.17.0",
+		"tslint-config-prettier": "^1.15.0",
 		"typedoc": "^0.14.2",
-		"typescript": "^3.3.1",
+		"typescript": "^3.1.6",
 		"webpack": "^4.29.0",
 		"webpack-cli": "^3.2.1"
 	},
@@ -41,6 +48,7 @@
 		"packages/*"
 	],
 	"dependencies": {
+		"evm-lite-cli": "file:packages/cli",
 		"evm-lite-core": "file:packages/core",
 		"evm-lite-datadir": "file:packages/datadir",
 		"evm-lite-keystore": "file:packages/keystore"

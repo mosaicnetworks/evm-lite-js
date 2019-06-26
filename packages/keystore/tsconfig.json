@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src",
-		"declarationDir": "./dist/typings"
+		"declarationDir": "./dist/typings",
+		"typeRoots": ["./node_modules/@types", "./types"]
 	},
+	"include": ["./src/**/*.ts"],
 	"references": [{ "path": "../core" }]
 }
