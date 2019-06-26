@@ -8,7 +8,8 @@
 		"clean:build": "lerna run clean:build",
 		"build": "lerna run build",
 		"bootstrap": "lerna bootstrap",
-		"convert": "lerna link convert"
+		"convert": "lerna link convert",
+		"publish": "lerna publish"
 	},
 	"devDependencies": {
 		"@babel/runtime": "^7.3.1",
