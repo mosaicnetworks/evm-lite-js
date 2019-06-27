@@ -10,7 +10,7 @@
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
-		"prepublishOnly": "tsc"
+		"prepublish": "tsc"
 	},
 	"dependencies": {
 		"ascii-table": "^0.0.9",

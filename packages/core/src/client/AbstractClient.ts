@@ -57,8 +57,11 @@ interface CallTransactionResponse {
 interface POAContract {
 	readonly address: string;
 	readonly abi: ContractABI;
-	readonly bytecode: string;
 }
+
+type Contracts = {
+	contracts: { address: string; abi: string }[];
+};
 
 export default abstract class AbstractClient {
 	protected constructor(
@@ -69,6 +72,12 @@ export default abstract class AbstractClient {
 	public async getPOAContract(): Promise<POAContract> {
 		return this.get(`/poa`).then(
 			(response: string) => JSONBig.parse(response) as POAContract
+		);
+	}
+
+	public async getContract(): Promise<Contracts> {
+		return this.get(`/contract`).then(
+			(response: string) => JSONBig.parse(response) as Contracts
 		);
 	}
 

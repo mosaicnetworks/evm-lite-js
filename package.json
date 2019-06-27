@@ -49,7 +49,6 @@
 		"packages/*"
 	],
 	"dependencies": {
-		"evm-lite-cli": "file:packages/cli",
 		"evm-lite-core": "file:packages/core",
 		"evm-lite-datadir": "file:packages/datadir",
 		"evm-lite-keystore": "file:packages/keystore"
