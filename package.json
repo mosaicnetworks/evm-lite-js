@@ -3,12 +3,15 @@
 	"private": true,
 	"main": "packages/lib/dist/src/index.js",
 	"scripts": {
+		"postinstall": "lerna bootstrap",
 		"test": "jest",
 		"clean": "lerna run clean && rm -rf node_modules",
 		"clean:build": "lerna run clean:build",
 		"build": "lerna run build",
 		"bootstrap": "lerna bootstrap",
 		"convert": "lerna link convert",
+		"link": "lerna link",
+		"prepublish": "yarn run build",
 		"publish": "lerna publish"
 	},
 	"devDependencies": {
@@ -31,7 +34,6 @@
 		"fork-ts-checker-webpack-plugin": "^0.5.2",
 		"jest": "^24.8.0",
 		"jsdoc": "^3.5.5",
-		"lerna": "^3.15.0",
 		"mocha": "^5.2.0",
 		"ts-jest": "^24.0.2",
 		"ts-loader": "^5.3.3",

@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as JSONBig from 'json-bigint';
 import * as nodePath from 'path';
 
-import { Account } from 'evm-lite-core';
+import { Account, BaseAccount, Utils as CoreUtils } from 'evm-lite-core';
 
 import AbstractKeystore, { V3JSONKeyStore } from './AbstractKeystore';
 import Utils from './Utils';
@@ -62,7 +62,11 @@ export default class Keystore extends AbstractKeystore {
 						'utf8'
 					);
 
-					keystores.push(JSONBig.parse(data));
+					try {
+						keystores.push(JSONBig.parse(data));
+					} catch (e) {
+						// pass
+					}
 				}
 
 				resolve(keystores);
@@ -71,11 +75,7 @@ export default class Keystore extends AbstractKeystore {
 	}
 
 	public async get(address: string): Promise<V3JSONKeyStore> {
-		if (address.startsWith('0x')) {
-			address = address.substr(2);
-		}
-
-		address = address.toLowerCase();
+		address = CoreUtils.trimHex(address);
 
 		const keystores = await this.list();
 		const keystore = keystores.filter(
@@ -91,12 +91,27 @@ export default class Keystore extends AbstractKeystore {
 		return keystore;
 	}
 
-	public update(
+	public async update(
 		address: string,
 		oldPass: string,
 		newPass: string
 	): Promise<V3JSONKeyStore> {
-		throw new Error('Method not implemented.');
+		const keystore = await this.get(address);
+
+		let account: Account;
+
+		try {
+			account = Keystore.decrypt(keystore, oldPass);
+		} catch (e) {
+			return Promise.reject('Decryption failed.');
+		}
+
+		const newKeystore = Keystore.encrypt(account, newPass);
+		const path = this.getPath(address);
+
+		fs.writeFileSync(path, JSON.stringify(newKeystore));
+
+		return Promise.resolve(newKeystore);
 	}
 
 	public import(keystore: V3JSONKeyStore): Promise<V3JSONKeyStore> {
@@ -105,5 +120,30 @@ export default class Keystore extends AbstractKeystore {
 
 	public export(address: string): Promise<V3JSONKeyStore> {
 		throw new Error('Method not implemented.');
+	}
+
+	private getPath(address: string): string {
+		const dir = fs.readdirSync(this.path).filter(file => {
+			return !file.startsWith('.');
+		});
+
+		if (address.startsWith('0x')) {
+			address = address.substr(2);
+		}
+
+		address = address.toLowerCase();
+
+		for (const filename of dir) {
+			const filepath = nodePath.join(this.path, filename);
+			const account: BaseAccount = JSONBig.parse(
+				fs.readFileSync(filepath, 'utf8')
+			);
+
+			if (account.address === address) {
+				return filepath;
+			}
+		}
+
+		return '';
 	}
 }

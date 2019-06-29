@@ -4,6 +4,7 @@ import * as ethlib from 'eth-lib';
 import * as EthLibAccount from 'eth-lib/lib/account';
 
 import Formatters from './utils/formatters';
+import Utils from './utils/Utils';
 
 import { BaseAccount } from './client/AbstractClient';
 
@@ -29,6 +30,8 @@ const makeEven = (hex: string) => {
 
 export default class Account {
 	public static fromPrivateKey(privateKey: string) {
+		privateKey = Utils.cleanAddress(privateKey);
+
 		return new Account(EthLibAccount.fromPrivate(privateKey));
 	}
 

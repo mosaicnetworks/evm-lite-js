@@ -1,12 +1,8 @@
-export default class Static {
+export default class Utils {
 	public static cleanAddress(address: string) {
-		address = address.toLowerCase();
+		address = Utils.trimHex(address);
 
-		if (!address.startsWith('0x')) {
-			return '0x' + address;
-		}
-
-		return address;
+		return `0x${address}`;
 	}
 
 	public static isEquivalentObjects(objectA: any, objectB: any) {
@@ -23,7 +19,7 @@ export default class Static {
 				typeof objectB[propName] === 'object'
 			) {
 				if (
-					!Static.isEquivalentObjects(
+					!Utils.isEquivalentObjects(
 						objectA[propName],
 						objectB[propName]
 					)
@@ -36,5 +32,15 @@ export default class Static {
 		}
 
 		return true;
+	}
+
+	public static trimHex(hex: string) {
+		hex = hex.toLowerCase();
+
+		while (hex.startsWith('0x')) {
+			hex = `${hex.slice(2)}`;
+		}
+
+		return hex;
 	}
 }

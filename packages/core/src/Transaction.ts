@@ -1,4 +1,5 @@
 import EVMTypes from './utils/types';
+import Utils from './utils/Utils';
 
 import { Log } from './client/AbstractClient';
 import { TransactionReceipt } from './client/AbstractClient';
@@ -49,10 +50,10 @@ export default class Transaction implements TX {
 			throw Error('Cannot create transaction with no `data` or `value`');
 		}
 
-		this.from = tx.from;
-		this.to = tx.to;
+		this.from = Utils.trimHex(tx.from);
+		this.to = Utils.trimHex(tx.to || '');
 		this.value = tx.value || 0;
-		this.data = tx.data;
+		this.data = Utils.trimHex(tx.data || '');
 		this.gas = tx.gas;
 		this.gasPrice = tx.gasPrice;
 		this.nonce = tx.nonce;
@@ -64,20 +65,17 @@ export default class Transaction implements TX {
 	}
 
 	public afterSubmission() {
-		console.log('Receipt after tx');
 		this.parseReceipt();
 	}
 
 	private parseReceipt() {
-		if (this.receipt) {
-			if (this.parseLogs) {
-				const logs = this.parseLogs(this.receipt.logs);
+		if (this.receipt && this.parseLogs) {
+			const logs = this.parseLogs(this.receipt.logs);
 
-				this.receipt = {
-					...this.receipt,
-					logs
-				};
-			}
+			this.receipt = {
+				...this.receipt,
+				logs
+			};
 		}
 	}
 

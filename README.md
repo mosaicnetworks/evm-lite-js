@@ -77,18 +77,6 @@ yarn install
 
 This will install all package dependencies including the dependencies of the each of the smaller packages.
 
-Now we will need to symlink all related packages to each other
+It will also run `lerna bootstrap` automatically which will install all their dependencies and linking any cross-dependencies.
 
-```bash
-yarn run bootstrap
-```
-
-Bootstrap the packages in the current monorepo. Installing all their dependencies and linking any cross-dependencies.
-
-This command is crucial, as it allows you to use your package names in `require()` as if the packages were already existing and available in your `node_modules` folder.
-
-We will need to transpile all the `Typescript` files to `Javascript` for each of the packages
-
-```bash
-yarn run build
-```
+All `typescript` files will also be built for each module in their respective `dist/` directory.

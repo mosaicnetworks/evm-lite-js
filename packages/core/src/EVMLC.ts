@@ -80,20 +80,20 @@ export default class EVMLC extends AbstractClient {
 			hash = response.txHash;
 		} catch (e) {
 			return Promise.reject(
-				`EVML: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
+				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
 			);
 		}
 
 		// temp until logs and subscribtions
-		await delay(3);
+		await delay(10);
 
 		tx.hash = hash;
 		tx.receipt = await this.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction
-		// the abstraction is taken care of when creating the transactions
-		// through the `Contract` or `Account` objects
+		// the abstraction is taken care of when creating transactions
+		// through the `Contract` object
 		tx.afterSubmission();
 
 		return Promise.resolve(tx.receipt);
@@ -126,7 +126,6 @@ export default class EVMLC extends AbstractClient {
 		}
 
 		// not needed fields
-		delete transaction.chainId;
 		delete transaction.nonce;
 
 		// send transaction (without signing)
@@ -134,7 +133,7 @@ export default class EVMLC extends AbstractClient {
 
 		// since the function is constant no transaction hash will be returned
 		// from the submission however the return of the `contract's function`
-		// will be therefore need a function to decode the returned results
+		// will be therefore we need a function to decode the returned results
 		// so we need to make sure that function exists
 		if (!transaction.unpackfn) {
 			return Promise.reject(
