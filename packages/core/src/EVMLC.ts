@@ -6,7 +6,7 @@ import Utils from './utils/Utils';
 
 function delay(t: number, v?: any) {
 	return new Promise(resolve => {
-		setTimeout(resolve.bind(null, v), t);
+		setTimeout(resolve.bind(null, v), t * 1000);
 	});
 }
 
@@ -85,7 +85,7 @@ export default class EVMLC extends AbstractClient {
 		}
 
 		// temp until logs and subscribtions
-		await delay(10);
+		await delay(5);
 
 		tx.hash = hash;
 		tx.receipt = await this.getReceipt(hash);
