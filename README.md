@@ -1,4 +1,4 @@
-# EVM-Lite Library
+# EVM-Lite Javascript Libraries
 
 ## Installation
 

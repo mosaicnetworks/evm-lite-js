@@ -1,7 +1,6 @@
 {
-	"name": "evm-lite-lib",
+	"name": "evm-lite-js",
 	"private": true,
-	"main": "packages/lib/dist/src/index.js",
 	"scripts": {
 		"postinstall": "lerna bootstrap",
 		"test": "jest",
