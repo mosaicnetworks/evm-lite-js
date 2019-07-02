@@ -27,14 +27,6 @@ or `yarn`
 yarn add evm-lite-core
 ```
 
-## Development
-
-This project was built using `node` version 10.16 (LTS).
-
-To set up the development environment, simply run `npm run dev`. If you want to clean all `dev` files run `npm run clean`.
-
-The `npm run dev` will install all dependecies, compile typescript files into the `dist/` folder and `npm link` the module.
-
 ## EVMLC
 
 ### `constructor`
