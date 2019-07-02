@@ -44,7 +44,10 @@ export default abstract class AbstractKeystore {
 		oldPass: string,
 		newPass: string
 	): Promise<V3JSONKeyStore>;
-	public abstract import(keystore: V3JSONKeyStore): Promise<V3JSONKeyStore>;
+	public abstract import(
+		privateKey: string,
+		passwrod: string
+	): Promise<V3JSONKeyStore>;
 	public abstract export(address: string): Promise<V3JSONKeyStore>;
 
 	public static encrypt(account: Account, password: string) {

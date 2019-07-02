@@ -49,7 +49,16 @@ export default class Configuration {
 	}
 
 	public toTOML(): string {
-		return tomlify.toToml(this.state, { spaces: 2 });
+		return tomlify.toToml(this.state, {
+			spaces: 2,
+			replace: (key: string, value: any) => {
+				if (key === 'port' || key === 'gas' || key === 'gasPrice') {
+					return parseInt(value, 10).toString();
+				}
+
+				return false;
+			}
+		});
 	}
 
 	public load(): Promise<ConfigurationSchema> {

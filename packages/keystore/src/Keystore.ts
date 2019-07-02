@@ -20,9 +20,15 @@ export default class Keystore extends AbstractKeystore {
 
 	public create(
 		password: string,
-		overridePath?: string
+		overridePath?: string,
+		privateKey?: string
 	): Promise<V3JSONKeyStore> {
-		const account = Account.create();
+		let account: Account = Account.create();
+
+		if (privateKey) {
+			account = Account.fromPrivateKey(privateKey);
+		}
+
 		const keystore = Keystore.encrypt(account, password);
 		const filename = `UTC--${JSONBig.stringify(new Date())}--${
 			account.address
@@ -114,8 +120,11 @@ export default class Keystore extends AbstractKeystore {
 		return Promise.resolve(newKeystore);
 	}
 
-	public import(keystore: V3JSONKeyStore): Promise<V3JSONKeyStore> {
-		throw new Error('Method not implemented.');
+	public async import(
+		privateKey: string,
+		password: string
+	): Promise<V3JSONKeyStore> {
+		return await this.create(password, undefined, privateKey);
 	}
 
 	public export(address: string): Promise<V3JSONKeyStore> {
