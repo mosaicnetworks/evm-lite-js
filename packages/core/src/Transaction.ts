@@ -12,7 +12,7 @@ interface BaseTransaction {
 }
 
 export interface TX extends BaseTransaction {
-	from: EVMTypes.Address;
+	from?: EVMTypes.Address;
 	to?: EVMTypes.Address;
 	value?: EVMTypes.Value;
 	data?: EVMTypes.Data;
@@ -27,7 +27,7 @@ export interface SignedTransaction {
 }
 
 export default class Transaction implements TX {
-	public from: string;
+	public from?: string;
 	public to?: string;
 	public value?: number;
 	public data?: string;
@@ -50,7 +50,10 @@ export default class Transaction implements TX {
 			throw Error('Cannot create transaction with no `data` or `value`');
 		}
 
-		this.from = Utils.trimHex(tx.from);
+		if (tx.from) {
+			this.from = Utils.trimHex(tx.from);
+		}
+
 		this.to = Utils.trimHex(tx.to || '');
 		this.value = tx.value || 0;
 		this.data = Utils.trimHex(tx.data || '');
@@ -82,26 +85,28 @@ export default class Transaction implements TX {
 	private clean(): void {
 		let data: string | undefined = this.data;
 
-		if (!this.from.startsWith('0x')) {
-			this.from = `0x${this.from}`.toLowerCase();
+		if (this.from) {
+			this.from = Utils.cleanAddress(this.from);
+
+			if (!this.constant) {
+				if (this.from.length !== 42) {
+					throw Error(
+						'`from` address length is not 42 characters ' +
+							'(including `0x`).'
+					);
+				}
+			}
 		}
 
-		if (this.to && !this.to.startsWith('0x')) {
-			this.to = `0x${this.to}`.toLowerCase();
-		}
+		if (this.to) {
+			this.to = Utils.cleanAddress(this.to);
 
-		if (this.from.length !== 42) {
-			throw Error(
-				'`from` address length is not 42 characters ' +
-					'long (including `0x`).'
-			);
-		}
-
-		if (this.to && this.to.length !== 42) {
-			throw Error(
-				'`to` address length is not 42 characters ' +
-					'long (including `0x`).'
-			);
+			if (this.to.length !== 42) {
+				throw Error(
+					'`to` address length is not 42 characters ' +
+						'(including `0x`).'
+				);
+			}
 		}
 
 		this.value = this.value || 0;

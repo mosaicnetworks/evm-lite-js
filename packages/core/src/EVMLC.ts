@@ -22,6 +22,12 @@ export default class EVMLC extends AbstractClient {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
 
+		if (!tx.from) {
+			return Promise.reject(
+				new Error('Non constant transaction requires a `from` address.')
+			);
+		}
+
 		// first check if the fields required are present and not undefined.
 		if (!tx.gas || (!tx.gasPrice && tx.gasPrice !== 0)) {
 			return Promise.reject(
@@ -127,6 +133,7 @@ export default class EVMLC extends AbstractClient {
 
 		// not needed fields
 		delete transaction.nonce;
+		delete transaction.from;
 
 		// send transaction (without signing)
 		const call = await this.callTX(JSON.stringify(transaction));

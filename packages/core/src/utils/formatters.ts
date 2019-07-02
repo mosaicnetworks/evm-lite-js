@@ -28,7 +28,7 @@ export default class Formatters {
 
 	public static txInputFormatter(txObject: TX): FormattedTransaction {
 		const formatted: FormattedTransaction = {
-			from: txObject.from,
+			from: txObject.from || '',
 			gas: '',
 			gasPrice: '',
 			data: txObject.data || '0x'
