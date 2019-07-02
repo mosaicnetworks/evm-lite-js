@@ -18,9 +18,9 @@ yarn add evm-lite-core evm-lite-keystore evm-lite-datadir
 
 Current module versions:
 
--   `evm-lite-core@1.0.0-alpha.5`
--   `evm-lite-keystore@1.0.0-alpha.5`
--   `evm-lite-datadir@1.0.0-alpha.5`
+-   `evm-lite-core@1.0.0-alpha.6`
+-   `evm-lite-keystore@1.0.0-alpha.6`
+-   `evm-lite-datadir@1.0.0-alpha.6`
 
 _Further module descriptions can be found within thier respective package directories._
 
