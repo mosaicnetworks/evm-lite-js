@@ -28,7 +28,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/mosaicnetworks/evm-lite-lib.git"
+		"url": "git+https://github.com/mosaicnetworks/evm-lite-js.git"
 	},
 	"keywords": [
 		"evm",
@@ -38,7 +38,7 @@
 		"evmljs"
 	],
 	"bugs": {
-		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
+		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/core#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/core#readme"
 }

@@ -24,7 +24,7 @@
 		"uuid": "^3.3.2"
 	},
 	"bugs": {
-		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
+		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/keystore#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/keystore#readme"
 }

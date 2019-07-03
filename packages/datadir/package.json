@@ -19,7 +19,7 @@
 		"tomlify-j0.4": "^3.0.0"
 	},
 	"bugs": {
-		"url": "https://github.com/mosaicnetworks/evm-lite-lib/issues"
+		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-lib/tree/lerna/packages/datadir#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/datadir#readme"
 }
