@@ -2,7 +2,7 @@
 	"name": "evm-lite-core",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.0.0-alpha.8",
+	"version": "1.0.0-alpha.9",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -10,13 +10,15 @@
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
-		"prepublish": "tsc"
+		"prepublish": "tsc",
+		"doc": "typedoc"
 	},
 	"dependencies": {
 		"ascii-table": "^0.0.9",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
+		"evm-lite-utils": "file:../utils",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"randombytes": "^2.1.0",
@@ -30,13 +32,6 @@
 		"type": "git",
 		"url": "git+https://github.com/mosaicnetworks/evm-lite-js.git"
 	},
-	"keywords": [
-		"evm",
-		"evm-lite",
-		"core",
-		"mosaicnetworks",
-		"evmljs"
-	],
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},

@@ -1,9 +1,10 @@
 import * as nodepath from 'path';
 
+import Utils from 'evm-lite-utils';
+
 import { AbstractKeystore } from 'evm-lite-keystore';
 
 import Configuration from './Configuration';
-import Utils from './Utils';
 
 export default class DataDirectory<K extends AbstractKeystore> {
 	public readonly config: Configuration;

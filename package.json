@@ -1,8 +1,16 @@
 {
 	"name": "evm-lite-js",
 	"private": true,
+	"author": "Mosaic Networks",
+	"authors": [
+		{
+			"name": "Danu Kumanan",
+			"email": "danushan@babble.io",
+			"homepage": "https://github.com/danu3006"
+		}
+	],
 	"scripts": {
-		"postinstall": "lerna bootstrap",
+		"postinstall": "lerna run build",
 		"test": "jest",
 		"clean": "lerna run clean && rm -rf node_modules",
 		"clean:build": "lerna run clean:build",
@@ -11,6 +19,7 @@
 		"convert": "lerna link convert",
 		"link": "lerna link",
 		"prepublish": "yarn run build",
+		"doc": "lerna run doc",
 		"publish": "lerna publish"
 	},
 	"devDependencies": {
@@ -42,6 +51,7 @@
 		"tslint-config-airbnb": "^5.11.1",
 		"tslint-config-prettier": "^1.15.0",
 		"typedoc": "^0.14.2",
+		"typedoc-plugin-markdown": "^2.0.8",
 		"typescript": "^3.1.6",
 		"webpack": "^4.29.0",
 		"webpack-cli": "^3.2.1"
@@ -52,6 +62,21 @@
 	"dependencies": {
 		"evm-lite-core": "file:packages/core",
 		"evm-lite-datadir": "file:packages/datadir",
-		"evm-lite-keystore": "file:packages/keystore"
+		"evm-lite-keystore": "file:packages/keystore",
+		"evm-lite-utils": "file:packages/utils"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"transform": {
+			".(ts)": "ts-jest"
+		},
+		"testRegex": "(/tests/.*|(\\.|/)(test))\\.ts?$",
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"roots": [
+			"packages/"
+		]
 	}
 }

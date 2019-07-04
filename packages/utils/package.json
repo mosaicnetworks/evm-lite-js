@@ -1,10 +1,11 @@
 {
-	"name": "evm-lite-datadir",
+	"name": "evm-lite-utils",
 	"namespace": "mosaicnetworks",
+	"author": "Danu Kumanan",
 	"version": "1.0.0-alpha.9",
 	"license": "MIT",
 	"main": "./dist/index.js",
-	"typings": "./dist/typings/index.d.ts",
+	"typings": "./dist/index.d.ts",
 	"scripts": {
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
@@ -12,15 +13,14 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
-		"evm-lite-core": "file:../core",
-		"evm-lite-keystore": "file:../keystore",
-		"evm-lite-utils": "file:../utils",
-		"mkdirp": "^0.5.1",
-		"toml": "^3.0.0",
-		"tomlify-j0.4": "^3.0.0"
+		"mkdirp": "^0.5.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mosaicnetworks/evm-lite-js.git"
 	},
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/datadir#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/utils#readme"
 }

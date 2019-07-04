@@ -2,10 +2,11 @@ import * as fs from 'fs';
 import * as JSONBig from 'json-bigint';
 import * as nodePath from 'path';
 
-import { Account, BaseAccount, Utils as CoreUtils } from 'evm-lite-core';
+import Utils from 'evm-lite-utils';
+
+import { Account, BaseAccount } from 'evm-lite-core';
 
 import AbstractKeystore, { V3JSONKeyStore } from './AbstractKeystore';
-import Utils from './Utils';
 
 export default class Keystore extends AbstractKeystore {
 	constructor(public readonly path: string) {
@@ -20,15 +21,9 @@ export default class Keystore extends AbstractKeystore {
 
 	public create(
 		password: string,
-		overridePath?: string,
-		privateKey?: string
+		overridePath?: string
 	): Promise<V3JSONKeyStore> {
-		let account: Account = Account.create();
-
-		if (privateKey) {
-			account = Account.fromPrivateKey(privateKey);
-		}
-
+		const account: Account = Account.create();
 		const keystore = Keystore.encrypt(account, password);
 		const filename = `UTC--${JSONBig.stringify(new Date())}--${
 			account.address
@@ -81,7 +76,7 @@ export default class Keystore extends AbstractKeystore {
 	}
 
 	public async get(address: string): Promise<V3JSONKeyStore> {
-		address = CoreUtils.trimHex(address);
+		address = Utils.trimHex(address);
 
 		const keystores = await this.list();
 		const keystore = keystores.filter(
@@ -120,11 +115,19 @@ export default class Keystore extends AbstractKeystore {
 		return Promise.resolve(newKeystore);
 	}
 
-	public async import(
-		privateKey: string,
-		password: string
-	): Promise<V3JSONKeyStore> {
-		return await this.create(password, undefined, privateKey);
+	public async import(keyfile: V3JSONKeyStore): Promise<V3JSONKeyStore> {
+		const filename = `UTC--${JSON.stringify(new Date())}--${
+			keyfile.address
+		}`
+			.replace(/"/g, '')
+			.replace(/:/g, '-');
+
+		fs.writeFileSync(
+			nodePath.join(this.path, filename),
+			JSON.stringify(keyfile)
+		);
+
+		return Promise.resolve(keyfile);
 	}
 
 	public export(address: string): Promise<V3JSONKeyStore> {

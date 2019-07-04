@@ -1,5 +1,6 @@
-import EVMTypes from './utils/types';
-import Utils from './utils/Utils';
+import Utils from 'evm-lite-utils';
+
+import EVMTypes from './misc/types';
 
 import { Log } from './client/AbstractClient';
 import { TransactionReceipt } from './client/AbstractClient';

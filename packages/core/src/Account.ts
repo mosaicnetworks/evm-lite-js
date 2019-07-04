@@ -3,14 +3,14 @@ import * as ethlib from 'eth-lib';
 // @ts-ignore
 import * as EthLibAccount from 'eth-lib/lib/account';
 
-import Formatters from './utils/formatters';
-import Utils from './utils/Utils';
+import Utils from 'evm-lite-utils';
 
 import { BaseAccount } from './client/AbstractClient';
 
+import Formatters from './misc/formatters';
 import Transaction, { SignedTransaction, TX } from './Transaction';
 
-import EVMTypes from './utils/types';
+import EVMTypes from './misc/types';
 
 const trimLeadingZero = (hex: string) => {
 	while (hex.startsWith('0x0')) {

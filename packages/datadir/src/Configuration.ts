@@ -2,10 +2,9 @@ import * as fs from 'fs';
 import * as toml from 'toml';
 import * as tomlify from 'tomlify-j0.4';
 
-import { EVMTypes } from 'evm-lite-core';
+import Utils from 'evm-lite-utils';
 
-import Utils from './Utils';
-import { fixMarkup } from 'highlight.js';
+import { EVMTypes } from 'evm-lite-core';
 
 export interface ConfigurationSchema {
 	connection: {
