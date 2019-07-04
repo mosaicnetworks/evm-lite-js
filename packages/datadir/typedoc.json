@@ -1,0 +1,9 @@
+{
+	"name": "EVM-Lite DataDir",
+	"mode": "modules",
+	"out": "docs",
+	"theme": "markdown",
+	"ignoreCompilerErrors": "false",
+	"exclude": "*.spec.ts",
+	"stripInternal": "false"
+}
