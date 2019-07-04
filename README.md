@@ -4,9 +4,9 @@
 
 ## Installation
 
-There are three modules to interact with an EVM-Lite node.
+There are three main modules to interact with an EVM-Lite.
 
-You can install each one of them depending on what requirements your project needs
+You can install each one of them depending on the requirements of your project
 
 ```bash
 npm install evm-lite-core evm-lite-keystore evm-lite-datadir
@@ -23,6 +23,7 @@ Current module versions:
 -   `evm-lite-core@1.0.0-alpha.8`
 -   `evm-lite-keystore@1.0.0-alpha.8`
 -   `evm-lite-datadir@1.0.0-alpha.8`
+-   `evm-lite-utils@1.0.0-alpha.8`
 
 _Further module descriptions can be found within thier respective package directories._
 
