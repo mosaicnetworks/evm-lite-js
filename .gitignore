@@ -4,4 +4,4 @@ dist
 lerna-debug.log
 tsconfig.tsbuildinfo
 coverage
-./example/
+./example
