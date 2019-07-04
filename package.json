@@ -19,6 +19,7 @@
 		"convert": "lerna link convert",
 		"link": "lerna link",
 		"prepublish": "yarn run build",
+		"doc": "lerna run doc",
 		"publish": "lerna publish"
 	},
 	"devDependencies": {
@@ -50,6 +51,7 @@
 		"tslint-config-airbnb": "^5.11.1",
 		"tslint-config-prettier": "^1.15.0",
 		"typedoc": "^0.14.2",
+		"typedoc-plugin-markdown": "^2.0.8",
 		"typescript": "^3.1.6",
 		"webpack": "^4.29.0",
 		"webpack-cli": "^3.2.1"

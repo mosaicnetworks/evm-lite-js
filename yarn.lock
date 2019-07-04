@@ -2567,7 +2567,7 @@ events@^3.0.0:
     browserify-cipher "^1.0.1"
     crypto-random-hex "^1.0.0"
     eth-lib "^0.2.8"
-    evm-lite-utils "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-core-1.0.0-alpha.8-e0c9423c-8844-4812-891b-624ecf178864-1562233497517/node_modules/utils"
+    evm-lite-utils "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-core-1.0.0-alpha.8-9328c63c-c062-43d7-b26b-93fbf5cdd1b6-1562244723183/node_modules/utils"
     json-bigint "0.3.0"
     keccak256 "^1.0.0"
     randombytes "^2.1.0"
@@ -2580,8 +2580,9 @@ events@^3.0.0:
 "evm-lite-datadir@file:packages/datadir":
   version "1.0.0-alpha.8"
   dependencies:
-    evm-lite-core "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-datadir-1.0.0-alpha.8-74685de8-bff9-4b0a-bd4b-02e067f74b33-1562233497567/node_modules/core"
-    evm-lite-keystore "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-datadir-1.0.0-alpha.8-74685de8-bff9-4b0a-bd4b-02e067f74b33-1562233497567/node_modules/keystore"
+    evm-lite-core "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-datadir-1.0.0-alpha.8-e3b7990b-58ff-47da-945c-81d916360e28-1562244723236/node_modules/core"
+    evm-lite-keystore "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-datadir-1.0.0-alpha.8-e3b7990b-58ff-47da-945c-81d916360e28-1562244723236/node_modules/keystore"
+    evm-lite-utils "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-datadir-1.0.0-alpha.8-e3b7990b-58ff-47da-945c-81d916360e28-1562244723236/node_modules/utils"
     mkdirp "^0.5.1"
     toml "^3.0.0"
     tomlify-j0.4 "^3.0.0"
@@ -2592,8 +2593,8 @@ events@^3.0.0:
     browserify-cipher "^1.0.1"
     crypto-random-hex "^1.0.0"
     eth-lib "^0.2.8"
-    evm-lite-core "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-keystore-1.0.0-alpha.8-f695b0bf-26a1-4d0f-bebd-e7b2a5bfcd9f-1562233497569/node_modules/core"
-    evm-lite-utils "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-keystore-1.0.0-alpha.8-f695b0bf-26a1-4d0f-bebd-e7b2a5bfcd9f-1562233497569/node_modules/utils"
+    evm-lite-core "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-keystore-1.0.0-alpha.8-34f93be0-e71f-49cb-8230-594e9e68e595-1562244723238/node_modules/core"
+    evm-lite-utils "file:../../../../../Library/Caches/Yarn/v4/npm-evm-lite-keystore-1.0.0-alpha.8-34f93be0-e71f-49cb-8230-594e9e68e595-1562244723238/node_modules/utils"
     json-bigint "0.3.0"
     keccak256 "^1.0.0"
     mkdirp "^0.5.1"
@@ -6331,6 +6332,11 @@ typedoc-default-themes@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.5.0.tgz#6dc2433e78ed8bea8e887a3acde2f31785bd6227"
   integrity sha1-bcJDPnjti+qOiHo6zeLzF4W9Yic=
+
+typedoc-plugin-markdown@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-2.0.8.tgz#9b63a0ad5a6dfe11c62c04016ab34422db00276d"
+  integrity sha512-lpaesvB5N2teG6uI9CvaX0YF0O78EGo8HAk24LYe8lkEfR4+ymgZe178luGaJiOc54fKycW+MoS8qZPoX065fg==
 
 typedoc@^0.14.2:
   version "0.14.2"

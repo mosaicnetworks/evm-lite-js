@@ -1,5 +1,7 @@
 # EVM-Lite Javascript Libraries
 
+> Javascript modules to interact with an EVM-Lite node
+
 ## Installation
 
 There are three modules to interact with an EVM-Lite node.

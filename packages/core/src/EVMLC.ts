@@ -16,6 +16,19 @@ export default class EVMLC extends AbstractClient {
 		super(host, port);
 	}
 
+	/**
+	 * Sends a payable transaction to the node and returns the transaction
+	 * receipt of the transaction.
+	 *
+	 * @remarks
+	 * The returned receipt will have its `logs` parsed if any automatically.
+	 *
+	 * @param tx - The transaction to be sent
+	 * @param account - The account used to sign the transaction
+	 * @returns A promise resolving a transaction receipt
+	 *
+	 * @alpha
+	 */
 	public async sendTransaction(
 		tx: Transaction,
 		account: Account

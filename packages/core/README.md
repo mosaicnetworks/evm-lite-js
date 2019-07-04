@@ -1,9 +1,9 @@
 # EVM-Lite Core
 
+> Core library to interact with an EVM-Lite node.
+
 [![npm version](https://badge.fury.io/js/evm-lite-core.svg)](https://badge.fury.io/js/evm-lite-core)
 [![CircleCI](https://circleci.com/gh/mosaicnetworks/evm-lite-core/tree/master.svg?style=svg&circle-token=bfc349315e43b3c2b428a19e34f4ed159f459596)](https://circleci.com/gh/mosaicnetworks/evm-lite-core/tree/master)
-
-Core library to interact with an EVM-Lite node.
 
 Three classes are exposed as part of this library:
 

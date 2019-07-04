@@ -10,14 +10,15 @@
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
-		"prepublish": "tsc"
+		"prepublish": "tsc",
+		"doc": "typedoc --theme markdown ./src --out ./docs"
 	},
 	"dependencies": {
+		"evm-lite-utils": "file:../utils",
 		"ascii-table": "^0.0.9",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
-		"evm-lite-utils": "file:../utils",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"randombytes": "^2.1.0",
