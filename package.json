@@ -1,6 +1,14 @@
 {
 	"name": "evm-lite-js",
 	"private": true,
+	"author": "Mosaic Networks",
+	"authors": [
+		{
+			"name": "Danu Kumanan",
+			"email": "danushan@babble.io",
+			"homepage": "https://github.com/danu3006"
+		}
+	],
 	"scripts": {
 		"postinstall": "lerna run build",
 		"test": "jest",
