@@ -54,5 +54,19 @@
 		"evm-lite-datadir": "file:packages/datadir",
 		"evm-lite-keystore": "file:packages/keystore",
 		"evm-lite-utils": "file:packages/utils"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"transform": {
+			".(ts)": "ts-jest"
+		},
+		"testRegex": "(/tests/.*|(\\.|/)(test))\\.ts?$",
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"roots": [
+			"packages/"
+		]
 	}
 }
