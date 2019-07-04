@@ -7,7 +7,7 @@ import { Log } from './client/AbstractClient';
 
 import Function from './contract/Function';
 import Transaction, { TX } from './Transaction';
-import EVMTypes from './utils/types';
+import EVMTypes from './misc/types';
 
 export interface Input {
 	readonly name: string;

@@ -2,7 +2,7 @@
 	"name": "evm-lite-js",
 	"private": true,
 	"scripts": {
-		"postinstall": "lerna bootstrap",
+		"postinstall": "lerna run build",
 		"test": "jest",
 		"clean": "lerna run clean && rm -rf node_modules",
 		"clean:build": "lerna run clean:build",
@@ -52,6 +52,7 @@
 	"dependencies": {
 		"evm-lite-core": "file:packages/core",
 		"evm-lite-datadir": "file:packages/datadir",
-		"evm-lite-keystore": "file:packages/keystore"
+		"evm-lite-keystore": "file:packages/keystore",
+		"evm-lite-utils": "file:packages/utils"
 	}
 }

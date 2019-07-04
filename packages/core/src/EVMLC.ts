@@ -1,8 +1,9 @@
+import Utils from 'evm-lite-utils';
+
 import AbstractClient, { TransactionReceipt } from './client/AbstractClient';
 
 import Account from './Account';
 import Transaction from './Transaction';
-import Utils from './utils/Utils';
 
 function delay(t: number, v?: any) {
 	return new Promise(resolve => {
