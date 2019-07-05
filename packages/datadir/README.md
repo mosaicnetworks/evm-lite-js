@@ -38,3 +38,5 @@ const { Keystore } = require('evm-lite-keystore');
 
 datadir.setKeystore(new Keystore(path.join(datadir.path, 'keystore')));
 ```
+
+For more information on methods exposed by `Keystore` refer to [here](../keystore/readme.md).
