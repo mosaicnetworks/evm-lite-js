@@ -1,8 +1,6 @@
-# EVM-Lite DataDir
+# EVM-Lite DataDir [![npm version](https://badge.fury.io/js/evm-lite-datadir.svg)](https://badge.fury.io/js/evm-lite-datadir)
 
 > Data directory management for EVM-Lite applications.
-
-[![npm version](https://badge.fury.io/js/evm-lite-datadir.svg)](https://badge.fury.io/js/evm-lite-datadir)
 
 ## Installation
 
@@ -31,7 +29,7 @@ const datadir = new DataDirectory('/Users/danu/.evmlc');
 
 // Current configuration data for this data directory
 // stored in '[datadir]/config.toml'
-console.log(datadir.config);
+console.log(datadir.config.state);
 
 // `DataDirectory` has a `keystore` attribute is a generic type which
 // extends the `AbstractKeystore` class in `evm-lite-keystore`
