@@ -1,4 +1,4 @@
-# EVM-Lite Core [![npm version](https://badge.fury.io/js/evm-lite-core.svg)](https://badge.fury.io/js/evm-lite-core)
+# EVM-Lite Core [![npm version](https://badge.fury.io/js/evm-lite-core.svg)](https://badge.fury.io/js/evm-lite-core) ![npm](https://img.shields.io/npm/dm/evm-lite-core.svg)
 
 <!-- [![CircleCI](https://circleci.com/gh/mosaicnetworks/evm-lite-core/tree/master.svg?style=svg&circle-token=bfc349315e43b3c2b428a19e34f4ed159f459596)](https://circleci.com/gh/mosaicnetworks/evm-lite-core/tree/master) -->
 

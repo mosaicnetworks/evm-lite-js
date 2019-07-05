@@ -1,4 +1,4 @@
-# EVM-Lite Utils [![npm version](https://badge.fury.io/js/evm-lite-utils.svg)](https://badge.fury.io/js/evm-lite-utils)
+# EVM-Lite Utils [![npm version](https://badge.fury.io/js/evm-lite-utils.svg)](https://badge.fury.io/js/evm-lite-utils) ![npm](https://img.shields.io/npm/dm/evm-lite-utils.svg)
 
 > Useful utility methods for `evm-lite-js`
 
