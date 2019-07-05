@@ -22,21 +22,21 @@ An abstract implementation of the `Keystore` module is exposed by `AbstractKeyst
 
 As an example please refer to `src/Keystore.ts`.
 
-### Methods
+## Methods
 
-#### `constructor`
+### `constructor`
 
 ```typescript
 constructor(path: string)
 ```
 
-##### Example
+#### Example
 
 ```typescript
 const keystore = new Keystore('<HOME_DIR>/.evmlc/keystore');
 ```
 
-#### `list`
+### `list`
 
 Should list all `V3JSONKeystore` files in the directory specified in the constructor.
 
@@ -44,7 +44,7 @@ Should list all `V3JSONKeystore` files in the directory specified in the constru
 list(): Promise<V3JSONKeyStore[]>
 ```
 
-##### Example
+#### Example
 
 ```typescript
 keystore
@@ -53,7 +53,7 @@ keystore
 	.catch(console.log);
 ```
 
-#### `get`
+### `get`
 
 Should get a single `V3JSONKeystore` file.
 
@@ -61,7 +61,7 @@ Should get a single `V3JSONKeystore` file.
 get(address: string): Promise<V3JSONKeyStore>
 ```
 
-##### Example
+#### Example
 
 ```typescript
 keystore
@@ -70,7 +70,7 @@ keystore
 	.catch(console.log);
 ```
 
-#### `create`
+### `create`
 
 Should create a `V3JSONKeystore` encrypted with the password specified and place in the directory.
 
@@ -78,7 +78,7 @@ Should create a `V3JSONKeystore` encrypted with the password specified and place
 create(password: string): Promise<V3JSONKeyStore>
 ```
 
-##### Example
+#### Example
 
 ```typescript
 keystore
@@ -87,7 +87,7 @@ keystore
 	.catch(console.log);
 ```
 
-#### `decrypt`
+### `decrypt`
 
 Should decrypt a `V3JSONKeystore` with the ecrypted password.
 
@@ -95,7 +95,7 @@ Should decrypt a `V3JSONKeystore` with the ecrypted password.
 decrypt(v3JSONKeystore: V3JSONKeystore, password: string): Account
 ```
 
-##### Example
+#### Example
 
 ```typescript
 keystore
