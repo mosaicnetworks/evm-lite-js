@@ -5,6 +5,7 @@ import AbstractClient, { TransactionReceipt } from './client/AbstractClient';
 import Account from './Account';
 import Transaction from './Transaction';
 
+// delay x * 1000 seconds
 function delay(t: number, v?: any) {
 	return new Promise(resolve => {
 		setTimeout(resolve.bind(null, v), t * 1000);
@@ -119,8 +120,18 @@ export default class EVMLC extends AbstractClient {
 		return Promise.resolve(tx.receipt);
 	}
 
-	// TODO: Still needs to be finished
-	// TODO: Define what this generic `R` means!
+	/**
+	 * Sends a pure/view transaction to the node and returns the return of the
+	 * contract function.
+	 *
+	 * @remarks
+	 * The returned object will be parsed to JS types.
+	 *
+	 * @param tx - The transaction to be sent
+	 * @returns A promise resolving the return of the contract function
+	 *
+	 * @alpha
+	 */
 	public async callTransaction<R>(transaction: Transaction): Promise<R> {
 		// cleans transaction attributes
 		transaction.beforeSubmission();

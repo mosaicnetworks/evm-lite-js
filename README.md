@@ -1,4 +1,4 @@
-# EVM-Lite Javascript Libraries
+# EVM-Lite Javascript Modules
 
 > Javascript modules to interact with an EVM-Lite node
 
@@ -43,9 +43,9 @@ Another dependency required for development is `lerna.js`.
 yarn global add lerna
 ```
 
-### Architecture ([Monorepo](https://en.wikipedia.org/wiki/Monorepo))
+### Architecture
 
-We have a higher level `packages/` directory which contains each of the packages.
+This repo is a multi-package repository with the higher level `packages/` directory containing each of the packages.
 
 ```bash
 .
@@ -68,7 +68,7 @@ We have a higher level `packages/` directory which contains each of the packages
 └── yarn.lock
 ```
 
-The `packages/tsconfig.settings.json` is the root configuration file for typescript. Each of the packages extends this configuration file. It also contains the path mappings for the typescript compiler to locate any symlinked packages from the same `monorepo`.
+The `packages/tsconfig.settings.json` is the root configuration file for typescript. Each of the packages extends this configuration file. It also contains the path mappings for the typescript compiler to locate any symlinked packages from the same repository.
 
 ### Installing Dependencies
 
