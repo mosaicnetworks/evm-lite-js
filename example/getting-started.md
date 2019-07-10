@@ -4,12 +4,12 @@ This document will outline the steps to set-up a `Node.js` project with the requ
 
 ## Table of Contents
 
-1. [Set Up](#1.-set-up)
-2. [Check Accounts](#2.-check-accounts)
-3. [Setting Up Contract](#3.-Setting-Up-Contract)
-4. [Compiling & Deploying](#4.-compiling-&-deploying)
+1. [Set Up](#set-up)
+2. [Check Accounts](#check-accounts)
+3. [Setting Up Contract](#Setting-Up-Contract)
+4. [Compiling & Deploying](#compiling-&-deploying)
 
-## 1. Set Up
+## Set Up
 
 Firstly we will need to set up a `Node.js` project and add the required dependencies. You can create the main project folder anywhere but for the purpose of this tutorial, I will create it on my `Desktop` and name it `crowd-funding`
 
@@ -37,7 +37,7 @@ $ npm install evm-lite-core evm-lite-keystore evm-lite-datadir evm-lite-utils so
 
 This will install all `evm-lite-js` modules as well as the `Solidity` compiler `solc`.
 
-## 2. Check Accounts
+## Check Accounts
 
 Now that we have a running node (`Monet` or `EVM-Lite`), we will need to verify that the account we will be dealing with has enough funds. We can use the CLI to speed up the process of this by running
 
@@ -53,7 +53,7 @@ $ evmlc accounts list -f
 
 The `-f, --formatted` flag specifies the output to be formatted in a table rather than raw `json`.
 
-## 3. Setting Up Contract
+## Setting Up Contract
 
 Create a file `contract.sol` in `src` and paste the following
 
@@ -122,6 +122,6 @@ contract CrowdFunding {
 
 This contract has three functions and one constrcutor. We will deploy this contract with a funding goal of `1000` tokens and call `contribute()`, `checkGoalReached()` and `settle()` with the help of `evm-lite-js`.
 
-## 4. Compiling & Deploying
+## Compiling & Deploying
 
 Compiling and deploying guide can be found [here](compile-deploy.md).
