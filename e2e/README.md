@@ -7,7 +7,7 @@ The goal of this document is to explain most, if not all, interactions with eith
 1. [Outline](#outline)
 2. [Pre-requisites](#pre-requisites)
 3. [Importing Keyfile](#importing-keyfile)
-4. [Tutorial](#tutorial)
+4. [Getting Started](#getting-started)
 
 ## Outline
 
@@ -51,6 +51,6 @@ $ evmlc accounts import --file [path]
 
 This will make managing the account much simpler.
 
-## Tutorial
+## Getting Started
 
-The getting started guide can be found [here](tutorial.md).
+The getting started guide can be found [here](getting-started.md).
