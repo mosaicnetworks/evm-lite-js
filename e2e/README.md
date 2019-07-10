@@ -2,6 +2,13 @@
 
 The goal of this document is to explain most, if not all, interactions with either an `EVM-Lite` or `Monet` node.
 
+## Table of Contents
+
+1. [Outline](#outline)
+2. [Pre-requisites](#pre-requisites)
+3. [Importing Keyfile](#importing-keyfile)
+4. [Tutorial](#tutorial)
+
 ## Outline
 
 We will be building a `smart contract` to handle all the business logic for a crowd funding platform. We will touch on all `Accounts` (from `evm-lite-core`) module functionality as well as deploying `smart contracts` and interacting with its methods.
@@ -20,7 +27,7 @@ npm install -g evm-lite-cli
 
 Documentation of the commands can be found in its [repository]().
 
-### Importing Keyfiles
+### Importing Keyfile
 
 Once you have a node up and running you will need to import the `keyfile` from the configuration directory of the node. The configuration directory location is different for `EVM-Lite` and `Monet` nodes.
 
@@ -44,20 +51,6 @@ $ evmlc accounts import --file [path]
 
 This will make managing the account much simpler.
 
-## Getting Started
+## Tutorial
 
-### Check Accounts
-
-Now that we have a running node (`Monet` or `EVM-Lite`), we will need to verify that the account we will be dealing with has enough funds. We can use the CLI to speed up the process of this by running
-
-```bash
-$ evmlc accounts list -f
-
-.-----------------------------------------------------------------------------.
-|                  Address                   |        Balance         | Nonce |
-|--------------------------------------------|------------------------|-------|
-| 0x07BA865451D9417714E8Bb89e715ACBc789A1Bb7 | 1234000000000000000000 |     0 |
-'-----------------------------------------------------------------------------'
-```
-
-The `-f, --formatted` flag specifies the output to be formatted in a table rather than raw `json`.
+The getting started guide can be found [here](tutorial.md).
