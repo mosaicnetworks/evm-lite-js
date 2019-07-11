@@ -32,7 +32,7 @@ $ npm init -y
 This will initialize a barebones `package.json` file. We can now install all the required dependencies by
 
 ```bash
-$ npm install evm-lite-core evm-lite-keystore evm-lite-datadir evm-lite-utils solc@0.4.11
+$ npm install evm-lite-core evm-lite-keystore evm-lite-datadir evm-lite-utils solc@0.5.10
 ```
 
 This will install all `evm-lite-js` modules as well as the `Solidity` compiler `solc`.
@@ -58,7 +58,7 @@ The `-f, --formatted` flag specifies the output to be formatted in a table rathe
 Create a file `contract.sol` in `src` and paste the following
 
 ```javascript
-pragma solidity ^0.4.11;
+pragma solidity ^0.5.10;
 
 contract CrowdFunding {
     // Defines a new type with two fields.
@@ -68,7 +68,7 @@ contract CrowdFunding {
     }
 
     struct Campaign {
-        address beneficiary;
+        address payable beneficiary;
         uint fundingGoal;
         uint numFunders;
         uint amount;
@@ -86,7 +86,7 @@ contract CrowdFunding {
         bool ok
     );
 
-    function CrowdFunding(uint goal) {
+    constructor(uint goal) public {
         // Creates new struct and saves in storage.
         campaign = Campaign({
             beneficiary: msg.sender,
@@ -95,26 +95,29 @@ contract CrowdFunding {
             amount:0});
     }
 
-    function contribute() payable {
+    function contribute() public payable {
         campaign.amount += msg.value;
-        NewContribution(campaign.beneficiary, msg.sender, msg.value);
+
+        emit NewContribution(campaign.beneficiary, msg.sender, msg.value);
     }
 
-    function checkGoalReached() constant returns (bool reached, address beneficiary, uint goal, uint amount) {
+    function checkGoalReached() public view returns (bool reached, address beneficiary, uint goal, uint amount) {
         if (campaign.amount < campaign.fundingGoal)
-            return (false, campaign.beneficiary, campaign.fundingGoal , campaign.amount);
+            return (false, campaign.beneficiary, campaign.fundingGoal, campaign.amount);
         else
-            return (true, campaign.beneficiary, campaign.fundingGoal , campaign.amount);
+            return (true, campaign.beneficiary, campaign.fundingGoal, campaign.amount);
     }
 
-    function settle() {
+    function settle() public payable {
         if (campaign.amount >= campaign.fundingGoal) {
             uint am = campaign.amount;
+
             campaign.amount = 0;
             campaign.beneficiary.transfer(am);
-            Settlement(true);
+
+            emit Settlement(true);
         } else {
-            Settlement(false);
+            emit Settlement(false);
         }
     }
 }
