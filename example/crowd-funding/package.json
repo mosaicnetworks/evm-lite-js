@@ -1,0 +1,19 @@
+{
+  "name": "crowd-funding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "evm-lite-core": "^1.0.0-alpha.10",
+    "evm-lite-datadir": "^1.0.0-alpha.10",
+    "evm-lite-keystore": "^1.0.0-alpha.10",
+    "evm-lite-utils": "^1.0.0-alpha.10",
+    "solc": "^0.5.10"
+  }
+}
