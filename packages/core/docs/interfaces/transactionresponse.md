@@ -20,4 +20,4 @@
 
 • **txHash**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:50](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L50)*
+*Defined in [client/AbstractClient.ts:50](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L50)*

@@ -48,7 +48,7 @@
 
 \+ **new Transaction**(`tx`: [TX](../interfaces/tx.md), `constant`: boolean, `parseLogs?`: undefined | function, `unpackfn?`: any): *[Transaction](transaction.md)*
 
-*Defined in [core/src/Transaction.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L42)*
+*Defined in [Transaction.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L42)*
 
 **Parameters:**
 
@@ -69,7 +69,7 @@ Name | Type |
 
 *Implementation of [TX](../interfaces/tx.md).[chainId](../interfaces/tx.md#optional-chainid)*
 
-*Defined in [core/src/Transaction.ts:38](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L38)*
+*Defined in [Transaction.ts:38](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L38)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **constant**: *boolean*
 
-*Defined in [core/src/Transaction.ts:46](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L46)*
+*Defined in [Transaction.ts:46](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L46)*
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[data](../interfaces/tx.md#optional-data)*
 
-*Defined in [core/src/Transaction.ts:34](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L34)*
+*Defined in [Transaction.ts:34](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L34)*
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[from](../interfaces/tx.md#optional-from)*
 
-*Defined in [core/src/Transaction.ts:31](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L31)*
+*Defined in [Transaction.ts:31](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L31)*
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[gas](../interfaces/tx.md#gas)*
 
-*Defined in [core/src/Transaction.ts:35](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L35)*
+*Defined in [Transaction.ts:35](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L35)*
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[gasPrice](../interfaces/tx.md#gasprice)*
 
-*Defined in [core/src/Transaction.ts:36](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L36)*
+*Defined in [Transaction.ts:36](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L36)*
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 • **hash**? : *undefined | string*
 
-*Defined in [core/src/Transaction.ts:40](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L40)*
+*Defined in [Transaction.ts:40](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L40)*
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[nonce](../interfaces/tx.md#optional-nonce)*
 
-*Defined in [core/src/Transaction.ts:37](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L37)*
+*Defined in [Transaction.ts:37](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L37)*
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 • **parseLogs**? : *undefined | function*
 
-*Defined in [core/src/Transaction.ts:47](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L47)*
+*Defined in [Transaction.ts:47](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L47)*
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 • **receipt**? : *[TransactionReceipt](../interfaces/transactionreceipt.md)*
 
-*Defined in [core/src/Transaction.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L42)*
+*Defined in [Transaction.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L42)*
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 • **signed**? : *[SignedTransaction](../interfaces/signedtransaction.md)*
 
-*Defined in [core/src/Transaction.ts:41](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L41)*
+*Defined in [Transaction.ts:41](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L41)*
 
 ___
 
@@ -169,7 +169,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[to](../interfaces/tx.md#optional-to)*
 
-*Defined in [core/src/Transaction.ts:32](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L32)*
+*Defined in [Transaction.ts:32](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L32)*
 
 ___
 
@@ -177,7 +177,7 @@ ___
 
 • **unpackfn**? : *any*
 
-*Defined in [core/src/Transaction.ts:48](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L48)*
+*Defined in [Transaction.ts:48](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L48)*
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
 *Implementation of [TX](../interfaces/tx.md).[value](../interfaces/tx.md#optional-value)*
 
-*Defined in [core/src/Transaction.ts:33](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L33)*
+*Defined in [Transaction.ts:33](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L33)*
 
 ## Methods
 
@@ -195,7 +195,7 @@ ___
 
 ▸ **afterSubmission**(): *void*
 
-*Defined in [core/src/Transaction.ts:71](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L71)*
+*Defined in [Transaction.ts:71](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L71)*
 
 **Returns:** *void*
 
@@ -205,7 +205,7 @@ ___
 
 ▸ **beforeSubmission**(): *void*
 
-*Defined in [core/src/Transaction.ts:67](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L67)*
+*Defined in [Transaction.ts:67](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L67)*
 
 **Returns:** *void*
 
@@ -215,7 +215,7 @@ ___
 
 ▸ **clean**(): *void*
 
-*Defined in [core/src/Transaction.ts:86](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L86)*
+*Defined in [Transaction.ts:86](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L86)*
 
 **Returns:** *void*
 
@@ -225,6 +225,6 @@ ___
 
 ▸ **parseReceipt**(): *void*
 
-*Defined in [core/src/Transaction.ts:75](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L75)*
+*Defined in [Transaction.ts:75](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L75)*
 
 **Returns:** *void*

@@ -23,7 +23,7 @@
 
 • **address**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L16)*
+*Defined in [client/AbstractClient.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L16)*
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 • **balance**: *`BN` | number*
 
-*Defined in [core/src/client/AbstractClient.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L18)*
+*Defined in [client/AbstractClient.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L18)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **bytecode**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L19)*
+*Defined in [client/AbstractClient.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L19)*
 
 ___
 
@@ -47,4 +47,4 @@ ___
 
 • **nonce**: *number*
 
-*Defined in [core/src/client/AbstractClient.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L17)*
+*Defined in [client/AbstractClient.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L17)*

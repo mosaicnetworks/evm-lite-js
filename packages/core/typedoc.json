@@ -7,5 +7,7 @@
 	"include": "*.ts",
 	"exclude": "*.spec.ts",
 	"stripInternal": "false",
-	"readme": "./README.md"
+	"readme": "./README.md",
+	"excludeNotExported": true,
+	"excludeExternals": true
 }

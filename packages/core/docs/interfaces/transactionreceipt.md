@@ -29,7 +29,7 @@
 
 • **contractAddress**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:43](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L43)*
+*Defined in [client/AbstractClient.ts:43](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L43)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **cumulativeGasUsed**: *number*
 
-*Defined in [core/src/client/AbstractClient.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L42)*
+*Defined in [client/AbstractClient.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L42)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • **from**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:39](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L39)*
+*Defined in [client/AbstractClient.ts:39](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L39)*
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • **gasUsed**: *number*
 
-*Defined in [core/src/client/AbstractClient.ts:41](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L41)*
+*Defined in [client/AbstractClient.ts:41](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L41)*
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 • **logs**: *[Log](log.md)[]*
 
-*Defined in [core/src/client/AbstractClient.ts:44](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L44)*
+*Defined in [client/AbstractClient.ts:44](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L44)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 • **logsBloom**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:45](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L45)*
+*Defined in [client/AbstractClient.ts:45](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L45)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **root**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:37](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L37)*
+*Defined in [client/AbstractClient.ts:37](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L37)*
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 • **status**: *number*
 
-*Defined in [core/src/client/AbstractClient.ts:46](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L46)*
+*Defined in [client/AbstractClient.ts:46](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L46)*
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 • **to**? : *undefined | string*
 
-*Defined in [core/src/client/AbstractClient.ts:40](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L40)*
+*Defined in [client/AbstractClient.ts:40](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L40)*
 
 ___
 
@@ -101,4 +101,4 @@ ___
 
 • **transactionHash**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:38](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L38)*
+*Defined in [client/AbstractClient.ts:38](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L38)*

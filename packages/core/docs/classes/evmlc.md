@@ -43,7 +43,7 @@
 
 *Overrides [AbstractClient](abstractclient.md).[constructor](abstractclient.md#protected-constructor)*
 
-*Defined in [core/src/EVMLC.ts:15](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/EVMLC.ts#L15)*
+*Defined in [EVMLC.ts:15](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/EVMLC.ts#L15)*
 
 **Parameters:**
 
@@ -62,7 +62,7 @@ Name | Type |
 
 *Inherited from [AbstractClient](abstractclient.md).[host](abstractclient.md#host)*
 
-*Defined in [core/src/client/AbstractClient.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L68)*
+*Defined in [client/AbstractClient.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L68)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[port](abstractclient.md#port)*
 
-*Defined in [core/src/client/AbstractClient.ts:69](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L69)*
+*Defined in [client/AbstractClient.ts:69](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L69)*
 
 ## Methods
 
@@ -82,7 +82,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[callTX](abstractclient.md#protected-calltx)*
 
-*Defined in [core/src/client/AbstractClient.ts:112](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L112)*
+*Defined in [client/AbstractClient.ts:112](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L112)*
 
 **Parameters:**
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **callTransaction**<**R**>(`transaction`: [Transaction](transaction.md)): *`Promise<R>`*
 
-*Defined in [core/src/EVMLC.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/EVMLC.ts#L136)*
+*Defined in [EVMLC.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/EVMLC.ts#L136)*
 
 Sends a pure/view transaction to the node and returns the return of the
 contract function.
@@ -130,7 +130,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getAccount](abstractclient.md#getaccount)*
 
-*Defined in [core/src/client/AbstractClient.ts:90](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L90)*
+*Defined in [client/AbstractClient.ts:90](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L90)*
 
 **Parameters:**
 
@@ -148,7 +148,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getAccounts](abstractclient.md#getaccounts)*
 
-*Defined in [core/src/client/AbstractClient.ts:97](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L97)*
+*Defined in [client/AbstractClient.ts:97](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L97)*
 
 **Returns:** *`Promise<BaseAccount[]>`*
 
@@ -160,7 +160,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getContract](abstractclient.md#getcontract)*
 
-*Defined in [core/src/client/AbstractClient.ts:78](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L78)*
+*Defined in [client/AbstractClient.ts:78](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L78)*
 
 **Returns:** *`Promise<Contracts>`*
 
@@ -172,7 +172,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getInfo](abstractclient.md#getinfo)*
 
-*Defined in [core/src/client/AbstractClient.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L106)*
+*Defined in [client/AbstractClient.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L106)*
 
 **Returns:** *`Promise<Readonly<object>>`*
 
@@ -184,7 +184,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getPOAContract](abstractclient.md#getpoacontract)*
 
-*Defined in [core/src/client/AbstractClient.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L72)*
+*Defined in [client/AbstractClient.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L72)*
 
 **Returns:** *`Promise<POAContract>`*
 
@@ -196,7 +196,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[getReceipt](abstractclient.md#getreceipt)*
 
-*Defined in [core/src/client/AbstractClient.ts:84](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L84)*
+*Defined in [client/AbstractClient.ts:84](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L84)*
 
 **Parameters:**
 
@@ -214,7 +214,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[sendRaw](abstractclient.md#protected-sendraw)*
 
-*Defined in [core/src/client/AbstractClient.ts:122](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L122)*
+*Defined in [client/AbstractClient.ts:122](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L122)*
 
 **Parameters:**
 
@@ -232,7 +232,7 @@ ___
 
 *Inherited from [AbstractClient](abstractclient.md).[sendTX](abstractclient.md#protected-sendtx)*
 
-*Defined in [core/src/client/AbstractClient.ts:116](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L116)*
+*Defined in [client/AbstractClient.ts:116](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L116)*
 
 **Parameters:**
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **sendTransaction**(`tx`: [Transaction](transaction.md), `account`: [Account](account.md)): *`Promise<TransactionReceipt>`*
 
-*Defined in [core/src/EVMLC.ts:34](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/EVMLC.ts#L34)*
+*Defined in [EVMLC.ts:34](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/EVMLC.ts#L34)*
 
 Sends a payable transaction to the node and returns the transaction
 receipt of the transaction.

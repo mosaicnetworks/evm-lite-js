@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [BaseTransaction](basetransaction.md)
+* `BaseTransaction`
 
   * **TX**
 
@@ -33,9 +33,9 @@
 
 • **chainId**? : *`EVMTypes.ChainID`*
 
-*Inherited from [BaseTransaction](basetransaction.md).[chainId](basetransaction.md#optional-chainid)*
+*Inherited from void*
 
-*Defined in [core/src/Transaction.ts:12](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L12)*
+*Defined in [Transaction.ts:12](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L12)*
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 • **data**? : *`EVMTypes.Data`*
 
-*Defined in [core/src/Transaction.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L19)*
+*Defined in [Transaction.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L19)*
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 • **from**? : *`EVMTypes.Address`*
 
-*Defined in [core/src/Transaction.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L16)*
+*Defined in [Transaction.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L16)*
 
 ___
 
@@ -59,9 +59,9 @@ ___
 
 • **gas**: *`EVMTypes.Gas`*
 
-*Inherited from [BaseTransaction](basetransaction.md).[gas](basetransaction.md#gas)*
+*Inherited from void*
 
-*Defined in [core/src/Transaction.ts:9](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L9)*
+*Defined in [Transaction.ts:9](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L9)*
 
 ___
 
@@ -69,9 +69,9 @@ ___
 
 • **gasPrice**: *`EVMTypes.GasPrice`*
 
-*Inherited from [BaseTransaction](basetransaction.md).[gasPrice](basetransaction.md#gasprice)*
+*Inherited from void*
 
-*Defined in [core/src/Transaction.ts:10](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L10)*
+*Defined in [Transaction.ts:10](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L10)*
 
 ___
 
@@ -79,9 +79,9 @@ ___
 
 • **nonce**? : *`EVMTypes.Nonce`*
 
-*Inherited from [BaseTransaction](basetransaction.md).[nonce](basetransaction.md#optional-nonce)*
+*Inherited from void*
 
-*Defined in [core/src/Transaction.ts:11](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L11)*
+*Defined in [Transaction.ts:11](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L11)*
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 • **to**? : *`EVMTypes.Address`*
 
-*Defined in [core/src/Transaction.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L17)*
+*Defined in [Transaction.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L17)*
 
 ___
 
@@ -97,4 +97,4 @@ ___
 
 • **value**? : *`EVMTypes.Value`*
 
-*Defined in [core/src/Transaction.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L18)*
+*Defined in [Transaction.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L18)*

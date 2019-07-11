@@ -26,7 +26,7 @@
 
 • **constant**? : *any*
 
-*Defined in [core/src/Contract.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L18)*
+*Defined in [Contract.ts:18](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L18)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **inputs**: *[Input](input.md)[]*
 
-*Defined in [core/src/Contract.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L19)*
+*Defined in [Contract.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L19)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [core/src/Contract.ts:20](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L20)*
+*Defined in [Contract.ts:20](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L20)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **outputs**? : *any[]*
 
-*Defined in [core/src/Contract.ts:21](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L21)*
+*Defined in [Contract.ts:21](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L21)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **payable**: *any*
 
-*Defined in [core/src/Contract.ts:22](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L22)*
+*Defined in [Contract.ts:22](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L22)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **stateMutability**: *any*
 
-*Defined in [core/src/Contract.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L23)*
+*Defined in [Contract.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L23)*
 
 ___
 
@@ -74,4 +74,4 @@ ___
 
 • **type**: *any*
 
-*Defined in [core/src/Contract.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L24)*
+*Defined in [Contract.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L24)*

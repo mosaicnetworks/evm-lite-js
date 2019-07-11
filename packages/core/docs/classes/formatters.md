@@ -22,7 +22,7 @@
 
 ▸ **inputAddressFormatter**(`address`: string): *string*
 
-*Defined in [core/src/misc/formatters.ts:58](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/misc/formatters.ts#L58)*
+*Defined in [misc/formatters.ts:58](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/misc/formatters.ts#L58)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **inputCallFormatter**(`txObject`: [TX](../interfaces/tx.md)): *[FormattedTransaction](../interfaces/formattedtransaction.md)*
 
-*Defined in [core/src/misc/formatters.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/misc/formatters.ts#L19)*
+*Defined in [misc/formatters.ts:19](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/misc/formatters.ts#L19)*
 
 **Parameters:**
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **txInputFormatter**(`txObject`: [TX](../interfaces/tx.md)): *[FormattedTransaction](../interfaces/formattedtransaction.md)*
 
-*Defined in [core/src/misc/formatters.ts:29](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/misc/formatters.ts#L29)*
+*Defined in [misc/formatters.ts:29](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/misc/formatters.ts#L29)*
 
 **Parameters:**
 

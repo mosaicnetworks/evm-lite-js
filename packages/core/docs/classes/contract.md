@@ -41,7 +41,7 @@
 
 \+ **new Contract**(`abi`: [ContractABI](../globals.md#contractabi), `address?`: `EVMTypes.Address`, `bytcode?`: undefined | string): *[Contract](contract.md)*
 
-*Defined in [core/src/Contract.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L68)*
+*Defined in [Contract.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L68)*
 
 **Parameters:**
 
@@ -59,7 +59,7 @@ Name | Type |
 
 • **abi**: *[ContractABI](../globals.md#contractabi)*
 
-*Defined in [core/src/Contract.ts:71](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L71)*
+*Defined in [Contract.ts:71](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L71)*
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 • **address**? : *`EVMTypes.Address`*
 
-*Defined in [core/src/Contract.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L72)*
+*Defined in [Contract.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L72)*
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 • **bytcode**? : *undefined | string*
 
-*Defined in [core/src/Contract.ts:73](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L73)*
+*Defined in [Contract.ts:73](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L73)*
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 • **methods**: *`Schema`* =  {} as Schema
 
-*Defined in [core/src/Contract.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L68)*
+*Defined in [Contract.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L68)*
 
 ## Methods
 
@@ -91,7 +91,7 @@ ___
 
 ▸ **attachMethodsToContract**(): *void*
 
-*Defined in [core/src/Contract.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L136)*
+*Defined in [Contract.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L136)*
 
 **Returns:** *void*
 
@@ -101,7 +101,7 @@ ___
 
 ▸ **deployTransaction**(`parameters`: any[], `from`: `EVMTypes.Address`, `gas`: `EVMTypes.Gas`, `gasPrice`: `EVMTypes.GasPrice`): *[Transaction](transaction.md)*
 
-*Defined in [core/src/Contract.ts:91](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L91)*
+*Defined in [Contract.ts:91](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L91)*
 
 Generates a transaction that represets the deployment of a contract
 to the network.
@@ -125,7 +125,7 @@ ___
 
 ▸ **encodeConstructorParams**(`params`: any[]): *any*
 
-*Defined in [core/src/Contract.ts:168](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L168)*
+*Defined in [Contract.ts:168](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L168)*
 
 **Parameters:**
 
@@ -141,7 +141,7 @@ ___
 
 ▸ **parseLogs**(`logs`: [Log](../interfaces/log.md)[]): *[Log](../interfaces/log.md)[]*
 
-*Defined in [core/src/Contract.ts:181](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L181)*
+*Defined in [Contract.ts:181](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L181)*
 
 **Parameters:**
 
@@ -157,7 +157,7 @@ ___
 
 ▸ **setAddressAndAddFunctions**(`address`: string): *this*
 
-*Defined in [core/src/Contract.ts:129](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L129)*
+*Defined in [Contract.ts:129](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L129)*
 
 Sets the contract address to be used to any transactions
 generated from this object and populates the contract methods
@@ -177,7 +177,7 @@ ___
 
 ▸ **create**<**S**>(`abi`: [ContractABI](../globals.md#contractabi), `bytcode`: string): *[Contract](contract.md)‹*`S`*›*
 
-*Defined in [core/src/Contract.ts:61](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L61)*
+*Defined in [Contract.ts:61](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L61)*
 
 Create a `Contract` object for a contract that is yet to be
 deployed to a network.
@@ -204,7 +204,7 @@ ___
 
 ▸ **load**<**S**>(`abi`: [ContractABI](../globals.md#contractabi), `address`: `EVMTypes.Address`): *[Contract](contract.md)‹*`S`*›*
 
-*Defined in [core/src/Contract.ts:44](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L44)*
+*Defined in [Contract.ts:44](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L44)*
 
 Create a `Contract` object for a contract that has already
 been deployed to the network.

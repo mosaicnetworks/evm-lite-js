@@ -35,16 +35,13 @@
 
 \+ **new Account**(`__namedParameters`: object): *[Account](account.md)*
 
-*Defined in [core/src/Account.ts:109](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L109)*
+*Defined in [Account.ts:109](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L109)*
 
 **Parameters:**
 
-▪ **__namedParameters**: *object*
-
 Name | Type |
 ------ | ------ |
-`address` | string |
-`privateKey` | string |
+`__namedParameters` | object |
 
 **Returns:** *[Account](account.md)*
 
@@ -54,7 +51,7 @@ Name | Type |
 
 • **address**: *`EVMTypes.Address`*
 
-*Defined in [core/src/Account.ts:105](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L105)*
+*Defined in [Account.ts:105](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L105)*
 
 ___
 
@@ -62,7 +59,7 @@ ___
 
 • **balance**: *number* = 0
 
-*Defined in [core/src/Account.ts:108](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L108)*
+*Defined in [Account.ts:108](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L108)*
 
 ___
 
@@ -70,7 +67,7 @@ ___
 
 • **nonce**: *number* = 0
 
-*Defined in [core/src/Account.ts:109](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L109)*
+*Defined in [Account.ts:109](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L109)*
 
 ___
 
@@ -78,7 +75,7 @@ ___
 
 • **privateKey**: *string*
 
-*Defined in [core/src/Account.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L106)*
+*Defined in [Account.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L106)*
 
 ## Methods
 
@@ -86,7 +83,7 @@ ___
 
 ▸ **signTransaction**(`tx`: [TX](../interfaces/tx.md)): *[SignedTransaction](../interfaces/signedtransaction.md)*
 
-*Defined in [core/src/Account.ts:129](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L129)*
+*Defined in [Account.ts:129](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L129)*
 
 Signs a transaction
 
@@ -106,7 +103,7 @@ ___
 
 ▸ **toBaseAccount**(): *[BaseAccount](../interfaces/baseaccount.md)*
 
-*Defined in [core/src/Account.ts:210](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L210)*
+*Defined in [Account.ts:210](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L210)*
 
 Converts `this` object to a compact overview of the account.
 
@@ -120,7 +117,7 @@ ___
 
 ▸ **create**(`entropy?`: undefined | string): *[Account](account.md)*
 
-*Defined in [core/src/Account.ts:52](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L52)*
+*Defined in [Account.ts:52](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L52)*
 
 Creates an account key pair.
 
@@ -140,7 +137,7 @@ ___
 
 ▸ **fromPrivateKey**(`privateKey`: string): *[Account](account.md)*
 
-*Defined in [core/src/Account.ts:39](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L39)*
+*Defined in [Account.ts:39](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L39)*
 
 Creates an `Account` object for the given private key hex.
 
@@ -160,7 +157,7 @@ ___
 
 ▸ **prepareTransfer**(`from`: `EVMTypes.Address`, `to`: `EVMTypes.Address`, `value`: `EVMTypes.Value`, `gas`: `EVMTypes.Gas`, `gasPrice`: `EVMTypes.GasPrice`): *[Transaction](transaction.md)*
 
-*Defined in [core/src/Account.ts:70](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Account.ts#L70)*
+*Defined in [Account.ts:70](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Account.ts#L70)*
 
 Generates a transaction to transfer funds from one address to
 another.

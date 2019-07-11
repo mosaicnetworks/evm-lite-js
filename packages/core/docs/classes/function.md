@@ -36,7 +36,7 @@
 
 \+ **new Function**(`abi`: [ABI](../interfaces/abi.md), `contractAddress`: string): *[Function](function.md)*
 
-*Defined in [core/src/contract/Function.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L17)*
+*Defined in [contract/Function.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L17)*
 
 **Parameters:**
 
@@ -53,7 +53,7 @@ Name | Type |
 
 • **abi**: *[ABI](../interfaces/abi.md)*
 
-*Defined in [core/src/contract/Function.ts:20](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L20)*
+*Defined in [contract/Function.ts:20](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L20)*
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 • **constant**: *boolean*
 
-*Defined in [core/src/contract/Function.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L16)*
+*Defined in [contract/Function.ts:16](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L16)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 • **contractAddress**: *string*
 
-*Defined in [core/src/contract/Function.ts:21](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L21)*
+*Defined in [contract/Function.ts:21](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L21)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **inputTypes**: *any[]*
 
-*Defined in [core/src/contract/Function.ts:13](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L13)*
+*Defined in [contract/Function.ts:13](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L13)*
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [core/src/contract/Function.ts:12](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L12)*
+*Defined in [contract/Function.ts:12](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L12)*
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 • **outputTypes**: *any[]*
 
-*Defined in [core/src/contract/Function.ts:14](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L14)*
+*Defined in [contract/Function.ts:14](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L14)*
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 • **payable**: *boolean*
 
-*Defined in [core/src/contract/Function.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L17)*
+*Defined in [contract/Function.ts:17](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L17)*
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 • **solFunction**: *any*
 
-*Defined in [core/src/contract/Function.ts:15](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L15)*
+*Defined in [contract/Function.ts:15](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L15)*
 
 ## Methods
 
@@ -117,7 +117,7 @@ ___
 
 ▸ **generateTransaction**(`parseLogs`: function, `options`: [TX](../interfaces/tx.md), ...`funcArgs`: any[]): *[Transaction](transaction.md)*
 
-*Defined in [core/src/contract/Function.ts:52](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L52)*
+*Defined in [contract/Function.ts:52](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L52)*
 
 **Parameters:**
 
@@ -143,7 +143,7 @@ ___
 
 ▸ **unpackOutput**(`output`: string): *any*
 
-*Defined in [core/src/contract/Function.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/contract/Function.ts#L42)*
+*Defined in [contract/Function.ts:42](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/contract/Function.ts#L42)*
 
 **Parameters:**
 

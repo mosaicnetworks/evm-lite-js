@@ -24,7 +24,7 @@
 
 • **messageHash**: *string*
 
-*Defined in [core/src/Transaction.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L23)*
+*Defined in [Transaction.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L23)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **r**: *string*
 
-*Defined in [core/src/Transaction.ts:25](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L25)*
+*Defined in [Transaction.ts:25](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L25)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **rawTransaction**: *string*
 
-*Defined in [core/src/Transaction.ts:27](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L27)*
+*Defined in [Transaction.ts:27](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L27)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **s**: *string*
 
-*Defined in [core/src/Transaction.ts:26](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L26)*
+*Defined in [Transaction.ts:26](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L26)*
 
 ___
 
@@ -56,4 +56,4 @@ ___
 
 • **v**: *string*
 
-*Defined in [core/src/Transaction.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Transaction.ts#L24)*
+*Defined in [Transaction.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Transaction.ts#L24)*

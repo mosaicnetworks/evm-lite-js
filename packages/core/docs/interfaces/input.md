@@ -21,7 +21,7 @@
 
 • **name**: *string*
 
-*Defined in [core/src/Contract.ts:13](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L13)*
+*Defined in [Contract.ts:13](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L13)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 • **type**: *string*
 
-*Defined in [core/src/Contract.ts:14](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/Contract.ts#L14)*
+*Defined in [Contract.ts:14](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/Contract.ts#L14)*

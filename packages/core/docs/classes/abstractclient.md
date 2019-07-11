@@ -43,7 +43,7 @@
 
 \+ **new AbstractClient**(`host`: string, `port`: number): *[AbstractClient](abstractclient.md)*
 
-*Defined in [core/src/client/AbstractClient.ts:66](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L66)*
+*Defined in [client/AbstractClient.ts:66](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L66)*
 
 **Parameters:**
 
@@ -60,7 +60,7 @@ Name | Type |
 
 • **host**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L68)*
+*Defined in [client/AbstractClient.ts:68](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L68)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **port**: *number*
 
-*Defined in [core/src/client/AbstractClient.ts:69](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L69)*
+*Defined in [client/AbstractClient.ts:69](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L69)*
 
 ## Methods
 
@@ -76,7 +76,7 @@ ___
 
 ▸ **callTX**(`tx`: string): *`Promise<CallTransactionResponse>`*
 
-*Defined in [core/src/client/AbstractClient.ts:112](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L112)*
+*Defined in [client/AbstractClient.ts:112](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L112)*
 
 **Parameters:**
 
@@ -92,7 +92,7 @@ ___
 
 ▸ **get**(`path`: string): *`Promise<string>`*
 
-*Defined in [core/src/client/AbstractClient.ts:128](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L128)*
+*Defined in [client/AbstractClient.ts:128](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L128)*
 
 **Parameters:**
 
@@ -108,7 +108,7 @@ ___
 
 ▸ **getAccount**(`address`: string): *`Promise<BaseAccount>`*
 
-*Defined in [core/src/client/AbstractClient.ts:90](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L90)*
+*Defined in [client/AbstractClient.ts:90](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L90)*
 
 **Parameters:**
 
@@ -124,7 +124,7 @@ ___
 
 ▸ **getAccounts**(): *`Promise<BaseAccount[]>`*
 
-*Defined in [core/src/client/AbstractClient.ts:97](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L97)*
+*Defined in [client/AbstractClient.ts:97](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L97)*
 
 **Returns:** *`Promise<BaseAccount[]>`*
 
@@ -134,7 +134,7 @@ ___
 
 ▸ **getContract**(): *`Promise<Contracts>`*
 
-*Defined in [core/src/client/AbstractClient.ts:78](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L78)*
+*Defined in [client/AbstractClient.ts:78](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L78)*
 
 **Returns:** *`Promise<Contracts>`*
 
@@ -144,7 +144,7 @@ ___
 
 ▸ **getInfo**(): *`Promise<Readonly<object>>`*
 
-*Defined in [core/src/client/AbstractClient.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L106)*
+*Defined in [client/AbstractClient.ts:106](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L106)*
 
 **Returns:** *`Promise<Readonly<object>>`*
 
@@ -154,7 +154,7 @@ ___
 
 ▸ **getPOAContract**(): *`Promise<POAContract>`*
 
-*Defined in [core/src/client/AbstractClient.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L72)*
+*Defined in [client/AbstractClient.ts:72](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L72)*
 
 **Returns:** *`Promise<POAContract>`*
 
@@ -164,7 +164,7 @@ ___
 
 ▸ **getReceipt**(`txHash`: string): *`Promise<TransactionReceipt>`*
 
-*Defined in [core/src/client/AbstractClient.ts:84](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L84)*
+*Defined in [client/AbstractClient.ts:84](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L84)*
 
 **Parameters:**
 
@@ -178,9 +178,9 @@ ___
 
 ### `Private` options
 
-▸ **options**(`method`: string, `path`: string): *[RequestOptions](../interfaces/requestoptions.md)*
+▸ **options**(`method`: string, `path`: string): *`RequestOptions`*
 
-*Defined in [core/src/client/AbstractClient.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L136)*
+*Defined in [client/AbstractClient.ts:136](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L136)*
 
 **Parameters:**
 
@@ -189,7 +189,7 @@ Name | Type |
 `method` | string |
 `path` | string |
 
-**Returns:** *[RequestOptions](../interfaces/requestoptions.md)*
+**Returns:** *`RequestOptions`*
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 ▸ **post**(`path`: string, `tx`: string): *`Promise<string>`*
 
-*Defined in [core/src/client/AbstractClient.ts:132](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L132)*
+*Defined in [client/AbstractClient.ts:132](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L132)*
 
 **Parameters:**
 
@@ -212,15 +212,15 @@ ___
 
 ### `Private` request
 
-▸ **request**(`options`: [RequestOptions](../interfaces/requestoptions.md), `tx?`: undefined | string): *`Promise<string>`*
+▸ **request**(`options`: `RequestOptions`, `tx?`: undefined | string): *`Promise<string>`*
 
-*Defined in [core/src/client/AbstractClient.ts:145](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L145)*
+*Defined in [client/AbstractClient.ts:145](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L145)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [RequestOptions](../interfaces/requestoptions.md) |
+`options` | `RequestOptions` |
 `tx?` | undefined \| string |
 
 **Returns:** *`Promise<string>`*
@@ -231,7 +231,7 @@ ___
 
 ▸ **sendRaw**(`tx`: string): *`Promise<TransactionResponse>`*
 
-*Defined in [core/src/client/AbstractClient.ts:122](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L122)*
+*Defined in [client/AbstractClient.ts:122](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L122)*
 
 **Parameters:**
 
@@ -247,7 +247,7 @@ ___
 
 ▸ **sendTX**(`tx`: string): *`Promise<TransactionResponse>`*
 
-*Defined in [core/src/client/AbstractClient.ts:116](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L116)*
+*Defined in [client/AbstractClient.ts:116](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L116)*
 
 **Parameters:**
 

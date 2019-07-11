@@ -30,7 +30,7 @@
 
 • **address**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L24)*
+*Defined in [client/AbstractClient.ts:24](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L24)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **args**: *any*
 
-*Defined in [core/src/client/AbstractClient.ts:33](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L33)*
+*Defined in [client/AbstractClient.ts:33](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L33)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **blockHash**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:29](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L29)*
+*Defined in [client/AbstractClient.ts:29](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L29)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **blockNumber**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:26](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L26)*
+*Defined in [client/AbstractClient.ts:26](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L26)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **data**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:25](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L25)*
+*Defined in [client/AbstractClient.ts:25](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L25)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **event**? : *undefined | string*
 
-*Defined in [core/src/client/AbstractClient.ts:32](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L32)*
+*Defined in [client/AbstractClient.ts:32](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L32)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **logIndex**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:30](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L30)*
+*Defined in [client/AbstractClient.ts:30](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L30)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 • **removed**: *boolean*
 
-*Defined in [core/src/client/AbstractClient.ts:31](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L31)*
+*Defined in [client/AbstractClient.ts:31](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L31)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 • **topics**: *string[]*
 
-*Defined in [core/src/client/AbstractClient.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L23)*
+*Defined in [client/AbstractClient.ts:23](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L23)*
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 • **transactionHash**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:27](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L27)*
+*Defined in [client/AbstractClient.ts:27](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L27)*
 
 ___
 
@@ -110,4 +110,4 @@ ___
 
 • **transactionIndex**: *string*
 
-*Defined in [core/src/client/AbstractClient.ts:28](https://github.com/mosaicnetworks/evm-lite-js/blob/578e9b5/packages/core/src/client/AbstractClient.ts#L28)*
+*Defined in [client/AbstractClient.ts:28](https://github.com/mosaicnetworks/evm-lite-js/blob/0058f20/packages/core/src/client/AbstractClient.ts#L28)*
