@@ -85,7 +85,7 @@ const keystore = new Keystore(path.join(datadirPath, 'keystore'));
 datadir.setKeystore(keystore);
 ```
 
-We can now read our account and decrupt it using the function below
+We can now read our account and decrypt it using the function below
 
 ```javascript
 // ...
@@ -100,7 +100,7 @@ const getAccount = async (address, password) => {
 };
 ```
 
-Now that we have the scaffolding set up to deploy a contract, we can write a function to deploy the contract
+Now that we have the scaffolding set up to deploy a contract, we can write a function to just that
 
 ```javascript
 // ...
@@ -119,7 +119,7 @@ const deployContract = async (account, goal) => {
 };
 ```
 
-Since all requests to the now are `async` we will need to wrap our logic in a function.
+Since all requests to the now are `async` we will need to wrap our logic in a `async` function.
 
 ```javascript
 // ...
@@ -134,34 +134,6 @@ const run = async () => {
 	// populate contract functions and set contract address
 	contract.setAddressAndAddFunctions(receipt.contractAddress);
 
-	// now we can interact with the contract through
-	// contribute 1001 to crowdFunding
-	const contributeTransaction = contract.methods.contribute({
-		from: account.address,
-		gas: defaultGas,
-		gasPrice: defaultGasPrice,
-		value: 1001
-	});
-
-	// submit to node and get receipt
-	const contributeReceipt = await node.sendTransaction(
-		contributeTransaction,
-		account
-	);
-
-	console.log('ContributedL: ', 1001);
-
-	// check if goal reached
-	// notice no from address is needed as its a `view` transaction
-	const checkGoalTransaction = contract.methods.checkGoalReached({
-		gas: defaultGas,
-		gasPrice: defaultGasPrice
-	});
-
-	const checkGoalResponse = await node.callTransaction(checkGoalTransaction);
-
-	console.log('Goal Reached: ', checkGoalResponse[0]);
-
 	return 'done';
 };
 
@@ -169,3 +141,15 @@ run()
 	.then(console.log)
 	.catch(console.log);
 ```
+
+Now running
+
+```bash
+$ node src/index.js
+```
+
+Should deploy the contract, fetch the receipt and set the newly generated contract address to the contract object and populate all methods of the contract within `contract.methods`.
+
+## Interacting with Contract Methods
+
+Interacting with contract methods are outlined [here](interacting-contract.md).

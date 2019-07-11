@@ -7,7 +7,7 @@ This document will outline the steps to set-up a `Node.js` project with the requ
 1. [Set Up](#set-up)
 2. [Check Accounts](#check-accounts)
 3. [Setting Up Contract](#Setting-Up-Contract)
-4. [Compiling & Deploying](#compiling-&-deploying)
+4. [Compiling & Deploying](#compiling-and-deploying)
 
 ## Set Up
 
@@ -122,6 +122,6 @@ contract CrowdFunding {
 
 This contract has three functions and one constrcutor. We will deploy this contract with a funding goal of `1000` tokens and call `contribute()`, `checkGoalReached()` and `settle()` with the help of `evm-lite-js`.
 
-## Compiling & Deploying
+## Compiling and Deploying
 
 Compiling and deploying guide can be found [here](compile-deploy.md).
