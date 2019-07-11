@@ -1,7 +1,7 @@
 {
 	"name": "evm-lite-datadir",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0-alpha.9",
+	"version": "1.0.0-alpha.10",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
