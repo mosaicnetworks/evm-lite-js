@@ -1,9 +1,11 @@
 {
 	"name": "EVM-Lite Core",
 	"mode": "file",
-	"out": "doc",
+	"out": "docs",
 	"theme": "markdown",
-	"ignoreCompilerErrors": "false",
+	"ignoreCompilerErrors": "true",
+	"include": "*.ts",
 	"exclude": "*.spec.ts",
-	"stripInternal": "false"
+	"stripInternal": "false",
+	"readme": "./README.md"
 }
