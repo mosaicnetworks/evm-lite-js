@@ -15,7 +15,7 @@ We will be building a `smart contract` to handle all the business logic for a cr
 
 ## Pre-requisites
 
-Before starting we will need either a running `EVM-Lite` or a `Monet` node. If you have not yet started one up, you can visit the installation documentation for [`EVM-Lite`]() or [`Monet`]() to help get started.
+Before starting we will need either a running `EVM-Lite` or a `Monet` node. If you have not yet started one up, you can visit the installation documentation for [`EVM-Lite`](https://github.com/mosaicnetworks/evm-lite) or [`Monet`](https://github.com/mosaicnetworks/monetd) to help get started.
 
 You will also need to make sure that you have access to an account with funds on the respective network or node.
 
@@ -25,7 +25,7 @@ It is also advised to have `evmlc` installed. If you have not yet installed the 
 npm install -g evm-lite-cli
 ```
 
-Documentation of the commands can be found in its [repository]().
+Documentation of the commands can be found in its [repository](https://github.com/mosaicnetworks/evm-lite-cli).
 
 ### Importing Keyfile
 
