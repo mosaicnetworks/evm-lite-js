@@ -31,6 +31,16 @@ export interface AbstractSchema {
 }
 
 export default class Contract<Schema extends AbstractSchema> {
+	/**
+	 * Create a `Contract` object for a contract that has already
+	 * been deployed to the network.
+	 *
+	 * @param abi - The application binary interface of the contract
+	 * @param address - The address of the contract
+	 *
+	 * @returns A contract abstraction object to be used for interacting with
+	 * the contract
+	 */
 	public static load<S extends AbstractSchema>(
 		abi: ContractABI,
 		address: EVMTypes.Address
@@ -38,6 +48,16 @@ export default class Contract<Schema extends AbstractSchema> {
 		return new Contract(abi, address);
 	}
 
+	/**
+	 * Create a `Contract` object for a contract that is yet to be
+	 * deployed to a network.
+	 *
+	 * @param abi - The application binary interface of the contract
+	 * @param bytecode - The compiled bytecode of the contract
+	 *
+	 * @returns A contract abstraction object to be used for interacting with
+	 * the contract
+	 */
 	public static create<S extends AbstractSchema>(
 		abi: ContractABI,
 		bytcode: string
@@ -57,6 +77,17 @@ export default class Contract<Schema extends AbstractSchema> {
 		}
 	}
 
+	/**
+	 * Generates a transaction that represets the deployment of a contract
+	 * to the network.
+	 *
+	 * @param parameters - The constructor parameters for contract
+	 * @param from - The `from` address to deploy the contract with
+	 * @param gas - The max `gas` to use for deployment
+	 * @param gasPrice - The `gasPrice`for the transaction
+	 *
+	 * @returns The transaction object represeting deployment
+	 */
 	public deployTransaction(
 		parameters: any[],
 		from: EVMTypes.Address,
@@ -88,6 +119,13 @@ export default class Contract<Schema extends AbstractSchema> {
 		);
 	}
 
+	/**
+	 * Sets the contract address to be used to any transactions
+	 * generated from this object and populates the contract methods
+	 * under `.methods`.
+	 *
+	 * @param address - The address of the contract
+	 */
 	public setAddressAndAddFunctions(address: string): this {
 		this.address = address;
 		this.attachMethodsToContract();

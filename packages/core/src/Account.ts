@@ -29,18 +29,44 @@ const makeEven = (hex: string) => {
 };
 
 export default class Account {
+	/**
+	 * Creates an `Account` object for the given private key hex.
+	 *
+	 * @param privateKey - The private key hex
+	 *
+	 * @returns The account object representing the private key
+	 */
 	public static fromPrivateKey(privateKey: string) {
 		privateKey = Utils.cleanAddress(privateKey);
 
 		return new Account(EthLibAccount.fromPrivate(privateKey));
 	}
 
+	/**
+	 * Creates an account key pair.
+	 *
+	 * @param entropy - A random seed used to generate the account
+	 *
+	 * @returns A newly created `Account` object
+	 */
 	public static create(entropy?: string): Account {
 		const randomHex = require('crypto-random-hex');
 
 		return new Account(EthLibAccount.create(entropy || randomHex(32)));
 	}
 
+	/**
+	 * Generates a transaction to transfer funds from one address to
+	 * another.
+	 *
+	 * @param from - The address to deduct `value` tokens from
+	 * @param to - The address to transfer `value` tokens to
+	 * @param value - The number of tokens to transfer
+	 * @param gas - The max `gas` limit
+	 * @param gasPrice - The `gasPrice` per unit of `gas`
+	 *
+	 * @returns A transaction object represeting the requested transfer
+	 */
 	public static prepareTransfer(
 		from: EVMTypes.Address,
 		to: EVMTypes.Address,
@@ -93,6 +119,13 @@ export default class Account {
 		this.privateKey = privateKey;
 	}
 
+	/**
+	 * Signs a transaction
+	 *
+	 * @param tx - The transaction to sign
+	 *
+	 * @returns The signed object
+	 */
 	public signTransaction(tx: TX): SignedTransaction {
 		let error: Error | null = null;
 		let result;
@@ -169,6 +202,11 @@ export default class Account {
 		return result;
 	}
 
+	/**
+	 * Converts `this` object to a compact overview of the account.
+	 *
+	 * @returns A compact representation of the `Account` object
+	 */
 	public toBaseAccount(): BaseAccount {
 		return {
 			address: this.address,

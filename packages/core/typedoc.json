@@ -1,7 +1,7 @@
 {
 	"name": "EVM-Lite Core",
-	"mode": "modules",
-	"out": "docs",
+	"mode": "file",
+	"out": "doc",
 	"theme": "markdown",
 	"ignoreCompilerErrors": "false",
 	"exclude": "*.spec.ts",

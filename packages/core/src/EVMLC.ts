@@ -22,7 +22,8 @@ export default class EVMLC extends AbstractClient {
 	 * receipt of the transaction.
 	 *
 	 * @remarks
-	 * The returned receipt will have its `logs` parsed if any automatically.
+	 * The returned receipt will have its `logs` parsed if any automatically
+	 * with the corresponding decoders.
 	 *
 	 * @param tx - The transaction to be sent
 	 * @param account - The account used to sign the transaction
