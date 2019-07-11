@@ -9,8 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixes
+
+## 1.0.0-alpha-10
+
+### Added
+
 -   Package `evm-lite-utils` contains a merged `Utils` class from `evm-lite-core`, `evm-lite-keystore` and `evm-lite-datadir`.
 
 ### Changes
 
 -   `Keystore.import` now takes one argument `V3JSONKeyStore`
+
+### Fixes
+
+-   Contract methods now read in `value` attribute in a `transaction`.
