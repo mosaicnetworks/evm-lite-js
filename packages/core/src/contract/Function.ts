@@ -58,10 +58,8 @@ export default class Function {
 
 		const payload = this.solFunction.toPayload(funcArgs);
 		const tx: TX = {
-			from: options.from,
-			to: this.contractAddress,
-			gas: options.gas,
-			gasPrice: options.gasPrice
+			...options,
+			to: this.contractAddress
 		};
 
 		tx.data = payload.data;

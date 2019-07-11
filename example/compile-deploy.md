@@ -9,22 +9,35 @@ Create `compile.js` in `src` and paste the following
 ```javascript
 const fs = require('fs');
 
-// import solc compiler
+// solc@0.5.10
 const solc = require('solc');
 
-const compile = (path, contractName) => {
-	// read contract from path
-	const input = fs.readFileSync(path);
-
-	// compile contract
-	const output = solc.compile(input.toString(), 1);
-
-	// return abi and bytecode
-	return {
-		bytecode: output.contracts[`:${contractName}`].bytecode,
-		abi: output.contracts[`:${contractName}`].interface
+// compile solidity contract
+function compile(contractPath, contractName) {
+	const input = {
+		language: 'Solidity',
+		sources: {
+			Contracts: {
+				content: fs.readFileSync(contractPath, 'utf8')
+			}
+		},
+		settings: {
+			outputSelection: {
+				'*': {
+					'*': ['*']
+				}
+			}
+		}
 	};
-};
+
+	const output = JSON.parse(solc.compile(JSON.stringify(input)));
+	const compiledContract = output.contracts.Contracts[`${contractName}`];
+
+	return {
+		bytecode: compiledContract.evm.bytecode.object,
+		abi: compiledContract.abi
+	};
+}
 
 module.exports = compile;
 ```
@@ -43,8 +56,7 @@ const path = require('path');
 // import required objects
 const { EVMLC, Contract } = require('evm-lite-core');
 
-// account address, pass and defaults
-// REPLACE THESE
+// account address
 const address = '0x07BA865451D9417714E8Bb89e715ACBc789A1Bb7';
 const password = 'asdasd';
 const defaultGas = 10000000;
@@ -62,7 +74,7 @@ const node = new EVMLC('127.0.0.1', 8080);
 const compiled = compile(path.join(__dirname, 'contract.sol'), 'CrowdFunding');
 
 // Generate contract abstraction object
-const contract = Contract.create(JSON.parse(compiled.abi), compiled.bytecode);
+const contract = Contract.create(compiled.abi, compiled.bytecode);
 ```
 
 Now that we have the initial set up the deployment script set up, we will need to set up our `datadir` objects to read and decrypt accounts used to sign transactions.
