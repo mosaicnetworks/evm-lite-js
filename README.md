@@ -31,7 +31,7 @@ Current module versions:
 -   [`evm-lite-datadir@1.0.0-alpha.10`](packages/datadir/README.md)
 -   [`evm-lite-utils@1.0.0-alpha.10`](packages/utils/README.md)
 
-_Further module descriptions can be found within thier respective package directories._
+_Further module descriptions can be found within their respective package directories._
 
 ## Example
 

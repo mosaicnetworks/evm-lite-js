@@ -1,4 +1,4 @@
-# Example
+# Simple Crowd Funding Example
 
 The goal of this document is to explain most, if not all, interactions with either an `EVM-Lite` or `Monet` node.
 
@@ -11,7 +11,7 @@ The goal of this document is to explain most, if not all, interactions with eith
 
 ## Outline
 
-We will be building a `smart contract` to handle all the business logic for a crowd funding platform. We will touch on all `Accounts` (from `evm-lite-core`) module functionality as well as deploying `smart contracts` and interacting with its methods.
+We will be building a `smart contract` to handle all the business logic for a simple crowdfunding platform. We will touch on all `Accounts` (from `evm-lite-core`) module functionality as well as deploying `smart contracts` and interacting with its methods.
 
 ## Pre-requisites
 

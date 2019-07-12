@@ -1,3 +1,5 @@
+[Overview](README.md) / [Getting Started](getting-started.md) / Compile & Deploy
+
 # Compile & Deploy
 
 This document will explain how to compile `contract.sol` and deploy it to a node.
@@ -46,7 +48,7 @@ This function should compile a contract and return the `ABI` and `bytecode` whic
 
 ## Deployment
 
-Now that we have a function to compile the contract we can now contruct the `Contract` object from `evm-lite-core` and prepare it for deployment.
+Now that we have a function to compile the contract we can now construct the `Contract` object from `evm-lite-core` and prepare it for deployment.
 
 Create `index.js` in `src` and paste the following
 
@@ -131,7 +133,7 @@ const deployContract = async (account, goal) => {
 };
 ```
 
-Since all requests to the now are `async` we will need to wrap our logic in a `async` function.
+Since all requests to the now are `async` we will need to wrap our logic in an `async` function.
 
 ```javascript
 // ...

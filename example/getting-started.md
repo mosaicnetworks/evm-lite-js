@@ -1,3 +1,5 @@
+[Overview](README.md) / Getting Started
+
 # Getting Started
 
 This document will outline the steps to set-up a `Node.js` project with the requirements to start building a `Crowd Funding` platform.
@@ -8,6 +10,7 @@ This document will outline the steps to set-up a `Node.js` project with the requ
 2. [Check Accounts](#check-accounts)
 3. [Setting Up Contract](#Setting-Up-Contract)
 4. [Compiling & Deploying](#compiling-and-deploying)
+5. [Interacting with Contract Methods](#interacting-with-contract-methods)
 
 ## Set Up
 
@@ -123,8 +126,12 @@ contract CrowdFunding {
 }
 ```
 
-This contract has three functions and one constrcutor. We will deploy this contract with a funding goal of `1000` tokens and call `contribute()`, `checkGoalReached()` and `settle()` with the help of `evm-lite-js`.
+This contract has three functions and one constructor. We will deploy this contract with a funding goal of `1000` tokens and call `contribute()`, `checkGoalReached()` and `settle()` with the help of `evm-lite-js`.
 
 ## Compiling and Deploying
 
-Compiling and deploying guide can be found [here](compile-deploy.md).
+The compiling and deploying guide can be found [here](compile-deploy.md).
+
+## Interacting with Contract Methods
+
+Details on how to interact with contract methods can be found [here](interacting-contract.md).

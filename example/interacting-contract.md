@@ -1,3 +1,5 @@
+[Overview](README.md) / [Getting Started](getting-started.md) / [Compile & Deploy](compile-deploy.md) / Interacting with Contract Methods
+
 # Interacting with Contract Methods
 
 ## Contribute
@@ -26,7 +28,7 @@ const run = async () => {
 	);
 
 	// logs are automatically parsed from the receipt
-	// so we can parse how much we contributed to make sure
+	// so we can parse how much we contributed to making sure
 	console.log(
 		'Contributed: ',
 		contributeReceipt.logs[0].args.amount.toNumber()
@@ -44,7 +46,7 @@ The function will deploy a contract, populate the methods of the contract under 
 
 ## Check Goal
 
-Since we have contributed `1001` tokens to the contract whos initial goal was `1000` tokens, we should see that the `checkGoalReached()` methods should return `true`.
+Since we have contributed `1001` tokens to the contract whose initial goal was `1000` tokens, we should see that the `checkGoalReached()` methods should return `true`.
 
 Again extending the `run()` methods further
 
