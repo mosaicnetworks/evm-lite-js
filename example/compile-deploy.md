@@ -1,5 +1,7 @@
 [Overview](README.md) / [Getting Started](getting-started.md) / Compile & Deploy
 
+---
+
 # Compile & Deploy
 
 This document will explain how to compile `contract.sol` and deploy it to a node.

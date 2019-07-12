@@ -1,5 +1,7 @@
 [Overview](README.md) / [Getting Started](getting-started.md) / [Compile & Deploy](compile-deploy.md) / Interacting with Contract Methods
 
+---
+
 # Interacting with Contract Methods
 
 ## Contribute

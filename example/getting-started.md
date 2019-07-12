@@ -1,5 +1,7 @@
 [Overview](README.md) / Getting Started
 
+---
+
 # Getting Started
 
 This document will outline the steps to set-up a `Node.js` project with the requirements to start building a `Crowd Funding` platform.
