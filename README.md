@@ -5,7 +5,7 @@
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Example](#Example)
+2. [Demo](#Demo)
 3. [Developers](#developers)
 
 ## Installation
@@ -33,9 +33,9 @@ Current module versions:
 
 _Further module descriptions can be found within their respective package directories._
 
-## Example
+## Demo
 
-An end to end example can be found [here](example/README.md).
+An end to end demo can be found [here](demo/README.md).
 
 ## Developers
 
