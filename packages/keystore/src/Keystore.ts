@@ -58,15 +58,16 @@ export default class Keystore extends AbstractKeystore {
 				for (const file of list.filter(f => {
 					return !f.startsWith('.');
 				})) {
-					const data = fs.readFileSync(
-						nodePath.join(this.path, file),
-						'utf8'
-					);
-
 					try {
+						const data = fs.readFileSync(
+							nodePath.join(this.path, file),
+							'utf8'
+						);
+
 						keystores.push(JSONBig.parse(data));
 					} catch (e) {
-						// pass
+						// TODO: Maybe add a global `debug` option to display these messages ??
+						// console.log(e);
 					}
 				}
 
