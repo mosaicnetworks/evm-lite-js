@@ -7,10 +7,8 @@ import uuid from 'uuid';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
 const scryptPackage = require('scrypt');
-
 // const crypto = require('crypto');
 // import * as crypto from 'crypto';
-
 // Older version
 // let scrypt = require('scryptsy')
 
