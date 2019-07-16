@@ -6,7 +6,27 @@ import uuid from 'uuid';
 // @ts-ignore
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
-const scryptsy = require('scryptsy');
+const scryptPackage = require('scrypt');
+
+// const crypto = require('crypto');
+// import * as crypto from 'crypto';
+
+// Older version
+// let scrypt = require('scryptsy')
+
+let scrypt = function(
+	key: string | Buffer,
+	salt: any,
+	N: number,
+	r: number,
+	p: number,
+	dkLength: number
+) {
+	// C++ wrapper for scrypt
+	return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
+	// Built in crypto module node.js for >= 10.5.0
+	// return crypto.scryptSync(key, salt, dkLength, { N, r, p, maxmem: N });
+};
 const keccak256 = require('keccak256');
 
 import { Account } from 'evm-lite-core';
@@ -62,7 +82,7 @@ export default abstract class AbstractKeystore {
 			kdfparams.n = 8192;
 			kdfparams.r = 8;
 			kdfparams.p = 1;
-			derivedKey = scryptsy(
+			derivedKey = scrypt(
 				Buffer.from(password),
 				salt,
 				kdfparams.n,
@@ -128,10 +148,12 @@ export default abstract class AbstractKeystore {
 		let derivedKey;
 		let kdfparams;
 
+		console.log('Generating keystore params...');
 		if (json.crypto.kdf === 'scrypt') {
 			kdfparams = json.crypto.kdfparams;
 
-			derivedKey = scryptsy(
+			console.log('Working...');
+			derivedKey = scrypt(
 				Buffer.from(password),
 				Buffer.from(kdfparams.salt, 'hex'),
 				kdfparams.n,
@@ -139,12 +161,14 @@ export default abstract class AbstractKeystore {
 				kdfparams.p,
 				kdfparams.dklen
 			);
+			console.log('Done');
 		} else {
 			throw new Error('Unsupported key derivation scheme');
 		}
 
 		const ciphertext = Buffer.from(json.crypto.ciphertext, 'hex');
 
+		console.log('Decrypting keccak256...');
 		const mac = keccak256(
 			Buffer.concat([derivedKey.slice(16, 32), ciphertext])
 		).toString('hex');
@@ -153,6 +177,7 @@ export default abstract class AbstractKeystore {
 			throw new Error('Key derivation failed - possibly wrong password');
 		}
 
+		console.log('Creating decyipher iv...');
 		const decipher = createDecipheriv(
 			json.crypto.cipher,
 			derivedKey.slice(0, 16),
@@ -164,6 +189,7 @@ export default abstract class AbstractKeystore {
 			decipher.final()
 		]).toString('hex')}`;
 
+		console.log('Done');
 		return Account.fromPrivateKey(seed);
 	}
 }

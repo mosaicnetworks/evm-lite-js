@@ -22,6 +22,8 @@
 		"mkdirp": "^0.5.1",
 		"randombytes": "^2.1.0",
 		"scryptsy": "^2.0.0",
+		"scrypt": "^6.0.3",
+		"scryptsy": "^2.0.0",
 		"uuid": "^3.3.2"
 	},
 	"bugs": {
