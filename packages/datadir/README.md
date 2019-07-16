@@ -1,6 +1,6 @@
 # EVM-Lite DataDir [![npm version](https://badge.fury.io/js/evm-lite-datadir.svg)](https://badge.fury.io/js/evm-lite-datadir) ![npm](https://img.shields.io/npm/dm/evm-lite-datadir.svg)
 
-> Data directory management for EVM-Lite applications.
+Data directory management for EVM-Lite applications.
 
 ## Installation
 

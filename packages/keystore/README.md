@@ -1,6 +1,6 @@
 # EVM-Lite Keystore [![npm version](https://badge.fury.io/js/evm-lite-keystore.svg)](https://badge.fury.io/js/evm-lite-keystore) ![npm](https://img.shields.io/npm/dm/evm-lite-keystore.svg)
 
-> Keystore management for any EVM-Lite applications.
+Keystore management for any EVM-Lite applications.
 
 ## Installation
 
