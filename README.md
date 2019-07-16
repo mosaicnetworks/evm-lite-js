@@ -1,6 +1,8 @@
-# EVM-Lite Javascript Modules
+<img width="75px" height="75px" align="right" alt="JS Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1024px-Unofficial_JavaScript_logo_2.svg.png" title="Javascript Modules"/>
 
-> Javascript modules to interact with an EVM-Lite node
+# EVM-Lite JS Modules
+
+Javascript modules to interact with an [EVM-Lite]() or a [Monet]() node.
 
 ## Table of Contents
 
