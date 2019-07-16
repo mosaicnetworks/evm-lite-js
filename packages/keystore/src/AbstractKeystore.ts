@@ -148,11 +148,9 @@ export default abstract class AbstractKeystore {
 		let derivedKey;
 		let kdfparams;
 
-		console.log('Generating keystore params...');
 		if (json.crypto.kdf === 'scrypt') {
 			kdfparams = json.crypto.kdfparams;
 
-			console.log('Working...');
 			derivedKey = scrypt(
 				Buffer.from(password),
 				Buffer.from(kdfparams.salt, 'hex'),
@@ -161,14 +159,12 @@ export default abstract class AbstractKeystore {
 				kdfparams.p,
 				kdfparams.dklen
 			);
-			console.log('Done');
 		} else {
 			throw new Error('Unsupported key derivation scheme');
 		}
 
 		const ciphertext = Buffer.from(json.crypto.ciphertext, 'hex');
 
-		console.log('Decrypting keccak256...');
 		const mac = keccak256(
 			Buffer.concat([derivedKey.slice(16, 32), ciphertext])
 		).toString('hex');
@@ -177,7 +173,6 @@ export default abstract class AbstractKeystore {
 			throw new Error('Key derivation failed - possibly wrong password');
 		}
 
-		console.log('Creating decyipher iv...');
 		const decipher = createDecipheriv(
 			json.crypto.cipher,
 			derivedKey.slice(0, 16),
@@ -189,7 +184,6 @@ export default abstract class AbstractKeystore {
 			decipher.final()
 		]).toString('hex')}`;
 
-		console.log('Done');
 		return Account.fromPrivateKey(seed);
 	}
 }
