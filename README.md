@@ -2,6 +2,8 @@
 
 # EVM-Lite JS Modules
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Javascript modules to interact with an [EVM-Lite]() or a [Monet]() node.
 
 ## Table of Contents
