@@ -6,7 +6,25 @@ import uuid from 'uuid';
 // @ts-ignore
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
-const scryptsy = require('scryptsy');
+const scryptPackage = require('scrypt');
+// const crypto = require('crypto');
+// import * as crypto from 'crypto';
+// Older version
+// let scrypt = require('scryptsy')
+
+let scrypt = function(
+	key: string | Buffer,
+	salt: any,
+	N: number,
+	r: number,
+	p: number,
+	dkLength: number
+) {
+	// C++ wrapper for scrypt
+	return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
+	// Built in crypto module node.js for >= 10.5.0
+	// return crypto.scryptSync(key, salt, dkLength, { N, r, p, maxmem: N });
+};
 const keccak256 = require('keccak256');
 
 import { Account } from 'evm-lite-core';
@@ -62,7 +80,7 @@ export default abstract class AbstractKeystore {
 			kdfparams.n = 8192;
 			kdfparams.r = 8;
 			kdfparams.p = 1;
-			derivedKey = scryptsy(
+			derivedKey = scrypt(
 				Buffer.from(password),
 				salt,
 				kdfparams.n,
@@ -131,7 +149,7 @@ export default abstract class AbstractKeystore {
 		if (json.crypto.kdf === 'scrypt') {
 			kdfparams = json.crypto.kdfparams;
 
-			derivedKey = scryptsy(
+			derivedKey = scrypt(
 				Buffer.from(password),
 				Buffer.from(kdfparams.salt, 'hex'),
 				kdfparams.n,

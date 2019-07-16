@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-### Fixes
+-   Long decryption issue in `evm-lite-keystore` with method `Keystore.decrypt`
+-   `Keystore.list` now only reads files in can read and passes any it can not
 
 ## v1.0.0-alpha.10
 
@@ -22,7 +23,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   `Keystore.import` now takes one argument `V3JSONKeyStore`
-
-### Fixes
-
 -   Contract methods now read in `value` attribute in a `transaction`.

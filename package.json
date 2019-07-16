@@ -10,7 +10,6 @@
 		}
 	],
 	"scripts": {
-		"postinstall": "lerna run build",
 		"test": "jest",
 		"clean": "lerna run clean && rm -rf node_modules",
 		"clean:build": "lerna run clean:build",
