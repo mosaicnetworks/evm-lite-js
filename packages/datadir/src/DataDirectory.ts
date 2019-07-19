@@ -19,7 +19,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		}
 
 		this.config = new Configuration(
-			nodepath.join(this.path, 'config.toml')
+			nodepath.join(this.path, 'wallet.toml')
 		);
 	}
 
