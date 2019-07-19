@@ -94,15 +94,6 @@ export default abstract class AbstractClient {
 		return account;
 	}
 
-	public async getAccounts(): Promise<BaseAccount[]> {
-		const response = await this.get('/accounts');
-		const json = JSONBig.parse(response) as {
-			accounts: BaseAccount[];
-		};
-
-		return json.accounts || [];
-	}
-
 	public getInfo(): Promise<Readonly<object>> {
 		return this.get('/info').then((response: string) =>
 			JSONBig.parse(response)
