@@ -14,10 +14,14 @@ export function osDataDir(dir: string): string {
 				require('os').homedir(),
 				'AppData',
 				'Roaming',
-				dir
+				dir.toUpperCase()
 			);
 		case 'darwin':
-			return path.join(require('os').homedir(), 'Library', dir);
+			return path.join(
+				require('os').homedir(),
+				'Library',
+				dir.toUpperCase()
+			);
 
 		default:
 			return path.join(require('os').homedir(), `.${dir.toLowerCase()}`);
