@@ -59,4 +59,18 @@ export default class Utils {
 
 		return true;
 	}
+
+	public static hexToString(hex: string) {
+		let data = '';
+
+		if (!hex) {
+			return '';
+		}
+
+		for (let i = 0; i < hex.length; i += 2) {
+			data += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+		}
+
+		return data.trim().replace(/\u0000/g, '');
+	}
 }
