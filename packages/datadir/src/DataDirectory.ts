@@ -11,7 +11,8 @@ export default class DataDirectory<K extends AbstractKeystore> {
 
 	public keystore?: K;
 
-	constructor(public readonly path: string) {
+	// TODO: is this the best way this can be done?
+	constructor(public readonly path: string, configName: string) {
 		Utils.createDirectoryIfNotExists(path);
 
 		if (!Utils.isDirectory(this.path)) {
@@ -19,7 +20,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		}
 
 		this.config = new Configuration(
-			nodepath.join(this.path, 'wallet.toml')
+			nodepath.join(this.path, `${configName}.toml`)
 		);
 	}
 
@@ -27,5 +28,9 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		this.keystore = keystore;
 
 		return this;
+	}
+
+	public setConfigFileName() {
+		// pass
 	}
 }
