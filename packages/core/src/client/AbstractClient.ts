@@ -69,6 +69,10 @@ export default abstract class AbstractClient {
 		public readonly port: number
 	) {}
 
+	public async getEstimateGas(tx: string): Promise<{ limit: number }> {
+		return JSONBig.parse(await this.post('/estimateGas', tx));
+	}
+
 	public async getPOAContract(): Promise<POAContract> {
 		return this.get(`/poa`).then(
 			(response: string) => JSONBig.parse(response) as POAContract
