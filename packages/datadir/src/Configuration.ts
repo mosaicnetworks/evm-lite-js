@@ -36,12 +36,13 @@ export default class Configuration {
 	public default(): ConfigurationSchema {
 		return {
 			connection: {
-				host: '127.0.0.1',
+				host: 'localhost',
 				port: 8080
 			},
 			defaults: {
 				from: '',
-				gas: 100000,
+				// default gas 10^6
+				gas: 1000000,
 				gasPrice: 0
 			}
 		};
