@@ -27,7 +27,7 @@ let scrypt = function(
 };
 const keccak256 = require('keccak256');
 
-import { Account } from 'evm-lite-core';
+import { Account, BaseAccount } from 'evm-lite-core';
 
 interface KDFParams {
 	dklen: number;
@@ -37,7 +37,7 @@ interface KDFParams {
 	p: number;
 }
 
-export interface V3JSONKeyStore {
+export interface V3Keyfile {
 	readonly version: number;
 	readonly id: string;
 	readonly address: string;
@@ -51,19 +51,31 @@ export interface V3JSONKeyStore {
 	};
 }
 
+export interface MonikerBaseAccount extends BaseAccount {
+	moniker: string;
+}
+
+export interface MonikerKeystore {
+	[key: string]: V3Keyfile;
+}
+
 export default abstract class AbstractKeystore {
 	protected constructor() {}
 
-	public abstract create(password: string): Promise<V3JSONKeyStore>;
-	public abstract list(): Promise<V3JSONKeyStore[]>;
-	public abstract get(address: string): Promise<V3JSONKeyStore>;
+	public abstract create(
+		moniker: string,
+		password: string,
+		overridePath?: string
+	): Promise<V3Keyfile>;
+	public abstract list(): Promise<MonikerKeystore>;
+	public abstract get(moniker: string): Promise<V3Keyfile>;
 	public abstract update(
-		address: string,
+		moniker: string,
 		oldPass: string,
 		newPass: string
-	): Promise<V3JSONKeyStore>;
-	public abstract import(keyfile: V3JSONKeyStore): Promise<V3JSONKeyStore>;
-	public abstract export(address: string): Promise<V3JSONKeyStore>;
+	): Promise<V3Keyfile>;
+	public abstract import(keyfile: V3Keyfile): Promise<V3Keyfile>;
+	public abstract export(moniker: string): Promise<V3Keyfile>;
 
 	public static encrypt(account: Account, password: string) {
 		let derivedKey;
@@ -134,7 +146,7 @@ export default abstract class AbstractKeystore {
 		};
 	}
 
-	public static decrypt(json: V3JSONKeyStore, password: string) {
+	public static decrypt(json: V3Keyfile, password: string) {
 		if (!password) {
 			throw new Error('No password given.');
 		}
