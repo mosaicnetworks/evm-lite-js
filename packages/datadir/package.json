@@ -12,9 +12,9 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
-		"evm-lite-core": "file:../core",
-		"evm-lite-keystore": "file:../keystore",
-		"evm-lite-utils": "file:../utils",
+		"evm-lite-core": "^1.0.0-alpha.0",
+		"evm-lite-keystore": "^1.0.0-alpha.0",
+		"evm-lite-utils": "^1.0.0-alpha.0",
 		"mkdirp": "^0.5.1",
 		"toml": "^3.0.0",
 		"tomlify-j0.4": "^3.0.0"
