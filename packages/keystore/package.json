@@ -12,11 +12,11 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
+		"evm-lite-utils": "file:../utils",
+		"evm-lite-core": "file:../core",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
-		"evm-lite-core": "file:../core",
-		"evm-lite-utils": "file:../utils",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"mkdirp": "^0.5.1",

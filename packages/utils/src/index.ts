@@ -6,6 +6,12 @@ export default class Utils {
 		// pass
 	}
 
+	// requirements for valid moniker
+	// contains only string, letters and underscores
+	public static validMoniker = (m: string) => {
+		return m.match(/^\w+$/);
+	};
+
 	public static cleanAddress(address: string) {
 		address = Utils.trimHex(address);
 

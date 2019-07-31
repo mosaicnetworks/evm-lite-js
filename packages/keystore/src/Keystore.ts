@@ -4,7 +4,7 @@ import * as p from 'path';
 
 import { promisify } from 'util';
 
-import Utils from 'evm-lite-utils';
+import utils from 'evm-lite-utils';
 
 import { Account } from 'evm-lite-core';
 
@@ -18,19 +18,13 @@ const write = promisify(fs.writeFile);
 const read = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 
-// requirements for valid moniker
-// contains only string, letters and underscores
-const validMoniker = (m: string) => {
-	return m.match(/^\w+$/);
-};
-
 class Keystore extends AbstractKeystore {
 	constructor(public readonly path: string) {
 		super();
 
-		Utils.createDirectoryIfNotExists(this.path);
+		utils.createDirectoryIfNotExists(this.path);
 
-		if (!Utils.isDirectory(path)) {
+		if (!utils.isDirectory(path)) {
 			throw Error('Path provided for keystore is not a directory.');
 		}
 	}
@@ -72,7 +66,7 @@ class Keystore extends AbstractKeystore {
 		const path = p.join(overridePath || this.path, `${moniker}.json`);
 
 		// check moniker matches requirements
-		if (!validMoniker(moniker)) {
+		if (!utils.validMoniker(moniker)) {
 			return Promise.reject(
 				Error(
 					'Invalid character(s) in `moniker`. ' +
@@ -126,7 +120,7 @@ class Keystore extends AbstractKeystore {
 		try {
 			const mk = await this.list();
 
-			if (!validMoniker(moniker)) {
+			if (!utils.validMoniker(moniker)) {
 				return Promise.reject(
 					Error('Invalid character(s) in `moniker`')
 				);
@@ -176,7 +170,7 @@ class Keystore extends AbstractKeystore {
 				.filter(f => {
 					try {
 						const [moniker, ext] = f.split('.');
-						return validMoniker(moniker) && ext === 'json';
+						return utils.validMoniker(moniker) && ext === 'json';
 					} catch (e) {
 						return false;
 					}
