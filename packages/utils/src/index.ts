@@ -8,9 +8,9 @@ export default class Utils {
 
 	// requirements for valid moniker
 	// contains only string, letters and underscores
-	public static validMoniker = (m: string) => {
-		return m.match(/^\w+$/);
-	};
+	public static validMoniker(m: string): boolean {
+		return !!m.match(/^\w+$/);
+	}
 
 	public static cleanAddress(address: string) {
 		address = Utils.trimHex(address);

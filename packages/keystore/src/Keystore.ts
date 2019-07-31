@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as JSONBig from 'json-bigint';
 import * as p from 'path';
 
 import { promisify } from 'util';
@@ -104,7 +103,9 @@ class Keystore extends AbstractKeystore {
 			for (const filename of filtered) {
 				const [moniker, _] = filename.split('.');
 				const keyfile = JSON.parse(
-					await read(p.join(this.path, moniker), { encoding: 'utf8' })
+					await read(p.join(this.path, filename), {
+						encoding: 'utf8'
+					})
 				);
 
 				mk[moniker] = keyfile;

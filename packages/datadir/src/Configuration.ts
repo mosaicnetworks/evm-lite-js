@@ -40,6 +40,7 @@ export default class Configuration {
 				port: 8080
 			},
 			defaults: {
+				// default moniker for from address
 				from: '',
 				// default gas 10^6
 				gas: 1000000,
