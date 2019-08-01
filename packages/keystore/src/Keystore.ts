@@ -1,162 +1,188 @@
 import * as fs from 'fs';
-import * as JSONBig from 'json-bigint';
-import * as nodePath from 'path';
+import * as p from 'path';
 
-import Utils from 'evm-lite-utils';
+import { promisify } from 'util';
 
-import { Account, BaseAccount } from 'evm-lite-core';
+import utils from 'evm-lite-utils';
 
-import AbstractKeystore, { V3JSONKeyStore } from './AbstractKeystore';
+import { Account } from 'evm-lite-core';
 
-export default class Keystore extends AbstractKeystore {
+import AbstractKeystore, {
+	V3Keyfile,
+	MonikerKeystore
+} from './AbstractKeystore';
+
+// promisify native nodejs file system methods
+// to clean up implementing promisified keystore methods
+const write = promisify(fs.writeFile);
+const read = promisify(fs.readFile);
+const readdir = promisify(fs.readdir);
+
+class Keystore extends AbstractKeystore {
 	constructor(public readonly path: string) {
 		super();
 
-		Utils.createDirectoryIfNotExists(this.path);
+		utils.createDirectoryIfNotExists(this.path);
 
-		if (!Utils.isDirectory(path)) {
+		if (!utils.isDirectory(path)) {
 			throw Error('Path provided for keystore is not a directory.');
 		}
 	}
 
-	public create(
-		password: string,
-		overridePath?: string
-	): Promise<V3JSONKeyStore> {
-		const account: Account = Account.create();
-		const keystore = Keystore.encrypt(account, password);
-		const filename = `UTC--${JSONBig.stringify(new Date())}--${
-			account.address
-		}`
-			.replace(/"/g, '')
-			.replace(/:/g, '-');
-
-		return new Promise<V3JSONKeyStore>((resolve, reject) => {
-			fs.writeFile(
-				nodePath.join(overridePath || this.path, filename),
-				JSON.stringify(keystore),
-				err => {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(keystore);
-					}
-				}
-			);
-		});
+	// to be implemented
+	public export(address: string): Promise<V3Keyfile> {
+		throw new Error('Method not implemented.');
 	}
 
-	public async list(): Promise<V3JSONKeyStore[]> {
-		return new Promise<V3JSONKeyStore[]>((resolve, reject) => {
-			const keystores: V3JSONKeyStore[] = [];
-
-			fs.readdir(this.path, (err, list) => {
-				if (err) {
-					return reject(err);
-				}
-
-				for (const file of list.filter(f => {
-					return !f.startsWith('.');
-				})) {
-					try {
-						const data = fs.readFileSync(
-							nodePath.join(this.path, file),
-							'utf8'
-						);
-
-						keystores.push(JSONBig.parse(data));
-					} catch (e) {
-						// TODO: Maybe add a global `debug` option to display these messages ??
-						// console.log(e);
-					}
-				}
-
-				resolve(keystores);
-			});
-		});
-	}
-
-	public async get(address: string): Promise<V3JSONKeyStore> {
-		address = Utils.trimHex(address);
-
-		const keystores = await this.list();
-		const keystore = keystores.filter(
-			store => store.address === address
-		)[0];
-
-		if (!keystore) {
-			return Promise.reject(
-				new Error('Could not locate keystore for given address.')
-			);
-		}
-
-		return keystore;
-	}
-
-	public async update(
-		address: string,
-		oldPass: string,
-		newPass: string
-	): Promise<V3JSONKeyStore> {
-		const keystore = await this.get(address);
-
-		let account: Account;
-
-		try {
-			account = Keystore.decrypt(keystore, oldPass);
-		} catch (e) {
-			return Promise.reject('Decryption failed.');
-		}
-
-		const newKeystore = Keystore.encrypt(account, newPass);
-		const path = this.getPath(address);
-
-		fs.writeFileSync(path, JSON.stringify(newKeystore));
-
-		return Promise.resolve(newKeystore);
-	}
-
-	public async import(keyfile: V3JSONKeyStore): Promise<V3JSONKeyStore> {
+	// to be updated to moniker import
+	public async import(keyfile: V3Keyfile): Promise<V3Keyfile> {
 		const filename = `UTC--${JSON.stringify(new Date())}--${
 			keyfile.address
 		}`
 			.replace(/"/g, '')
 			.replace(/:/g, '-');
 
-		fs.writeFileSync(
-			nodePath.join(this.path, filename),
-			JSON.stringify(keyfile)
-		);
+		fs.writeFileSync(p.join(this.path, filename), JSON.stringify(keyfile));
 
 		return Promise.resolve(keyfile);
 	}
 
-	public export(address: string): Promise<V3JSONKeyStore> {
-		throw new Error('Method not implemented.');
+	public async create(
+		moniker: string,
+		passphrase: string,
+		overridePath?: string
+	): Promise<V3Keyfile> {
+		// needs to create a file with the moniker as the file name
+		// file name needs to be only contain letters, numbers and underscore
+		// file name also has to be unique in the directory
+
+		// lowercase moniker to avoid casing ambiguity
+		moniker = moniker.toLowerCase();
+
+		const account: Account = Account.create();
+		const keyfile = Keystore.encrypt(account, passphrase);
+
+		// add `.json` to keep inline with `givery` cli
+		const path = p.join(overridePath || this.path, `${moniker}.json`);
+
+		// check moniker matches requirements
+		if (!utils.validMoniker(moniker)) {
+			return Promise.reject(
+				Error(
+					'Invalid character(s) in `moniker`. ' +
+						'Should only contain letters, numbers and underscores'
+				)
+			);
+		}
+
+		// check if keyfile with moniker already exists
+		try {
+			// should error as moniker should not exist
+			await this.get(moniker);
+			return Promise.reject(
+				Error(`Moniker already exists in '${this.path}'`)
+			);
+		} catch (e) {
+			// do nothing as moniker is unqiue
+		}
+
+		// write keyfile to file
+		try {
+			await write(path, JSON.stringify(keyfile));
+			return Promise.resolve(keyfile);
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 
-	private getPath(address: string): string {
-		const dir = fs.readdirSync(this.path).filter(file => {
-			return !file.startsWith('.');
-		});
+	public async list(): Promise<MonikerKeystore> {
+		const mk = {} as MonikerKeystore;
 
-		if (address.startsWith('0x')) {
-			address = address.substr(2);
-		}
+		try {
+			const filtered = await this.filtereddir();
 
-		address = address.toLowerCase();
+			for (const filename of filtered) {
+				const [moniker, _] = filename.split('.');
+				const keyfile = JSON.parse(
+					await read(p.join(this.path, filename), {
+						encoding: 'utf8'
+					})
+				);
 
-		for (const filename of dir) {
-			const filepath = nodePath.join(this.path, filename);
-			const account: BaseAccount = JSONBig.parse(
-				fs.readFileSync(filepath, 'utf8')
-			);
-
-			if (account.address === address) {
-				return filepath;
+				mk[moniker] = keyfile;
 			}
-		}
 
-		return '';
+			return Promise.resolve(mk);
+		} catch (e) {
+			return Promise.reject(e);
+		}
+	}
+
+	public async get(moniker: string): Promise<V3Keyfile> {
+		try {
+			const mk = await this.list();
+
+			if (!utils.validMoniker(moniker)) {
+				return Promise.reject(
+					Error('Invalid character(s) in `moniker`')
+				);
+			}
+
+			const keyfile = mk[moniker];
+			if (!keyfile) {
+				return Promise.reject(
+					new Error('Could not locate keystore for given address')
+				);
+			}
+
+			return Promise.resolve(keyfile);
+		} catch (e) {
+			return Promise.reject(e);
+		}
+	}
+
+	public async update(
+		moniker: string,
+		oldPass: string,
+		newPass: string
+	): Promise<V3Keyfile> {
+		try {
+			// this.get would have validated moniker and checked if exists
+			// no need to check here
+			const keyfile = await this.get(moniker);
+			const account = Keystore.decrypt(keyfile, oldPass);
+			const updated = Keystore.encrypt(account, newPass);
+			const path = p.join(this.path, `${moniker}.json`);
+
+			await write(path, JSON.stringify(updated));
+
+			return Promise.resolve(updated);
+		} catch (e) {
+			return Promise.reject(e);
+		}
+	}
+
+	private async filtereddir(): Promise<string[]> {
+		try {
+			const dir = await readdir(this.path);
+			const filtered = dir
+				// filter out any hidden files generated by OS (.DS_Store)
+				.filter(f => !f.startsWith('.'))
+				// filter only files that match the moniker requirements
+				.filter(f => {
+					try {
+						const [moniker, ext] = f.split('.');
+						return utils.validMoniker(moniker) && ext === 'json';
+					} catch (e) {
+						return false;
+					}
+				});
+
+			return Promise.resolve(filtered);
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 }
+
+export default Keystore;

@@ -2,17 +2,26 @@ import * as fs from 'fs';
 import * as toml from 'toml';
 import * as tomlify from 'tomlify-j0.4';
 
-import Utils from 'evm-lite-utils';
+import { promisify } from 'util';
+
+import utils from 'evm-lite-utils';
 
 import { EVMTypes } from 'evm-lite-core';
 
+// promisify filesystem methods
+const read = promisify(fs.readFile);
+const write = promisify(fs.writeFile);
+
 export interface ConfigurationSchema {
+	// node defaults
 	connection: {
 		host: string;
 		port: number;
 	};
+
+	// transaction defaults
 	defaults: {
-		from: EVMTypes.Address;
+		from: string;
 		gas: EVMTypes.Gas;
 		gasPrice: EVMTypes.GasPrice;
 	};
@@ -24,7 +33,7 @@ export default class Configuration {
 	constructor(public readonly path: string) {
 		this.state = this.default();
 
-		if (Utils.exists(this.path)) {
+		if (utils.exists(this.path)) {
 			const tomlData: string = fs.readFileSync(this.path, 'utf8');
 
 			this.state = toml.parse(tomlData);
@@ -40,6 +49,7 @@ export default class Configuration {
 				port: 8080
 			},
 			defaults: {
+				// default moniker for `from` address
 				from: '',
 				// default gas 10^6
 				gas: 1000000,
@@ -61,44 +71,31 @@ export default class Configuration {
 		});
 	}
 
-	public load(): Promise<ConfigurationSchema> {
-		return new Promise<any>((resolve, reject) => {
-			fs.readFile(this.path, (err, data) => {
-				if (err) {
-					reject(err);
-					return;
-				}
+	public async load(): Promise<ConfigurationSchema> {
+		try {
+			const data = await read(this.path, { encoding: 'utf8' });
+			const config = toml.parse(data.toString());
 
-				resolve(toml.parse(data.toString()));
-			});
-		});
+			return Promise.resolve(config);
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 
-	public save(data: ConfigurationSchema): Promise<void> {
+	public async save(data: ConfigurationSchema): Promise<void> {
 		if (!data.defaults.gasPrice) {
 			data.defaults.gasPrice = 0;
 		}
 
-		return new Promise<void>((resolve, reject) => {
-			if (Utils.deepEquals(this.state, data)) {
-				resolve();
-			} else {
-				fs.writeFile(
-					this.path,
-					tomlify.toToml(data, { spaces: 2 }),
-					err => {
-						if (err) {
-							reject(
-								new Error('Writing the configuration failed.')
-							);
-							return;
-						}
+		try {
+			if (!utils.deepEquals(this.state, data)) {
+				const tomldata = tomlify.toToml(data, { spaces: 2 });
 
-						this.state = data;
-						resolve();
-					}
-				);
+				await write(this.path, tomldata);
+				return Promise.resolve();
 			}
-		});
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 }
