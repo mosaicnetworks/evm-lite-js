@@ -2,6 +2,7 @@
 
 # EVM-Lite JS Modules
 
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Javascript modules to interact with an [EVM-Lite]() or a [Monet]() node.
