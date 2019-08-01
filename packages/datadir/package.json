@@ -1,7 +1,7 @@
 {
 	"name": "evm-lite-datadir",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0-alpha.17",
+	"version": "1.0.0-alpha.18",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -12,9 +12,9 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
-		"evm-lite-core": "^1.0.0-alpha.0",
-		"evm-lite-keystore": "^1.0.0-alpha.0",
-		"evm-lite-utils": "^1.0.0-alpha.0",
+		"evm-lite-core": "^1.0.0-alpha.18",
+		"evm-lite-keystore": "^1.0.0-alpha.18",
+		"evm-lite-utils": "^1.0.0-alpha.18",
 		"mkdirp": "^0.5.1",
 		"toml": "^3.0.0",
 		"tomlify-j0.4": "^3.0.0"
