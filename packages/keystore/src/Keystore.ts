@@ -120,6 +120,10 @@ class Keystore extends AbstractKeystore {
 		}
 	}
 
+	// this function is more time complicated than it should be
+	// we should change this so that it reads directly from the keystore
+	// as we know the path of the keyfile this.path + moniker.json
+	// this will reduce the time complexity but for now this will suffice
 	public async get(moniker: string): Promise<V3Keyfile> {
 		try {
 			// force to lower case

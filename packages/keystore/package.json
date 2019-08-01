@@ -9,7 +9,8 @@
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
-		"prepublish": "tsc"
+		"prepublish": "tsc",
+		"test": "jest"
 	},
 	"dependencies": {
 		"browserify-cipher": "^1.0.1",
