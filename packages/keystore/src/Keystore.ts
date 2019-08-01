@@ -109,7 +109,9 @@ class Keystore extends AbstractKeystore {
 					})
 				);
 
-				mk[moniker] = keyfile;
+				// should not matter to lowercase as moniker is lowercased
+				// when created but for sanity, we should leave it in there
+				mk[moniker.toLowerCase()] = keyfile;
 			}
 
 			return Promise.resolve(mk);
@@ -120,6 +122,9 @@ class Keystore extends AbstractKeystore {
 
 	public async get(moniker: string): Promise<V3Keyfile> {
 		try {
+			// force to lower case
+			moniker = moniker.toLowerCase();
+
 			const mk = await this.list();
 
 			if (!utils.validMoniker(moniker)) {
