@@ -2,6 +2,9 @@
 	"name": "evm-lite-js",
 	"private": true,
 	"author": "Mosaic Networks",
+	"workspaces": [
+		"packages/*"
+	],
 	"authors": [
 		{
 			"name": "Danu Kumanan",
@@ -17,7 +20,7 @@
 		"bootstrap": "lerna bootstrap",
 		"convert": "lerna link convert",
 		"link": "lerna link",
-		"prepublish": "yarn run build",
+		"prepublish": "yarn run build && lerna link",
 		"doc": "lerna run doc",
 		"publish": "lerna publish"
 	},
@@ -42,29 +45,7 @@
 		"tslint-config-prettier": "^1.15.0",
 		"typedoc": "^0.14.2",
 		"typedoc-plugin-markdown": "^2.0.8",
-		"typescript": "^3.1.6"
-	},
-	"workspaces": [
-		"packages/*"
-	],
-	"dependencies": {
-		"evm-lite-core": "file:packages/core",
-		"evm-lite-datadir": "file:packages/datadir",
-		"evm-lite-keystore": "file:packages/keystore",
-		"evm-lite-utils": "file:packages/utils"
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"transform": {
-			".(ts)": "ts-jest"
-		},
-		"testRegex": "(/tests/.*|(\\.|/)(test))\\.ts?$",
-		"moduleFileExtensions": [
-			"ts",
-			"js"
-		],
-		"roots": [
-			"packages/"
-		]
+		"typescript": "^3.1.6",
+		"lerna": "^3.15.0"
 	}
 }

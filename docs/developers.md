@@ -8,12 +8,6 @@ First, we will need to install `yarn` as our `npm` client.
 curl -o- -L https://yarnpkg.com/install.sh | bash
 ```
 
-Another dependency required for development is `lerna.js`.
-
-```bash
-yarn global add lerna
-```
-
 ## Architecture
 
 This repo is a multi-package repository with the higher level `packages/` directory containing each of the packages.

@@ -12,16 +12,16 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
+		"evm-lite-core": "^1.0.0-alpha.0",
+		"evm-lite-utils": "^1.0.0-alpha.0",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
-		"evm-lite-core": "file:../core",
-		"evm-lite-utils": "file:../utils",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"mkdirp": "^0.5.1",
 		"randombytes": "^2.1.0",
-		"scrypt": "^6.0.3",
+		"scrypt": "6.0.3",
 		"scryptsy": "^2.0.0",
 		"uuid": "^3.3.2"
 	},

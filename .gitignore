@@ -4,5 +4,6 @@ dist
 lerna-debug.log
 tsconfig.tsbuildinfo
 coverage
+package-lock.json
 # example
 # docs

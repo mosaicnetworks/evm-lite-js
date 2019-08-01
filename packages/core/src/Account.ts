@@ -3,7 +3,7 @@ import * as ethlib from 'eth-lib';
 // @ts-ignore
 import * as EthLibAccount from 'eth-lib/lib/account';
 
-import Utils from 'evm-lite-utils';
+import utils from 'evm-lite-utils';
 
 import { BaseAccount } from './client/AbstractClient';
 
@@ -37,7 +37,7 @@ export default class Account {
 	 * @returns The account object representing the private key
 	 */
 	public static fromPrivateKey(privateKey: string) {
-		privateKey = Utils.cleanAddress(privateKey);
+		privateKey = utils.cleanAddress(privateKey);
 
 		return new Account(EthLibAccount.fromPrivate(privateKey));
 	}
