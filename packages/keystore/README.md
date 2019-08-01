@@ -1,4 +1,6 @@
-# EVM-Lite Keystore [![npm version](https://badge.fury.io/js/evm-lite-keystore.svg)](https://badge.fury.io/js/evm-lite-keystore) ![npm](https://img.shields.io/npm/dm/evm-lite-keystore.svg)
+# EVM-Lite Keystore
+
+[![npm version](https://badge.fury.io/js/evm-lite-keystore.svg)](https://badge.fury.io/js/evm-lite-keystore)
 
 Keystore management for any EVM-Lite applications.
 
@@ -38,10 +40,10 @@ const keystore = new Keystore('<HOME_DIR>/.evmlc/keystore');
 
 ### `list`
 
-Should list all `V3JSONKeystore` files in the directory specified in the constructor.
+Should list all `V3Keyfile` files in the directory specified in the constructor.
 
 ```typescript
-list(): Promise<V3JSONKeyStore[]>
+list(): Promise<MonikerKeystore>
 ```
 
 #### Example
@@ -55,27 +57,27 @@ keystore
 
 ### `get`
 
-Should get a single `V3JSONKeystore` file.
+Should get a single `V3Keyfile` file.
 
 ```typescript
-get(address: string): Promise<V3JSONKeyStore>
+get(moniker: string): Promise<V3Keyfile>
 ```
 
 #### Example
 
 ```typescript
 keystore
-	.get('0x15418f174df69d798b3872BEc30881eaF51d042F')
+	.get('moniker')
 	.then(console.log)
 	.catch(console.log);
 ```
 
 ### `create`
 
-Should create a `V3JSONKeystore` encrypted with the password specified and place in the directory.
+Should create a `V3Keyfile` encrypted with the password specified and place in the directory.
 
 ```typescript
-create(password: string): Promise<V3JSONKeyStore>
+create(moniker: string, password: string, overridePath?: string): Promise<V3Keyfile>
 ```
 
 #### Example
@@ -89,26 +91,24 @@ keystore
 
 ### `decrypt`
 
-Should decrypt a `V3JSONKeystore` with the ecrypted password.
+Should decrypt a `V3Keyfile` with the ecrypted password.
 
 ```typescript
-decrypt(v3JSONKeystore: V3JSONKeystore, password: string): Account
+decrypt(keyfile: V3Keyfile, password: string): Account
 ```
 
 #### Example
 
 ```typescript
 keystore
-	.get('0x15418f174df69d798b3872BEc30881eaF51d042F')
-	.then(v3JSONKeystore =>
-		keystore.decrypt(v3JSONKeystore, 'supersecurepassword')
-	)
+	.get('moniker')
+	.then(keyfile => keystore.decrypt(keyfile, 'supersecurepassword'))
 	.then(console.log)
 	.catch(console.log);
 ```
 
 <!--
-- `create()` - create a single `V3JSONKeystore` file
-- `update()` - update the password on a single `V3JSONKeystore` file
-- `import()` - import a single `V3JSONKeystore` file
-- `export()` - export a single `V3JSONKeystore` file -->
+- `create()` - create a single `V3Keyfile` file
+- `update()` - update the password on a single `V3Keyfile` file
+- `import()` - import a single `V3Keyfile` file
+- `export()` - export a single `V3Keyfile` file -->
