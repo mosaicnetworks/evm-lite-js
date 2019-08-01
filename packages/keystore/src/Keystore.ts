@@ -12,7 +12,8 @@ import AbstractKeystore, {
 	MonikerKeystore
 } from './AbstractKeystore';
 
-// promisify
+// promisify native nodejs file system methods
+// to clean up implementing promisified keystore methods
 const write = promisify(fs.writeFile);
 const read = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
@@ -48,7 +49,7 @@ class Keystore extends AbstractKeystore {
 
 	public async create(
 		moniker: string,
-		password: string,
+		passphrase: string,
 		overridePath?: string
 	): Promise<V3Keyfile> {
 		// needs to create a file with the moniker as the file name
@@ -59,9 +60,9 @@ class Keystore extends AbstractKeystore {
 		moniker = moniker.toLowerCase();
 
 		const account: Account = Account.create();
-		const keyfile = Keystore.encrypt(account, password);
+		const keyfile = Keystore.encrypt(account, passphrase);
 
-		// add `.json` to keep inline with `givery`
+		// add `.json` to keep inline with `givery` cli
 		const path = p.join(overridePath || this.path, `${moniker}.json`);
 
 		// check moniker matches requirements

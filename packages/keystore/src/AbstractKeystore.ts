@@ -6,6 +6,7 @@ import uuid from 'uuid';
 // @ts-ignore
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
+// c++ implementation of scrypt
 const scryptPackage = require('scrypt');
 // const crypto = require('crypto');
 // import * as crypto from 'crypto';
@@ -59,25 +60,68 @@ export interface MonikerKeystore {
 	[key: string]: V3Keyfile;
 }
 
+/**
+ * An abstract class representation of our `moniker` base keystore. All keyfiles
+ * are referenced by `moniker` as the unique identifier instead of the address.
+ */
 export default abstract class AbstractKeystore {
+	/**
+	 * Abstract class should never be initialised.
+	 */
 	protected constructor() {}
 
+	/**
+	 * Create an encrypted V3Keyfile in the keystore.
+	 *
+	 * @param moniker - The unique human readable identifier for the account
+	 * @param passphrase - The passphrase used to encrypt the account
+	 * @param overridePath - Override path of the location of the keyfile
+	 *
+	 * @returns A promise resolving created encrypted keyfile
+	 */
 	public abstract create(
 		moniker: string,
-		password: string,
+		passphrase: string,
 		overridePath?: string
 	): Promise<V3Keyfile>;
+
+	/**
+	 * List all keyfiles and return as mapping of moniker to keyfile.
+	 *
+	 * @returns A promise resolving a mapping of moniker to keyfile
+	 */
 	public abstract list(): Promise<MonikerKeystore>;
+
+	/**
+	 * Fetch a single keyfile for a specific moniker.
+	 *
+	 * @param moniker - The moniker of the required keyfile
+	 *
+	 * @returns A promise resolving the required keyfile
+	 */
 	public abstract get(moniker: string): Promise<V3Keyfile>;
+
+	/**
+	 * Update the passphrase of a keyfile only if the old passphrase is known.
+	 *
+	 * @param moniker - The moniker of the keyfile to update passphrase
+	 * @param oldPass - Old passphrase of the keyfile
+	 * @param newPass - New passphrase to be used to encrypt the keyfile
+	 *
+	 * @returns A promise resolving the updated keyfile
+	 */
 	public abstract update(
 		moniker: string,
 		oldPass: string,
 		newPass: string
 	): Promise<V3Keyfile>;
+
+	// import, export functions
 	public abstract import(keyfile: V3Keyfile): Promise<V3Keyfile>;
 	public abstract export(moniker: string): Promise<V3Keyfile>;
 
-	public static encrypt(account: Account, password: string) {
+	// The encrypt and decrypt functions for our keystore
+	public static encrypt(account: Account, passphrase: string) {
 		let derivedKey;
 
 		const salt = randomBytes(32);
@@ -93,7 +137,7 @@ export default abstract class AbstractKeystore {
 			kdfparams.r = 8;
 			kdfparams.p = 1;
 			derivedKey = scrypt(
-				Buffer.from(password),
+				Buffer.from(passphrase),
 				salt,
 				kdfparams.n,
 				kdfparams.r,
@@ -146,8 +190,8 @@ export default abstract class AbstractKeystore {
 		};
 	}
 
-	public static decrypt(json: V3Keyfile, password: string) {
-		if (!password) {
+	public static decrypt(json: V3Keyfile, passphrase: string) {
+		if (!passphrase) {
 			throw new Error('No password given.');
 		}
 
@@ -162,7 +206,7 @@ export default abstract class AbstractKeystore {
 			kdfparams = json.crypto.kdfparams;
 
 			derivedKey = scrypt(
-				Buffer.from(password),
+				Buffer.from(passphrase),
 				Buffer.from(kdfparams.salt, 'hex'),
 				kdfparams.n,
 				kdfparams.r,

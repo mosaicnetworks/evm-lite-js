@@ -1,33 +1,20 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
-export default class Utils {
-	private constructor() {
-		// pass
+export default class utils {
+	// should never be initialized
+	private constructor() {}
+
+	/**
+	 * Keystore methods
+	 */
+	public static validMoniker(moniker: string): boolean {
+		return !!moniker.match(/^\w+$/);
 	}
 
-	// requirements for valid moniker
-	// contains only string, letters and underscores
-	public static validMoniker(m: string): boolean {
-		return !!m.match(/^\w+$/);
-	}
-
-	public static cleanAddress(address: string) {
-		address = Utils.trimHex(address);
-
-		return `0x${address}`;
-	}
-
-	public static trimHex(hex: string) {
-		hex = hex.toLowerCase();
-
-		while (hex.startsWith('0x')) {
-			hex = `${hex.slice(2)}`;
-		}
-
-		return hex;
-	}
-
+	/**
+	 * File system methods
+	 */
 	public static exists(path: string): boolean {
 		return fs.existsSync(path);
 	}
@@ -37,7 +24,7 @@ export default class Utils {
 	}
 
 	public static createDirectoryIfNotExists(path: string): void {
-		if (!Utils.exists(path)) {
+		if (!utils.exists(path)) {
 			mkdir.sync(path);
 		}
 	}
@@ -55,7 +42,7 @@ export default class Utils {
 				typeof objectA[propName] === 'object' &&
 				typeof objectB[propName] === 'object'
 			) {
-				if (!Utils.deepEquals(objectA[propName], objectB[propName])) {
+				if (!utils.deepEquals(objectA[propName], objectB[propName])) {
 					return false;
 				}
 			} else if (objectA[propName] !== objectB[propName]) {
@@ -66,6 +53,9 @@ export default class Utils {
 		return true;
 	}
 
+	/**
+	 * Misc methods
+	 */
 	public static hexToString(hex: string) {
 		let data = '';
 
@@ -78,5 +68,21 @@ export default class Utils {
 		}
 
 		return data.trim().replace(/\u0000/g, '');
+	}
+
+	public static cleanAddress(address: string) {
+		address = utils.trimHex(address);
+
+		return `0x${address}`;
+	}
+
+	public static trimHex(hex: string) {
+		hex = hex.toLowerCase();
+
+		while (hex.startsWith('0x')) {
+			hex = `${hex.slice(2)}`;
+		}
+
+		return hex;
 	}
 }
