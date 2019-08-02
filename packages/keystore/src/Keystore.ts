@@ -111,6 +111,8 @@ class Keystore extends AbstractKeystore {
 
 				// should not matter to lowercase as moniker is lowercased
 				// when created but for sanity, we should leave it in there
+				// `giverny` and scripts also generate keyfiles with different
+				// casing so will needs to this avoid any incompatability
 				mk[moniker.toLowerCase()] = keyfile;
 			}
 
@@ -140,7 +142,7 @@ class Keystore extends AbstractKeystore {
 			const keyfile = mk[moniker];
 			if (!keyfile) {
 				return Promise.reject(
-					new Error('Could not locate keystore for given address')
+					new Error('Could not locate keystore for given moniker')
 				);
 			}
 

@@ -147,14 +147,6 @@ export default class Contract<Schema extends AbstractSchema> {
 					throw new Error('Cannot attach function');
 				}
 
-				const decoders = this.abi
-					.filter(json => {
-						return json.type === 'event';
-					})
-					.map(json => {
-						return new SolidityEvent(null, json, null);
-					});
-
 				const fn = new Function(funcABI, this.address);
 
 				// @ts-ignore
@@ -180,12 +172,8 @@ export default class Contract<Schema extends AbstractSchema> {
 
 	private parseLogs(logs: Log[]): Log[] {
 		const decoders = this.abi
-			.filter(json => {
-				return json.type === 'event';
-			})
-			.map(json => {
-				return new SolidityEvent(null, json, null);
-			});
+			.filter(json => json.type === 'event')
+			.map(json => new SolidityEvent(null, json, null));
 
 		return logs
 			.map((log: Log) => {
