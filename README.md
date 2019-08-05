@@ -31,10 +31,10 @@ yarn add evm-lite-core evm-lite-keystore evm-lite-datadir
 
 Current module versions:
 
--   `evm-lite-core@1.0.0-alpha.19` [<sub>docs</sub>](packages/core/README.md)
--   `evm-lite-keystore@1.0.0-alpha.19` [<sub>docs</sub>](packages/keystore/README.md)
--   `evm-lite-datadir@1.0.0-alpha.19` [<sub>docs</sub>](packages/datadir/README.md)
--   `evm-lite-utils@1.0.0-alpha.19` [<sub>docs</sub>](packages/utils/README.md)
+-   `evm-lite-core@1.0.0-alpha.20` [<sub>docs</sub>](packages/core/README.md)
+-   `evm-lite-keystore@1.0.0-alpha.20` [<sub>docs</sub>](packages/keystore/README.md)
+-   `evm-lite-datadir@1.0.0-alpha.20` [<sub>docs</sub>](packages/datadir/README.md)
+-   `evm-lite-utils@1.0.0-alpha.20` [<sub>docs</sub>](packages/utils/README.md)
 
 _Further module descriptions can be found within their respective package directories._
 
