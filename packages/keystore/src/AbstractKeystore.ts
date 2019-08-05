@@ -117,7 +117,10 @@ export default abstract class AbstractKeystore {
 	): Promise<V3Keyfile>;
 
 	// import, export functions
-	public abstract import(keyfile: V3Keyfile): Promise<V3Keyfile>;
+	public abstract import(
+		moniker: string,
+		keyfile: V3Keyfile
+	): Promise<V3Keyfile>;
 	public abstract export(moniker: string): Promise<V3Keyfile>;
 
 	// The encrypt and decrypt functions for our keystore

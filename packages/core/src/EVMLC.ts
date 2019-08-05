@@ -44,7 +44,7 @@ export default class EVMLC extends AbstractClient {
 			);
 		}
 
-		// first check if the fields required are present and not undefined.
+		// first check if the fields required are present 0and not undefined.
 		if (!tx.gas || (!tx.gasPrice && tx.gasPrice !== 0)) {
 			return Promise.reject(
 				new Error('Transaction `gas` or `gasPrice` not set.')

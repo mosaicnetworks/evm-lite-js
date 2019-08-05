@@ -92,6 +92,10 @@ export default class Configuration {
 				const tomldata = tomlify.toToml(data, { spaces: 2 });
 
 				await write(this.path, tomldata);
+
+				// update current data with newly saved
+				this.state = data;
+
 				return Promise.resolve();
 			}
 		} catch (e) {
