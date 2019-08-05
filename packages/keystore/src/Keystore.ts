@@ -35,14 +35,27 @@ class Keystore extends AbstractKeystore {
 	}
 
 	// to be updated to moniker import
-	public async import(keyfile: V3Keyfile): Promise<V3Keyfile> {
-		const filename = `UTC--${JSON.stringify(new Date())}--${
-			keyfile.address
-		}`
-			.replace(/"/g, '')
-			.replace(/:/g, '-');
+	public async import(
+		moniker: string,
+		keyfile: V3Keyfile
+	): Promise<V3Keyfile> {
+		// lowercase moniker to avoid casing ambiguity
+		moniker = moniker.toLowerCase();
 
-		fs.writeFileSync(p.join(this.path, filename), JSON.stringify(keyfile));
+		// check moniker matches requirements
+		if (!utils.validMoniker(moniker)) {
+			return Promise.reject(
+				Error(
+					'Invalid character(s) in `moniker`. ' +
+						'Should only contain letters, numbers and underscores'
+				)
+			);
+		}
+
+		fs.writeFileSync(
+			p.join(this.path, `${moniker}.json`),
+			JSON.stringify(keyfile)
+		);
 
 		return Promise.resolve(keyfile);
 	}

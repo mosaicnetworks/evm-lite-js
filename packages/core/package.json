@@ -14,11 +14,11 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
+		"evm-lite-utils": "^1.0.0-alpha.19",
 		"ascii-table": "^0.0.9",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "0.2.8",
-		"evm-lite-utils": "^1.0.0-alpha.19",
 		"json-bigint": "0.3.0",
 		"randombytes": "^2.1.0",
 		"uuid": "^3.3.2",
