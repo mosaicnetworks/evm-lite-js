@@ -1,7 +1,7 @@
 import { AbstractClient } from 'evm-lite-core';
 
 // Babble block interface
-export interface BabbleBlock {
+export interface IBabbleBlock {
 	Body: {
 		Index: number;
 		RoundReceived: number;
@@ -17,16 +17,27 @@ export interface BabbleBlock {
 	};
 }
 
+export interface IBabblePeer {
+	NetAddr: string;
+	PubKeyHex: string;
+	Moniker: string;
+}
+
 class BabbleClient extends AbstractClient {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
 
-	// methods here
-	public getBlock(index: number): Promise<BabbleBlock> {
-		return this.get(`/block/${index}`).then(
-			(response: string) => JSON.parse(response) as BabbleBlock
-		);
+	public async getBlock(index: number): Promise<IBabbleBlock> {
+		return JSON.parse(await this.get(`/block/${index}`));
+	}
+
+	public async getPeers(): Promise<IBabblePeer[]> {
+		return JSON.parse(await this.get(`/peers`));
+	}
+
+	public async getGenesisPeers(): Promise<IBabblePeer[]> {
+		return JSON.parse(await this.get(`/genesispeers`));
 	}
 }
 
