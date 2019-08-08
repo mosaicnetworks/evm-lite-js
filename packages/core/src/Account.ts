@@ -5,7 +5,7 @@ import * as EthLibAccount from 'eth-lib/lib/account';
 
 import utils from 'evm-lite-utils';
 
-import { BaseAccount } from './client/AbstractClient';
+import { BaseAccount } from './client/BaseEVMLC';
 
 import Formatters from './misc/formatters';
 import Transaction, { SignedTransaction, TX } from './Transaction';

@@ -1,6 +1,6 @@
 import Utils from 'evm-lite-utils';
 
-import AbstractClient, { TransactionReceipt } from './client/AbstractClient';
+import BaseEVMLC, { TransactionReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
 import Transaction from './Transaction';
@@ -12,7 +12,7 @@ function delay(t: number, v?: any) {
 	});
 }
 
-export default class EVMLC extends AbstractClient {
+export default class EVMLC extends BaseEVMLC {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
@@ -96,8 +96,10 @@ export default class EVMLC extends AbstractClient {
 			);
 		}
 
+		let hash: string;
 		try {
-			tx.receipt = await this.sendRaw(tx.signed.rawTransaction);
+			const response = await this.sendRaw(tx.signed.rawTransaction);
+			hash = response.txHash;
 		} catch (e) {
 			return Promise.reject(
 				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
@@ -105,10 +107,10 @@ export default class EVMLC extends AbstractClient {
 		}
 
 		// temp until logs and subscribtions
-		// await delay(5);
+		await delay(5);
 
-		// tx.hash = hash;
-		// tx.receipt = await this.getReceipt(hash);
+		tx.hash = hash;
+		tx.receipt = await this.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction

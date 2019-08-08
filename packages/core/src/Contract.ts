@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 import SolidityEvent from 'web3/lib/web3/event.js';
 
-import { Log } from './client/AbstractClient';
+import { Log } from './client/BaseEVMLC';
 
 import Function from './contract/Function';
 import Transaction, { TX } from './Transaction';

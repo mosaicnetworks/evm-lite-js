@@ -2,8 +2,7 @@ import Utils from 'evm-lite-utils';
 
 import EVMTypes from './misc/types';
 
-import { Log } from './client/AbstractClient';
-import { TransactionReceipt } from './client/AbstractClient';
+import { Log, TransactionReceipt } from './client/BaseEVMLC';
 
 interface BaseTransaction {
 	gas: EVMTypes.Gas;

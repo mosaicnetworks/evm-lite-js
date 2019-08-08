@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 const SolFunction = require('web3/lib/web3/function');
 
-import { Log } from '../client/AbstractClient';
+import { Log } from '../client/BaseEVMLC';
 import { ABI, Input } from '../Contract';
 
 import Transaction, { TX } from '../Transaction';
