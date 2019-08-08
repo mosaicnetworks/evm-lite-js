@@ -108,10 +108,10 @@ export default abstract class AbstractClient {
 		return JSONBig.parse(await this.post('/call', tx));
 	}
 
-	protected async sendRaw(tx: string): Promise<TransactionResponse> {
-		return this.post('/rawtx', tx).then(
-			response => JSONBig.parse(response) as TransactionResponse
-		);
+	protected async sendRaw(tx: string): Promise<TransactionReceipt> {
+		return this.post('/rawtx', tx).then(response => {
+			return JSONBig.parse(response) as TransactionReceipt;
+		});
 	}
 
 	private async get(path: string) {

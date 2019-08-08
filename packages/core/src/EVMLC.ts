@@ -96,10 +96,8 @@ export default class EVMLC extends AbstractClient {
 			);
 		}
 
-		let hash: string;
 		try {
-			const response = await this.sendRaw(tx.signed.rawTransaction);
-			hash = response.txHash;
+			tx.receipt = await this.sendRaw(tx.signed.rawTransaction);
 		} catch (e) {
 			return Promise.reject(
 				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
@@ -107,10 +105,10 @@ export default class EVMLC extends AbstractClient {
 		}
 
 		// temp until logs and subscribtions
-		await delay(5);
+		// await delay(5);
 
-		tx.hash = hash;
-		tx.receipt = await this.getReceipt(hash);
+		// tx.hash = hash;
+		// tx.receipt = await this.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction
@@ -158,8 +156,8 @@ export default class EVMLC extends AbstractClient {
 		}
 
 		// not needed fields
-		delete transaction.nonce;
 		delete transaction.from;
+		delete transaction.nonce;
 
 		// send transaction (without signing)
 		const call = await this.callTX(JSON.stringify(transaction));
