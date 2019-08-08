@@ -1,5 +1,6 @@
 import Utils from 'evm-lite-utils';
 
+import AbstractClient from './client/AbstractClient';
 import BaseEVMLC, { TransactionReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
@@ -12,9 +13,18 @@ function delay(t: number, v?: any) {
 	});
 }
 
-export default class EVMLC extends BaseEVMLC {
+export default class EVMLC<
+	TConsensus extends AbstractClient
+> extends BaseEVMLC {
+	public consensus?: TConsensus;
+
 	constructor(host: string, port: number) {
 		super(host, port);
+	}
+
+	// some function to set the consensus
+	public setConsensus(consensus: TConsensus) {
+		this.consensus = consensus;
 	}
 
 	/**
