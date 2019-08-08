@@ -1,6 +1,4 @@
-import * as JSONBig from 'json-bigint';
-
-import AbstractClient from 'evm-lite-core';
+import { AbstractClient } from 'evm-lite-core';
 
 // Babble block interface
 export interface BabbleBlock {
@@ -27,7 +25,7 @@ class BabbleClient extends AbstractClient {
 	// methods here
 	public getBlock(index: number): Promise<BabbleBlock> {
 		return this.get(`/block/${index}`).then(
-			(response: string) => JSONBig.parse(response) as BabbleBlock
+			(response: string) => JSON.parse(response) as BabbleBlock
 		);
 	}
 }
