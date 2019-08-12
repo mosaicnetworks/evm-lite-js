@@ -5,7 +5,7 @@ import * as EthLibAccount from 'eth-lib/lib/account';
 
 import utils from 'evm-lite-utils';
 
-import { BaseAccount } from './client/BaseEVMLC';
+import { IBaseAccount } from './client/BaseEVMLC';
 
 import Formatters from './misc/formatters';
 import Transaction, { SignedTransaction, TX } from './Transaction';
@@ -207,7 +207,7 @@ export default class Account {
 	 *
 	 * @returns A compact representation of the `Account` object
 	 */
-	public toBaseAccount(): BaseAccount {
+	public toBaseAccount(): IBaseAccount {
 		return {
 			address: this.address,
 			balance: this.balance,

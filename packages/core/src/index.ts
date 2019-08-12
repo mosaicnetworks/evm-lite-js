@@ -4,6 +4,6 @@ export { default as Account } from './Account';
 export { default as Contract, ContractABI, AbstractSchema } from './Contract';
 export { default as AbstractClient } from './client/AbstractClient';
 
-export { BaseAccount, TxReceipt } from './client/BaseEVMLC';
+export { IBaseAccount, IReceipt } from './client/BaseEVMLC';
 
 export { default as EVMTypes } from './misc/types';

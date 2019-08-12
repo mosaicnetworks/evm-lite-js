@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 import SolidityEvent from 'web3/lib/web3/event.js';
 
-import { Log } from './client/BaseEVMLC';
+import { ILog } from './client/BaseEVMLC';
 
 import Function from './contract/Function';
 import Transaction, { TX } from './Transaction';
@@ -170,13 +170,13 @@ export default class Contract<Schema extends AbstractSchema> {
 		);
 	}
 
-	private parseLogs(logs: Log[]): Log[] {
+	private parseLogs(logs: ILog[]): ILog[] {
 		const decoders = this.abi
 			.filter(json => json.type === 'event')
 			.map(json => new SolidityEvent(null, json, null));
 
 		return logs
-			.map((log: Log) => {
+			.map((log: ILog) => {
 				const decoder = decoders.find(d => {
 					return d.signature() === log.topics[0].replace('0x', '');
 				});
@@ -187,7 +187,7 @@ export default class Contract<Schema extends AbstractSchema> {
 					return log;
 				}
 			})
-			.map((log: Log) => {
+			.map((log: ILog) => {
 				const abis = this.abi.find(json => {
 					return json.type === 'event' && log.event === json.name;
 				});

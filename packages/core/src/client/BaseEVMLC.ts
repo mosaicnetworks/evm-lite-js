@@ -6,14 +6,14 @@ import { ContractABI } from '../Contract';
 
 import AbstractClient from './AbstractClient';
 
-export interface BaseAccount {
+export interface IBaseAccount {
 	readonly address: string;
 	readonly nonce: number;
 	readonly balance: BN | number;
 	readonly bytecode: string;
 }
 
-export interface Log {
+export interface ILog {
 	readonly topics: string[];
 	readonly address: string;
 	readonly data: string;
@@ -27,7 +27,7 @@ export interface Log {
 	readonly args: any;
 }
 
-export interface TxReceipt {
+export interface IReceipt {
 	readonly root: string;
 	readonly transactionHash: string;
 	readonly from: string;
@@ -35,20 +35,20 @@ export interface TxReceipt {
 	readonly gasUsed: number;
 	readonly cumulativeGasUsed: number;
 	readonly contractAddress: string;
-	readonly logs: Log[];
+	readonly logs: ILog[];
 	readonly logsBloom: string;
 	readonly status: number;
 }
 
-export interface SendTxResponse {
+export interface ISendTxResponse {
 	readonly txHash: string;
 }
 
-interface CallTxResponse {
+interface ICallTxResponse {
 	data: string;
 }
 
-interface POAContract {
+interface IPOAContract {
 	readonly address: string;
 	readonly abi: ContractABI;
 }
@@ -58,25 +58,25 @@ class BaseEVMLC extends AbstractClient {
 		super(host, port);
 	}
 
-	protected async callTx(tx: string): Promise<CallTxResponse> {
+	protected async callTx(tx: string): Promise<ICallTxResponse> {
 		return JSONBig.parse(await this.post('/call', tx));
 	}
 
-	protected async sendTx(signedTx: string): Promise<SendTxResponse> {
+	protected async sendTx(signedTx: string): Promise<ISendTxResponse> {
 		return JSONBig.parse(await this.post('/rawtx', signedTx));
 	}
 
-	public async getPOAContract(): Promise<POAContract> {
+	public async getPOAContract(): Promise<IPOAContract> {
 		return JSONBig.parse(await this.get(`/poa`));
 	}
 
-	public async getReceipt(txHash: string): Promise<TxReceipt> {
+	public async getReceipt(txHash: string): Promise<IReceipt> {
 		return JSONBig.parse(await this.get(`/tx/${txHash}`));
 	}
 
-	public async getAccount(address: string): Promise<BaseAccount> {
+	public async getAccount(address: string): Promise<IBaseAccount> {
 		const response = await this.get(`/account/${address}`);
-		const account = JSONBig.parse(response) as BaseAccount;
+		const account = JSONBig.parse(response) as IBaseAccount;
 
 		return account;
 	}

@@ -1,7 +1,8 @@
 import Utils from 'evm-lite-utils';
 
-import AbstractClient from './client/AbstractClient';
-import BaseEVMLC, { TxReceipt } from './client/BaseEVMLC';
+import { BabbleClient } from 'evm-lite-babble';
+
+import BaseEVMLC, { IReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
 import Transaction from './Transaction';
@@ -13,12 +14,12 @@ function delay(t: number, v?: any) {
 	});
 }
 
-export default class EVMLC<
-	TConsensus extends AbstractClient
-> extends BaseEVMLC {
-	public consensus?: TConsensus;
+// Currently `evm-lite-js` only supports one consensus system but will be
+// changed in the future to multiple support
+export default class EVMLC extends BaseEVMLC {
+	public consensus?: BabbleClient;
 
-	constructor(host: string, port: number, consensus?: TConsensus) {
+	constructor(host: string, port: number, consensus?: BabbleClient) {
 		super(host, port);
 
 		this.consensus = consensus;
@@ -41,7 +42,7 @@ export default class EVMLC<
 	public async sendTransaction(
 		tx: Transaction,
 		account: Account
-	): Promise<TxReceipt> {
+	): Promise<IReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
 
@@ -113,7 +114,7 @@ export default class EVMLC<
 			);
 		}
 
-		// temp until logs and subscribtions
+		// temp until receipt is server sided sync
 		await delay(5);
 
 		tx.hash = hash;

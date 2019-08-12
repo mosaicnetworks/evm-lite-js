@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 const SolFunction = require('web3/lib/web3/function');
 
-import { Log } from '../client/BaseEVMLC';
+import { ILog } from '../client/BaseEVMLC';
 import { ABI, Input } from '../Contract';
 
 import Transaction, { TX } from '../Transaction';
@@ -50,7 +50,7 @@ export default class Function {
 
 	// TODO: Needs to take arguments for events ABI and functio ABI
 	public generateTransaction(
-		parseLogs: (logs: Log[]) => Log[],
+		parseLogs: (logs: ILog[]) => ILog[],
 		options: TX,
 		...funcArgs: any[]
 	): Transaction {

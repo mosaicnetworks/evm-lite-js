@@ -1,11 +1,6 @@
 import * as http from 'http';
-import * as JSONBig from 'json-bigint';
 
-import { ContractABI } from '../Contract';
-
-import BN from 'bn.js';
-
-interface RequestOptions {
+interface IOptions {
 	host: string;
 	port: number;
 	method: string;
@@ -26,7 +21,7 @@ export default abstract class AbstractClient {
 		return await this.request(this.options('POST', path), data);
 	}
 
-	protected options(method: string, path: string): RequestOptions {
+	protected options(method: string, path: string): IOptions {
 		return {
 			host: this.host,
 			port: this.port,
@@ -35,7 +30,7 @@ export default abstract class AbstractClient {
 		};
 	}
 
-	private request(options: RequestOptions, data?: string): Promise<string> {
+	private request(options: IOptions, data?: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const req = http.request(options, response => {
 				let data = '';
