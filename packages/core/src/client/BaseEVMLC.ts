@@ -27,7 +27,7 @@ export interface Log {
 	readonly args: any;
 }
 
-export interface TransactionReceipt {
+export interface TxReceipt {
 	readonly root: string;
 	readonly transactionHash: string;
 	readonly from: string;
@@ -40,11 +40,11 @@ export interface TransactionReceipt {
 	readonly status: number;
 }
 
-export interface TransactionResponse {
+export interface SendTxResponse {
 	readonly txHash: string;
 }
 
-interface CallTransactionResponse {
+interface CallTxResponse {
 	data: string;
 }
 
@@ -58,26 +58,20 @@ class BaseEVMLC extends AbstractClient {
 		super(host, port);
 	}
 
-	protected async callTX(tx: string): Promise<CallTransactionResponse> {
+	protected async callTx(tx: string): Promise<CallTxResponse> {
 		return JSONBig.parse(await this.post('/call', tx));
 	}
 
-	protected async sendRaw(tx: string): Promise<TransactionResponse> {
-		return this.post('/rawtx', tx).then(response => {
-			return JSONBig.parse(response) as TransactionResponse;
-		});
+	protected async sendTx(signedTx: string): Promise<SendTxResponse> {
+		return JSONBig.parse(await this.post('/rawtx', signedTx));
 	}
 
 	public async getPOAContract(): Promise<POAContract> {
-		return this.get(`/poa`).then(
-			(response: string) => JSONBig.parse(response) as POAContract
-		);
+		return JSONBig.parse(await this.get(`/poa`));
 	}
 
-	public async getReceipt(txHash: string): Promise<TransactionReceipt> {
-		return this.get(`/tx/${txHash}`).then(
-			(response: string) => JSONBig.parse(response) as TransactionReceipt
-		);
+	public async getReceipt(txHash: string): Promise<TxReceipt> {
+		return JSONBig.parse(await this.get(`/tx/${txHash}`));
 	}
 
 	public async getAccount(address: string): Promise<BaseAccount> {
@@ -87,10 +81,8 @@ class BaseEVMLC extends AbstractClient {
 		return account;
 	}
 
-	public getInfo(): Promise<Readonly<object>> {
-		return this.get('/info').then((response: string) =>
-			JSONBig.parse(response)
-		);
+	public async getInfo(): Promise<any> {
+		return JSONBig.parse(await this.get('/info'));
 	}
 }
 

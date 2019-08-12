@@ -1,7 +1,7 @@
 import Utils from 'evm-lite-utils';
 
 import AbstractClient from './client/AbstractClient';
-import BaseEVMLC, { TransactionReceipt } from './client/BaseEVMLC';
+import BaseEVMLC, { TxReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
 import Transaction from './Transaction';
@@ -18,12 +18,9 @@ export default class EVMLC<
 > extends BaseEVMLC {
 	public consensus?: TConsensus;
 
-	constructor(host: string, port: number) {
+	constructor(host: string, port: number, consensus?: TConsensus) {
 		super(host, port);
-	}
 
-	// some function to set the consensus
-	public setConsensus(consensus: TConsensus) {
 		this.consensus = consensus;
 	}
 
@@ -44,7 +41,7 @@ export default class EVMLC<
 	public async sendTransaction(
 		tx: Transaction,
 		account: Account
-	): Promise<TransactionReceipt> {
+	): Promise<TxReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
 
@@ -108,7 +105,7 @@ export default class EVMLC<
 
 		let hash: string;
 		try {
-			const response = await this.sendRaw(tx.signed.rawTransaction);
+			const response = await this.sendTx(tx.signed.rawTransaction);
 			hash = response.txHash;
 		} catch (e) {
 			return Promise.reject(
@@ -172,7 +169,7 @@ export default class EVMLC<
 		delete transaction.nonce;
 
 		// send transaction (without signing)
-		const call = await this.callTX(JSON.stringify(transaction));
+		const call = await this.callTx(JSON.stringify(transaction));
 
 		// since the function is constant no transaction hash will be returned
 		// from the submission however the return of the `contract's function`

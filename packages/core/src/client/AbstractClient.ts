@@ -22,8 +22,8 @@ export default abstract class AbstractClient {
 		return await this.request(this.options('GET', path));
 	}
 
-	protected async post(path: string, tx: string) {
-		return await this.request(this.options('POST', path), tx);
+	protected async post(path: string, data: string) {
+		return await this.request(this.options('POST', path), data);
 	}
 
 	protected options(method: string, path: string): RequestOptions {
@@ -35,7 +35,7 @@ export default abstract class AbstractClient {
 		};
 	}
 
-	private request(options: RequestOptions, tx?: string): Promise<string> {
+	private request(options: RequestOptions, data?: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const req = http.request(options, response => {
 				let data = '';
@@ -47,8 +47,8 @@ export default abstract class AbstractClient {
 
 			req.on('error', err => reject(err));
 
-			if (tx) {
-				req.write(tx);
+			if (data) {
+				req.write(data);
 			}
 
 			req.end();

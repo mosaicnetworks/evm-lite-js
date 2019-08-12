@@ -2,7 +2,7 @@ import Utils from 'evm-lite-utils';
 
 import EVMTypes from './misc/types';
 
-import { Log, TransactionReceipt } from './client/BaseEVMLC';
+import { Log, TxReceipt } from './client/BaseEVMLC';
 
 interface BaseTransaction {
 	gas: EVMTypes.Gas;
@@ -38,7 +38,7 @@ export default class Transaction implements TX {
 
 	public hash?: string;
 	public signed?: SignedTransaction;
-	public receipt?: TransactionReceipt;
+	public receipt?: TxReceipt;
 
 	constructor(
 		tx: TX,

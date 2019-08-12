@@ -39,6 +39,8 @@ class BabbleClient extends AbstractClient {
 	public async getGenesisPeers(): Promise<IBabblePeer[]> {
 		return JSON.parse(await this.get(`/genesispeers`));
 	}
+
+	// more endpoints here
 }
 
 export default BabbleClient;
