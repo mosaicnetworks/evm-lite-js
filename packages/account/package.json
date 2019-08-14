@@ -1,5 +1,5 @@
 {
-	"name": "evm-lite-babble",
+	"name": "evm-lite-account",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
 	"version": "1.0.0-alpha.20",
@@ -14,7 +14,7 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"evm-lite-core": "1.0.0-alpha.20"
+		"evm-lite-utils": "1.0.0-alpha.20"
 	},
 	"repository": {
 		"type": "git",
@@ -23,5 +23,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/babble#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/account"
 }

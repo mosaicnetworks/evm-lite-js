@@ -1,7 +1,7 @@
 export { default as Keystore } from './Keystore';
 export {
 	default as AbstractKeystore,
-	V3Keyfile,
+	IV3Keyfile,
 	MonikerKeystore,
 	MonikerBaseAccount
 } from './AbstractKeystore';

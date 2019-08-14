@@ -38,7 +38,7 @@ interface KDFParams {
 	p: number;
 }
 
-export interface V3Keyfile {
+export interface IV3Keyfile {
 	readonly version: number;
 	readonly id: string;
 	readonly address: string;
@@ -57,7 +57,7 @@ export interface MonikerBaseAccount extends IBaseAccount {
 }
 
 export interface MonikerKeystore {
-	[key: string]: V3Keyfile;
+	[key: string]: IV3Keyfile;
 }
 
 /**
@@ -68,7 +68,7 @@ export default abstract class AbstractKeystore {
 	/**
 	 * Abstract class should never be initialised.
 	 */
-	protected constructor() {}
+	protected constructor(public readonly path: string) {}
 
 	/**
 	 * Create an encrypted V3Keyfile in the keystore.
@@ -83,7 +83,7 @@ export default abstract class AbstractKeystore {
 		moniker: string,
 		passphrase: string,
 		overridePath?: string
-	): Promise<V3Keyfile>;
+	): Promise<IV3Keyfile>;
 
 	/**
 	 * List all keyfiles and return as mapping of moniker to keyfile.
@@ -99,7 +99,7 @@ export default abstract class AbstractKeystore {
 	 *
 	 * @returns A promise resolving the required keyfile
 	 */
-	public abstract get(moniker: string): Promise<V3Keyfile>;
+	public abstract get(moniker: string): Promise<IV3Keyfile>;
 
 	/**
 	 * Update the passphrase of a keyfile only if the old passphrase is known.
@@ -114,14 +114,14 @@ export default abstract class AbstractKeystore {
 		moniker: string,
 		oldPass: string,
 		newPass: string
-	): Promise<V3Keyfile>;
+	): Promise<IV3Keyfile>;
 
 	// import, export functions
 	public abstract import(
 		moniker: string,
-		keyfile: V3Keyfile
-	): Promise<V3Keyfile>;
-	public abstract export(moniker: string): Promise<V3Keyfile>;
+		keyfile: IV3Keyfile
+	): Promise<IV3Keyfile>;
+	public abstract export(moniker: string): Promise<IV3Keyfile>;
 
 	// The encrypt and decrypt functions for our keystore
 	public static encrypt(account: Account, passphrase: string) {
@@ -193,7 +193,7 @@ export default abstract class AbstractKeystore {
 		};
 	}
 
-	public static decrypt(json: V3Keyfile, passphrase: string) {
+	public static decrypt(json: IV3Keyfile, passphrase: string) {
 		if (!passphrase) {
 			throw new Error('No password given.');
 		}

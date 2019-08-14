@@ -1,0 +1,27 @@
+{
+	"name": "evm-lite-transaction",
+	"namespace": "mosaicnetworks",
+	"author": "Danu Kumanan",
+	"version": "1.0.0-alpha.20",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"typings": "./dist/typings/index.d.ts",
+	"scripts": {
+		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
+		"clean:build": "rm -rf dist/",
+		"build": "tsc -p ./tsconfig.json",
+		"prepublish": "tsc",
+		"doc": "rm -rf docs/ && typedoc"
+	},
+	"dependencies": {
+		"evm-lite-utils": "1.0.0-alpha.20"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mosaicnetworks/evm-lite-js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
+	},
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/transaction"
+}
