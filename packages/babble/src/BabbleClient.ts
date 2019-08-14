@@ -1,4 +1,4 @@
-import { AbstractClient } from 'evm-lite-core';
+import { AbstractConsensus } from 'evm-lite-core';
 
 // Babble block interface
 export interface IBabbleBlock {
@@ -23,7 +23,7 @@ export interface IBabblePeer {
 	Moniker: string;
 }
 
-class BabbleClient extends AbstractClient {
+class BabbleClient extends AbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}

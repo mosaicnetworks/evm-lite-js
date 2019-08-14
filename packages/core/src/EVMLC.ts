@@ -4,6 +4,7 @@ import BaseEVMLC, { IReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
 import Transaction from './Transaction';
+import AbstractClient from './client/AbstractClient';
 
 // delay x * 1000 seconds
 function delay(t: number, v?: any) {
@@ -14,9 +15,15 @@ function delay(t: number, v?: any) {
 
 // Currently `evm-lite-js` only supports one consensus system but will be
 // changed in the future to multiple support
-export default class EVMLC extends BaseEVMLC {
-	constructor(host: string, port: number) {
+export default class EVMLC<
+	TConsensus extends AbstractClient
+> extends BaseEVMLC {
+	public readonly consensus?: TConsensus;
+
+	constructor(host: string, port: number = 8080, consensus?: TConsensus) {
 		super(host, port);
+
+		this.consensus = consensus;
 	}
 
 	/**
