@@ -1,7 +1,5 @@
 import Utils from 'evm-lite-utils';
 
-import { BabbleClient } from 'evm-lite-babble';
-
 import BaseEVMLC, { IReceipt } from './client/BaseEVMLC';
 
 import Account from './Account';
@@ -17,12 +15,8 @@ function delay(t: number, v?: any) {
 // Currently `evm-lite-js` only supports one consensus system but will be
 // changed in the future to multiple support
 export default class EVMLC extends BaseEVMLC {
-	public consensus?: BabbleClient;
-
-	constructor(host: string, port: number, consensus?: BabbleClient) {
+	constructor(host: string, port: number) {
 		super(host, port);
-
-		this.consensus = consensus;
 	}
 
 	/**

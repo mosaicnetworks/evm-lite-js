@@ -1,8 +1,9 @@
 {
 	"extends": "../tsconfig.settings.json",
 	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"declarationDir": "./dist/typings",
 		"typeRoots": [
 			"./node_modules/@types",
 			"./types",

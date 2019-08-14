@@ -28,7 +28,7 @@ let scrypt = function(
 };
 const keccak256 = require('keccak256');
 
-import { Account, BaseAccount } from 'evm-lite-core';
+import { Account, IBaseAccount } from 'evm-lite-core';
 
 interface KDFParams {
 	dklen: number;
@@ -52,7 +52,7 @@ export interface V3Keyfile {
 	};
 }
 
-export interface MonikerBaseAccount extends BaseAccount {
+export interface MonikerBaseAccount extends IBaseAccount {
 	moniker: string;
 }
 
