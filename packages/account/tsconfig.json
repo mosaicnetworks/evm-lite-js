@@ -11,5 +11,9 @@
 		]
 	},
 	"include": ["./src/**/*.ts"],
-	"references": [{ "path": "../utils" }]
+	"references": [
+		{ "path": "../client" },
+		{ "path": "../utils" },
+		{ "path": "../transaction" }
+	]
 }

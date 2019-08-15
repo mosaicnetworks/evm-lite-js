@@ -1,4 +1,4 @@
-import AbstractClient from './AbstractClient';
+import { AbstractClient } from 'evm-lite-client';
 
 abstract class AbstractConsensus extends AbstractClient {
 	protected constructor(host: string, port: number) {

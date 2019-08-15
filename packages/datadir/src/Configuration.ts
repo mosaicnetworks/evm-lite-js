@@ -6,8 +6,6 @@ import { promisify } from 'util';
 
 import utils from 'evm-lite-utils';
 
-import { EVMTypes } from 'evm-lite-core';
-
 // promisify filesystem methods
 const read = promisify(fs.readFile);
 const write = promisify(fs.writeFile);
@@ -22,8 +20,8 @@ export interface ConfigurationSchema {
 	// transaction defaults
 	defaults: {
 		from: string;
-		gas: EVMTypes.Gas;
-		gasPrice: EVMTypes.GasPrice;
+		gas: number;
+		gasPrice: number;
 	};
 }
 

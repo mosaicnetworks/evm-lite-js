@@ -3,10 +3,8 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 const SolFunction = require('web3/lib/web3/function');
 
-import { ILog } from '../client/BaseEVMLC';
-import { ABI, Input } from '../Contract';
-
-import Transaction, { TX } from '../Transaction';
+import { ILog, IABI, IInput } from 'evm-lite-client';
+import Transaction, { ITransaction } from 'evm-lite-transaction';
 
 export default class Function {
 	public readonly name: string;
@@ -17,7 +15,7 @@ export default class Function {
 	public readonly payable: boolean;
 
 	constructor(
-		private readonly abi: ABI,
+		private readonly abi: IABI,
 		private readonly contractAddress: string
 	) {
 		this.name = abi.name || 'NoName';
@@ -27,12 +25,12 @@ export default class Function {
 			abi.stateMutability === 'pure' ||
 			abi.constant;
 
-		this.inputTypes = abi.inputs.map((i: Input) => {
+		this.inputTypes = abi.inputs.map((i: IInput) => {
 			return i.type;
 		});
 		this.outputTypes =
 			(abi.outputs &&
-				abi.outputs.map((i: Input) => {
+				abi.outputs.map((i: IInput) => {
 					return i.type;
 				})) ||
 			[];
@@ -51,13 +49,13 @@ export default class Function {
 	// TODO: Needs to take arguments for events ABI and functio ABI
 	public generateTransaction(
 		parseLogs: (logs: ILog[]) => ILog[],
-		options: TX,
+		options: ITransaction,
 		...funcArgs: any[]
 	): Transaction {
 		// this.validateArgs(funcArgs);
 
 		const payload = this.solFunction.toPayload(funcArgs);
-		const tx: TX = {
+		const tx: ITransaction = {
 			...options,
 			to: this.contractAddress
 		};

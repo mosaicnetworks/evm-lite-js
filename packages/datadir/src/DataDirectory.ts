@@ -68,9 +68,4 @@ export default class DataDirectory<K extends AbstractKeystore> {
 	public async importKeyfile(moniker: string, keyfile: IV3Keyfile) {
 		return await this.keystore.import(moniker, keyfile);
 	}
-
-	// is this method needed ?
-	public decryptKeyfile() {
-		// pass
-	}
 }

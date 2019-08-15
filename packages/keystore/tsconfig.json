@@ -11,5 +11,9 @@
 		]
 	},
 	"include": ["./src/**/*.ts"],
-	"references": [{ "path": "../core" }, { "path": "../utils" }]
+	"references": [
+		{ "path": "../account" },
+		{ "path": "../utils" },
+		{ "path": "../client" }
+	]
 }

@@ -1,5 +1,5 @@
 {
-	"name": "evm-lite-core",
+	"name": "evm-lite-contract",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
 	"version": "1.0.0-alpha.20",
@@ -14,17 +14,9 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"evm-lite-utils": "1.0.0-alpha.20",
-		"ascii-table": "^0.0.9",
-		"browserify-cipher": "^1.0.1",
-		"crypto-random-hex": "^1.0.0",
-		"eth-lib": "0.2.8",
-		"json-bigint": "0.3.0",
-		"randombytes": "^2.1.0",
-		"uuid": "^3.3.2",
-		"web3": "0.20.6",
-		"web3-eth-iban": "1.0.0-beta.46",
-		"web3-utils": "1.0.0-beta.46"
+		"evm-lite-client": "1.0.0-alpha.20",
+		"evm-lite-transaction": "1.0.0-alpha.20",
+		"web3": "0.20.6"
 	},
 	"repository": {
 		"type": "git",
@@ -33,5 +25,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/core#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/contract"
 }

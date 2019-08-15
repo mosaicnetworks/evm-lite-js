@@ -14,7 +14,8 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"evm-lite-utils": "1.0.0-alpha.20"
+		"evm-lite-utils": "1.0.0-alpha.20",
+		"evm-lite-client": "1.0.0-alpha.20"
 	},
 	"repository": {
 		"type": "git",

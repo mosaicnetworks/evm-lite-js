@@ -28,7 +28,8 @@ let scrypt = function(
 };
 const keccak256 = require('keccak256');
 
-import { Account, IBaseAccount } from 'evm-lite-core';
+import Account from 'evm-lite-account';
+import { IBaseAccount } from 'evm-lite-client';
 
 interface KDFParams {
 	dklen: number;
