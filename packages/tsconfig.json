@@ -2,6 +2,7 @@
 	"files": [],
 	"references": [
 		{ "path": "contract" },
+		{ "path": "babble" },
 		{ "path": "keystore" },
 		{ "path": "datadir" },
 		{ "path": "utils" },
