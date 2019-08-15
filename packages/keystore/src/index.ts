@@ -2,6 +2,6 @@ export { default as Keystore } from './Keystore';
 export {
 	default as AbstractKeystore,
 	IV3Keyfile,
-	MonikerKeystore,
-	MonikerBaseAccount
+	IMonikerKeystore,
+	IMonikerBaseAccount
 } from './AbstractKeystore';

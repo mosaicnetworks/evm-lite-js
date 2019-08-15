@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 const SolFunction = require('web3/lib/web3/function');
 
-import { ILog, IABI, IInput } from 'evm-lite-client';
+import { IABI, IInput, ILog } from 'evm-lite-client';
 import Transaction, { ITransaction } from 'evm-lite-transaction';
 
 export default class Function {

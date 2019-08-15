@@ -8,7 +8,7 @@ import {
 	MonikerKeystore
 } from 'evm-lite-keystore';
 
-import Configuration, { ConfigurationSchema } from './Configuration';
+import Configuration, { IConfiguration } from './Configuration';
 
 export default class DataDirectory<K extends AbstractKeystore> {
 	private readonly configuration: Configuration;
@@ -37,15 +37,15 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return this.configuration.path;
 	}
 
-	public get config(): ConfigurationSchema {
+	public get config(): IConfiguration {
 		return this.configuration.state;
 	}
 
-	public async readConfig(): Promise<ConfigurationSchema> {
+	public async readConfig(): Promise<IConfiguration> {
 		return await this.configuration.load();
 	}
 
-	public async saveConfig(schema: ConfigurationSchema): Promise<void> {
+	public async saveConfig(schema: IConfiguration): Promise<void> {
 		return await this.configuration.save(schema);
 	}
 

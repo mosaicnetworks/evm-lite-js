@@ -8,8 +8,8 @@ import utils from 'evm-lite-utils';
 import Account from 'evm-lite-account';
 
 import AbstractKeystore, {
-	IV3Keyfile,
-	MonikerKeystore
+	IMonikerKeystore,
+	IV3Keyfile
 } from './AbstractKeystore';
 
 // promisify native nodejs file system methods
@@ -108,8 +108,8 @@ class Keystore extends AbstractKeystore {
 		}
 	}
 
-	public async list(): Promise<MonikerKeystore> {
-		const mk = {} as MonikerKeystore;
+	public async list(): Promise<IMonikerKeystore> {
+		const mk = {} as IMonikerKeystore;
 
 		try {
 			const filtered = await this.filtereddir();

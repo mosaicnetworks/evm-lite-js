@@ -10,7 +10,7 @@ import utils from 'evm-lite-utils';
 const read = promisify(fs.readFile);
 const write = promisify(fs.writeFile);
 
-export interface ConfigurationSchema {
+export interface IConfiguration {
 	// node defaults
 	connection: {
 		host: string;
@@ -26,7 +26,7 @@ export interface ConfigurationSchema {
 }
 
 export default class Configuration {
-	public state: ConfigurationSchema;
+	public state: IConfiguration;
 
 	constructor(public readonly path: string) {
 		this.state = this.default();
@@ -40,7 +40,7 @@ export default class Configuration {
 		}
 	}
 
-	public default(): ConfigurationSchema {
+	public default(): IConfiguration {
 		return {
 			connection: {
 				host: 'localhost',
@@ -69,7 +69,7 @@ export default class Configuration {
 		});
 	}
 
-	public async load(): Promise<ConfigurationSchema> {
+	public async load(): Promise<IConfiguration> {
 		try {
 			const data = await read(this.path, { encoding: 'utf8' });
 			const config = toml.parse(data.toString());
@@ -80,7 +80,7 @@ export default class Configuration {
 		}
 	}
 
-	public async save(data: ConfigurationSchema): Promise<void> {
+	public async save(data: IConfiguration): Promise<void> {
 		if (!data.defaults.gasPrice) {
 			data.defaults.gasPrice = 0;
 		}

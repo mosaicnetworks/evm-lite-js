@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 export { default as DataDirectory } from './DataDirectory';
-export { ConfigurationSchema } from './Configuration';
+export { IConfiguration } from './Configuration';
 
 // to be modified later to keep inline with convention
 // https://github.com/mosaicnetworks/monetd/issues/11

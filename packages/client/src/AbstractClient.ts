@@ -33,10 +33,10 @@ export default abstract class AbstractClient {
 	private request(options: IOptions, data?: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const req = http.request(options, response => {
-				let data = '';
+				let res = '';
 
-				response.on('data', chunk => (data += chunk));
-				response.on('end', () => resolve(data));
+				response.on('data', chunk => (res += chunk));
+				response.on('end', () => resolve(res));
 				response.on('error', err => reject(err));
 			});
 

@@ -3,7 +3,7 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 import SolidityEvent from 'web3/lib/web3/event.js';
 
-import { IContractABI, ILog, IABI } from 'evm-lite-client';
+import { IABI, IContractABI, ILog } from 'evm-lite-client';
 import Transaction, { ITransaction } from 'evm-lite-transaction';
 
 import Function from './Function';
