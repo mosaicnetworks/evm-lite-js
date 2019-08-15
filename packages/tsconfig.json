@@ -8,6 +8,7 @@
 		{ "path": "client" },
 		{ "path": "consensus" },
 		{ "path": "transaction" },
-		{ "path": "account" }
+		{ "path": "account" },
+		{ "path": "node" }
 	]
 }

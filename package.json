@@ -19,7 +19,7 @@
 		"build": "lerna run build",
 		"bootstrap": "lerna bootstrap",
 		"link": "lerna link",
-		"prepublish": "yarn run build && lerna link",
+		"prepublish": "yarn lint && yarn run build && lerna link",
 		"publish": "lerna publish",
 		"doc": "lerna run doc",
 		"lint": "lerna run lint"

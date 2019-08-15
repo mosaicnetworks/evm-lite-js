@@ -4,8 +4,8 @@ import utils from 'evm-lite-utils';
 
 import {
 	AbstractKeystore,
-	IV3Keyfile,
-	MonikerKeystore
+	IMonikerKeystore,
+	IV3Keyfile
 } from 'evm-lite-keystore';
 
 import Configuration, { IConfiguration } from './Configuration';
@@ -61,7 +61,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return await this.keystore.get(moniker);
 	}
 
-	public async listKeyfiles(): Promise<MonikerKeystore> {
+	public async listKeyfiles(): Promise<IMonikerKeystore> {
 		return await this.keystore.list();
 	}
 
