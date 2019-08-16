@@ -22,7 +22,8 @@
 		"prepublish": "yarn lint && yarn run build && lerna link",
 		"publish": "lerna publish",
 		"doc": "lerna run doc",
-		"lint": "lerna run lint"
+		"lint": "lerna run lint",
+		"linkall": "ts-node ./scripts/link-all"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.1.6",
