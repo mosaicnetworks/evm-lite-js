@@ -23,7 +23,8 @@
 		"publish": "lerna publish",
 		"doc": "lerna run doc",
 		"lint": "lerna run lint",
-		"linkall": "ts-node ./scripts/link-all"
+		"linkall": "ts-node ./scripts/link-all",
+		"unlinkall": "ts-node ./scripts/unlink-all"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.1.6",
