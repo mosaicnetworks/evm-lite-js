@@ -69,7 +69,7 @@ interface IPOAContract {
 }
 
 class BaseEVMLC extends AbstractClient {
-	protected constructor(host: string, port: number) {
+	constructor(host: string, port: number) {
 		super(host, port);
 	}
 
@@ -93,12 +93,12 @@ class BaseEVMLC extends AbstractClient {
 	}
 
 	// call tx
-	protected async callTx(tx: string): Promise<ICallTxResponse> {
+	public async callTx(tx: string): Promise<ICallTxResponse> {
 		return JSONBig.parse(await this.post('/call', tx));
 	}
 
 	// send tx
-	protected async sendTx(signedTx: string): Promise<ISendTxResponse> {
+	public async sendTx(signedTx: string): Promise<ISendTxResponse> {
 		return JSONBig.parse(await this.post('/rawtx', signedTx));
 	}
 }

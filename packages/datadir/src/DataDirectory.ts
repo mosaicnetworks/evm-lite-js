@@ -41,6 +41,10 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return this.configuration.state;
 	}
 
+	public get configToml(): string {
+		return this.configuration.toTOML();
+	}
+
 	public async readConfig(): Promise<IConfiguration> {
 		return await this.configuration.load();
 	}

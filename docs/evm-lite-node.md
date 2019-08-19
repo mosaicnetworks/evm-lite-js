@@ -12,7 +12,7 @@ constructor(host: string, port: number = 8080, consensus?: TConsensus)
 
 #### `getAccount`
 
-Get an account's `balance` and `nonce` from the node.
+Get an account's `balance` and `nonce` from the node. The returned object will be of the form
 
 ##### Definition (TS)
 
@@ -63,7 +63,7 @@ Submits a non state mutating transaction to the node.
 callTransaction<R>(tx: Transaction): R;
 ```
 
--   Automtically parses return from any constant/pure contract function
+-   Automtically parses return from any contract functions that are `view` or `pure`.
 
 #### `sendTransaction`
 

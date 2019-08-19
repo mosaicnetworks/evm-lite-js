@@ -15,13 +15,14 @@ function delay(t: number, v?: any) {
 
 // Currently `evm-lite-js` only supports one consensus system but will be
 // changed in the future to multiple support
-export default class EVMLC<
-	TConsensus extends AbstractConsensus
-> extends Client {
-	public readonly consensus?: TConsensus;
+
+// implemement wrapper functions around consensus
+export default class EVMLC<TConsensus extends AbstractConsensus> {
+	private readonly consensus?: TConsensus;
+	private readonly client: Client;
 
 	constructor(host: string, port: number = 8080, consensus?: TConsensus) {
-		super(host, port);
+		this.client = new Client(host, port);
 
 		this.consensus = consensus;
 	}
@@ -40,10 +41,7 @@ export default class EVMLC<
 	 *
 	 * @alpha
 	 */
-	public async sendTransaction(
-		tx: Transaction,
-		account: Account
-	): Promise<IReceipt> {
+	public async sendTx(tx: Transaction, account: Account): Promise<IReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
 
@@ -92,7 +90,7 @@ export default class EVMLC<
 
 		// fetch nonce from the node for the associated account
 		if (!tx.nonce) {
-			const baseAccount = await this.getAccount(tx.from);
+			const baseAccount = await this.client.getAccount(tx.from);
 
 			tx.nonce = baseAccount.nonce;
 		}
@@ -107,7 +105,7 @@ export default class EVMLC<
 
 		let hash: string;
 		try {
-			const response = await this.sendTx(tx.signed.rawTransaction);
+			const response = await this.client.sendTx(tx.signed.rawTransaction);
 			hash = response.txHash;
 		} catch (e) {
 			return Promise.reject(
@@ -119,7 +117,7 @@ export default class EVMLC<
 		await delay(5);
 
 		tx.hash = hash;
-		tx.receipt = await this.getReceipt(hash);
+		tx.receipt = await this.client.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction
@@ -137,17 +135,17 @@ export default class EVMLC<
 	 * @remarks
 	 * The returned object will be parsed to JS types.
 	 *
-	 * @param tx - The transaction to be sent
+	 * @param tx - The transaction class to be sent
 	 * @returns A promise resolving the return of the contract function
 	 *
 	 * @alpha
 	 */
-	public async callTransaction<R>(transaction: Transaction): Promise<R> {
+	public async callTx<R>(tx: Transaction): Promise<R> {
 		// cleans transaction attributes
-		transaction.beforeSubmission();
+		tx.beforeSubmission();
 
 		// make sure transaction is constant
-		if (!transaction.constant) {
+		if (!tx.constant) {
 			return Promise.reject(
 				new Error(
 					'Transaction mutates state. ' +
@@ -157,7 +155,7 @@ export default class EVMLC<
 		}
 
 		// `value` cannot be set on the transaction
-		if (transaction.value) {
+		if (tx.value) {
 			return Promise.reject(
 				new Error(
 					'Transaction cannot send a `value` if it' +
@@ -167,22 +165,39 @@ export default class EVMLC<
 		}
 
 		// not needed fields
-		delete transaction.from;
-		delete transaction.nonce;
+		delete tx.from;
+		delete tx.nonce;
 
 		// send transaction (without signing)
-		const call = await this.callTx(JSON.stringify(transaction));
+		const call = await this.client.callTx(JSON.stringify(tx));
 
 		// since the function is constant no transaction hash will be returned
 		// from the submission however the return of the `contract's function`
 		// will be therefore we need a function to decode the returned results
 		// so we need to make sure that function exists
-		if (!transaction.unpackfn) {
+		if (!tx.unpackfn) {
 			return Promise.reject(
 				new Error('Unpacking function required but not found.')
 			);
 		}
 
-		return transaction.unpackfn(Buffer.from(call.data).toString());
+		return tx.unpackfn(Buffer.from(call.data).toString());
+	}
+
+	// consensus interface
+	public async getPeers() {
+		if (this.consensus) {
+			return this.consensus.getPeers();
+		} else {
+			throw new Error('Consensus interface not implemented or assigned');
+		}
+	}
+	// consensus interface
+	public async getBlock(index: number) {
+		if (this.consensus) {
+			return this.consensus.getBlock(index);
+		} else {
+			throw new Error('Consensus interface not implemented or assigned');
+		}
 	}
 }
