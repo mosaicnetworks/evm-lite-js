@@ -63,7 +63,7 @@ interface ICallTxResponse {
 	data: string;
 }
 
-interface IPOAContract {
+export interface IPOAContract {
 	readonly address: string;
 	readonly abi: IContractABI;
 }

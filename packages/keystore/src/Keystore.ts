@@ -101,7 +101,7 @@ class Keystore extends AbstractKeystore {
 
 		// write keyfile to file
 		try {
-			await write(overridePath || path, JSON.stringify(keyfile));
+			await write(path, JSON.stringify(keyfile));
 			return Promise.resolve(keyfile);
 		} catch (e) {
 			return Promise.reject(e);

@@ -7,7 +7,7 @@ abstract class AbstractConsensus extends AbstractClient {
 
 	public abstract async getBlock(index: number): Promise<any>;
 
-	public abstract async getPeers(): Promise<any[]>;
+	public abstract async getPeers(): Promise<any>;
 }
 
 export default AbstractConsensus;

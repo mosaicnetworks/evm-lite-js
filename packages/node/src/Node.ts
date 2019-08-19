@@ -1,6 +1,7 @@
-import Utils from 'evm-lite-utils';
+import utils from 'evm-lite-utils';
 
 import Account from 'evm-lite-account';
+import Babble from 'evm-lite-babble';
 import AbstractConsensus from 'evm-lite-consensus';
 import Transaction from 'evm-lite-transaction';
 
@@ -15,16 +16,18 @@ function delay(t: number, v?: any) {
 
 // Currently `evm-lite-js` only supports one consensus system but will be
 // changed in the future to multiple support
+export type IConsensus = 'solo' | 'babble';
 
-// implemement wrapper functions around consensus
-export default class EVMLC<TConsensus extends AbstractConsensus> {
-	private readonly consensus?: TConsensus;
+// Node class
+export default class Node {
+	public readonly consensus: AbstractConsensus;
+
 	private readonly client: Client;
 
-	constructor(host: string, port: number = 8080, consensus?: TConsensus) {
+	constructor(host: string, port: number = 8080, consensus: IConsensus) {
 		this.client = new Client(host, port);
 
-		this.consensus = consensus;
+		this.consensus = this.getConsensus(consensus);
 	}
 
 	/**
@@ -78,7 +81,7 @@ export default class EVMLC<TConsensus extends AbstractConsensus> {
 		// check if the from address is the same as the account
 		// that was passed to sign.
 		if (
-			Utils.cleanAddress(account.address) !== Utils.cleanAddress(tx.from)
+			utils.cleanAddress(account.address) !== utils.cleanAddress(tx.from)
 		) {
 			return Promise.reject(
 				new Error(
@@ -184,20 +187,32 @@ export default class EVMLC<TConsensus extends AbstractConsensus> {
 		return tx.unpackfn(Buffer.from(call.data).toString());
 	}
 
-	// consensus interface
-	public async getPeers() {
-		if (this.consensus) {
-			return this.consensus.getPeers();
-		} else {
-			throw new Error('Consensus interface not implemented or assigned');
-		}
+	public async getAccount(address: string) {
+		return this.client.getAccount(address);
 	}
-	// consensus interface
-	public async getBlock(index: number) {
-		if (this.consensus) {
-			return this.consensus.getBlock(index);
-		} else {
-			throw new Error('Consensus interface not implemented or assigned');
+
+	public async getPOA() {
+		return this.client.getPOAContract();
+	}
+
+	public async getInfo() {
+		return this.client.getInfo();
+	}
+
+	public async getReceipt(hash: string) {
+		return this.client.getReceipt(hash);
+	}
+
+	private getConsensus(consensus: IConsensus) {
+		switch (consensus.toLowerCase()) {
+			case 'babble':
+				return new Babble(this.client.host, 8080);
+
+			// default should be a solo node
+			// maybe implememnt a basic wrapper around abstract consensus for
+			// a solo node.
+			default:
+				return new Babble(this.client.host, 8080);
 		}
 	}
 }

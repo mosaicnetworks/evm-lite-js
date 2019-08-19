@@ -1,3 +1,6 @@
-import EVMLC from './EVMLC';
+import Node from './Node';
 
-export default EVMLC;
+// types
+export { IConsensus } from './Node';
+
+export default Node;
