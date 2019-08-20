@@ -8,10 +8,6 @@ import utils from 'evm-lite-utils';
 
 import Formatters from './formatters';
 
-// trims leading zero of a hex
-// the leading zero is virtully irrevelavant to the value of the hex
-// should be used to clean any addresses that may come through and from
-// evm-lite
 const trimLeadingZero = (hex: string) => {
 	while (hex.startsWith('0x0')) {
 		hex = `0x${hex.slice(3)}`;
