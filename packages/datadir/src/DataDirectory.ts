@@ -53,7 +53,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return await this.configuration.save(schema);
 	}
 
-	public async createKeyfile(
+	public async newKeyfile(
 		moniker: string,
 		passphrase: string,
 		path?: string

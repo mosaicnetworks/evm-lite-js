@@ -1,9 +1,8 @@
-import utils from 'evm-lite-utils';
+import { IAbstractConsensus } from 'evm-lite-solo';
 
 import Account from 'evm-lite-account';
-import Babble from 'evm-lite-babble';
-import AbstractConsensus from 'evm-lite-consensus';
 import Transaction from 'evm-lite-transaction';
+import utils from 'evm-lite-utils';
 
 import Client, { IReceipt } from 'evm-lite-client';
 
@@ -16,18 +15,17 @@ function delay(t: number, v?: any) {
 
 // Currently `evm-lite-js` only supports one consensus system but will be
 // changed in the future to multiple support
-export type IConsensus = 'solo' | 'babble';
-
-// Node class
-export default class Node {
-	public readonly consensus: AbstractConsensus;
+export default class Node<TConsensus extends IAbstractConsensus> {
+	// a node requires an underlying consensus protocol
+	// maybe we should implement a holder for solo consensus
+	public readonly consensus: TConsensus;
 
 	private readonly client: Client;
 
-	constructor(host: string, port: number = 8080, consensus: IConsensus) {
+	constructor(host: string, port: number = 8080, consensus: TConsensus) {
 		this.client = new Client(host, port);
 
-		this.consensus = this.getConsensus(consensus);
+		this.consensus = consensus;
 	}
 
 	/**
@@ -240,18 +238,5 @@ export default class Node {
 
 	public async getReceipt(hash: string) {
 		return this.client.getReceipt(hash);
-	}
-
-	private getConsensus(consensus: IConsensus) {
-		switch (consensus.toLowerCase()) {
-			case 'babble':
-				return new Babble(this.client.host, 8080);
-
-			// default should be a solo node
-			// maybe implememnt a basic wrapper around abstract consensus for
-			// a solo node.
-			default:
-				return new Babble(this.client.host, 8080);
-		}
 	}
 }

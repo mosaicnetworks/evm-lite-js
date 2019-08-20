@@ -19,8 +19,7 @@
 		"evm-lite-client": "1.0.0-alpha.20",
 		"evm-lite-account": "1.0.0-alpha.20",
 		"evm-lite-transaction": "1.0.0-alpha.20",
-		"evm-lite-consensus": "1.0.0-alpha.20",
-		"evm-lite-babble": "1.0.0-alpha.20"
+		"evm-lite-solo": "1.0.0-alpha.20"
 	},
 	"repository": {
 		"type": "git",

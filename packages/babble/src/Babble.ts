@@ -1,4 +1,6 @@
-import AbstractConsensus from 'evm-lite-consensus';
+import { IAbstractConsensus } from 'evm-lite-solo';
+
+import { AbstractClient } from 'evm-lite-client';
 
 export interface IBabbleBlock {
 	Body: {
@@ -22,7 +24,7 @@ export interface IBabblePeer {
 	Moniker: string;
 }
 
-class Babble extends AbstractConsensus {
+class Babble extends AbstractClient implements IAbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}

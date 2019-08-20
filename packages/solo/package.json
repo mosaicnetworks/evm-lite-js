@@ -1,5 +1,5 @@
 {
-	"name": "evm-lite-consensus",
+	"name": "evm-lite-solo",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
 	"version": "1.0.0-alpha.20",
@@ -15,6 +15,7 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
+		"json-bigint": "^0.3.0",
 		"evm-lite-client": "1.0.0-alpha.20"
 	},
 	"repository": {
@@ -24,5 +25,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/consensus"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/solo"
 }

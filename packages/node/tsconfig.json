@@ -16,7 +16,6 @@
 		{ "path": "../utils" },
 		{ "path": "../account" },
 		{ "path": "../transaction" },
-		{ "path": "../consensus" },
-		{ "path": "../babble" }
+		{ "path": "../solo" }
 	]
 }
