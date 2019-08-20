@@ -72,7 +72,7 @@ class Keystore extends AbstractKeystore {
 		// lowercase moniker to avoid casing ambiguity
 		moniker = moniker.toLowerCase();
 
-		const account: Account = Account.create();
+		const account: Account = Account.new();
 		const keyfile = Keystore.encrypt(account, passphrase);
 
 		// add `.json` to keep inline with `givery` cli

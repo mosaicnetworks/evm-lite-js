@@ -5,9 +5,7 @@ abstract class AbstractConsensus extends AbstractClient {
 		super(host, port);
 	}
 
-	public abstract async getBlock(index: number): Promise<any>;
-
-	public abstract async getPeers(): Promise<any>;
+	// insane generic consensus that extends client
 }
 
 export default AbstractConsensus;

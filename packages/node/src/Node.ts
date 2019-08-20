@@ -99,7 +99,7 @@ export default class Node {
 		}
 
 		// sign the transaction
-		tx.signed = await account.signTransaction(tx);
+		tx.signed = await account.signTx(tx);
 		if (!tx.signed) {
 			return Promise.reject(
 				new Error('Transaction has not been signed yet.')
@@ -186,6 +186,45 @@ export default class Node {
 
 		return tx.unpackfn(Buffer.from(call.data).toString());
 	}
+
+	public async transfer(
+		from: Account,
+		to: string,
+		value: number,
+		gas: number,
+		gasPrice: number
+	): Promise<IReceipt> {
+		if (!from) {
+			throw new Error(
+				'Default `from` address cannot be left blank or empty.'
+			);
+		}
+
+		if (!to) {
+			throw new Error('Must provide a `to` address!');
+		}
+
+		if (value <= 0) {
+			throw new Error(
+				'A transfer of funds must have a `value` greater than 0.'
+			);
+		}
+
+		const tx = new Transaction(
+			{
+				from: from.address,
+				to: to.trim(),
+				value,
+				gas,
+				gasPrice
+			},
+			false
+		);
+
+		return await this.sendTx(tx, from);
+	}
+
+	// client interface
 
 	public async getAccount(address: string) {
 		return this.client.getAccount(address);

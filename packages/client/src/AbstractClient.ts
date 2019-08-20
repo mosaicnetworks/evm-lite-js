@@ -10,7 +10,7 @@ interface IOptions {
 export default abstract class AbstractClient {
 	protected constructor(
 		public readonly host: string,
-		public readonly port: number = 8080
+		public readonly port: number
 	) {}
 
 	protected async get(path: string) {

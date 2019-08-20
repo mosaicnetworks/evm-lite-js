@@ -69,7 +69,7 @@ export interface IPOAContract {
 }
 
 class BaseEVMLC extends AbstractClient {
-	constructor(host: string, port: number) {
+	constructor(host: string, port: number = 8080) {
 		super(host, port);
 	}
 

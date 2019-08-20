@@ -83,6 +83,22 @@ class Utils {
 		return hex;
 	}
 
+	public static trimLeadingZero = (hex: string) => {
+		while (hex.startsWith('0x0')) {
+			hex = `0x${hex.slice(3)}`;
+		}
+
+		return hex;
+	};
+
+	public static makeEven = (hex: string) => {
+		if (hex.length % 2 === 1) {
+			hex = hex.replace('0x', '0x0');
+		}
+
+		return hex;
+	};
+
 	// should never be initialized
 	private constructor() {}
 }
