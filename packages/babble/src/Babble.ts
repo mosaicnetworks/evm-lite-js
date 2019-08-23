@@ -3,6 +3,7 @@ import { IAbstractConsensus } from 'evm-lite-solo';
 import { AbstractClient } from 'evm-lite-client';
 
 export interface IBabbleBlock {
+	[key: string]: any;
 	Body: {
 		Index: number;
 		RoundReceived: number;

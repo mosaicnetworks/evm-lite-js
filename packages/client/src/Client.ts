@@ -98,7 +98,7 @@ class BaseEVMLC extends AbstractClient {
 	}
 
 	// send tx
-	public async sendTx(signedTx: string): Promise<ISendTxResponse> {
+	public async sendTx(signedTx: string): Promise<IReceipt> {
 		return JSONBig.parse(await this.post('/rawtx', signedTx));
 	}
 }

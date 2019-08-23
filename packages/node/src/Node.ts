@@ -104,21 +104,13 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 			);
 		}
 
-		let hash: string;
 		try {
-			const response = await this.client.sendTx(tx.signed.rawTransaction);
-			hash = response.txHash;
+			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
 			return Promise.reject(
 				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
 			);
 		}
-
-		// temp until receipt is server sided sync
-		await delay(5);
-
-		tx.hash = hash;
-		tx.receipt = await this.client.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction
@@ -192,32 +184,19 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 		gas: number,
 		gasPrice: number
 	): Promise<IReceipt> {
-		if (!from) {
-			throw new Error(
-				'Default `from` address cannot be left blank or empty.'
-			);
-		}
-
-		if (!to) {
-			throw new Error('Must provide a `to` address!');
-		}
-
 		if (value <= 0) {
 			throw new Error(
 				'A transfer of funds must have a `value` greater than 0.'
 			);
 		}
 
-		const tx = new Transaction(
-			{
-				from: from.address,
-				to: to.trim(),
-				value,
-				gas,
-				gasPrice
-			},
-			false
-		);
+		const tx = new Transaction({
+			from: from.address,
+			to: to.trim(),
+			value,
+			gas,
+			gasPrice
+		});
 
 		return await this.sendTx(tx, from);
 	}

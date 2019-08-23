@@ -40,7 +40,7 @@ export default class Transaction implements ITransaction {
 
 	constructor(
 		tx: ITransaction,
-		public readonly constant: boolean,
+		public readonly constant: boolean = false,
 		private readonly parseLogs?: (logs: ILog[]) => ILog[],
 		public readonly unpackfn?: any
 	) {

@@ -1,14 +1,14 @@
 import { AbstractClient } from 'evm-lite-client';
 
 // need to strict definition of this consensus interface
-export interface IAbstractConsensus {
+export interface IAbstractConsensus extends AbstractClient {
 	[key: string]: any;
 }
 
-class Babble extends AbstractClient implements IAbstractConsensus {
+class Solo extends AbstractClient implements IAbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
 }
 
-export default Babble;
+export default Solo;
