@@ -1,8 +1,8 @@
 {
 	"extends": "../tsconfig.settings.json",
 	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
+		"rootDir": "./src",
+		"outDir": "./dist",
 		"declarationDir": "./dist/typings",
 		"typeRoots": [
 			"./node_modules/@types",
@@ -10,6 +10,10 @@
 			"../../node_modules/@types"
 		]
 	},
-	"include": ["src/**/*.ts"],
-	"references": [{ "path": "../utils" }]
+	"include": ["./src/**/*.ts"],
+	"references": [
+		{ "path": "../utils" },
+		{ "path": "../client" },
+		{ "path": "../consensus" }
+	]
 }

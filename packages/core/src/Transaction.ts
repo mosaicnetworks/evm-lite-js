@@ -1,24 +1,22 @@
 import Utils from 'evm-lite-utils';
 
-import EVMTypes from './misc/types';
+import { ILog, IReceipt } from 'evm-lite-client';
 
-import { Log, TransactionReceipt } from './client/BaseEVMLC';
-
-interface BaseTransaction {
-	gas: EVMTypes.Gas;
-	gasPrice: EVMTypes.GasPrice;
-	nonce?: EVMTypes.Nonce;
-	chainId?: EVMTypes.ChainID;
+interface IBaseTransaction {
+	gas: number;
+	gasPrice: number;
+	nonce?: number;
+	chainId?: number;
 }
 
-export interface TX extends BaseTransaction {
-	from?: EVMTypes.Address;
-	to?: EVMTypes.Address;
-	value?: EVMTypes.Value;
-	data?: EVMTypes.Data;
+export interface ITransaction extends IBaseTransaction {
+	from?: string;
+	to?: string;
+	value?: number;
+	data?: string;
 }
 
-export interface SignedTransaction {
+export interface ISignedTx {
 	readonly messageHash: string;
 	readonly v: string;
 	readonly r: string;
@@ -26,7 +24,7 @@ export interface SignedTransaction {
 	readonly rawTransaction: string;
 }
 
-export default class Transaction implements TX {
+export default class Transaction implements ITransaction {
 	public from?: string;
 	public to?: string;
 	public value?: number;
@@ -37,13 +35,13 @@ export default class Transaction implements TX {
 	public chainId?: number;
 
 	public hash?: string;
-	public signed?: SignedTransaction;
-	public receipt?: TransactionReceipt;
+	public signed?: ISignedTx;
+	public receipt?: IReceipt;
 
 	constructor(
-		tx: TX,
-		public readonly constant: boolean,
-		private readonly parseLogs?: (logs: Log[]) => Log[],
+		tx: ITransaction,
+		public readonly constant: boolean = false,
+		private readonly parseLogs?: (logs: ILog[]) => ILog[],
 		public readonly unpackfn?: any
 	) {
 		if (!tx.data && !tx.value) {

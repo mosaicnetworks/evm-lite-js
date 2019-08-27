@@ -2,9 +2,9 @@ import * as Utils from 'web3-utils';
 
 import { Iban } from 'web3-eth-iban';
 
-import { TX } from '../Transaction';
+import { ITransaction } from '../Transaction';
 
-export interface FormattedTransaction {
+export interface IFormattedTransaction {
 	from: string;
 	to?: string;
 	value?: string;
@@ -16,7 +16,7 @@ export interface FormattedTransaction {
 }
 
 export default class Formatters {
-	public static inputCallFormatter(txObject: TX) {
+	public static inputCallFormatter(txObject: ITransaction) {
 		const formatted = Formatters.txInputFormatter(txObject);
 
 		if (txObject.from) {
@@ -26,8 +26,10 @@ export default class Formatters {
 		return formatted;
 	}
 
-	public static txInputFormatter(txObject: TX): FormattedTransaction {
-		const formatted: FormattedTransaction = {
+	public static txInputFormatter(
+		txObject: ITransaction
+	): IFormattedTransaction {
+		const formatted: IFormattedTransaction = {
 			from: txObject.from || '',
 			gas: '',
 			gasPrice: '',

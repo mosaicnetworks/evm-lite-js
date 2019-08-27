@@ -1,20 +1,21 @@
-import Utils from 'evm-lite-utils';
+import { IAbstractConsensus } from 'evm-lite-consensus';
 
-import BaseEVMLC, { TransactionReceipt } from './client/BaseEVMLC';
+import Client, { IReceipt } from 'evm-lite-client';
+import utils from 'evm-lite-utils';
 
 import Account from './Account';
 import Transaction from './Transaction';
 
-// delay x * 1000 seconds
-function delay(t: number, v?: any) {
-	return new Promise(resolve => {
-		setTimeout(resolve.bind(null, v), t * 1000);
-	});
-}
+export default class Node<TConsensus extends IAbstractConsensus> {
+	// a node requires an underlying consensus protocol (solo | babble | ...)
+	public readonly consensus: TConsensus;
 
-export default class EVMLC extends BaseEVMLC {
-	constructor(host: string, port: number) {
-		super(host, port);
+	private readonly client: Client;
+
+	constructor(host: string, port: number = 8080, consensus: TConsensus) {
+		this.client = new Client(host, port);
+
+		this.consensus = consensus;
 	}
 
 	/**
@@ -31,10 +32,7 @@ export default class EVMLC extends BaseEVMLC {
 	 *
 	 * @alpha
 	 */
-	public async sendTransaction(
-		tx: Transaction,
-		account: Account
-	): Promise<TransactionReceipt> {
+	public async sendTx(tx: Transaction, account: Account): Promise<IReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
 
@@ -44,7 +42,7 @@ export default class EVMLC extends BaseEVMLC {
 			);
 		}
 
-		// first check if the fields required are present 0and not undefined.
+		// first check if the fields required are present and not undefined.
 		if (!tx.gas || (!tx.gasPrice && tx.gasPrice !== 0)) {
 			return Promise.reject(
 				new Error('Transaction `gas` or `gasPrice` not set.')
@@ -71,7 +69,7 @@ export default class EVMLC extends BaseEVMLC {
 		// check if the from address is the same as the account
 		// that was passed to sign.
 		if (
-			Utils.cleanAddress(account.address) !== Utils.cleanAddress(tx.from)
+			utils.cleanAddress(account.address) !== utils.cleanAddress(tx.from)
 		) {
 			return Promise.reject(
 				new Error(
@@ -83,34 +81,26 @@ export default class EVMLC extends BaseEVMLC {
 
 		// fetch nonce from the node for the associated account
 		if (!tx.nonce) {
-			const baseAccount = await this.getAccount(tx.from);
+			const baseAccount = await this.client.getAccount(tx.from);
 
 			tx.nonce = baseAccount.nonce;
 		}
 
 		// sign the transaction
-		tx.signed = await account.signTransaction(tx);
+		tx.signed = await account.signTx(tx);
 		if (!tx.signed) {
 			return Promise.reject(
 				new Error('Transaction has not been signed yet.')
 			);
 		}
 
-		let hash: string;
+		console.log(tx);
+
 		try {
-			const response = await this.sendRaw(tx.signed.rawTransaction);
-			hash = response.txHash;
+			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
-			return Promise.reject(
-				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
-			);
+			return Promise.reject(`evm-lite: ${e.text || e.toString()}`);
 		}
-
-		// temp until logs and subscribtions
-		await delay(5);
-
-		tx.hash = hash;
-		tx.receipt = await this.getReceipt(hash);
 
 		// parse any logs that may have been returned with the receipt
 		// parsing of logs is different per transaction
@@ -128,17 +118,17 @@ export default class EVMLC extends BaseEVMLC {
 	 * @remarks
 	 * The returned object will be parsed to JS types.
 	 *
-	 * @param tx - The transaction to be sent
+	 * @param tx - The transaction class to be sent
 	 * @returns A promise resolving the return of the contract function
 	 *
 	 * @alpha
 	 */
-	public async callTransaction<R>(transaction: Transaction): Promise<R> {
+	public async callTx<R>(tx: Transaction): Promise<R> {
 		// cleans transaction attributes
-		transaction.beforeSubmission();
+		tx.beforeSubmission();
 
 		// make sure transaction is constant
-		if (!transaction.constant) {
+		if (!tx.constant) {
 			return Promise.reject(
 				new Error(
 					'Transaction mutates state. ' +
@@ -148,7 +138,7 @@ export default class EVMLC extends BaseEVMLC {
 		}
 
 		// `value` cannot be set on the transaction
-		if (transaction.value) {
+		if (tx.value) {
 			return Promise.reject(
 				new Error(
 					'Transaction cannot send a `value` if it' +
@@ -158,22 +148,64 @@ export default class EVMLC extends BaseEVMLC {
 		}
 
 		// not needed fields
-		delete transaction.from;
-		delete transaction.nonce;
+		delete tx.from;
+		delete tx.nonce;
 
 		// send transaction (without signing)
-		const call = await this.callTX(JSON.stringify(transaction));
+		const call = await this.client.callTx(JSON.stringify(tx));
 
 		// since the function is constant no transaction hash will be returned
 		// from the submission however the return of the `contract's function`
 		// will be therefore we need a function to decode the returned results
 		// so we need to make sure that function exists
-		if (!transaction.unpackfn) {
+		if (!tx.unpackfn) {
 			return Promise.reject(
 				new Error('Unpacking function required but not found.')
 			);
 		}
 
-		return transaction.unpackfn(Buffer.from(call.data).toString());
+		return tx.unpackfn(Buffer.from(call.data).toString());
+	}
+
+	public async transfer(
+		from: Account,
+		to: string,
+		value: number,
+		gas: number,
+		gasPrice: number
+	): Promise<IReceipt> {
+		if (value <= 0) {
+			throw new Error(
+				'A transfer of funds must have a `value` greater than 0.'
+			);
+		}
+
+		const tx = new Transaction({
+			from: from.address,
+			to: to.trim(),
+			value,
+			gas,
+			gasPrice
+		});
+
+		return await this.sendTx(tx, from);
+	}
+
+	// client interface
+
+	public async getAccount(address: string) {
+		return this.client.getAccount(address);
+	}
+
+	public async getPOA() {
+		return this.client.getPOAContract();
+	}
+
+	public async getInfo() {
+		return this.client.getInfo();
+	}
+
+	public async getReceipt(hash: string) {
+		return this.client.getReceipt(hash);
 	}
 }

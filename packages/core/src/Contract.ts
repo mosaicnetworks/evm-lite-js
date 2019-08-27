@@ -3,34 +3,17 @@ import coder from 'web3/lib/solidity/coder';
 // @ts-ignore
 import SolidityEvent from 'web3/lib/web3/event.js';
 
-import { Log } from './client/BaseEVMLC';
+import { IABI, IContractABI, ILog } from 'evm-lite-client';
+
+import Transaction, { ITransaction } from './Transaction';
 
 import Function from './contract/Function';
-import Transaction, { TX } from './Transaction';
-import EVMTypes from './misc/types';
 
-export interface Input {
-	readonly name: string;
-	readonly type: string;
+export interface IAbstractSchema {
+	[key: string]: (tx: ITransaction, ...args: any[]) => Transaction;
 }
 
-export interface ABI {
-	readonly constant?: any;
-	readonly inputs: Input[];
-	readonly name: string;
-	readonly outputs?: any[];
-	readonly payable: any;
-	readonly stateMutability: any;
-	readonly type: any;
-}
-
-export type ContractABI = ABI[];
-
-export interface AbstractSchema {
-	[key: string]: (tx: TX, ...args: any[]) => Transaction;
-}
-
-export default class Contract<Schema extends AbstractSchema> {
+export default class Contract<Schema extends IAbstractSchema> {
 	/**
 	 * Create a `Contract` object for a contract that has already
 	 * been deployed to the network.
@@ -41,9 +24,9 @@ export default class Contract<Schema extends AbstractSchema> {
 	 * @returns A contract abstraction object to be used for interacting with
 	 * the contract
 	 */
-	public static load<S extends AbstractSchema>(
-		abi: ContractABI,
-		address: EVMTypes.Address
+	public static load<S extends IAbstractSchema>(
+		abi: IContractABI,
+		address: string
 	): Contract<S> {
 		return new Contract(abi, address);
 	}
@@ -58,8 +41,8 @@ export default class Contract<Schema extends AbstractSchema> {
 	 * @returns A contract abstraction object to be used for interacting with
 	 * the contract
 	 */
-	public static create<S extends AbstractSchema>(
-		abi: ContractABI,
+	public static create<S extends IAbstractSchema>(
+		abi: IContractABI,
 		bytcode: string
 	): Contract<S> {
 		return new Contract(abi, '', bytcode);
@@ -68,8 +51,8 @@ export default class Contract<Schema extends AbstractSchema> {
 	public methods: Schema = {} as Schema;
 
 	constructor(
-		public readonly abi: ContractABI,
-		public address?: EVMTypes.Address,
+		public readonly abi: IContractABI,
+		public address?: string,
 		public readonly bytcode?: string
 	) {
 		if (this.address) {
@@ -90,9 +73,9 @@ export default class Contract<Schema extends AbstractSchema> {
 	 */
 	public deployTransaction(
 		parameters: any[],
-		from: EVMTypes.Address,
-		gas: EVMTypes.Gas,
-		gasPrice: EVMTypes.GasPrice
+		from: string,
+		gas: number,
+		gasPrice: number
 	): Transaction {
 		if (this.address) {
 			throw Error('Contract address is set and cannot be deployed.');
@@ -142,7 +125,7 @@ export default class Contract<Schema extends AbstractSchema> {
 
 		this.abi
 			.filter(json => json.type === 'function')
-			.map((funcABI: ABI) => {
+			.map((funcABI: IABI) => {
 				if (!this.address) {
 					throw new Error('Cannot attach function');
 				}
@@ -170,13 +153,13 @@ export default class Contract<Schema extends AbstractSchema> {
 		);
 	}
 
-	private parseLogs(logs: Log[]): Log[] {
+	private parseLogs(logs: ILog[]): ILog[] {
 		const decoders = this.abi
 			.filter(json => json.type === 'event')
 			.map(json => new SolidityEvent(null, json, null));
 
 		return logs
-			.map((log: Log) => {
+			.map((log: ILog) => {
 				const decoder = decoders.find(d => {
 					return d.signature() === log.topics[0].replace('0x', '');
 				});
@@ -187,7 +170,7 @@ export default class Contract<Schema extends AbstractSchema> {
 					return log;
 				}
 			})
-			.map((log: Log) => {
+			.map((log: ILog) => {
 				const abis = this.abi.find(json => {
 					return json.type === 'event' && log.event === json.name;
 				});

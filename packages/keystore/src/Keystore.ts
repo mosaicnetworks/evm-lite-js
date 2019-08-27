@@ -8,8 +8,8 @@ import utils from 'evm-lite-utils';
 import { Account } from 'evm-lite-core';
 
 import AbstractKeystore, {
-	V3Keyfile,
-	MonikerKeystore
+	IMonikerKeystore,
+	IV3Keyfile
 } from './AbstractKeystore';
 
 // promisify native nodejs file system methods
@@ -19,8 +19,8 @@ const read = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 
 class Keystore extends AbstractKeystore {
-	constructor(public readonly path: string) {
-		super();
+	constructor(path: string) {
+		super(path);
 
 		utils.createDirectoryIfNotExists(this.path);
 
@@ -30,15 +30,15 @@ class Keystore extends AbstractKeystore {
 	}
 
 	// to be implemented
-	public export(address: string): Promise<V3Keyfile> {
+	public export(address: string): Promise<IV3Keyfile> {
 		throw new Error('Method not implemented.');
 	}
 
 	// to be updated to moniker import
 	public async import(
 		moniker: string,
-		keyfile: V3Keyfile
-	): Promise<V3Keyfile> {
+		keyfile: IV3Keyfile
+	): Promise<IV3Keyfile> {
 		// lowercase moniker to avoid casing ambiguity
 		moniker = moniker.toLowerCase();
 
@@ -64,7 +64,7 @@ class Keystore extends AbstractKeystore {
 		moniker: string,
 		passphrase: string,
 		overridePath?: string
-	): Promise<V3Keyfile> {
+	): Promise<IV3Keyfile> {
 		// needs to create a file with the moniker as the file name
 		// file name needs to be only contain letters, numbers and underscore
 		// file name also has to be unique in the directory
@@ -72,7 +72,7 @@ class Keystore extends AbstractKeystore {
 		// lowercase moniker to avoid casing ambiguity
 		moniker = moniker.toLowerCase();
 
-		const account: Account = Account.create();
+		const account: Account = Account.new();
 		const keyfile = Keystore.encrypt(account, passphrase);
 
 		// add `.json` to keep inline with `givery` cli
@@ -101,15 +101,15 @@ class Keystore extends AbstractKeystore {
 
 		// write keyfile to file
 		try {
-			await write(overridePath || path, JSON.stringify(keyfile));
+			await write(path, JSON.stringify(keyfile));
 			return Promise.resolve(keyfile);
 		} catch (e) {
 			return Promise.reject(e);
 		}
 	}
 
-	public async list(): Promise<MonikerKeystore> {
-		const mk = {} as MonikerKeystore;
+	public async list(): Promise<IMonikerKeystore> {
+		const mk = {} as IMonikerKeystore;
 
 		try {
 			const filtered = await this.filtereddir();
@@ -139,7 +139,7 @@ class Keystore extends AbstractKeystore {
 	// we should change this so that it reads directly from the keystore
 	// as we know the path of the keyfile this.path + moniker.json
 	// this will reduce the time complexity but for now this will suffice
-	public async get(moniker: string): Promise<V3Keyfile> {
+	public async get(moniker: string): Promise<IV3Keyfile> {
 		try {
 			// force to lower case
 			moniker = moniker.toLowerCase();
@@ -169,7 +169,7 @@ class Keystore extends AbstractKeystore {
 		moniker: string,
 		oldPass: string,
 		newPass: string
-	): Promise<V3Keyfile> {
+	): Promise<IV3Keyfile> {
 		try {
 			// this.get would have validated moniker and checked if exists
 			// no need to check here

@@ -13,14 +13,14 @@ const scryptPackage = require('scrypt');
 // Older version
 // let scrypt = require('scryptsy')
 
-let scrypt = function(
+const scrypt = (
 	key: string | Buffer,
 	salt: any,
 	N: number,
 	r: number,
 	p: number,
 	dkLength: number
-) {
+) => {
 	// C++ wrapper for scrypt
 	return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
 	// Built in crypto module node.js for >= 10.5.0
@@ -28,9 +28,10 @@ let scrypt = function(
 };
 const keccak256 = require('keccak256');
 
-import { Account, BaseAccount } from 'evm-lite-core';
+import { IBaseAccount } from 'evm-lite-client';
+import { Account } from 'evm-lite-core';
 
-interface KDFParams {
+interface IKDFParams {
 	dklen: number;
 	salt: string;
 	n: number;
@@ -38,7 +39,7 @@ interface KDFParams {
 	p: number;
 }
 
-export interface V3Keyfile {
+export interface IV3Keyfile {
 	readonly version: number;
 	readonly id: string;
 	readonly address: string;
@@ -47,17 +48,17 @@ export interface V3Keyfile {
 		readonly cipherparams: { iv: string };
 		readonly cipher: string;
 		readonly kdf: string;
-		readonly kdfparams: KDFParams;
+		readonly kdfparams: IKDFParams;
 		readonly mac: string;
 	};
 }
 
-export interface MonikerBaseAccount extends BaseAccount {
+export interface IMonikerBaseAccount extends IBaseAccount {
 	moniker: string;
 }
 
-export interface MonikerKeystore {
-	[key: string]: V3Keyfile;
+export interface IMonikerKeystore {
+	[key: string]: IV3Keyfile;
 }
 
 /**
@@ -65,64 +66,6 @@ export interface MonikerKeystore {
  * are referenced by `moniker` as the unique identifier instead of the address.
  */
 export default abstract class AbstractKeystore {
-	/**
-	 * Abstract class should never be initialised.
-	 */
-	protected constructor() {}
-
-	/**
-	 * Create an encrypted V3Keyfile in the keystore.
-	 *
-	 * @param moniker - The unique human readable identifier for the account
-	 * @param passphrase - The passphrase used to encrypt the account
-	 * @param overridePath - Override path of the location of the keyfile
-	 *
-	 * @returns A promise resolving created encrypted keyfile
-	 */
-	public abstract create(
-		moniker: string,
-		passphrase: string,
-		overridePath?: string
-	): Promise<V3Keyfile>;
-
-	/**
-	 * List all keyfiles and return as mapping of moniker to keyfile.
-	 *
-	 * @returns A promise resolving a mapping of moniker to keyfile
-	 */
-	public abstract list(): Promise<MonikerKeystore>;
-
-	/**
-	 * Fetch a single keyfile for a specific moniker.
-	 *
-	 * @param moniker - The moniker of the required keyfile
-	 *
-	 * @returns A promise resolving the required keyfile
-	 */
-	public abstract get(moniker: string): Promise<V3Keyfile>;
-
-	/**
-	 * Update the passphrase of a keyfile only if the old passphrase is known.
-	 *
-	 * @param moniker - The moniker of the keyfile to update passphrase
-	 * @param oldPass - Old passphrase of the keyfile
-	 * @param newPass - New passphrase to be used to encrypt the keyfile
-	 *
-	 * @returns A promise resolving the updated keyfile
-	 */
-	public abstract update(
-		moniker: string,
-		oldPass: string,
-		newPass: string
-	): Promise<V3Keyfile>;
-
-	// import, export functions
-	public abstract import(
-		moniker: string,
-		keyfile: V3Keyfile
-	): Promise<V3Keyfile>;
-	public abstract export(moniker: string): Promise<V3Keyfile>;
-
 	// The encrypt and decrypt functions for our keystore
 	public static encrypt(account: Account, passphrase: string) {
 		let derivedKey;
@@ -193,7 +136,7 @@ export default abstract class AbstractKeystore {
 		};
 	}
 
-	public static decrypt(json: V3Keyfile, passphrase: string) {
+	public static decrypt(json: IV3Keyfile, passphrase: string) {
 		if (!passphrase) {
 			throw new Error('No password given.');
 		}
@@ -243,4 +186,62 @@ export default abstract class AbstractKeystore {
 
 		return Account.fromPrivateKey(seed);
 	}
+
+	/**
+	 * Abstract class should never be initialised.
+	 */
+	protected constructor(public readonly path: string) {}
+
+	/**
+	 * Create an encrypted V3Keyfile in the keystore.
+	 *
+	 * @param moniker - The unique human readable identifier for the account
+	 * @param passphrase - The passphrase used to encrypt the account
+	 * @param overridePath - Override path of the location of the keyfile
+	 *
+	 * @returns A promise resolving created encrypted keyfile
+	 */
+	public abstract create(
+		moniker: string,
+		passphrase: string,
+		overridePath?: string
+	): Promise<IV3Keyfile>;
+
+	/**
+	 * List all keyfiles and return as mapping of moniker to keyfile.
+	 *
+	 * @returns A promise resolving a mapping of moniker to keyfile
+	 */
+	public abstract list(): Promise<IMonikerKeystore>;
+
+	/**
+	 * Fetch a single keyfile for a specific moniker.
+	 *
+	 * @param moniker - The moniker of the required keyfile
+	 *
+	 * @returns A promise resolving the required keyfile
+	 */
+	public abstract get(moniker: string): Promise<IV3Keyfile>;
+
+	/**
+	 * Update the passphrase of a keyfile only if the old passphrase is known.
+	 *
+	 * @param moniker - The moniker of the keyfile to update passphrase
+	 * @param oldPass - Old passphrase of the keyfile
+	 * @param newPass - New passphrase to be used to encrypt the keyfile
+	 *
+	 * @returns A promise resolving the updated keyfile
+	 */
+	public abstract update(
+		moniker: string,
+		oldPass: string,
+		newPass: string
+	): Promise<IV3Keyfile>;
+
+	// import, export functions
+	public abstract import(
+		moniker: string,
+		keyfile: IV3Keyfile
+	): Promise<IV3Keyfile>;
+	public abstract export(moniker: string): Promise<IV3Keyfile>;
 }

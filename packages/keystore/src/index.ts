@@ -1,7 +1,10 @@
-export { default as Keystore } from './Keystore';
+import Keystore from './Keystore';
+
 export {
 	default as AbstractKeystore,
-	V3Keyfile,
-	MonikerKeystore,
-	MonikerBaseAccount
+	IV3Keyfile,
+	IMonikerKeystore,
+	IMonikerBaseAccount
 } from './AbstractKeystore';
+
+export default Keystore;

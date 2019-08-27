@@ -1,11 +1,6 @@
 import * as http from 'http';
-import * as JSONBig from 'json-bigint';
 
-import { ContractABI } from '../Contract';
-
-import BN from 'bn.js';
-
-interface RequestOptions {
+interface IOptions {
 	host: string;
 	port: number;
 	method: string;
@@ -15,18 +10,18 @@ interface RequestOptions {
 export default abstract class AbstractClient {
 	protected constructor(
 		public readonly host: string,
-		public readonly port: number = 8080
+		public readonly port: number
 	) {}
 
 	protected async get(path: string) {
 		return await this.request(this.options('GET', path));
 	}
 
-	protected async post(path: string, tx: string) {
-		return await this.request(this.options('POST', path), tx);
+	protected async post(path: string, data: string) {
+		return await this.request(this.options('POST', path), data);
 	}
 
-	protected options(method: string, path: string): RequestOptions {
+	protected options(method: string, path: string): IOptions {
 		return {
 			host: this.host,
 			port: this.port,
@@ -35,20 +30,20 @@ export default abstract class AbstractClient {
 		};
 	}
 
-	private request(options: RequestOptions, tx?: string): Promise<string> {
+	private request(options: IOptions, data?: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const req = http.request(options, response => {
-				let data = '';
+				let res = '';
 
-				response.on('data', chunk => (data += chunk));
-				response.on('end', () => resolve(data));
+				response.on('data', chunk => (res += chunk));
+				response.on('end', () => resolve(res));
 				response.on('error', err => reject(err));
 			});
 
 			req.on('error', err => reject(err));
 
-			if (tx) {
-				req.write(tx);
+			if (data) {
+				req.write(data);
 			}
 
 			req.end();

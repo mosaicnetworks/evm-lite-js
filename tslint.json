@@ -4,6 +4,7 @@
 		"exclude": ["node_modules/**/*.ts"]
 	},
 	"rules": {
+		"object-literal-sort-keys": false,
 		"no-console": false,
 		"variable-name": false,
 		"no-var-requires": false
