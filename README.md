@@ -21,13 +21,13 @@ There are three main modules to interact with an EVM-Lite.
 You can install each one of them depending on the requirements of your project
 
 ```bash
-npm install evm-lite-dapp
+npm install evm-lite-core
 ```
 
 or with `yarn`
 
 ```bash
-yarn add evm-lite-dapp
+yarn add evm-lite-core
 ```
 
 ## Demo
