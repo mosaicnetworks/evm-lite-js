@@ -13,8 +13,8 @@
 		"prepublish": "tsc"
 	},
 	"dependencies": {
-		"evm-lite-keystore": "1.0.0-alpha.22",
-		"evm-lite-utils": "1.0.0-alpha.21",
+		"evm-lite-keystore": "1.0.0-alpha.21-dev",
+		"evm-lite-utils": "1.0.0-alpha.21-dev",
 		"mkdirp": "^0.5.1",
 		"toml": "^3.0.0",
 		"tomlify-j0.4": "^3.0.0"

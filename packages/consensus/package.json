@@ -15,7 +15,7 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"evm-lite-client": "1.0.0-alpha.22",
+		"evm-lite-client": "1.0.0-alpha.21-dev",
 		"json-bigint": "^0.3.0"
 	},
 	"repository": {
