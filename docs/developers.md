@@ -15,14 +15,15 @@ This repo is a multi-package repository with the higher level `packages/` direct
 ```bash
 .
 ├── packages/
-│   ├── core/
+│   ├── node/
 │   │   ├── ...
 │   ├── datadir/
 │   │   ├── ...
 │   ├── keystore/
 │   │   ├── ...
-│   ├── utils/
+│   ├── account/
 │   │   ├── ...
+│   ├── ...
 │   ├── tsconfig.json
 │   └── tsconfig.settings.json
 │
@@ -50,3 +51,7 @@ This will install all package dependencies including the dependencies of the eac
 It will also run `lerna bootstrap` automatically which will install all their dependencies and linking any cross-dependencies.
 
 All `typescript` files will also be built for each module in their respective `dist/` directory.
+
+## Linking & Unlinking
+
+To link all dependencies using `yarn link`, simply run `yarn linkall`. If you wish to unlink all dependencies run `yarn unlinkall`.
