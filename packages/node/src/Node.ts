@@ -6,18 +6,8 @@ import utils from 'evm-lite-utils';
 
 import Client, { IReceipt } from 'evm-lite-client';
 
-// delay x * 1000 seconds
-function delay(t: number, v?: any) {
-	return new Promise(resolve => {
-		setTimeout(resolve.bind(null, v), t * 1000);
-	});
-}
-
-// Currently `evm-lite-js` only supports one consensus system but will be
-// changed in the future to multiple support
 export default class Node<TConsensus extends IAbstractConsensus> {
-	// a node requires an underlying consensus protocol
-	// maybe we should implement a holder for solo consensus
+	// a node requires an underlying consensus protocol (solo | babble | ...)
 	public readonly consensus: TConsensus;
 
 	private readonly client: Client;
@@ -52,7 +42,7 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 			);
 		}
 
-		// first check if the fields required are present 0and not undefined.
+		// first check if the fields required are present and not undefined.
 		if (!tx.gas || (!tx.gasPrice && tx.gasPrice !== 0)) {
 			return Promise.reject(
 				new Error('Transaction `gas` or `gasPrice` not set.')
@@ -107,9 +97,7 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 		try {
 			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
-			return Promise.reject(
-				`EVM-Lite: ${e.text.charAt(0).toUpperCase() + e.text.slice(1)}`
-			);
+			return Promise.reject(`evm-lite: ${e.text || e.toString()}`);
 		}
 
 		// parse any logs that may have been returned with the receipt

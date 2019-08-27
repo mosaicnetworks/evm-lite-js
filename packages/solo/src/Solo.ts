@@ -9,6 +9,8 @@ class Solo extends AbstractClient implements IAbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
+
+	// tbc
 }
 
 export default Solo;

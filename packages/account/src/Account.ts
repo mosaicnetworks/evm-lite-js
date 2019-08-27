@@ -3,8 +3,9 @@ import * as ethlib from 'eth-lib';
 // @ts-ignore
 import * as EthLibAccount from 'eth-lib/lib/account';
 
-import { ISignedTx, ITransaction } from 'evm-lite-transaction';
 import utils from 'evm-lite-utils';
+
+import { ISignedTx, ITransaction } from 'evm-lite-transaction';
 
 import Formatters from './formatters';
 
