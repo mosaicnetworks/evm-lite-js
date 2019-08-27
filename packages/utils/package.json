@@ -2,7 +2,7 @@
 	"name": "evm-lite-utils",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.0.0-alpha.21",
+	"version": "1.0.0-alpha.20",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
