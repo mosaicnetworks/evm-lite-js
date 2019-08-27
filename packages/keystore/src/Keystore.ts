@@ -5,7 +5,7 @@ import { promisify } from 'util';
 
 import utils from 'evm-lite-utils';
 
-import Account from 'evm-lite-account';
+import { Account } from 'evm-lite-core';
 
 import AbstractKeystore, {
 	IMonikerKeystore,

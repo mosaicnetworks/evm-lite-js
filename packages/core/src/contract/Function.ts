@@ -4,7 +4,8 @@ import coder from 'web3/lib/solidity/coder';
 const SolFunction = require('web3/lib/web3/function');
 
 import { IABI, IInput, ILog } from 'evm-lite-client';
-import Transaction, { ITransaction } from 'evm-lite-transaction';
+
+import Transaction, { ITransaction } from '../Transaction';
 
 export default class Function {
 	public readonly name: string;

@@ -1,5 +1,5 @@
 {
-	"name": "evm-lite-babble",
+	"name": "evm-lite-core",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
 	"version": "1.0.0-alpha.20",
@@ -15,9 +15,14 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"json-bigint": "^0.3.0",
 		"evm-lite-client": "1.0.0-alpha.20",
-		"evm-lite-solo": "1.0.0-alpha.20"
+		"evm-lite-consensus": "1.0.0-alpha.20",
+		"evm-lite-utils": "1.0.0-alpha.20",
+		"json-bigint": "^0.3.0",
+		"eth-lib": "0.2.8",
+		"web3-eth-iban": "1.0.0-beta.46",
+		"web3-utils": "1.0.0-beta.46",
+		"web3": "0.20.6"
 	},
 	"repository": {
 		"type": "git",
@@ -26,5 +31,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/babble"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/core"
 }

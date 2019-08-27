@@ -12,10 +12,8 @@
 	},
 	"include": ["./src/**/*.ts"],
 	"references": [
-		{ "path": "../client" },
 		{ "path": "../utils" },
-		{ "path": "../account" },
-		{ "path": "../transaction" },
-		{ "path": "../solo" }
+		{ "path": "../client" },
+		{ "path": "../consensus" }
 	]
 }

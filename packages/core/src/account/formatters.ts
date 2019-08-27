@@ -2,7 +2,7 @@ import * as Utils from 'web3-utils';
 
 import { Iban } from 'web3-eth-iban';
 
-import { ITransaction } from 'evm-lite-transaction';
+import { ITransaction } from '../Transaction';
 
 export interface IFormattedTransaction {
 	from: string;

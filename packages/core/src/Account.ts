@@ -5,11 +5,24 @@ import * as EthLibAccount from 'eth-lib/lib/account';
 
 import utils from 'evm-lite-utils';
 
-import { ISignedTx, ITransaction } from 'evm-lite-transaction';
+import { ISignedTx, ITransaction } from './Transaction';
 
-import Formatters from './formatters';
+import Formatters from './account/formatters';
 
-export default class Account {
+export interface IAccount {
+	// keypair
+	address: string;
+	privateKey: string;
+
+	// account data
+	balance: number;
+	nonce: number;
+
+	// sign transaction method
+	signTx: (tx: ITransaction) => ISignedTx;
+}
+
+export default class Account implements IAccount {
 	/**
 	 * Creates an `Account` object for the given private key hex.
 	 *

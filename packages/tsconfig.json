@@ -1,15 +1,10 @@
 {
 	"files": [],
 	"references": [
-		{ "path": "contract" },
-		{ "path": "babble" },
 		{ "path": "keystore" },
 		{ "path": "datadir" },
 		{ "path": "utils" },
-		{ "path": "client" },
 		{ "path": "consensus" },
-		{ "path": "transaction" },
-		{ "path": "account" },
-		{ "path": "node" }
+		{ "path": "core" }
 	]
 }

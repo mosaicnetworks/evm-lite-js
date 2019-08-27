@@ -4,9 +4,10 @@ import coder from 'web3/lib/solidity/coder';
 import SolidityEvent from 'web3/lib/web3/event.js';
 
 import { IABI, IContractABI, ILog } from 'evm-lite-client';
-import Transaction, { ITransaction } from 'evm-lite-transaction';
 
-import Function from './Function';
+import Transaction, { ITransaction } from './Transaction';
+
+import Function from './contract/Function';
 
 export interface IAbstractSchema {
 	[key: string]: (tx: ITransaction, ...args: any[]) => Transaction;

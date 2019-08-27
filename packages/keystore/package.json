@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"evm-lite-client": "1.0.0-alpha.20",
-		"evm-lite-account": "1.0.0-alpha.20",
+		"evm-lite-core": "1.0.0-alpha.20",
 		"evm-lite-utils": "1.0.0-alpha.20",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",

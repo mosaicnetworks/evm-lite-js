@@ -1,4 +1,4 @@
-import { IAbstractConsensus } from 'evm-lite-solo';
+import { IAbstractConsensus } from './Solo';
 
 import { AbstractClient } from 'evm-lite-client';
 

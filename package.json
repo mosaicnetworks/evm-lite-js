@@ -21,6 +21,7 @@
 		"link": "lerna link",
 		"prepublish": "yarn lint && yarn run build && lerna link",
 		"publish": "lerna publish",
+		"publish:test": "lerna publish --registry http://localhost:4873",
 		"doc": "lerna run doc",
 		"lint": "lerna run lint",
 		"linkall": "ts-node ./scripts/link-all",

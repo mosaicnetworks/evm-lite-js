@@ -1,10 +1,10 @@
-import { IAbstractConsensus } from 'evm-lite-solo';
-
-import Account from 'evm-lite-account';
-import Transaction from 'evm-lite-transaction';
-import utils from 'evm-lite-utils';
+import { IAbstractConsensus } from 'evm-lite-consensus';
 
 import Client, { IReceipt } from 'evm-lite-client';
+import utils from 'evm-lite-utils';
+
+import Account from './Account';
+import Transaction from './Transaction';
 
 export default class Node<TConsensus extends IAbstractConsensus> {
 	// a node requires an underlying consensus protocol (solo | babble | ...)
