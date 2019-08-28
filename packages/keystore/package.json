@@ -1,7 +1,7 @@
 {
 	"name": "evm-lite-keystore",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0-alpha.21-dev.1",
+	"version": "1.0.0-dev",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -14,12 +14,12 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"evm-lite-client": "1.0.0-dev",
+		"evm-lite-core": "1.0.0-dev",
+		"evm-lite-utils": "1.0.0-dev",
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
-		"evm-lite-client": "1.0.0-alpha.21-dev.1",
-		"evm-lite-core": "1.0.0-alpha.21-dev.1",
-		"evm-lite-utils": "1.0.0-alpha.21-dev.1",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"mkdirp": "^0.5.1",

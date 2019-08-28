@@ -2,7 +2,7 @@
 	"name": "evm-lite-core",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.0.0-alpha.21-dev.1",
+	"version": "1.0.0-dev",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -15,10 +15,10 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
+		"evm-lite-client": "1.0.0-dev",
+		"evm-lite-consensus": "1.0.0-dev",
+		"evm-lite-utils": "1.0.0-dev",
 		"eth-lib": "0.2.8",
-		"evm-lite-client": "1.0.0-alpha.21-dev.1",
-		"evm-lite-consensus": "1.0.0-alpha.21-dev.1",
-		"evm-lite-utils": "1.0.0-alpha.21-dev.1",
 		"json-bigint": "^0.3.0",
 		"web3": "0.20.6",
 		"web3-eth-iban": "1.0.0-beta.46",
