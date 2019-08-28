@@ -4,7 +4,6 @@ import DataDirectory from './DataDirectory';
 
 export { IConfiguration } from './Configuration';
 
-// to be modified later to keep inline with convention
 // https://github.com/mosaicnetworks/monetd/issues/11
 /**
  * Get OS specific data directory paths
