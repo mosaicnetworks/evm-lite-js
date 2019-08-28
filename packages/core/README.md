@@ -38,7 +38,7 @@ constructor(host: string, port: number, consensus: TConsensus)
 
 ### Methods
 
-#### `prepareTransfer`
+#### `transfer`
 
 Makes a transfer from one account to another.
 
