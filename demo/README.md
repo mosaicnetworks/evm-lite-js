@@ -6,8 +6,7 @@ The goal of this document is to explain most, if not all, interactions with eith
 
 1. [Outline](#outline)
 2. [Pre-requisites](#pre-requisites)
-3. [Importing Keyfile](#importing-keyfile)
-4. [Getting Started](#getting-started)
+3. [Keyfiles](#keyfiles)
 
 ## Outline
 
