@@ -1,7 +1,5 @@
 {
-	"packages": [
-		"packages/*"
-	],
+	"packages": ["packages/*"],
 	"version": "1.0.0-alpha.21-dev.1",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
@@ -10,6 +8,7 @@
 			"exact": true
 		},
 		"publish": {
+			"commit": false,
 			"push": false,
 			"exact": true,
 			"skipGit": true
