@@ -4,11 +4,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Javascript modules to interact with an [EVM-Lite]() or a [Monet]() node.
+Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetworks/evm-lite) or a [Monet](https://github.com/mosaicnetworks/monetd) node.
 
 ## Table of Contents
 
-1. [Modules](#modules)
 1. [Installation](#installation)
 1. [Demo](#Demo)
 1. [Developers](#developers)
