@@ -71,7 +71,7 @@ export default class Contract<Schema extends IAbstractSchema> {
 	 *
 	 * @returns The transaction object represeting deployment
 	 */
-	public deployTransaction(
+	public deployTx(
 		parameters: any[],
 		from: string,
 		gas: number,
