@@ -43,56 +43,65 @@ const node = new Node('127.0.0.1', 8080, babble);
 
 ### Methods
 
--   `sendTx` - submits a transaction that mutates state to the node
+#### `sendTx`
 
-    **Definition (TS)**
+Submits a transaction that mutates state to the node.
+Any events return by contract functions will be parsed by default for all transactions.
 
-    ```typescript
-    sendTx(tx: Transaction, account: Account): Promise<IReceipt>
-    ```
+**Definition (TS)**
 
--   `transfer` (_wrapper around `sendTx`_) - transfers the specified number of tokens to another address
+```typescript
+sendTx(tx: Transaction, account: Account): Promise<IReceipt>
+```
 
-    **Definition (TS)**
+#### `transfer`
 
-    ```typescript
-    transfer(from: Account, to: string, value: number, gas: number, gasPrice: number): Promise<IReceipt>
-    ```
+Transfers the specified number of tokens to another address.
 
-    **Example (ES5)**
+**Definition (TS)**
 
-    ```javascript
-    const { Account } = require('evm-lite-core');
+```typescript
+transfer(from: Account, to: string, value: number, gas: number, gasPrice: number): Promise<IReceipt>
+```
 
-    // Create account object from private key
-    const account = Account.fromPrivateKey('PRIVATE_KEY');
+**Example (ES5)**
 
-    // First parameter if of type `Account`
-    node.transfer(account, 'TO_ADDRESS', 1000, 100000000, 0)
-    	.then(receipt => console.log(receipt))
-    	.catch(console.log);
-    ```
+```javascript
+const { Account } = require('evm-lite-core');
 
--   `callTx` - submits a transaction that does **not** mutate state to the node
+// Create account object from private key
+const account = Account.fromPrivateKey('PRIVATE_KEY');
 
-    **Definition (TS)**
+// First parameter if of type `Account`
+node.transfer(account, 'TO_ADDRESS', 1000, 100000000, 0)
+	.then(receipt => console.log(receipt))
+	.catch(console.log);
+```
 
-    ```typescript
-    callTx<R>(tx: Transaction): Promise<R>
-    ```
+#### `callTx`
 
--   `getAccount` - fetches account balance, nonce, and bytecode for a specified address
+Submits a transaction that does **not** mutate state to the node.
 
-    **Definition (TS)**
+**Definition (TS)**
 
-    ```typescript
-    getAccount(address: string): Promise<IBaseAccount>
-    ```
+```typescript
+callTx<R>(tx: Transaction): Promise<R>
+```
 
-    **Example (ES5)**
+#### `getAccount`
 
-    ```javascript
-    node.getAccount('0x9f640e0930370ff42c9b0c7679f83d4c7f3f98cd')
-    	.then(account => console.log(account))
-    	.catch(console.log);
-    ```
+Fetches account balance, nonce, and bytecode for a specified address
+
+**Definition (TS)**
+
+```typescript
+getAccount(address: string): Promise<IBaseAccount>
+```
+
+**Example (ES5)**
+
+```javascript
+node.getAccount('0x9f640e0930370ff42c9b0c7679f83d4c7f3f98cd')
+	.then(account => console.log(account))
+	.catch(console.log);
+```
