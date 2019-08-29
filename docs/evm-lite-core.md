@@ -6,7 +6,7 @@ There are three main objects exposed as part of this library:
 
 -   [`Node`](#node)
 -   [`Contract`](#contract)
--   `Account`
+-   [`Account`](#account)
 -   `Transaction`
 
 _Only the `Node` class has the functionality to send requests to the node._
@@ -110,7 +110,7 @@ Contract object helps abstract out the process of working with a smart contract.
 
 It is reccomended to use wrapper static functions to create and load contract objects.
 
-`Contract.create`
+**`Contract.create`**
 
 ```typescript
 static create<S extends IAbstractSchema>(abi: IContractABI, bytcode: string): Contract<S>
@@ -122,7 +122,7 @@ const { Contract } = require('evm-lite-core');
 const contract = Contract.create(ABI, BYTECODE);
 ```
 
-`Contract.load`
+**`Contract.load`**
 
 ```typescript
 static load<S extends IAbstractSchema>(abi: IContractABI, address: string): Contract<S>
@@ -152,4 +152,36 @@ Will populate contract functions once an address if set.
 
 ```typescript
 setAddressAndAddFunctions(address: string): this
+```
+
+## Account
+
+Account object allows you to sign transactions, create new keypairs and generate an `Account` object from a private key.
+
+**`Account.new`**
+
+```javascript
+const { Account } = require('evm-lite-core');
+
+const account = Account.new();
+```
+
+### `fromPrivateKey`
+
+Generates an account object based on a private key.
+
+**Definition (TS)**
+
+```typescript
+static fromPrivateKey(privateKey: string): Account;
+```
+
+### `signTx`
+
+Signs a transaction with the respective private key.
+
+**Definition (TS)**
+
+```typescript
+signTx(tx: ITransaction): ISignedTx
 ```
