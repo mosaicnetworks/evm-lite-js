@@ -9,6 +9,7 @@ Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetwo
 ## Table of Contents
 
 1. [Installation](#installation)
+1. [Documentation](docs/index.md)
 1. [Demo](#Demo)
 1. [Developers](#developers)
 
