@@ -21,7 +21,7 @@
 		"link": "lerna link",
 		"prepublish": "yarn lint && yarn run build && lerna link",
 		"publish": "lerna publish",
-		"publish:dev": "lerna publish --registry http://192.168.1.12:4873",
+		"publish:dev": "lerna publish --registry http://192.168.1.4:4873",
 		"doc": "lerna run doc",
 		"rst": "yarn run ts-node ./docs/convert",
 		"clean:rst": "rm ./docs/*.rst",
