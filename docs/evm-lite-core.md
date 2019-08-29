@@ -108,7 +108,7 @@ node.getAccount('0x9f640e0930370ff42c9b0c7679f83d4c7f3f98cd')
 
 Contract object helps abstract out the process of working with a smart contract. Using this object you can deploy and interact with functions from the contract.
 
-It is reccomended to use wrapper static functions to create and load contract objects.
+It is recommended to use wrapper static functions to create and load contract objects.
 
 **`Contract.create`**
 
