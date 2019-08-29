@@ -15,7 +15,7 @@ Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetwo
 
 ## Installation
 
-There are three main modules to interact with an EVM-Lite.
+There are currently 7 modules to interact with an EVM-Lite.
 
 You can install each one of them depending on the requirements of your project
 
