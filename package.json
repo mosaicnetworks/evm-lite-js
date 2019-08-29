@@ -23,6 +23,8 @@
 		"publish": "lerna publish",
 		"publish:dev": "lerna publish --registry http://192.168.1.12:4873",
 		"doc": "lerna run doc",
+		"rst": "yarn run ts-node ./docs/convert",
+		"clean:rst": "rm ./docs/*.rst",
 		"lint": "lerna run lint",
 		"linkall": "ts-node ./scripts/link-all",
 		"unlinkall": "ts-node ./scripts/unlink-all"

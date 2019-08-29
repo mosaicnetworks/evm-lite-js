@@ -4,9 +4,9 @@ This is the core module to interact with an EVM-Lite or Monet node. It exposes c
 
 There are three main objects exposed as part of this library:
 
--   [`Node`](#node)
--   [`Contract`](#contract)
--   [`Account`](#account)
+-   `Node`
+-   `Contract`
+-   `Account`
 -   `Transaction`
 
 _Only the `Node` class has the functionality to send requests to the node._
