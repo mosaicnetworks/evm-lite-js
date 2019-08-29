@@ -4,8 +4,8 @@ This is the core module to interact with an EVM-Lite or Monet node. It exposes c
 
 There are three main objects exposed as part of this library:
 
--   `Node`
--   `Contract`
+-   [`Node`](#node)
+-   [`Contract`](#contract)
 -   `Account`
 -   `Transaction`
 
@@ -41,9 +41,7 @@ const babble = new Babble('127.0.0.1', 8080);
 const node = new Node('127.0.0.1', 8080, babble);
 ```
 
-### Methods
-
-#### `sendTx`
+### `sendTx`
 
 Submits a transaction that mutates state to the node.
 Any events return by contract functions will be parsed by default for all transactions.
@@ -54,7 +52,7 @@ Any events return by contract functions will be parsed by default for all transa
 sendTx(tx: Transaction, account: Account): Promise<IReceipt>
 ```
 
-#### `transfer`
+### `transfer`
 
 Transfers the specified number of tokens to another address.
 
@@ -78,7 +76,7 @@ node.transfer(account, 'TO_ADDRESS', 1000, 100000000, 0)
 	.catch(console.log);
 ```
 
-#### `callTx`
+### `callTx`
 
 Submits a transaction that does **not** mutate state to the node.
 
@@ -88,7 +86,7 @@ Submits a transaction that does **not** mutate state to the node.
 callTx<R>(tx: Transaction): Promise<R>
 ```
 
-#### `getAccount`
+### `getAccount`
 
 Fetches account balance, nonce, and bytecode for a specified address
 
@@ -104,4 +102,54 @@ getAccount(address: string): Promise<IBaseAccount>
 node.getAccount('0x9f640e0930370ff42c9b0c7679f83d4c7f3f98cd')
 	.then(account => console.log(account))
 	.catch(console.log);
+```
+
+## Contract
+
+Contract object helps abstract out the process of working with a smart contract. Using this object you can deploy and interact with functions from the contract.
+
+It is reccomended to use wrapper static functions to create and load contract objects.
+
+`Contract.create`
+
+```typescript
+static create<S extends IAbstractSchema>(abi: IContractABI, bytcode: string): Contract<S>
+```
+
+```typescript
+const { Contract } = require('evm-lite-core');
+
+const contract = Contract.create(ABI, BYTECODE);
+```
+
+`Contract.load`
+
+```typescript
+static load<S extends IAbstractSchema>(abi: IContractABI, address: string): Contract<S>
+```
+
+```typescript
+const { Contract } = require('evm-lite-core');
+
+const contract = Contract.load(ABI, ADDRESS);
+```
+
+### `deployTx`
+
+Generates a transaction representing the deployment of a contract.
+
+**Definition (TS)**
+
+```typescript
+deployTx(parameters: any[], from: string, gas: number, gasPrice: number ): Transaction
+```
+
+### `setAddressAndAddFunctions`
+
+Will populate contract functions once an address if set.
+
+**Definition (TS)**
+
+```typescript
+setAddressAndAddFunctions(address: string): this
 ```
