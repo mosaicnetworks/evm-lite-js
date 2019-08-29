@@ -16,9 +16,11 @@ Yarn:
 $ yarn add evm-lite-core@1.0.0
 ```
 
+## Usage
+
 After that, you will need to create a `Node` instance and a consensus client depending on what you are trying to connect to.
 
-For a Monet node, we use [Babble]() as our consensus algorithm hence we would need a Babble client.
+For a Monet node, we use [Babble](https://github.com/mosaicnetworks/babble) as our consensus algorithm hence we would need a Babble client.
 
 _Note: If you are using a custom node with a different consensus, you will need to write your implementation for the client and it must extend `IAbstractConsensus` from `evm-lite-consensus`_
 

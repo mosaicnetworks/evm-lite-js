@@ -28,6 +28,6 @@ const paths = getMarkdown(path.resolve(__dirname));
 			`pandoc --from=markdown --to=rst --output=${m}.rst ${m}.md`
 		);
 
-		console.log(o.stderr || o.stdout);
+		console.log(o.stderr || n);
 	}
 })();

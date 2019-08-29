@@ -1,6 +1,6 @@
 # EVM-Lite JS
 
-EVM-Lite JS provides serveral modules to interact with an [EVM-Lite]() or [Monet]() nodes.
+EVM-Lite JS provides serveral modules to interact with an [EVM-Lite](https://github.com/mosaicnetworks/evm-lite) or [Monet](https://github.com/mosaicnetworks/monetd) nodes.
 
 The current list of modules:
 
@@ -8,7 +8,7 @@ The current list of modules:
 -   `evm-lite-keystore@1.0.0` - Keystore management for applications
 -   `evm-lite-datadir@1.0.0` - Data directory management for applications
 -   `evm-lite-utils@1.0.0` - An aggregate of utility functions used by EVM-Lite JS modules
--   `evm-lite-consensus@1.0.0` - Our consensus clients as well as an `AbstractConsensus` class
+-   `evm-lite-consensus@1.0.0` - Our consensus clients as well as an `IAbstractConsensus` class
 -   `evm-lite-client@1.0.0` - A simple HTTP client for EVM-Lite
 
 The following documentation will guide you through installing and running EVM-Lite JS, as well as providing API documentation with examples.
