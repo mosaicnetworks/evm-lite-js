@@ -73,8 +73,6 @@ Definition (TS)
 
 Saves a new configuration to the file.
 
-.. _definition-ts-1:
-
 Definition (TS)
 ^^^^^^^^^^^^^^^
 

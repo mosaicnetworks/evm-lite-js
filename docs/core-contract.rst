@@ -51,8 +51,6 @@ Definition (TS)
 
 Will populate contract functions once an address if set.
 
-.. _definition-ts-1:
-
 Definition (TS)
 ~~~~~~~~~~~~~~~
 

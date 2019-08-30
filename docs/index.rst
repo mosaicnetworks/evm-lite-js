@@ -1,4 +1,4 @@
-EVM-Lite JS
+Overview
 ===========
 
 EVM-Lite JS provides serveral modules to interact with an
@@ -26,9 +26,9 @@ examples.
 
 ------------------------------------------------------------------------------------------
 
+
+
 .. toctree::
-   :hidden:
-   :glob:
    :maxdepth: 2
 
    getting-started

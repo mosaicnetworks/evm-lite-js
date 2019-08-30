@@ -49,13 +49,39 @@ source_suffix = '.rst'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'rst.ignore']
 
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'alabaster'
+
+html_theme_options = {
+    # Toc options
+    'collapse_navigation': True,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
+}
+
+html_theme_options = {
+    'github_user': 'mosaicnetworks',
+    'github_repo': 'evm-lite-js',
+    'github_button': 'true',
+    # 'body_text_align': 'justify',
+    'show_related': 'true',
+    'fixed_sidebar': 'false',
+    'logo_name': 'true',
+    # 'logo_text_align': 'center',
+    'show_powered_by': 'false',
+    'sidebar_width': '350px',
+    'page_width': '98%'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -75,11 +101,3 @@ html_sidebars = {
 
 
 # READ the docs theme
-html_theme_options = {
-    # Toc options
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 4,
-    'includehidden': True,
-    'titles_only': False
-}

@@ -51,8 +51,6 @@ Definition (TS)
 
 Transfers the specified number of tokens to another address.
 
-.. _definition-ts-1:
-
 Definition (TS)
 ~~~~~~~~~~~~~~~
 
@@ -82,8 +80,6 @@ Example (ES5)
 
 Submits a transaction that does **not** mutate state to the node.
 
-.. _definition-ts-2:
-
 Definition (TS)
 ~~~~~~~~~~~~~~~
 
@@ -95,8 +91,6 @@ Definition (TS)
 --------------
 
 Fetches account balance, nonce, and bytecode for a specified address
-
-.. _definition-ts-3:
 
 Definition (TS)
 ~~~~~~~~~~~~~~~
