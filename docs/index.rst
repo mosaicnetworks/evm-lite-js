@@ -24,32 +24,19 @@ examples.
 
 *Will also include type definitions for parameters and returns.*
 
+------------------------------------------------------------------------------------------
+
 .. toctree::
    :hidden:
+   :glob:
    :maxdepth: 2
 
-Getting Started
-~~~~~~~~~~~~~~~
-.. toctree::
-   :maxdepth: 3
-
    getting-started
+   client.rst
+   consensus.rst
 
-Modules
-~~~~~~~
-.. toctree::
-   :maxdepth: 3
+   core.rst
 
-   evm-lite-core
-   evm-lite-client
-   evm-lite-consensus
-   evm-lite-datadir
-   evm-lite-keystore
-
-
-Developers
-~~~~~~~~~~
-.. toctree::
-   :maxdepth: 3
-
+   keystore.rst
+   datadir.rst
    developers

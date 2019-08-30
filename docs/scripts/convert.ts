@@ -13,7 +13,7 @@ const getMarkdown = (source: string) =>
 		.map(name => path.join(source, name))
 		.filter(isMarkdown);
 
-const paths = getMarkdown(path.resolve(__dirname));
+const paths = getMarkdown(path.resolve(__dirname, '../'));
 (async () => {
 	for (const p of paths) {
 		const l = p.split('/');

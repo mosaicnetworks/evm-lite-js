@@ -77,7 +77,10 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return await this.keystore.update(moniker, oldpass, newpass);
 	}
 
-	public async importKeyfile(moniker: string, keyfile: IV3Keyfile) {
+	public async importKeyfile(
+		moniker: string,
+		keyfile: IV3Keyfile
+	): Promise<IV3Keyfile> {
 		return await this.keystore.import(moniker, keyfile);
 	}
 }

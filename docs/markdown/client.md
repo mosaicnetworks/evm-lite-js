@@ -28,7 +28,7 @@ getReceipt(txHash: string): Promise<IReceipt>
 
 ### `getAccount`
 
-Fetches balance, nonce and bytecode for a specific address.
+Fetches balance, nonce, and bytecode for a specific address.
 
 **Definition (TS)**
 

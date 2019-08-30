@@ -33,7 +33,7 @@ Fetches a receipt for a specific transaction hash.
 ``getAccount``
 ~~~~~~~~~~~~~~
 
-Fetches balance, nonce and bytecode for a specific address.
+Fetches balance, nonce, and bytecode for a specific address.
 
 **Definition (TS)**
 

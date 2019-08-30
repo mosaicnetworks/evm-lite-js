@@ -6,7 +6,7 @@ Keystore management for any EVM-Lite applications.
 Keystore
 --------
 
-``constructor``
+Constructor
 ~~~~~~~~~~~~~~~
 
 .. code:: typescript

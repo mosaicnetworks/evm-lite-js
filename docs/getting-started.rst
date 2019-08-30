@@ -29,9 +29,9 @@ For a Monet node, we use
 `Babble <https://github.com/mosaicnetworks/babble>`__ as our consensus
 algorithm hence we would need a Babble client.
 
-*Note: If you are using a custom node with a different consensus, you
+**Note:** If you are using a custom node with a different consensus, you
 will need to write your implementation for the client and it must extend
-``IAbstractConsensus`` from ``evm-lite-consensus``*
+``IAbstractConsensus`` from ``evm-lite-consensus``
 
 .. code:: javascript
 
