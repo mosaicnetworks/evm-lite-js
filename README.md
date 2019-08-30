@@ -2,7 +2,7 @@
 
 # EVM-Lite JS Modules
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![](https://readthedocs.org/projects/evm-lite-js/badge/?version=latest&style=flat)](https://evm-lite-js.readthedocs.io/en/latest/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetworks/evm-lite) or a [Monet](https://github.com/mosaicnetworks/monetd) node.
 
@@ -10,7 +10,6 @@ Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetwo
 
 1. [Installation](#installation)
 1. [Documentation](docs/index.md)
-1. [Demo](#Demo)
 1. [Developers](#developers)
 
 ## Installation
@@ -32,10 +31,6 @@ yarn add evm-lite-core
 ## Documentation
 
 You can find the documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
-
-## Demo
-
-An end to end demo can be found [here](demo/README.md).
 
 ## Developers
 
