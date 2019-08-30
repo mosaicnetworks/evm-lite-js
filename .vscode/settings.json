@@ -1,4 +1,0 @@
-{
-    "restructuredtext.confPath": "${workspaceFolder}/docs",
-    "python.pythonPath": "/usr/local/opt/python/bin/python3.7"
-}
