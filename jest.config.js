@@ -1,10 +1,9 @@
 module.exports = {
-	testEnvironment: 'node',
+	roots: ['<rootDir>/src', '<rootDir>/tests'],
 	transform: {
-		'.(ts)': 'ts-jest'
+		'^.+\\.ts$': 'ts-jest'
 	},
-	testRegex: '(/tests/.*|(\\.|/)(test))\\.ts?$',
-	moduleFileExtensions: ['ts', 'js', 'node'],
-	roots: ['packages/'],
-	transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*evm-lite-*.*).*$']
+	testRegex: '(/tests/.*.(test|spec)).(jsx?|tsx?)$',
+	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+	verbose: true
 };

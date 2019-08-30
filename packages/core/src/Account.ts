@@ -5,30 +5,24 @@ import * as EthLibAccount from 'eth-lib/lib/account';
 
 import utils from 'evm-lite-utils';
 
-import { BaseAccount } from './client/AbstractClient';
+import { ISignedTx, ITransaction } from './Transaction';
 
-import Formatters from './misc/formatters';
-import Transaction, { SignedTransaction, TX } from './Transaction';
+import Formatters from './account/formatters';
 
-import EVMTypes from './misc/types';
+export interface IAccount {
+	// keypair
+	address: string;
+	privateKey: string;
 
-const trimLeadingZero = (hex: string) => {
-	while (hex.startsWith('0x0')) {
-		hex = `0x${hex.slice(3)}`;
-	}
+	// account data
+	balance: number;
+	nonce: number;
 
-	return hex;
-};
+	// sign transaction method
+	signTx: (tx: ITransaction) => ISignedTx;
+}
 
-const makeEven = (hex: string) => {
-	if (hex.length % 2 === 1) {
-		hex = hex.replace('0x', '0x0');
-	}
-
-	return hex;
-};
-
-export default class Account {
+export default class Account implements IAccount {
 	/**
 	 * Creates an `Account` object for the given private key hex.
 	 *
@@ -49,60 +43,13 @@ export default class Account {
 	 *
 	 * @returns A newly created `Account` object
 	 */
-	public static create(entropy?: string): Account {
+	public static new(entropy?: string): Account {
 		const randomHex = require('crypto-random-hex');
 
 		return new Account(EthLibAccount.create(entropy || randomHex(32)));
 	}
 
-	/**
-	 * Generates a transaction to transfer funds from one address to
-	 * another.
-	 *
-	 * @param from - The address to deduct `value` tokens from
-	 * @param to - The address to transfer `value` tokens to
-	 * @param value - The number of tokens to transfer
-	 * @param gas - The max `gas` limit
-	 * @param gasPrice - The `gasPrice` per unit of `gas`
-	 *
-	 * @returns A transaction object represeting the requested transfer
-	 */
-	public static prepareTransfer(
-		from: EVMTypes.Address,
-		to: EVMTypes.Address,
-		value: EVMTypes.Value,
-		gas: EVMTypes.Gas,
-		gasPrice: EVMTypes.GasPrice
-	): Transaction {
-		if (!from) {
-			throw new Error(
-				'Default `from` address cannot be left blank or empty.'
-			);
-		}
-
-		if (!to) {
-			throw new Error('Must provide a `to` address!');
-		}
-
-		if (value <= 0) {
-			throw new Error(
-				'A transfer of funds must have a `value` greater than 0.'
-			);
-		}
-
-		return new Transaction(
-			{
-				from,
-				to: to.trim(),
-				value,
-				gas,
-				gasPrice
-			},
-			false
-		);
-	}
-
-	public readonly address: EVMTypes.Address;
+	public readonly address: string;
 	public readonly privateKey: string;
 
 	public balance: number = 0;
@@ -120,13 +67,13 @@ export default class Account {
 	}
 
 	/**
-	 * Signs a transaction
+	 * Signs a transaction with the respective account.
 	 *
 	 * @param tx - The transaction to sign
 	 *
 	 * @returns The signed object
 	 */
-	public signTransaction(tx: TX): SignedTransaction {
+	public signTx(tx: ITransaction): ISignedTx {
 		let error: Error | null = null;
 		let result;
 
@@ -181,18 +128,18 @@ export default class Account {
 				.slice(0, 6)
 				.concat(ethlib.account.decodeSignature(signature));
 
-			rawTx[6] = makeEven(trimLeadingZero(rawTx[6]));
-			rawTx[7] = makeEven(trimLeadingZero(rawTx[7]));
-			rawTx[8] = makeEven(trimLeadingZero(rawTx[8]));
+			rawTx[6] = utils.makeEven(utils.trimLeadingZero(rawTx[6]));
+			rawTx[7] = utils.makeEven(utils.trimLeadingZero(rawTx[7]));
+			rawTx[8] = utils.makeEven(utils.trimLeadingZero(rawTx[8]));
 
 			const rawTransaction = ethlib.RLP.encode(rawTx);
 			const values = ethlib.RLP.decode(rawTransaction);
 
 			result = {
 				messageHash: hash,
-				v: trimLeadingZero(values[6]),
-				r: trimLeadingZero(values[7]),
-				s: trimLeadingZero(values[8]),
+				v: utils.trimLeadingZero(values[6]),
+				r: utils.trimLeadingZero(values[7]),
+				s: utils.trimLeadingZero(values[8]),
 				rawTransaction
 			};
 		} catch (error) {
@@ -200,19 +147,5 @@ export default class Account {
 		}
 
 		return result;
-	}
-
-	/**
-	 * Converts `this` object to a compact overview of the account.
-	 *
-	 * @returns A compact representation of the `Account` object
-	 */
-	public toBaseAccount(): BaseAccount {
-		return {
-			address: this.address,
-			balance: this.balance,
-			nonce: this.nonce,
-			bytecode: ''
-		};
 	}
 }

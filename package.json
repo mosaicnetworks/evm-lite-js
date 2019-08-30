@@ -18,11 +18,16 @@
 		"clean:build": "lerna run clean:build",
 		"build": "lerna run build",
 		"bootstrap": "lerna bootstrap",
-		"convert": "lerna link convert",
 		"link": "lerna link",
-		"prepublish": "yarn run build && lerna link",
+		"prepublish": "yarn lint && yarn run build && lerna link",
+		"publish": "lerna publish",
+		"publish:dev": "lerna publish --registry http://192.168.1.4:4873",
 		"doc": "lerna run doc",
-		"publish": "lerna publish"
+		"rst": "yarn run ts-node ./docs/scripts/convert",
+		"clean:rst": "rm ./docs/*.rst",
+		"lint": "lerna run lint",
+		"linkall": "ts-node ./scripts/link-all",
+		"unlinkall": "ts-node ./scripts/unlink-all"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.1.6",

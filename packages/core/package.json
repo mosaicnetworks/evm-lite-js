@@ -2,11 +2,12 @@
 	"name": "evm-lite-core",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.0.0-alpha.20",
+	"version": "1.0.0",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
 	"scripts": {
+		"lint": "tslint -p . -c ../../tslint.json",
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
@@ -14,14 +15,11 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"ascii-table": "^0.0.9",
-		"browserify-cipher": "^1.0.1",
-		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "0.2.8",
-		"evm-lite-utils": "1.0.0-alpha.20",
-		"json-bigint": "0.3.0",
-		"randombytes": "^2.1.0",
-		"uuid": "^3.3.2",
+		"evm-lite-client": "1.0.0",
+		"evm-lite-consensus": "1.0.0",
+		"evm-lite-utils": "1.0.0",
+		"json-bigint": "^0.3.0",
 		"web3": "0.20.6",
 		"web3-eth-iban": "1.0.0-beta.46",
 		"web3-utils": "1.0.0-beta.46"
@@ -33,5 +31,5 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/core#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/core"
 }

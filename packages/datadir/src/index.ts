@@ -1,9 +1,9 @@
 import * as path from 'path';
 
-export { default as DataDirectory } from './DataDirectory';
-export { ConfigurationSchema } from './Configuration';
+import DataDirectory from './DataDirectory';
 
-// to be modified later to keep inline with convention
+export { IConfiguration } from './Configuration';
+
 // https://github.com/mosaicnetworks/monetd/issues/11
 /**
  * Get OS specific data directory paths
@@ -28,3 +28,5 @@ export function osdatadir(dir: string): string {
 			return path.join(homedir, `.${dir.toLowerCase()}`);
 	}
 }
+
+export default DataDirectory;

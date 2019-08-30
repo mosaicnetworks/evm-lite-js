@@ -1,20 +1,20 @@
 {
 	"name": "evm-lite-datadir",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0-alpha.20",
+	"version": "1.0.0",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
 	"scripts": {
+		"lint": "tslint -p . -c ../../tslint.json",
 		"clean": "rm -rf ./node_modules/ && rm -rf dist/ && rm -rf package-lock.json && rm -rf tsconfig.tsbuildinfo",
 		"clean:build": "rm -rf dist/",
 		"build": "tsc -p ./tsconfig.json",
 		"prepublish": "tsc"
 	},
 	"dependencies": {
-		"evm-lite-core": "1.0.0-alpha.20",
-		"evm-lite-keystore": "1.0.0-alpha.20",
-		"evm-lite-utils": "1.0.0-alpha.20",
+		"evm-lite-keystore": "1.0.0",
+		"evm-lite-utils": "1.0.0",
 		"mkdirp": "^0.5.1",
 		"toml": "^3.0.0",
 		"tomlify-j0.4": "^3.0.0"

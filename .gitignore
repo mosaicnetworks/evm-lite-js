@@ -7,3 +7,13 @@ coverage
 package-lock.json
 # example
 # docs
+.circleci
+
+# temp
+demo
+demo.old
+
+_build
+
+
+.vscode

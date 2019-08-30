@@ -2,7 +2,7 @@
 	"packages": [
 		"packages/*"
 	],
-	"version": "1.0.0-alpha.20",
+	"version": "1.0.0",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
 	"command": {
@@ -10,6 +10,8 @@
 			"exact": true
 		},
 		"publish": {
+			"commit": false,
+			"push": false,
 			"exact": true,
 			"skipGit": true
 		}

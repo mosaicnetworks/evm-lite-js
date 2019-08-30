@@ -1,9 +1,10 @@
 {
 	"files": [],
 	"references": [
-		{ "path": "core" },
 		{ "path": "keystore" },
 		{ "path": "datadir" },
-		{ "path": "utils" }
+		{ "path": "utils" },
+		{ "path": "consensus" },
+		{ "path": "core" }
 	]
 }

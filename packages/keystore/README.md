@@ -106,9 +106,3 @@ keystore
 	.then(console.log)
 	.catch(console.log);
 ```
-
-<!--
-- `create()` - create a single `V3Keyfile` file
-- `update()` - update the password on a single `V3Keyfile` file
-- `import()` - import a single `V3Keyfile` file
-- `export()` - export a single `V3Keyfile` file -->

@@ -1,10 +1,7 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
-export default class utils {
-	// should never be initialized
-	private constructor() {}
-
+class Utils {
 	/**
 	 * Keystore methods
 	 */
@@ -24,7 +21,7 @@ export default class utils {
 	}
 
 	public static createDirectoryIfNotExists(path: string): void {
-		if (!utils.exists(path)) {
+		if (!Utils.exists(path)) {
 			mkdir.sync(path);
 		}
 	}
@@ -42,7 +39,7 @@ export default class utils {
 				typeof objectA[propName] === 'object' &&
 				typeof objectB[propName] === 'object'
 			) {
-				if (!utils.deepEquals(objectA[propName], objectB[propName])) {
+				if (!Utils.deepEquals(objectA[propName], objectB[propName])) {
 					return false;
 				}
 			} else if (objectA[propName] !== objectB[propName]) {
@@ -71,7 +68,7 @@ export default class utils {
 	}
 
 	public static cleanAddress(address: string) {
-		address = utils.trimHex(address);
+		address = Utils.trimHex(address);
 
 		return `0x${address}`;
 	}
@@ -85,4 +82,25 @@ export default class utils {
 
 		return hex;
 	}
+
+	public static trimLeadingZero = (hex: string) => {
+		while (hex.startsWith('0x0')) {
+			hex = `0x${hex.slice(3)}`;
+		}
+
+		return hex;
+	};
+
+	public static makeEven = (hex: string) => {
+		if (hex.length % 2 === 1) {
+			hex = hex.replace('0x', '0x0');
+		}
+
+		return hex;
+	};
+
+	// should never be initialized
+	private constructor() {}
 }
+
+export default Utils;

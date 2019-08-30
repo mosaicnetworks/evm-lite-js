@@ -8,7 +8,7 @@ Core library to interact with an EVM-Lite node.
 
 Three classes are exposed as part of this library:
 
--   [EVMLC](#evmlc)
+-   [Node](#node)
 -   [Account](#account)
 -   [Contract](#contract)
 
@@ -28,15 +28,34 @@ or `yarn`
 yarn add evm-lite-core
 ```
 
-## EVMLC
+## Node
 
 ### `constructor`
 
 ```typescript
-constructor(host: string, port: number)
+constructor(host: string, port: number, consensus: TConsensus)
 ```
 
 ### Methods
+
+#### `transfer`
+
+Makes a transfer from one account to another.
+
+```typescript
+// note: first param is of type `Account`
+const receipt = await node.transfer(
+	ACCOUNT_OBJ,
+	'TO_ADDRESS',
+	10000, // value
+	100000, // gas
+	0 // gasPrice
+);
+
+console.log(receipt);
+```
+
+````
 
 #### `getAccount`
 
@@ -49,18 +68,10 @@ interface BaseAccount {
 	readonly nonce: number;
 	readonly bytecode: string;
 }
-```
+````
 
 ```typescript
 getAccount(address: string): BaseAccount;
-```
-
-#### `getAccounts`
-
-List all controlled accounts on the respective node.
-
-```typescript
-getAccounts(): BaseAccount[];
 ```
 
 #### `getReceipt`
@@ -76,25 +87,25 @@ getReceipt(hash: string): TransactionReceipt;
 Get the information of the connected node.
 
 ```typescript
-getInfo(): EVMBabbleInfo;
+getInfo(): any;
 ```
 
-#### `callTransaction`
+#### `callTx`
 
 Submits a non state mutating transaction to the node.
 
 ```typescript
-callTransaction(tx: Transaction): Response;
+callTx<TResponse>(tx: Transaction): TResponse;
 ```
 
 -   Automtically parses return from any constant/pure contract function
 
-#### `sendTransaction`
+#### `sendTx`
 
 Submits a transaction that mutates state to the node.
 
 ```typescript
-sendTransaction(tx: Transaction, account: Account): TransactionReceipt;
+sendTx(tx: Transaction, account: Account): IReceipt;
 ```
 
 -   Parses any events returned with the receipt
@@ -106,12 +117,12 @@ This module can be used to create accounts, prepare a transfer and sign transact
 
 ### Methods
 
-#### `create`
+#### `new`
 
 Creates a new keypair.
 
 ```typescript
-const account = Account.create();
+const account = Account.new();
 ```
 
 ```json
@@ -120,32 +131,6 @@ const account = Account.create();
 	"nonce": 0,
 	"address": "0x15418f174df69d798b3872BEc30881eaF51d042F",
 	"privateKey": "0x33efe4f75e235febd03f212e0735a9e21fb422ce59282348d2b30d1d020e03ac"
-}
-```
-
-#### `prepareTransfer`
-
-Creates the transaction object represeting a transfer with the specified attributes.
-The `nonce` will be fetched before the submission of the transaction which can be done by creating an instance of `EVMLC` and calling the `.sendTransaction(tx, account)` method with this `Transaction` and the associated signatory `Account`.
-
-```typescript
-const transaction = Account.prepareTransfer(
-	'FROM_ADDRESS',
-	'TO_ADDRESS',
-	10000, // value
-	100000, // gas
-	0 // gasPrice
-);
-```
-
-```json
-{
-	"from": "FROM_ADDRESS",
-	"to": "TO_ADDRESS",
-	"value": 10000,
-	"gas": 100000,
-	"gasPrice": 0,
-	"chainId": 1
 }
 ```
 
@@ -163,7 +148,7 @@ Creates a new `Contract` and allows for deployment to the network.
 const contract = Contract.create(/* ABI */ [], 'BYTECODE');
 
 // generate transaction to deploy contract
-const transaction = contract.deployTransaction(
+const transaction = contract.deployTx(
 	[], // array of all the parameters for the constructor of the contract
 	'', // from
 	100000, // gas
