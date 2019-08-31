@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Babble `/blocks/{index}?limit{x}/` to Babble client
+-   Made keystore optional in constructor for `DataDirectory` class
 
 ### Changed
 
