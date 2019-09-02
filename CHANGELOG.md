@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Babble `/blocks/{index}?limit{x}/` to Babble client
 -   Deprecated Babble `/block/` endpoint
 -   Made keystore optional in constructor for `DataDirectory` class
+-   Added Monet export to `evm-lite-core`
+-   Made consensus optional on `Node`
 
 ### Changed
 
