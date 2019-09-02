@@ -30,17 +30,28 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 		super(host, port);
 	}
 
+	/** deprecated */
 	public async getBlock(index: number): Promise<IBabbleBlock> {
 		return JSON.parse(await this.get(`/block/${index}`));
 	}
 
 	public async getBlocks(
 		startIndex: number,
-		limit: number
-	): Promise<IBabbleBlock[]> {
-		return JSON.parse(
-			await this.get(`/blocks/${startIndex}?limit=${limit}`)
-		);
+		limit?: number
+	): Promise<IBabbleBlock[] | IBabbleBlock> {
+		let path = `/blocks/${startIndex}`;
+
+		if (limit) {
+			path += `?limit=${limit}`;
+		}
+
+		const res: string = await this.get(path);
+
+		try {
+			return JSON.parse(res);
+		} catch (e) {
+			return Promise.reject(res);
+		}
 	}
 
 	public async getPeers(): Promise<IBabblePeer[]> {
