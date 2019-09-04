@@ -32,7 +32,13 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 
 	/** deprecated */
 	public async getBlock(index: number): Promise<IBabbleBlock> {
-		return JSON.parse(await this.get(`/block/${index}`));
+		const res = await this.get(`/block/${index}`);
+
+		try {
+			return Promise.resolve(JSON.parse(res));
+		} catch (e) {
+			return Promise.reject(res);
+		}
 	}
 
 	public async getBlocks(
@@ -55,11 +61,23 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 	}
 
 	public async getPeers(): Promise<IBabblePeer[]> {
-		return JSON.parse(await this.get(`/peers`));
+		const res = await this.get(`/peers`);
+
+		try {
+			return Promise.resolve(JSON.parse(res));
+		} catch (e) {
+			return Promise.reject(res);
+		}
 	}
 
 	public async getGenesisPeers(): Promise<IBabblePeer[]> {
-		return JSON.parse(await this.get(`/genesispeers`));
+		const res = await this.get(`/genesispeers`);
+
+		try {
+			return Promise.resolve(JSON.parse(res));
+		} catch (e) {
+			return Promise.reject(res);
+		}
 	}
 }
 
