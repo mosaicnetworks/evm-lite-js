@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Made keystore optional in constructor for `DataDirectory` class
 -   Deprecated Babble `/block/` endpoint
 -   Made consensus optional on `Node`
+-   Client has better error handling (no breaking changes)
 
 ---
 
