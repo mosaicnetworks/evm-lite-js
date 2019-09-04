@@ -37,18 +37,18 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 
 	public async getBlocks(
 		startIndex: number,
-		limit?: number
-	): Promise<IBabbleBlock[] | IBabbleBlock> {
+		count?: number
+	): Promise<IBabbleBlock[]> {
 		let path = `/blocks/${startIndex}`;
 
-		if (limit) {
-			path += `?limit=${limit}`;
+		if (count) {
+			path += `?count=${count}`;
 		}
 
 		const res: string = await this.get(path);
 
 		try {
-			return JSON.parse(res);
+			return Promise.resolve(JSON.parse(res));
 		} catch (e) {
 			return Promise.reject(res);
 		}
