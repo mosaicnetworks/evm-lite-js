@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Added Babble `/blocks/{index}?limit{x}/` to Babble client
+-   Added Babble `/blocks/{index}?count{x}/` to Babble client
 -   Added Monet export to `evm-lite-core`
 
 ### Changed
