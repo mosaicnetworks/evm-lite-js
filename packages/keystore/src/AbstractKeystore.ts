@@ -7,7 +7,7 @@ import uuid from 'uuid';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
 // c++ implementation of scrypt
-const scryptPackage = require('scrypt');
+// const scryptPackage = require('scrypt');
 // const crypto = require('crypto');
 import crypto from 'crypto';
 // Older version
