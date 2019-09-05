@@ -22,5 +22,6 @@
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/datadir#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/datadir#readme",
+	"gitHead": "3f7a2c0f276b746ec929737af1e395200facfb30"
 }
