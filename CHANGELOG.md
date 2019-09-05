@@ -14,10 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   Made keystore optional in constructor for `DataDirectory` class
--   Deprecated Babble `/block/` endpoint
--   Made consensus optional on `Node`
--   Client has better error handling (no breaking changes)
+-   keystore: Made keystore optional in constructor for `DataDirectory` class
+-   consensus: Deprecated Babble `/block/` endpoint
+-   core: Made consensus optional on `Node`
+-   client: Client has better error handling (no breaking changes)
+-   client: Made `getInfo()` a generic return type (consensuses render different info)
 
 ---
 

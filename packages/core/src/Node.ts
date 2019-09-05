@@ -1,6 +1,6 @@
 import { IAbstractConsensus } from 'evm-lite-consensus';
 
-import Client, { IReceipt } from 'evm-lite-client';
+import Client, { IBaseInfo, IReceipt } from 'evm-lite-client';
 import utils from 'evm-lite-utils';
 
 import Account from './Account';
@@ -192,7 +192,6 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	}
 
 	// client interface
-
 	public async getAccount(address: string) {
 		return this.client.getAccount(address);
 	}
@@ -201,8 +200,8 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		return this.client.getPOAContract();
 	}
 
-	public async getInfo() {
-		return this.client.getInfo();
+	public async getInfo<T extends IBaseInfo>() {
+		return this.client.getInfo<T>();
 	}
 
 	public async getReceipt(hash: string) {

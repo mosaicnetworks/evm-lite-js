@@ -68,6 +68,11 @@ export interface IPOAContract {
 	readonly abi: IContractABI;
 }
 
+export interface IBaseInfo {
+	type: string;
+	tx_index: string;
+}
+
 class BaseEVMLC extends AbstractClient {
 	constructor(host: string, port: number = 8080) {
 		super(host, port);
@@ -100,7 +105,7 @@ class BaseEVMLC extends AbstractClient {
 		return account;
 	}
 
-	public async getInfo(): Promise<any> {
+	public async getInfo<T extends IBaseInfo>(): Promise<T> {
 		const res = await this.get('/info');
 
 		try {
