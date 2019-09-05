@@ -79,6 +79,8 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 			return Promise.reject(res);
 		}
 	}
+
+	// validator endpoints
 }
 
 export default Babble;
