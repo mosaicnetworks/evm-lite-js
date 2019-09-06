@@ -7,16 +7,16 @@ EVM-Lite JS provides serveral modules to interact with an
 
 The current list of modules:
 
--  ``evm-lite-core@1.0.0`` - Core module to interact with an EVM-Lite
+-  ``evm-lite-core`` - Core module to interact with an EVM-Lite
    node
--  ``evm-lite-keystore@1.0.0`` - Keystore management for applications
--  ``evm-lite-datadir@1.0.0`` - Data directory management for
+-  ``evm-lite-keystore`` - Keystore management for applications
+-  ``evm-lite-datadir`` - Data directory management for
    applications
--  ``evm-lite-utils@1.0.0`` - An aggregate of utility functions used by
+-  ``evm-lite-utils`` - An aggregate of utility functions used by
    EVM-Lite JS modules
--  ``evm-lite-consensus@1.0.0`` - Our consensus clients as well as an
+-  ``evm-lite-consensus`` - Our consensus clients as well as an
    ``IAbstractConsensus`` class
--  ``evm-lite-client@1.0.0`` - A simple HTTP client for EVM-Lite
+-  ``evm-lite-client`` - A simple HTTP client for EVM-Lite
 
 The following documentation will guide you through installing and
 running EVM-Lite JS, as well as providing API documentation with
