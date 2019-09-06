@@ -66,11 +66,15 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 
 	// validator endpoints
 	public async getValidators(round: number) {
-		// pass
+		const res = await this.get(`/validators/${round}`);
+
+		return this.response(res);
 	}
 
 	public async getValidatorHistory() {
-		// pass
+		const res = await this.get(`/history`);
+
+		return this.response(res);
 	}
 }
 

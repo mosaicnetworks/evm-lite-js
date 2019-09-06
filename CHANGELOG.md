@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   consensus: Added Babble `/blocks/{index}?count{x}/` to Babble client
 -   core: Added Monet export to `evm-lite-core`
+-   client: Added `validators/{round}` endpoint to babble client
+-   client: Added `history/` endpoint to babble client
 
 ### Changed
 
