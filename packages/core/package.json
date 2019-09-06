@@ -16,9 +16,9 @@
 	},
 	"dependencies": {
 		"eth-lib": "0.2.8",
-		"evm-lite-client": "1.1.0",
-		"evm-lite-consensus": "1.1.0",
-		"evm-lite-utils": "1.1.0-dev",
+		"evm-lite-client": "^1.1.0",
+		"evm-lite-consensus": "^1.1.0",
+		"evm-lite-utils": "^1.0.0",
 		"json-bigint": "^0.3.0",
 		"web3": "0.20.6",
 		"web3-eth-iban": "1.0.0-beta.46",

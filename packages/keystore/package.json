@@ -19,7 +19,7 @@
 		"eth-lib": "^0.2.8",
 		"evm-lite-client": "1.1.0",
 		"evm-lite-core": "1.1.0",
-		"evm-lite-utils": "1.1.0-dev",
+		"evm-lite-utils": "^1.0.0",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"mkdirp": "^0.5.1",
