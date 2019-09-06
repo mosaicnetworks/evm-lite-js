@@ -7,9 +7,9 @@ import uuid from 'uuid';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
 // c++ implementation of scrypt
-const scryptPackage = require('scrypt');
+// const scryptPackage = require('scrypt');
 // const crypto = require('crypto');
-// import * as crypto from 'crypto';
+import crypto from 'crypto';
 // Older version
 // let scrypt = require('scryptsy')
 
@@ -22,9 +22,23 @@ const scrypt = (
 	dkLength: number
 ) => {
 	// C++ wrapper for scrypt
-	return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
+	// return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
 	// Built in crypto module node.js for >= 10.5.0
-	// return crypto.scryptSync(key, salt, dkLength, { N, r, p, maxmem: N });
+	return crypto.scryptSync(key, salt, dkLength, { N, r, p });
+	// return crypto.scrypt(
+	// 	key,
+	// 	salt,
+	// 	dkLength,
+	// 	{ N, r, p },
+	// 	(err, derivedKey) => {
+	// 		if (err) {
+	// 			throw err;
+	// 		}
+	// 		// console.log(derivedKey.toString('hex')); // '3745e48...aa39b34'
+
+	// 		return derivedKey;
+	// 	}
+	// );
 };
 const keccak256 = require('keccak256');
 

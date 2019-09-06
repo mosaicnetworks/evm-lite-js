@@ -25,21 +25,60 @@ export interface IBabblePeer {
 	Moniker: string;
 }
 
+export interface IValidatorHistory {
+	[key: string]: IBabblePeer[];
+}
+
 class Babble extends AbstractClient implements IAbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
 	}
 
+	/** deprecated */
 	public async getBlock(index: number): Promise<IBabbleBlock> {
-		return JSON.parse(await this.get(`/block/${index}`));
+		const res = await this.get(`/block/${index}`);
+
+		return this.response(res);
+	}
+
+	public async getBlocks(
+		startIndex: number,
+		count?: number
+	): Promise<IBabbleBlock[]> {
+		let path = `/blocks/${startIndex}`;
+
+		if (count) {
+			path += `?count=${count}`;
+		}
+
+		const res: string = await this.get(path);
+
+		return this.response(res);
 	}
 
 	public async getPeers(): Promise<IBabblePeer[]> {
-		return JSON.parse(await this.get(`/peers`));
+		const res = await this.get(`/peers`);
+
+		return this.response(res);
 	}
 
 	public async getGenesisPeers(): Promise<IBabblePeer[]> {
-		return JSON.parse(await this.get(`/genesispeers`));
+		const res = await this.get(`/genesispeers`);
+
+		return this.response(res);
+	}
+
+	// validator endpoints
+	public async getValidators(round: number): Promise<IBabblePeer[]> {
+		const res = await this.get(`/validators/${round}`);
+
+		return this.response(res);
+	}
+
+	public async getValidatorHistory(): Promise<IValidatorHistory> {
+		const res = await this.get(`/history`);
+
+		return this.response(res);
 	}
 }
 

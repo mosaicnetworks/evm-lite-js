@@ -68,17 +68,26 @@ export interface IPOAContract {
 	readonly abi: IContractABI;
 }
 
+export interface IBaseInfo {
+	type: string;
+	tx_index: string;
+}
+
 class BaseEVMLC extends AbstractClient {
 	constructor(host: string, port: number = 8080) {
 		super(host, port);
 	}
 
 	public async getPOAContract(): Promise<IPOAContract> {
-		return JSONBig.parse(await this.get(`/poa`));
+		const res = await this.get(`/poa`);
+
+		return this.responseBig(res);
 	}
 
 	public async getReceipt(txHash: string): Promise<IReceipt> {
-		return JSONBig.parse(await this.get(`/tx/${txHash}`));
+		const res = await this.get(`/tx/${txHash}`);
+
+		return this.responseBig(res);
 	}
 
 	public async getAccount(address: string): Promise<IBaseAccount> {
@@ -88,18 +97,24 @@ class BaseEVMLC extends AbstractClient {
 		return account;
 	}
 
-	public async getInfo(): Promise<any> {
-		return JSONBig.parse(await this.get('/info'));
+	public async getInfo<T extends IBaseInfo>(): Promise<T> {
+		const res = await this.get('/info');
+
+		return this.responseBig(res);
 	}
 
 	// call tx
 	public async callTx(tx: string): Promise<ICallTxResponse> {
-		return JSONBig.parse(await this.post('/call', tx));
+		const res = await this.post('/call', tx);
+
+		return this.responseBig(res);
 	}
 
 	// send tx
 	public async sendTx(signedTx: string): Promise<IReceipt> {
-		return JSONBig.parse(await this.post('/rawtx', signedTx));
+		const res = await this.post('/rawtx', signedTx);
+
+		return this.responseBig(res);
 	}
 }
 

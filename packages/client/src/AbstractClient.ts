@@ -13,6 +13,22 @@ export default abstract class AbstractClient {
 		public readonly port: number
 	) {}
 
+	protected response<T>(res: string): Promise<T> {
+		try {
+			return Promise.resolve(JSON.parse(res));
+		} catch (e) {
+			return Promise.reject(res);
+		}
+	}
+
+	protected responseBig<T>(res: string): Promise<T> {
+		try {
+			return Promise.resolve(JSON.parse(res));
+		} catch (e) {
+			return Promise.reject(res);
+		}
+	}
+
 	protected async get(path: string) {
 		return await this.request(this.options('GET', path));
 	}

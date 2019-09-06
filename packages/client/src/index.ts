@@ -8,7 +8,9 @@ export {
 	ILog,
 	IReceipt,
 	ISendTxResponse,
-	IContractABI
+	IContractABI,
+	IBaseInfo,
+	IPOAContract
 } from './Client';
 
 export { default as AbstractClient } from './AbstractClient';

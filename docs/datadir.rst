@@ -33,7 +33,7 @@ values:
 
 .. code:: typescript
 
-   constructor(public readonly path: string, configName: string, private readonly keystore: K)
+   constructor(public readonly path: string, configName: string, private readonly keystore?: K)
 
 Where ``K`` is any class which extends the ``AbstractKeystore`` class
 exposed by ``evm-lite-keystore``.

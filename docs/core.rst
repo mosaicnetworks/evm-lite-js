@@ -11,6 +11,7 @@ There are three main objects exposed as part of this library:
 -  ``Contract``
 -  ``Account``
 -  ``Transaction``
+-  ``Monet`` - Simple wrapper around `Node<Babble>`
 
 Only the ``Node`` class has the functionality to send requests to the
 node.

@@ -1,18 +1,18 @@
 import { IAbstractConsensus } from 'evm-lite-consensus';
 
-import Client, { IReceipt } from 'evm-lite-client';
+import Client, { IBaseInfo, IReceipt } from 'evm-lite-client';
 import utils from 'evm-lite-utils';
 
 import Account from './Account';
 import Transaction from './Transaction';
 
-export default class Node<TConsensus extends IAbstractConsensus> {
+export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	// a node requires an underlying consensus protocol (solo | babble | ...)
-	public readonly consensus: TConsensus;
+	public readonly consensus?: TConsensus;
 
 	private readonly client: Client;
 
-	constructor(host: string, port: number = 8080, consensus: TConsensus) {
+	constructor(host: string, port: number = 8080, consensus?: TConsensus) {
 		this.client = new Client(host, port);
 
 		this.consensus = consensus;
@@ -192,7 +192,6 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 	}
 
 	// client interface
-
 	public async getAccount(address: string) {
 		return this.client.getAccount(address);
 	}
@@ -201,8 +200,8 @@ export default class Node<TConsensus extends IAbstractConsensus> {
 		return this.client.getPOAContract();
 	}
 
-	public async getInfo() {
-		return this.client.getInfo();
+	public async getInfo<T extends IBaseInfo>() {
+		return this.client.getInfo<T>();
 	}
 
 	public async getReceipt(hash: string) {

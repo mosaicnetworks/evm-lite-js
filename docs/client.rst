@@ -50,4 +50,4 @@ Fetches information about the node.
 
 .. code:: typescript
 
-   getInfo(): Promise<any>
+   getInfo<T>(): Promise<T>

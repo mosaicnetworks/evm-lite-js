@@ -16,7 +16,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 	constructor(
 		public readonly path: string,
 		configName: string,
-		private readonly keystore: K
+		private readonly keystore?: K
 	) {
 		utils.createDirectoryIfNotExists(path);
 
@@ -30,6 +30,10 @@ export default class DataDirectory<K extends AbstractKeystore> {
 	}
 
 	public get keystorePath(): string {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return this.keystore.path;
 	}
 
@@ -58,14 +62,26 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		passphrase: string,
 		path?: string
 	): Promise<IV3Keyfile> {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return await this.keystore.create(moniker, passphrase, path);
 	}
 
 	public async getKeyfile(moniker: string): Promise<IV3Keyfile> {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return await this.keystore.get(moniker);
 	}
 
 	public async listKeyfiles(): Promise<IMonikerKeystore> {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return await this.keystore.list();
 	}
 
@@ -74,6 +90,10 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		oldpass: string,
 		newpass: string
 	): Promise<IV3Keyfile> {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return await this.keystore.update(moniker, oldpass, newpass);
 	}
 
@@ -81,6 +101,10 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		moniker: string,
 		keyfile: IV3Keyfile
 	): Promise<IV3Keyfile> {
+		if (!this.keystore) {
+			throw new Error('No keystore attached');
+		}
+
 		return await this.keystore.import(moniker, keyfile);
 	}
 }

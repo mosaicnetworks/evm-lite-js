@@ -1,7 +1,7 @@
 {
 	"name": "evm-lite-keystore",
 	"namespace": "mosaicnetworks",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -17,19 +17,18 @@
 		"browserify-cipher": "^1.0.1",
 		"crypto-random-hex": "^1.0.0",
 		"eth-lib": "^0.2.8",
-		"evm-lite-client": "1.0.0",
-		"evm-lite-core": "1.0.0",
-		"evm-lite-utils": "1.0.0",
+		"evm-lite-client": "1.1.0",
+		"evm-lite-core": "1.1.0",
+		"evm-lite-utils": "1.1.0-dev",
 		"json-bigint": "0.3.0",
 		"keccak256": "^1.0.0",
 		"mkdirp": "^0.5.1",
 		"randombytes": "^2.1.0",
-		"scrypt": "6.0.3",
-		"scryptsy": "^2.1.0",
 		"uuid": "^3.3.3"
 	},
 	"bugs": {
 		"url": "https://github.com/mosaicnetworks/evm-lite-js/issues"
 	},
-	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/keystore#readme"
+	"homepage": "https://github.com/mosaicnetworks/evm-lite-js/tree/master/packages/keystore#readme",
+	"gitHead": "3f7a2c0f276b746ec929737af1e395200facfb30"
 }

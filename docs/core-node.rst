@@ -11,7 +11,7 @@ The constructor for a node object takes the following values:
 
 .. code:: typescript
 
-   constructor(host: string, port: number = 8080, consensus: TConsensus)
+   constructor(host: string, port: number = 8080, consensus?: TConsensus)
 
 Where ``TConsensus`` is any class which extends the
 ``IAbstractConsensus`` class exposed by ``evm-lite-consensus``.
@@ -20,7 +20,7 @@ More formally:
 
 .. code:: typescript
 
-   class Node<TConsensus extends IAbstractConsensus>
+   class Node<TConsensus extends IAbstractConsensus | undefined>
 
 Example (ES5)
 ~~~~~~~~~~~~~
