@@ -81,21 +81,13 @@ class BaseEVMLC extends AbstractClient {
 	public async getPOAContract(): Promise<IPOAContract> {
 		const res = await this.get(`/poa`);
 
-		try {
-			return JSONBig.parse(res);
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.responseBig(res);
 	}
 
 	public async getReceipt(txHash: string): Promise<IReceipt> {
 		const res = await this.get(`/tx/${txHash}`);
 
-		try {
-			return JSONBig.parse(res);
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.responseBig(res);
 	}
 
 	public async getAccount(address: string): Promise<IBaseAccount> {
@@ -108,33 +100,21 @@ class BaseEVMLC extends AbstractClient {
 	public async getInfo<T extends IBaseInfo>(): Promise<T> {
 		const res = await this.get('/info');
 
-		try {
-			return JSONBig.parse(res);
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.responseBig(res);
 	}
 
 	// call tx
 	public async callTx(tx: string): Promise<ICallTxResponse> {
 		const res = await this.post('/call', tx);
 
-		try {
-			return JSONBig.parse(res);
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.responseBig(res);
 	}
 
 	// send tx
 	public async sendTx(signedTx: string): Promise<IReceipt> {
 		const res = await this.post('/rawtx', signedTx);
 
-		try {
-			return JSONBig.parse(res);
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.responseBig(res);
 	}
 }
 

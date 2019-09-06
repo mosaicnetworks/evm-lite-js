@@ -9,7 +9,7 @@ Javascript modules to interact with an [EVM-Lite](https://github.com/mosaicnetwo
 ## Table of Contents
 
 1. [Installation](#installation)
-1. [Documentation](docs/index.md)
+1. [Docs](#documentation)
 1. [Developers](#developers)
 
 ## Installation
@@ -30,8 +30,8 @@ yarn add evm-lite-core
 
 ## Documentation
 
-You can find the documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
+See documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
 
 ## Developers
 
-Notes for developers are in a [developers document](docs/developers.md).
+See developers docs [here](https://evm-lite-js.readthedocs.io/en/latest/developers.html).

@@ -34,11 +34,7 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 	public async getBlock(index: number): Promise<IBabbleBlock> {
 		const res = await this.get(`/block/${index}`);
 
-		try {
-			return Promise.resolve(JSON.parse(res));
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.response(res);
 	}
 
 	public async getBlocks(
@@ -53,34 +49,29 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 
 		const res: string = await this.get(path);
 
-		try {
-			return Promise.resolve(JSON.parse(res));
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.response(res);
 	}
 
 	public async getPeers(): Promise<IBabblePeer[]> {
 		const res = await this.get(`/peers`);
 
-		try {
-			return Promise.resolve(JSON.parse(res));
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.response(res);
 	}
 
 	public async getGenesisPeers(): Promise<IBabblePeer[]> {
 		const res = await this.get(`/genesispeers`);
 
-		try {
-			return Promise.resolve(JSON.parse(res));
-		} catch (e) {
-			return Promise.reject(res);
-		}
+		return this.response(res);
 	}
 
 	// validator endpoints
+	public async getValidators(round: number) {
+		// pass
+	}
+
+	public async getValidatorHistory() {
+		// pass
+	}
 }
 
 export default Babble;

@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Added Babble `/blocks/{index}?count{x}/` to Babble client
--   Added Monet export to `evm-lite-core`
+-   consensus: Added Babble `/blocks/{index}?count{x}/` to Babble client
+-   core: Added Monet export to `evm-lite-core`
 
 ### Changed
 
@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   core: Made consensus optional on `Node`
 -   client: Client has better error handling (no breaking changes)
 -   client: Made `getInfo()` a generic return type (consensuses render different info)
--   keystore: decrypt and encrypt now use crypto.scryptSync
+-   keystore: decrypt and encrypt now use `crypto.scryptSync`
 
 ---
 
