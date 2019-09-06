@@ -69,7 +69,7 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 	}
 
 	// validator endpoints
-	public async getValidators(round: number) {
+	public async getValidators(round: number): Promise<IBabblePeer[]> {
 		const res = await this.get(`/validators/${round}`);
 
 		return this.response(res);
