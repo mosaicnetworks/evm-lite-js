@@ -25,6 +25,10 @@ export interface IBabblePeer {
 	Moniker: string;
 }
 
+export interface IValidatorHistory {
+	[key: string]: IBabblePeer[];
+}
+
 class Babble extends AbstractClient implements IAbstractConsensus {
 	constructor(host: string, port: number) {
 		super(host, port);
@@ -71,7 +75,7 @@ class Babble extends AbstractClient implements IAbstractConsensus {
 		return this.response(res);
 	}
 
-	public async getValidatorHistory() {
+	public async getValidatorHistory(): Promise<IValidatorHistory> {
 		const res = await this.get(`/history`);
 
 		return this.response(res);
