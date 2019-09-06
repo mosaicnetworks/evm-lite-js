@@ -24,7 +24,13 @@ const scrypt = (
 	// C++ wrapper for scrypt
 	// return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
 	// Built in crypto module node.js for >= 10.5.0
-	return crypto.scryptSync(key, salt, dkLength, { N, r, p });
+	return crypto.scryptSync(key, salt, dkLength, {
+		N,
+		r,
+		p,
+		// max men fix to work with monetd
+		maxmem: 300000000
+	});
 	// return crypto.scrypt(
 	// 	key,
 	// 	salt,
