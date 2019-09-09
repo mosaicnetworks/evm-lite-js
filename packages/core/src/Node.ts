@@ -94,8 +94,6 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 			);
 		}
 
-		console.log(tx);
-
 		try {
 			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
