@@ -2,18 +2,26 @@
 
 The consensus client implementations for EVM-Lite.
 
-## Solo
+## Installation
 
-An empty class is exported for convenienve when using EVM-Lite in `solo` mode.
+You can install this module using `npm`
 
-## Babble
+```bash
+npm install evm-lite-consensus
+```
 
-The `Babble` class exposes methods to interact with its API.
+or `yarn`
 
--   `getBlock(index: number)` - returns a babble block by index
--   `getPeers()` - returns the current list of peers
--   `getGenesisPeers()` - returns the genesis peers
+```bash
+yarn add evm-lite-consensus
+```
 
-## Development
+## Documentation
+
+See documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
+
+## Developers
 
 An `AbstractConsensus` class is exposed by this module to allow for other consensus algorithms to be used along side any of `evm-lite-js` modules.
+
+See developers docs [here](https://evm-lite-js.readthedocs.io/en/latest/developers.html).

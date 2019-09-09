@@ -6,18 +6,22 @@ Useful utility methods for `evm-lite-js`
 
 ## Installation
 
-```
+You can install this module using `npm`
+
+```bash
 npm install evm-lite-utils
 ```
 
-## Usage
+or `yarn`
 
-Import default `Utils` class
-
-```javascript
-import utils from 'evm-lite-utils';
-
-console.log(utils.cleanAddress('15418f174df69d798b3872BEc30881eaF51d042F'));
-
-> 0x15418f174df69d798b3872BEc30881eaF51d042F
+```bash
+yarn add evm-lite-utils
 ```
+
+## Documentation
+
+See documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
+
+## Developers
+
+See developers docs [here](https://evm-lite-js.readthedocs.io/en/latest/developers.html).
