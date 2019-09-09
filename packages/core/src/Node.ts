@@ -35,9 +35,6 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async sendTx(tx: Transaction, account: Account): Promise<IReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
-		tx.nonce = 1;
-
-		console.log('NONCE', tx.nonce);
 
 		if (!tx.from) {
 			return Promise.reject(
