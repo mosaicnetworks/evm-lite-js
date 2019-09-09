@@ -9,7 +9,6 @@ import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 // Built in crypto module node.js for >= 10.5.0
 import crypto from 'crypto';
 
-
 const scrypt = (
 	key: string | Buffer,
 	salt: any,
@@ -18,11 +17,16 @@ const scrypt = (
 	p: number,
 	dkLength: number
 ) => {
-	// Monetd uses N = 2^18 = 262144 with Scrypt. This is inherited from 
-	// go-ethereum, according to which it requires 256MB of memory and 
-	// approximately 1s CPU time on a modern processor. So we set maxmem to 
-	// 300MB because the default (32 *1024 *1024 ~= 33MB)is not enough. 
-	return crypto.scryptSync(key, salt, dkLength, { N:N, r:r, p:p, maxmem:300000000 });
+	// Monetd uses N = 2^18 = 262144 with Scrypt. This is inherited from
+	// go-ethereum, according to which it requires 256MB of memory and
+	// approximately 1s CPU time on a modern processor. So we set maxmem to
+	// 300MB because the default (32 *1024 *1024 ~= 33MB)is not enough.
+	return crypto.scryptSync(key, salt, dkLength, {
+		N,
+		r,
+		p,
+		maxmem: 300000000
+	});
 };
 const keccak256 = require('keccak256');
 
@@ -73,7 +77,7 @@ export default abstract class AbstractKeystore {
 		const kdf = 'scrypt';
 		const kdfparams: any = {
 			dklen: 32,
-			salt: salt.toString('hex'),
+			salt: salt.toString('hex')
 		};
 
 		if (kdf === 'scrypt') {
