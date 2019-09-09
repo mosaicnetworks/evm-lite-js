@@ -6,12 +6,8 @@ import uuid from 'uuid';
 // @ts-ignore
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 
-// c++ implementation of scrypt
-// const scryptPackage = require('scrypt');
-// const crypto = require('crypto');
+// Built in crypto module node.js for >= 10.5.0
 import crypto from 'crypto';
-// Older version
-// let scrypt = require('scryptsy')
 
 const scrypt = (
 	key: string | Buffer,
@@ -21,30 +17,16 @@ const scrypt = (
 	p: number,
 	dkLength: number
 ) => {
-	// C++ wrapper for scrypt
-	// return scryptPackage.hashSync(key, { N, r, p }, dkLength, salt);
-	// Built in crypto module node.js for >= 10.5.0
+	// Monetd uses N = 2^18 = 262144 with Scrypt. This is inherited from
+	// go-ethereum, according to which it requires 256MB of memory and
+	// approximately 1s CPU time on a modern processor. So we set maxmem to
+	// 300MB because the default (32 *1024 *1024 ~= 33MB)is not enough.
 	return crypto.scryptSync(key, salt, dkLength, {
 		N,
 		r,
 		p,
-		// max men fix to work with monetd
 		maxmem: 300000000
 	});
-	// return crypto.scrypt(
-	// 	key,
-	// 	salt,
-	// 	dkLength,
-	// 	{ N, r, p },
-	// 	(err, derivedKey) => {
-	// 		if (err) {
-	// 			throw err;
-	// 		}
-	// 		// console.log(derivedKey.toString('hex')); // '3745e48...aa39b34'
-
-	// 		return derivedKey;
-	// 	}
-	// );
 };
 const keccak256 = require('keccak256');
 
@@ -99,7 +81,7 @@ export default abstract class AbstractKeystore {
 		};
 
 		if (kdf === 'scrypt') {
-			kdfparams.n = 8192;
+			kdfparams.n = 262144;
 			kdfparams.r = 8;
 			kdfparams.p = 1;
 			derivedKey = scrypt(
