@@ -90,8 +90,17 @@ class BaseEVMLC extends AbstractClient {
 		return this.responseBig(res);
 	}
 
-	public async getAccount(address: string): Promise<IBaseAccount> {
-		const response = await this.get(`/account/${address}`);
+	public async getAccount(
+		address: string,
+		fromState?: boolean
+	): Promise<IBaseAccount> {
+		let path = `/account/${address}`;
+
+		if (fromState !== undefined) {
+			path += `?state=${fromState ? 'true' : 'false'}`;
+		}
+
+		const response = await this.get(path);
 		const account = JSONBig.parse(response) as IBaseAccount;
 
 		return account;
