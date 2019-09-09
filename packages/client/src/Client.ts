@@ -97,7 +97,7 @@ class BaseEVMLC extends AbstractClient {
 		let path = `/account/${address}`;
 
 		if (fromState !== undefined) {
-			path += `?state=${fromState ? 'true' : 'false'}`;
+			path += `?fromstate=${fromState ? 'true' : 'false'}`;
 		}
 
 		const response = await this.get(path);
