@@ -92,12 +92,12 @@ class BaseEVMLC extends AbstractClient {
 
 	public async getAccount(
 		address: string,
-		fromState?: boolean
+		fromPool?: boolean
 	): Promise<IBaseAccount> {
 		let path = `/account/${address}`;
 
-		if (fromState !== undefined) {
-			path += `?fromstate=${fromState ? 'true' : 'false'}`;
+		if (fromPool !== undefined) {
+			path += `?frompool=${fromPool ? 'true' : 'false'}`;
 		}
 
 		const response = await this.get(path);

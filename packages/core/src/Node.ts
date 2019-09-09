@@ -35,6 +35,9 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async sendTx(tx: Transaction, account: Account): Promise<IReceipt> {
 		// will parse the transaction to insert any missing '0x'
 		tx.beforeSubmission();
+		tx.nonce = 1;
+
+		console.log('NONCE', tx.nonce);
 
 		if (!tx.from) {
 			return Promise.reject(
@@ -97,7 +100,31 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		try {
 			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
-			return Promise.reject(`evm-lite: ${e.text || e.toString()}`);
+			const err = e
+				.toString()
+				.toString()
+				.toLowerCase()
+				.trim()
+				.replace(/(\r\n|\n|\r)/gm, '');
+
+			if (err === 'nonce too low') {
+				const pool = await this.client.getAccount(tx.from, true);
+
+				// clone tx object
+				const pooltx = JSON.parse(JSON.stringify(tx));
+
+				tx.nonce = pool.nonce;
+
+				if (tx.nonce === pooltx.nonce) {
+					return Promise.reject(
+						`nonce too low - txpool nonce same as ethstate`
+					);
+				}
+
+				return this.sendTx(pooltx, account);
+			}
+
+			return Promise.reject(`evm-lite: ${err}`);
 		}
 
 		// parse any logs that may have been returned with the receipt
@@ -204,5 +231,9 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 
 	public async getReceipt(hash: string) {
 		return this.client.getReceipt(hash);
+	}
+
+	private async checkPoolTx(e: any) {
+		// make sure error is nonce too low
 	}
 }

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   client: `getAccount` now accepts a second optional parameter `fromState: bool` which will get data about the account from the main `ethState` instead of the default txPool's `ethState`
+-   client: `getAccount` now accepts a second optional parameter `fromPool: bool` which will get data about the account from the TxPool's `ethState` instead of the default main `ethState`
 
 ## v1.1.x
 
