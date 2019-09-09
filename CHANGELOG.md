@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   client: Client has better error handling (no breaking changes)
 -   client: Made `getInfo()` a generic return type (consensuses render different info)
 -   keystore: decrypt and encrypt now use `crypto.scryptSync`
+-   keystore: Maxmem for `scrypt` increased from 33MB to 300MB
 
 ---
 
