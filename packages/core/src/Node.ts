@@ -108,7 +108,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 				const pool = await this.client.getAccount(tx.from, true);
 
 				// clone tx object
-				const pooltx = JSON.parse(JSON.stringify(tx));
+				const pooltx = { ...tx };
 
 				tx.nonce = pool.nonce;
 
@@ -118,7 +118,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 					);
 				}
 
-				return this.sendTx(pooltx, account);
+				return this.sendTx(tx, account);
 			}
 
 			return Promise.reject(`evm-lite: ${err}`);
