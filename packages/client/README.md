@@ -1,5 +1,7 @@
 # EVM-Lite Client
 
+[![npm version](https://badge.fury.io/js/evm-lite-client.svg)](https://badge.fury.io/js/evm-lite-client)
+
 A simple HTTP client for `EVM-Lite`.
 
 ## Installation

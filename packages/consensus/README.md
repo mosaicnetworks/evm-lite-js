@@ -1,5 +1,7 @@
 # EVM-Lite Consensus
 
+[![npm version](https://badge.fury.io/js/evm-lite-consensus.svg)](https://badge.fury.io/js/evm-lite-consensus)
+
 The consensus client implementations for EVM-Lite.
 
 ## Installation
