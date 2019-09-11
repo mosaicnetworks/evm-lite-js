@@ -1,6 +1,6 @@
-import { commaSeperate, toAtto } from '../src/currency';
+import { commaSeperate, toAtto, toUnitToken } from '../src/currency';
 
-const expandCases = [
+const toAttoCases = [
 	{ input: '12312123123a', output: '12312123123' },
 	{ input: '0.2f', output: '200' },
 	{ input: '1f', output: '1000' },
@@ -13,8 +13,8 @@ const expandCases = [
 	{ input: '1200000T', output: '1200000000000000000000000' }
 ];
 
-describe('unitStringToAttoms', () => {
-	for (const c of expandCases) {
+describe('toAtto', () => {
+	for (const c of toAttoCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
 			const a = toAtto(c.input);
 
@@ -43,6 +43,24 @@ describe('commaSeperate', () => {
 			const r = commaSeperate(a);
 
 			expect(r).toBe(c.output);
+		});
+	}
+});
+
+const toUnitTokenCases = [
+	{ input: '1200000000000000000000000a', output: '1200000' },
+	{ input: '12T', output: '12' },
+	{ input: '1200u', output: '0.0012' },
+	{ input: '12.42u', output: '0.00001242' }
+];
+
+describe('toUnitToken', () => {
+	for (const c of toUnitTokenCases) {
+		it(`should convert ${c.input} to ${c.output}`, () => {
+			const a = toUnitToken(c.input);
+
+			expect(a.length).toBe(c.output.length);
+			expect(a).toBe(c.output);
 		});
 	}
 });
