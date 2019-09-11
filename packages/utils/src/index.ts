@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
+export * from './currency';
+
 class Utils {
 	/**
 	 * Keystore methods
