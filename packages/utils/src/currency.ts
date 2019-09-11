@@ -47,7 +47,7 @@ export const toAtto = (v: string) => {
 	v = v.slice(0, -1);
 
 	// find decimal place
-	const l = v.split('.');
+	const l = v.split(delimiters.decimal);
 
 	if (l.length > 2) {
 		throw Error('Too many decimal points detected');
@@ -65,5 +65,5 @@ export const toAtto = (v: string) => {
 };
 
 export const commaSeperate = (s: string) => {
-	return s.replace(/(.)(?=(\d{3})+$)/g, '$1,');
+	return s.replace(/(.)(?=(\d{3})+$)/g, `$1${delimiters.thousand}`);
 };
