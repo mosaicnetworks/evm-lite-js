@@ -12,7 +12,7 @@ interface IBaseTransaction {
 export interface ITransaction extends IBaseTransaction {
 	from?: string;
 	to?: string;
-	value?: number;
+	value?: string | number;
 	data?: string;
 }
 
@@ -27,7 +27,7 @@ export interface ISignedTx {
 export default class Transaction implements ITransaction {
 	public from?: string;
 	public to?: string;
-	public value?: number;
+	public value?: string | number;
 	public data?: string;
 	public gas: number;
 	public gasPrice: number;

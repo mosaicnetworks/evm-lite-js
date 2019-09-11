@@ -13,9 +13,9 @@ import removeTrailingZeros from 'remove-trailing-zeros';
 */
 
 // ordered units... low -> high
-const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
+export const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
 
-const delimiters = {
+export const delimiters = {
 	thousand: ',',
 	decimal: '.'
 };

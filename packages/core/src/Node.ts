@@ -192,7 +192,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async transfer(
 		from: Account,
 		to: string,
-		value: number,
+		value: string | number,
 		gas: number,
 		gasPrice: number
 	): Promise<IReceipt> {
