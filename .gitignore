@@ -13,6 +13,7 @@ package-lock.json
 demo
 demo.old
 
+yarn-error.log
 _build
 
 
