@@ -1,4 +1,4 @@
-import { commaSeperate, toAtto, toUnitToken } from '../src/currency';
+import { commaSeperate, toAttoToken, toUnitToken } from '../src/currency';
 
 const toAttoCases = [
 	{ input: '12312123123a', output: '12312123123' },
@@ -16,7 +16,7 @@ const toAttoCases = [
 describe('toAtto', () => {
 	for (const c of toAttoCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
-			const a = toAtto(c.input);
+			const a = toAttoToken(c.input);
 
 			expect(a.length).toBe(c.output.length);
 			expect(a).toBe(c.output);
@@ -39,7 +39,7 @@ const commaCases = [
 describe('commaSeperate', () => {
 	for (const c of commaCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
-			const a = toAtto(c.input);
+			const a = toAttoToken(c.input);
 			const r = commaSeperate(a);
 
 			expect(r).toBe(c.output);

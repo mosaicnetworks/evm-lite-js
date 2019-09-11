@@ -12,6 +12,7 @@ import removeTrailingZeros from 'remove-trailing-zeros';
     1									    Tenom		(T)	1
 */
 
+// ordered units... low -> high
 const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
 
 const delimiters = {
@@ -26,7 +27,7 @@ const cleanCurrencyString = (s: string): string => {
 		.trim();
 };
 
-export const toAtto = (v: string) => {
+export const toAttoToken = (v: string) => {
 	// remove all whitespaces and seperators
 	v = cleanCurrencyString(v);
 
@@ -57,6 +58,10 @@ export const toAtto = (v: string) => {
 	}
 
 	if (l[1]) {
+		if (l[1].length > multIdx) {
+			throw Error('Cannot convert to a fraction of an Atto token');
+		}
+
 		multIdx -= l[1].length;
 	}
 
@@ -103,6 +108,7 @@ export const toUnitToken = (v: string) => {
 		multIdx -= l[0].length;
 
 		const rev = l.reverse();
+
 		for (let i = multIdx; i > 0; i--) {
 			rev.push('0');
 		}
