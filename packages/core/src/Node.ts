@@ -223,7 +223,6 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	// client interface
 	public async getAccount(address: string): Promise<IEVMAccount> {
 		const a = await this.client.getAccount(address);
-		console.log(a.balance.toString(10));
 
 		return {
 			...a,
