@@ -108,3 +108,5 @@ describe('convert', () => {
 		});
 	}
 });
+
+// Simple addition, multiplication and subtraction of Currency module
