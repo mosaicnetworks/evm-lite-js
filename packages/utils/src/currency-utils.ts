@@ -180,5 +180,5 @@ export const convertCurrency = (bn: BN, to: Units) => {
 		res = l.join('');
 	}
 
-	return removeTrailingZeros(res) + '';
+	return removeTrailingZeros(res) + to;
 };
