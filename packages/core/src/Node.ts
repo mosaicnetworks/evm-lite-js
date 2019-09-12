@@ -199,7 +199,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async transfer(
 		from: Account,
 		to: string,
-		value: string | number,
+		value: string | number | Currency,
 		gas: number,
 		gasPrice: number
 	): Promise<IReceipt> {

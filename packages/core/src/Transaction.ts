@@ -1,4 +1,4 @@
-import Utils from 'evm-lite-utils';
+import Utils, { Currency } from 'evm-lite-utils';
 
 import { ILog, IReceipt } from 'evm-lite-client';
 
@@ -12,7 +12,7 @@ interface IBaseTransaction {
 export interface ITransaction extends IBaseTransaction {
 	from?: string;
 	to?: string;
-	value?: string | number;
+	value?: string | number | Currency;
 	data?: string;
 }
 
@@ -27,7 +27,7 @@ export interface ISignedTx {
 export default class Transaction implements ITransaction {
 	public from?: string;
 	public to?: string;
-	public value?: string | number;
+	public value?: string | number | Currency;
 	public data?: string;
 	public gas: number;
 	public gasPrice: number;
