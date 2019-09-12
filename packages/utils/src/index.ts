@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
-export * from './currency';
+export { default as Currency, IUnits, units } from './Currency';
 
 class Utils {
 	/**
@@ -16,6 +16,10 @@ class Utils {
 	 */
 	public static exists(path: string): boolean {
 		return fs.existsSync(path);
+	}
+
+	public static isLetter(str: string) {
+		return str.length === 1 && str.match(/[a-z]/i);
 	}
 
 	public static isDirectory(path: string): boolean {

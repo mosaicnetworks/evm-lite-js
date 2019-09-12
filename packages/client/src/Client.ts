@@ -1,13 +1,13 @@
 import * as JSONBig from 'json-bigint';
 
-import BN from 'bn.js';
+import BN from 'bignumber.js';
 
 import AbstractClient from './AbstractClient';
 
 export interface IBaseAccount {
 	readonly address: string;
 	readonly nonce: number;
-	readonly balance: BN | number;
+	readonly balance: BN;
 	readonly bytecode: string;
 }
 

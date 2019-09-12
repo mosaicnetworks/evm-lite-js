@@ -1,6 +1,9 @@
+import BN from 'bignumber.js';
+
 // @ts-ignore
 import removeTrailingZeros from 'remove-trailing-zeros';
 
+// test
 /* 
     All letters are lowercase except for T for Tenom
     1 / 1 000 000 000 000 000 000			atto		(a)	10^-18
@@ -12,10 +15,12 @@ import removeTrailingZeros from 'remove-trailing-zeros';
     1									    Tenom		(T)	1
 */
 
-// ordered units... low -> high
-const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
+export type Units = 'a' | 'f' | 'p' | 'n' | 'u' | 'm' | 'T';
 
-const delimiters = {
+// ordered units... low -> high
+export const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
+
+export const delimiters = {
 	thousand: ',',
 	decimal: '.'
 };
@@ -27,7 +32,7 @@ const cleanCurrencyString = (s: string): string => {
 		.trim();
 };
 
-export const toAttoToken = (v: string) => {
+export const toAtto = (v: string) => {
 	// remove all whitespaces and seperators
 	v = cleanCurrencyString(v);
 
@@ -72,7 +77,7 @@ export const toAttoToken = (v: string) => {
 	return l.join('').replace(/^0+/, '');
 };
 
-export const toUnitToken = (v: string) => {
+export const toToken = (v: string) => {
 	// remove all whitespaces and seperators
 	v = cleanCurrencyString(v);
 
@@ -122,7 +127,7 @@ export const toUnitToken = (v: string) => {
 		l[0] = l[0].slice(0, l[0].length - multIdx);
 		multIdx = 0;
 
-		res = l.join();
+		res = l.join('');
 	}
 
 	return removeTrailingZeros(res);
@@ -130,4 +135,50 @@ export const toUnitToken = (v: string) => {
 
 export const commaSeperate = (s: string) => {
 	return s.replace(/(.)(?=(\d{3})+$)/g, `$1${delimiters.thousand}`);
+};
+
+export const convertCurrency = (bn: BN, to: Units) => {
+	// starting unit is always a BN due `evm-lite` always
+	// returning balance in atto tokens
+	const s = bn.toString(10);
+
+	// check if currency exists
+	// the unit to conver too
+	const toUnitIdx = units.indexOf(to);
+	if (toUnitIdx < 0) {
+		throw Error(`Unrecognized unit: ${to}`);
+	}
+
+	let multIdx = toUnitIdx * 3;
+
+	const l = s.split(delimiters.decimal);
+
+	if (l.length > 2) {
+		throw Error('Too many decimal points detected');
+	}
+
+	let res: string;
+
+	if (l[0].length <= multIdx) {
+		multIdx -= l[0].length;
+
+		const rev = l.reverse();
+
+		for (let i = multIdx; i > 0; i--) {
+			rev.push('0');
+		}
+
+		// add leading zero and decimal
+		rev.push('.');
+		rev.push('0');
+
+		res = rev.reverse().join('');
+	} else {
+		l[0] = l[0].slice(0, l[0].length - multIdx);
+		multIdx = 0;
+
+		res = l.join('');
+	}
+
+	return removeTrailingZeros(res) + to;
 };

@@ -1,10 +1,17 @@
 import { IAbstractConsensus } from 'evm-lite-consensus';
 
 import Client, { IBaseInfo, IReceipt } from 'evm-lite-client';
-import utils from 'evm-lite-utils';
+import utils, { Currency } from 'evm-lite-utils';
 
 import Account from './Account';
 import Transaction from './Transaction';
+
+export interface IEVMAccount {
+	address: string;
+	balance: Currency;
+	nonce: number;
+	bytecode: string;
+}
 
 export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	// a node requires an underlying consensus protocol (solo | babble | ...)
@@ -192,7 +199,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async transfer(
 		from: Account,
 		to: string,
-		value: number,
+		value: string | number | Currency,
 		gas: number,
 		gasPrice: number
 	): Promise<IReceipt> {
@@ -214,8 +221,13 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	}
 
 	// client interface
-	public async getAccount(address: string) {
-		return this.client.getAccount(address);
+	public async getAccount(address: string): Promise<IEVMAccount> {
+		const a = await this.client.getAccount(address);
+
+		return {
+			...a,
+			balance: new Currency(a.balance)
+		};
 	}
 
 	public async getPOA() {
@@ -228,9 +240,5 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 
 	public async getReceipt(hash: string) {
 		return this.client.getReceipt(hash);
-	}
-
-	private async checkPoolTx(e: any) {
-		// make sure error is nonce too low
 	}
 }
