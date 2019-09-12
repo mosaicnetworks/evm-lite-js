@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   utils: Added currency conversions from any denominations to smallest (Atto)
 -   utils: Added currency conversions from any denominations to largest
+-   utils: Added `convert` which will convery a `BN` assumed to be of the denomination `atto` and converted to any other denomination
 
 ### Changed
 

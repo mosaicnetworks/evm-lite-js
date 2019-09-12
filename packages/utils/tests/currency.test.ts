@@ -1,4 +1,12 @@
-import { commaSeperate, toAttoToken, toUnitToken } from '../src/currency';
+import BN from 'bn.js';
+
+import {
+	commaSeperate,
+	convert,
+	Currency,
+	toAtto,
+	toToken
+} from '../src/currency';
 
 const toAttoCases = [
 	{ input: '12312123123a', output: '12312123123' },
@@ -16,7 +24,7 @@ const toAttoCases = [
 describe('toAtto', () => {
 	for (const c of toAttoCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
-			const a = toAttoToken(c.input);
+			const a = toAtto(c.input);
 
 			expect(a.length).toBe(c.output.length);
 			expect(a).toBe(c.output);
@@ -39,7 +47,7 @@ const commaCases = [
 describe('commaSeperate', () => {
 	for (const c of commaCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
-			const a = toAttoToken(c.input);
+			const a = toAtto(c.input);
 			const r = commaSeperate(a);
 
 			expect(r).toBe(c.output);
@@ -57,10 +65,54 @@ const toUnitTokenCases = [
 describe('toUnitToken', () => {
 	for (const c of toUnitTokenCases) {
 		it(`should convert ${c.input} to ${c.output}`, () => {
-			const a = toUnitToken(c.input);
+			const a = toToken(c.input);
 
 			expect(a.length).toBe(c.output.length);
 			expect(a).toBe(c.output);
+		});
+	}
+});
+
+const BNCases: Array<{
+	bn: BN;
+	to: Currency;
+	expected: string;
+}> = [
+	{ bn: new BN('1337000000000000000000'), to: 'token', expected: '1337' },
+	{ bn: new BN('1337000000000000000000'), to: 'milli', expected: '1337000' },
+	{
+		bn: new BN('1337000000000000000000'),
+		to: 'micro',
+		expected: '1337000000'
+	},
+	{
+		bn: new BN('1337000000000000000000'),
+		to: 'nano',
+		expected: '1337000000000'
+	},
+	{
+		bn: new BN('1337000000000000000000'),
+		to: 'pico',
+		expected: '1337000000000000'
+	},
+	{
+		bn: new BN('1337000000000000000000'),
+		to: 'femto',
+		expected: '1337000000000000000'
+	},
+	{
+		bn: new BN('1337000000000000000000'),
+		to: 'atto',
+		expected: '1337000000000000000000'
+	}
+];
+
+describe('convert', () => {
+	for (const c of BNCases) {
+		it(`should convert 1337000000000000000000(BN) to ${c.expected}`, () => {
+			const a = convert(c.bn, c.to);
+
+			expect(a).toBe(c.expected);
 		});
 	}
 });

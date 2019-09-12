@@ -7,7 +7,7 @@ import AbstractClient from './AbstractClient';
 export interface IBaseAccount {
 	readonly address: string;
 	readonly nonce: number;
-	readonly balance: BN | number;
+	readonly balance: BN;
 	readonly bytecode: string;
 }
 

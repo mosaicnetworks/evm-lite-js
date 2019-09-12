@@ -1,3 +1,5 @@
+import BN from 'bn.js';
+
 // @ts-ignore
 import removeTrailingZeros from 'remove-trailing-zeros';
 
@@ -11,6 +13,25 @@ import removeTrailingZeros from 'remove-trailing-zeros';
     1 / 1 000								milli		(m)	10^-3
     1									    Tenom		(T)	1
 */
+
+export type Currency =
+	| 'atto'
+	| 'femto'
+	| 'pico'
+	| 'nano'
+	| 'micro'
+	| 'milli'
+	| 'token';
+
+const currencyMapping = {
+	atto: 'a',
+	femto: 'f',
+	pico: 'p',
+	nano: 'n',
+	micro: 'u',
+	milli: 'm',
+	token: 'T'
+};
 
 // ordered units... low -> high
 export const units = ['a', 'f', 'p', 'n', 'u', 'm', 'T'];
@@ -27,7 +48,7 @@ const cleanCurrencyString = (s: string): string => {
 		.trim();
 };
 
-export const toAttoToken = (v: string) => {
+export const toAtto = (v: string) => {
 	// remove all whitespaces and seperators
 	v = cleanCurrencyString(v);
 
@@ -72,7 +93,7 @@ export const toAttoToken = (v: string) => {
 	return l.join('').replace(/^0+/, '');
 };
 
-export const toUnitToken = (v: string) => {
+export const toToken = (v: string) => {
 	// remove all whitespaces and seperators
 	v = cleanCurrencyString(v);
 
@@ -122,7 +143,7 @@ export const toUnitToken = (v: string) => {
 		l[0] = l[0].slice(0, l[0].length - multIdx);
 		multIdx = 0;
 
-		res = l.join();
+		res = l.join('');
 	}
 
 	return removeTrailingZeros(res);
@@ -130,4 +151,58 @@ export const toUnitToken = (v: string) => {
 
 export const commaSeperate = (s: string) => {
 	return s.replace(/(.)(?=(\d{3})+$)/g, `$1${delimiters.thousand}`);
+};
+
+export const convert = (bn: BN, to: Currency) => {
+	// starting unit is always a BN due `evm-lite` always returning balance in
+	// atto tokens
+	const s = bn.toString(10);
+	const unit = 'a';
+
+	// check if currency exists
+	const unitNames = Object.keys(currencyMapping);
+	if (!unitNames.includes(to)) {
+		throw Error('Currency to convert to is unrecognized');
+	}
+
+	// the unit to conver too
+	const toUnit = currencyMapping[to];
+	const toUnitIdx = units.indexOf(toUnit);
+
+	if (toUnitIdx < 0) {
+		throw Error(`Unrecognized unit: ${toUnit}`);
+	}
+
+	let multIdx = toUnitIdx * 3;
+
+	const l = s.split(delimiters.decimal);
+
+	if (l.length > 2) {
+		throw Error('Too many decimal points detected');
+	}
+
+	let res: string;
+
+	if (l[0].length <= multIdx) {
+		multIdx -= l[0].length;
+
+		const rev = l.reverse();
+
+		for (let i = multIdx; i > 0; i--) {
+			rev.push('0');
+		}
+
+		// add leading zero and decimal
+		rev.push('.');
+		rev.push('0');
+
+		res = rev.reverse().join('');
+	} else {
+		l[0] = l[0].slice(0, l[0].length - multIdx);
+		multIdx = 0;
+
+		res = l.join('');
+	}
+
+	return removeTrailingZeros(res);
 };
