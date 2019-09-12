@@ -1,6 +1,6 @@
 import * as JSONBig from 'json-bigint';
 
-import BN from 'bn.js';
+import BN from 'bignumber.js';
 
 import AbstractClient from './AbstractClient';
 

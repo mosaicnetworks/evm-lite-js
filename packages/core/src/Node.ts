@@ -226,7 +226,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 
 		return {
 			...a,
-			balance: new Currency(a.balance.toString(10))
+			balance: new Currency(a.balance)
 		};
 	}
 

@@ -1,9 +1,9 @@
-import BN from 'bn.js';
+import BN from 'bignumber.js';
 
 import { convertCurrency, Units } from 'evm-lite-utils';
 
 class Currency extends BN {
-	constructor(number: string) {
+	constructor(number: BN) {
 		super(number);
 	}
 

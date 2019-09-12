@@ -1,4 +1,4 @@
-import BN from 'bn.js';
+import BN from 'bignumber.js';
 
 // @ts-ignore
 import removeTrailingZeros from 'remove-trailing-zeros';
