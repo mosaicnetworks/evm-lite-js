@@ -3,6 +3,7 @@ import BN from 'bn.js';
 // @ts-ignore
 import removeTrailingZeros from 'remove-trailing-zeros';
 
+// test
 /* 
     All letters are lowercase except for T for Tenom
     1 / 1 000 000 000 000 000 000			atto		(a)	10^-18
