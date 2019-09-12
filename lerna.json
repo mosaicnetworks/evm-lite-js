@@ -9,12 +9,8 @@
 		},
 		"publish": {
 			"message": "chore(release): publish",
-			"commit": false,
 			"push": false,
-			"exact": true,
-			"skipGit": true,
-			"tag": false,
-			"tags": false
+			"exact": true
 		}
 	}
 }
