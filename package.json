@@ -27,7 +27,8 @@
 		"clean:rst": "rm ./docs/*.rst",
 		"lint": "lerna run lint",
 		"linkall": "ts-node ./scripts/link-all",
-		"unlinkall": "ts-node ./scripts/unlink-all"
+		"unlinkall": "ts-node ./scripts/unlink-all",
+		"watch": "tsc --build --watch ./packages/tsconfig.json"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.1.6",

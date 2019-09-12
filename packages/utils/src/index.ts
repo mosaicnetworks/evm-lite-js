@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as mkdir from 'mkdirp';
 
-export * from './currency';
+export { default as Currency } from './Currency';
+export * from './currency-utils';
 
 class Utils {
 	/**

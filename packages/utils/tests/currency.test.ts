@@ -78,31 +78,31 @@ const BNCases: Array<{
 	to: Currency;
 	expected: string;
 }> = [
-	{ bn: new BN('1337000000000000000000'), to: 'token', expected: '1337' },
-	{ bn: new BN('1337000000000000000000'), to: 'milli', expected: '1337000' },
+	{ bn: new BN('1337000000000000000000'), to: 'T', expected: '1337' },
+	{ bn: new BN('1337000000000000000000'), to: 'm', expected: '1337000' },
 	{
 		bn: new BN('1337000000000000000000'),
-		to: 'micro',
+		to: 'u',
 		expected: '1337000000'
 	},
 	{
 		bn: new BN('1337000000000000000000'),
-		to: 'nano',
+		to: 'n',
 		expected: '1337000000000'
 	},
 	{
 		bn: new BN('1337000000000000000000'),
-		to: 'pico',
+		to: 'p',
 		expected: '1337000000000000'
 	},
 	{
 		bn: new BN('1337000000000000000000'),
-		to: 'femto',
+		to: 'f',
 		expected: '1337000000000000000'
 	},
 	{
 		bn: new BN('1337000000000000000000'),
-		to: 'atto',
+		to: 'a',
 		expected: '1337000000000000000000'
 	}
 ];
