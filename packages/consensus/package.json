@@ -2,7 +2,7 @@
 	"name": "evm-lite-consensus",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.2.0",
+	"version": "1.2.1-dev",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
@@ -15,7 +15,7 @@
 		"doc": "rm -rf docs/ && typedoc"
 	},
 	"dependencies": {
-		"evm-lite-client": "1.2.0",
+		"evm-lite-client": "1.2.1-dev",
 		"json-bigint": "^0.3.0"
 	},
 	"repository": {
