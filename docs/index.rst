@@ -39,4 +39,6 @@ examples.
 
    keystore.rst
    datadir.rst
+   utils.rst
+
    developers
