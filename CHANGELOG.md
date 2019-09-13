@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.3.x
+
+### Added
+
+-   utils: Created Currency class
+
+### Changed
+
+-   client: `getAccount` now accepts a second optional parameter `fromPool: bool` which will get data about the account from the TxPool's `ethState` instead of the default main `ethState`
+
 ## v1.1.x
 
 ### Added

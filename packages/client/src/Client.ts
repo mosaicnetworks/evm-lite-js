@@ -1,13 +1,13 @@
 import * as JSONBig from 'json-bigint';
 
-import BN from 'bn.js';
+import BN from 'bignumber.js';
 
 import AbstractClient from './AbstractClient';
 
 export interface IBaseAccount {
 	readonly address: string;
 	readonly nonce: number;
-	readonly balance: BN | number;
+	readonly balance: BN;
 	readonly bytecode: string;
 }
 
@@ -90,8 +90,17 @@ class BaseEVMLC extends AbstractClient {
 		return this.responseBig(res);
 	}
 
-	public async getAccount(address: string): Promise<IBaseAccount> {
-		const response = await this.get(`/account/${address}`);
+	public async getAccount(
+		address: string,
+		fromPool?: boolean
+	): Promise<IBaseAccount> {
+		let path = `/account/${address}`;
+
+		if (fromPool !== undefined) {
+			path += `?frompool=${fromPool ? 'true' : 'false'}`;
+		}
+
+		const response = await this.get(path);
 		const account = JSONBig.parse(response) as IBaseAccount;
 
 		return account;

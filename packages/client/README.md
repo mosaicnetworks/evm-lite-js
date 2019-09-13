@@ -1,11 +1,27 @@
 # EVM-Lite Client
 
+[![npm version](https://badge.fury.io/js/evm-lite-client.svg)](https://badge.fury.io/js/evm-lite-client)
+
 A simple HTTP client for `EVM-Lite`.
 
-## Methods
+## Installation
 
--   `getAccount(address: string)` - gets an account from the node
--   `getInfo()` - gets info about the node including consensus
--   `sendTx(tx: string)` - sends a signed transaction to the node
--   `callTx(tx: string)` - calls a transaction to the node
--   `getReceipt(hash: string)` - returns the receipt for a given `txHash`
+You can install this module using `npm`
+
+```bash
+npm install evm-lite-client
+```
+
+or `yarn`
+
+```bash
+yarn add evm-lite-client
+```
+
+## Documentation
+
+See documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
+
+## Developers
+
+See developers docs [here](https://evm-lite-js.readthedocs.io/en/latest/developers.html).

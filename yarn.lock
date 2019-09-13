@@ -1767,6 +1767,11 @@ bignumber.js@^7.0.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
   integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
 
+bignumber.js@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
+  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
+
 "bignumber.js@git+https://github.com/frozeman/bignumber.js-nolookahead.git":
   version "2.0.7"
   resolved "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934"
@@ -2814,13 +2819,6 @@ eventemitter3@^3.1.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
-
-evm-lite-utils@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/evm-lite-utils/-/evm-lite-utils-1.0.0.tgz#706e9c755e65066e8ab48c32af499ccfb32aed83"
-  integrity sha512-wDJ2OeXroLYdVEcrPppJ3aOXw+mp0td9ywYxoXu7a9oijE+mwC3JRHbydNAotNm57SOq8bsxLY6QaWIS317KSA==
-  dependencies:
-    mkdirp "^0.5.1"
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -6052,6 +6050,11 @@ remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
+
+remove-trailing-zeros@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/remove-trailing-zeros/-/remove-trailing-zeros-1.0.3.tgz#9d167b10262c6296376577b4f7485210497ae699"
+  integrity sha512-jPyx7zNib1nb7MIDrV/vV3FTkL4EjpsUHqXeB5WrPInoPuvy41Viv6qXXP3dYhPztlbu3ucNdyqnOrEqMcJxMg==
 
 repeat-element@^1.1.2:
   version "1.1.3"

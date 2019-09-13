@@ -6,7 +6,7 @@ Data directory management for EVM-Lite applications.
 
 ## Installation
 
-You can very simply install `evm-lite-datadir` using `npm`
+You can install this module using `npm`
 
 ```bash
 npm install evm-lite-datadir
@@ -18,19 +18,10 @@ or `yarn`
 yarn add evm-lite-datadir
 ```
 
-## Usage
+## Documentation
 
-```javascript
-// import
-const { default: DataDirectory } = require('evm-lite-datadir');
-const { default: Keystore } = require('evm-lite-keystore');
+See documentation [here](https://evm-lite-js.readthedocs.io/en/latest/).
 
-// generate objects
-const keystore = new Keystore('path/to/keystore/');
-const datadir = new DataDirectory('path/to/data/dir', 'configName', keystore);
+## Developers
 
-datadir
-	.readConfig()
-	.then(console.log)
-	.catch(console.log);
-```
+See developers docs [here](https://evm-lite-js.readthedocs.io/en/latest/developers.html).

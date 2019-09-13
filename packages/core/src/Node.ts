@@ -1,10 +1,17 @@
 import { IAbstractConsensus } from 'evm-lite-consensus';
 
 import Client, { IBaseInfo, IReceipt } from 'evm-lite-client';
-import utils from 'evm-lite-utils';
+import utils, { Currency } from 'evm-lite-utils';
 
 import Account from './Account';
 import Transaction from './Transaction';
+
+export interface IEVMAccount {
+	address: string;
+	balance: Currency;
+	nonce: number;
+	bytecode: string;
+}
 
 export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	// a node requires an underlying consensus protocol (solo | babble | ...)
@@ -94,12 +101,34 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 			);
 		}
 
-		console.log(tx);
-
 		try {
 			tx.receipt = await this.client.sendTx(tx.signed.rawTransaction);
 		} catch (e) {
-			return Promise.reject(`evm-lite: ${e.text || e.toString()}`);
+			const err = e
+				.toString()
+				.toString()
+				.toLowerCase()
+				.trim()
+				.replace(/(\r\n|\n|\r)/gm, '');
+
+			if (err === 'nonce too low') {
+				const pool = await this.client.getAccount(tx.from, true);
+
+				// clone tx object
+				const pooltx = { ...tx };
+
+				tx.nonce = pool.nonce;
+
+				if (tx.nonce === pooltx.nonce) {
+					return Promise.reject(
+						`nonce too low - txpool nonce same as ethstate`
+					);
+				}
+
+				return this.sendTx(tx, account);
+			}
+
+			return Promise.reject(`evm-lite: ${err}`);
 		}
 
 		// parse any logs that may have been returned with the receipt
@@ -170,7 +199,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async transfer(
 		from: Account,
 		to: string,
-		value: number,
+		value: string | number | Currency,
 		gas: number,
 		gasPrice: number
 	): Promise<IReceipt> {
@@ -192,8 +221,13 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	}
 
 	// client interface
-	public async getAccount(address: string) {
-		return this.client.getAccount(address);
+	public async getAccount(address: string): Promise<IEVMAccount> {
+		const a = await this.client.getAccount(address);
+
+		return {
+			...a,
+			balance: new Currency(a.balance)
+		};
 	}
 
 	public async getPOA() {

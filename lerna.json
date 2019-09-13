@@ -1,8 +1,6 @@
 {
-	"packages": [
-		"packages/*"
-	],
-	"version": "1.1.2",
+	"packages": ["packages/*"],
+	"version": "independent",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
 	"command": {
@@ -10,10 +8,9 @@
 			"exact": true
 		},
 		"publish": {
-			"commit": false,
+			"message": "chore(release): publish",
 			"push": false,
-			"exact": true,
-			"skipGit": true
+			"exact": true
 		}
 	}
 }
