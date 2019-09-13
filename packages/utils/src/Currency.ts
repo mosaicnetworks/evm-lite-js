@@ -16,13 +16,13 @@ const delimiters = {
 };
 
 class Currency extends BN {
-	public static atto: BN = new BN(1);
-	public static femto: BN = new BN(1000);
-	public static pico: BN = new BN(1000000);
-	public static nano: BN = new BN(1000000000);
-	public static micro: BN = new BN(1000000000000);
-	public static milli: BN = new BN(1000000000000000);
-	public static Token: BN = new BN(1000000000000000000);
+	public static atto = new Currency(1);
+	public static femto = new Currency(1000);
+	public static pico = new Currency(1000000);
+	public static nano = new Currency(1000000000);
+	public static micro = new Currency(1000000000000);
+	public static milli = new Currency(1000000000000000);
+	public static Token = new Currency(1000000000000000000);
 
 	public static commaSeperate(s: string) {
 		const u = s.slice(-1);
@@ -86,7 +86,7 @@ class Currency extends BN {
 		return l.join('').replace(/^0+/, '');
 	}
 
-	constructor(value: BN | string) {
+	constructor(value: BN | string | number) {
 		if (typeof value === 'string') {
 			super(Currency.toAtto(value));
 		} else {
@@ -96,6 +96,13 @@ class Currency extends BN {
 
 	public format(unit: IUnits) {
 		return this.convert(unit);
+	}
+
+	// Return currency object
+	public times(n: number): Currency {
+		const bn = super.times(n, 10);
+
+		return new Currency(bn);
 	}
 
 	private convert(to: IUnits) {

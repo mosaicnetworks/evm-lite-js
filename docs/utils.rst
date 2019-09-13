@@ -55,7 +55,7 @@ using the abstraction provided by the ``Node`` object.
        account,
        '0x69c68dd72d71f784682c05776b0fb6f739549395',
        // You can do this with any other denomination
-       500 * Currency.Token,
+       Currency.Token.times(500),
        10000000,
        0
    )
@@ -66,12 +66,13 @@ Example (Conversion)
 ~~~~~~~~~~~~~~~~~~~~
 
 We can also convert from one denomination to another very easily using
-the ``Currency.format`` method. Say we wanted to convert ``300m`` (300
-milli) tokens to ``T``.
+the ``Currency.format`` method. Say we wanted to convert ``300m * 200n`` (300
+milli * 200 nano) tokens to ``T``.
 
 .. code:: javascript
 
-   const amount = new Currency('300m');
+   const am1 = new Currency('300m');
+   const am2 = new Currency('200n');
 
    // this can be done for any denomination
-   console.log(amount.format('T'));
+   console.log(am1.times(am2).format('T'));
