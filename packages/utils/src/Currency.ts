@@ -120,9 +120,8 @@ class Currency extends BN {
 		let multIdx = toUnitIdx * 3;
 
 		const l = s.split(delimiters.decimal);
-
-		if (l.length > 2) {
-			throw Error('Too many decimal points detected');
+		if (l.length > 1) {
+			throw Error('Starting Atto token cannot be fractional');
 		}
 
 		let res: string;
@@ -142,10 +141,12 @@ class Currency extends BN {
 
 			res = rev.reverse().join('');
 		} else {
-			l[0] = l[0].slice(0, l[0].length - multIdx);
+			const pre = l[0].slice(0, l[0].length - multIdx);
+			const post = l[0].slice(l[0].length - multIdx + 1, l[0].length);
+
 			multIdx = 0;
 
-			res = l.join('');
+			res = pre + '.' + post;
 		}
 
 		return removeTrailingZeros(res) + to;

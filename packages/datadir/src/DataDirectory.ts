@@ -11,6 +11,8 @@ import {
 import Configuration, { IConfiguration } from './Configuration';
 
 export default class DataDirectory<K extends AbstractKeystore> {
+	public static decrypt = AbstractKeystore.decrypt;
+
 	private readonly configuration: Configuration;
 
 	constructor(
