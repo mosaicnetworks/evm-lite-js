@@ -8,9 +8,8 @@
 			"exact": true
 		},
 		"publish": {
-			"message": "chore(release): publish",
-			"push": false,
-			"exact": true
+			"ignoreChanges": ["**/*.md", "**/example/**", "**/test/**"],
+			"message": "chore(release): publish"
 		}
 	}
 }
