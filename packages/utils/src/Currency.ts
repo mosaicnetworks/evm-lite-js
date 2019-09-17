@@ -99,8 +99,15 @@ class Currency extends BN {
 	}
 
 	// Return currency object
-	public times(n: number): Currency {
+	public times(n: Currency): Currency {
 		const bn = super.times(n, 10);
+
+		return new Currency(bn);
+	}
+
+	// Return currency object
+	public plus(n: Currency): Currency {
+		const bn = super.plus(n, 10);
 
 		return new Currency(bn);
 	}
