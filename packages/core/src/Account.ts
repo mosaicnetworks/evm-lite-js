@@ -3,7 +3,7 @@ import * as ethlib from 'eth-lib';
 // @ts-ignore
 import * as EthLibAccount from 'eth-lib/lib/account';
 
-import utils from 'evm-lite-utils';
+import utils, { Currency } from 'evm-lite-utils';
 
 import { ISignedTx, ITransaction } from './Transaction';
 
@@ -15,7 +15,7 @@ export interface IAccount {
 	privateKey: string;
 
 	// account data
-	balance: number;
+	balance: Currency;
 	nonce: number;
 
 	// sign transaction method
@@ -33,7 +33,10 @@ export default class Account implements IAccount {
 	public static fromPrivateKey(privateKey: string) {
 		privateKey = utils.cleanAddress(privateKey);
 
-		return new Account(EthLibAccount.fromPrivate(privateKey));
+		const account = new Account(EthLibAccount.fromPrivate(privateKey));
+		account.balance = new Currency(0);
+
+		return account;
 	}
 
 	/**
@@ -52,7 +55,7 @@ export default class Account implements IAccount {
 	public readonly address: string;
 	public readonly privateKey: string;
 
-	public balance: number = 0;
+	public balance: Currency = new Currency(0);
 	public nonce: number = 0;
 
 	constructor({
