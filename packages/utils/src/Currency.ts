@@ -156,7 +156,6 @@ class Currency extends BN {
 			res = pre + '.' + post;
 		}
 
-		console.log(res);
 		return removeTrailingZeros(res) + to;
 	}
 }
