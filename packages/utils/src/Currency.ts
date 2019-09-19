@@ -149,13 +149,14 @@ class Currency extends BN {
 			res = rev.reverse().join('');
 		} else {
 			const pre = l[0].slice(0, l[0].length - multIdx);
-			const post = l[0].slice(l[0].length - multIdx + 1, l[0].length);
+			const post = l[0].slice(l[0].length - multIdx, l[0].length);
 
 			multIdx = 0;
 
 			res = pre + '.' + post;
 		}
 
+		console.log(res);
 		return removeTrailingZeros(res) + to;
 	}
 }
