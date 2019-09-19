@@ -1,6 +1,8 @@
 {
-	"packages": ["packages/*"],
-	"version": "independent",
+	"packages": [
+		"packages/*"
+	],
+	"version": "1.3.5",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
 	"command": {
@@ -8,7 +10,11 @@
 			"exact": true
 		},
 		"publish": {
-			"ignoreChanges": ["**/*.md", "**/example/**", "**/test/**"],
+			"ignoreChanges": [
+				"**/*.md",
+				"**/example/**",
+				"**/test/**"
+			],
 			"message": "chore(release): publish"
 		}
 	}
