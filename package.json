@@ -3,7 +3,7 @@
 	"private": true,
 	"author": "Mosaic Networks",
 	"workspaces": [
-		"packages/*"
+		"modules/*"
 	],
 	"authors": [
 		{
@@ -14,9 +14,9 @@
 	],
 	"scripts": {
 		"test": "jest",
-		"clean": "lerna run clean && rm -rf node_modules",
+		"clean": "lerna run clean --parallel && rm -rf node_modules ",
 		"clean:build": "lerna run clean:build",
-		"build": "lerna run build",
+		"build": "lerna run build --parallel",
 		"bootstrap": "lerna bootstrap",
 		"link": "lerna link",
 		"prepublish": "yarn lint && yarn run build && lerna link",
