@@ -2,7 +2,7 @@
 	"name": "evm-lite-client",
 	"namespace": "mosaicnetworks",
 	"author": "Danu Kumanan",
-	"version": "1.3.6",
+	"version": "1.3.7",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./dist/typings/index.d.ts",
