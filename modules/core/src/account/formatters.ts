@@ -42,7 +42,7 @@ export default class Formatters {
 			throw new Error('The data field must be HEX encoded data.');
 		}
 
-		['gasPrice', 'gas', 'value', 'nonce', 'chainId']
+		['gas', 'nonce', 'chainId']
 			.filter(key => {
 				// @ts-ignore
 				return txObject[key] !== undefined;
@@ -51,6 +51,17 @@ export default class Formatters {
 				// @ts-ignore
 				formatted[key] = Utils.numberToHex(txObject[key]);
 			});
+
+		formatted.value = txObject.value
+			? txObject.value.format('a').slice(0, -1)
+			: '0';
+
+		formatted.gasPrice = txObject.gasPrice
+			? txObject.gasPrice.format('a').slice(0, -1)
+			: '0';
+
+		formatted.value = Utils.numberToHex(formatted.value);
+		formatted.gasPrice = Utils.numberToHex(formatted.gasPrice);
 
 		return formatted;
 	}

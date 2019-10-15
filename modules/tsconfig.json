@@ -1,6 +1,7 @@
 {
 	"files": [],
 	"references": [
+		{ "path": "client" },
 		{ "path": "keystore" },
 		{ "path": "datadir" },
 		{ "path": "utils" },

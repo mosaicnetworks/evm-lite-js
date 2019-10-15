@@ -21,7 +21,6 @@ export type Config = {
 	defaults: {
 		from: string;
 		gas: number;
-		gasPrice: number;
 	};
 };
 
@@ -46,12 +45,12 @@ export default class Configuration {
 				host: 'localhost',
 				port: 8080
 			},
+
 			defaults: {
 				// default moniker for `from` address
 				from: '',
 				// default gas 10^6
-				gas: 1000000,
-				gasPrice: 0
+				gas: 1000000
 			}
 		};
 	}
@@ -81,10 +80,6 @@ export default class Configuration {
 	}
 
 	public async save(data: Config): Promise<void> {
-		if (!data.defaults.gasPrice) {
-			data.defaults.gasPrice = 0;
-		}
-
 		try {
 			if (!utils.deepEquals(this.state, data)) {
 				const tomldata = tomlify.toToml(data, { spaces: 2 });

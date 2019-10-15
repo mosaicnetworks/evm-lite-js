@@ -4,7 +4,7 @@ import { Log, TxReceipt } from 'evm-lite-client';
 
 type BaseTx = {
 	gas: number;
-	gasPrice: number;
+	gasPrice: Currency;
 	nonce?: number;
 	chainId?: number;
 };
@@ -12,7 +12,7 @@ type BaseTx = {
 export type Tx = BaseTx & {
 	from?: string;
 	to?: string;
-	value?: string | number | Currency;
+	value?: Currency;
 	data?: string;
 };
 
@@ -27,10 +27,10 @@ export type SignedTx = {
 export default class Transaction implements Tx {
 	public from?: string;
 	public to?: string;
-	public value?: string | number | Currency;
+	public value?: Currency;
 	public data?: string;
 	public gas: number;
-	public gasPrice: number;
+	public gasPrice: Currency;
 	public nonce?: number;
 	public chainId?: number;
 
@@ -53,7 +53,7 @@ export default class Transaction implements Tx {
 		}
 
 		this.to = Utils.trimHex(tx.to || '');
-		this.value = tx.value || 0;
+		this.value = tx.value || new Currency(0);
 		this.data = Utils.trimHex(tx.data || '');
 		this.gas = tx.gas;
 		this.gasPrice = tx.gasPrice;
@@ -106,8 +106,6 @@ export default class Transaction implements Tx {
 				);
 			}
 		}
-
-		this.value = this.value || 0;
 
 		if (data) {
 			if (!data.startsWith('0x')) {

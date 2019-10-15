@@ -92,7 +92,7 @@ export default class Account implements IAccount {
 		if (
 			(tx.nonce && tx.nonce < 0) ||
 			tx.gas < 0 ||
-			tx.gasPrice < 0 ||
+			tx.gasPrice.isLessThan(0) ||
 			(tx.chainId && tx.chainId < 0)
 		) {
 			error = new Error(

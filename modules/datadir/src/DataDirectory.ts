@@ -4,8 +4,8 @@ import utils from 'evm-lite-utils';
 
 import {
 	AbstractKeystore,
-	IMonikerKeystore,
-	IV3Keyfile
+	MonikerKeystore,
+	V3Keyfile
 } from 'evm-lite-keystore';
 
 import Configuration, { Config } from './Configuration';
@@ -63,7 +63,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		moniker: string,
 		passphrase: string,
 		path?: string
-	): Promise<IV3Keyfile> {
+	): Promise<V3Keyfile> {
 		if (!this.keystore) {
 			throw new Error('No keystore attached');
 		}
@@ -71,7 +71,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return await this.keystore.create(moniker, passphrase, path);
 	}
 
-	public async getKeyfile(moniker: string): Promise<IV3Keyfile> {
+	public async getKeyfile(moniker: string): Promise<V3Keyfile> {
 		if (!this.keystore) {
 			throw new Error('No keystore attached');
 		}
@@ -79,7 +79,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		return await this.keystore.get(moniker);
 	}
 
-	public async listKeyfiles(): Promise<IMonikerKeystore> {
+	public async listKeyfiles(): Promise<MonikerKeystore> {
 		if (!this.keystore) {
 			throw new Error('No keystore attached');
 		}
@@ -91,7 +91,7 @@ export default class DataDirectory<K extends AbstractKeystore> {
 		moniker: string,
 		oldpass: string,
 		newpass: string
-	): Promise<IV3Keyfile> {
+	): Promise<V3Keyfile> {
 		if (!this.keystore) {
 			throw new Error('No keystore attached');
 		}
@@ -101,8 +101,8 @@ export default class DataDirectory<K extends AbstractKeystore> {
 
 	public async importKeyfile(
 		moniker: string,
-		keyfile: IV3Keyfile
-	): Promise<IV3Keyfile> {
+		keyfile: V3Keyfile
+	): Promise<V3Keyfile> {
 		if (!this.keystore) {
 			throw new Error('No keystore attached');
 		}

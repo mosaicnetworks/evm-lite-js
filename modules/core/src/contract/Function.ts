@@ -63,11 +63,11 @@ export default class Function {
 
 		tx.data = payload.data;
 
-		if (tx.value && tx.value <= 0 && this.payable) {
+		if (tx.value && tx.value.isLessThanOrEqualTo(0) && this.payable) {
 			throw Error(
 				'Function is payable and requires `value` greater than 0.'
 			);
-		} else if (tx.value && tx.value > 0 && !this.payable) {
+		} else if (tx.value && tx.value.isGreaterThan(0) && !this.payable) {
 			throw Error('Function is not payable. Required `value` is 0.');
 		}
 

@@ -14,7 +14,7 @@ const getPackages = (source: string) =>
 		.filter(isDirectory);
 
 // symlink all packages with yarn link
-const dirs = getPackages(path.resolve(__dirname, '../packages'));
+const dirs = getPackages(path.resolve(__dirname, '../modules'));
 
 (async () => {
 	for (const dir of dirs) {

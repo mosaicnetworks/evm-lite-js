@@ -56,7 +56,7 @@ class Currency extends BN {
 		const idx = units.indexOf(unit);
 
 		if (idx < 0) {
-			throw Error(`Unrecognized unit: ${unit}`);
+			throw Error(`toAtto-Unrecognized unit: ${unit}`);
 		}
 
 		let multIdx = idx * 3;
@@ -121,7 +121,7 @@ class Currency extends BN {
 		// the unit to conver too
 		const toUnitIdx = units.indexOf(to);
 		if (toUnitIdx < 0) {
-			throw Error(`Unrecognized unit: ${to}`);
+			throw Error(`Conver-Unrecognized unit: ${to}`);
 		}
 
 		let multIdx = toUnitIdx * 3;

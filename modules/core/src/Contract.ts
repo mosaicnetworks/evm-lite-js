@@ -4,6 +4,7 @@ import coder from 'web3/lib/solidity/coder';
 import SolidityEvent from 'web3/lib/web3/event.js';
 
 import { ABI, ContractABI, Log } from 'evm-lite-client';
+import { Currency } from 'evm-lite-utils';
 
 import Transaction, { Tx } from './Transaction';
 
@@ -75,7 +76,7 @@ export default class Contract<Schema extends IAbstractSchema> {
 		parameters: any[],
 		from: string,
 		gas: number,
-		gasPrice: number
+		gasPrice: Currency
 	): Transaction {
 		if (this.address) {
 			throw Error('Contract address is set and cannot be deployed.');

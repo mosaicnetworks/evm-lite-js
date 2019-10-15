@@ -45,28 +45,28 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 
 		if (!tx.from) {
 			return Promise.reject(
-				new Error('Non constant transaction requires a `from` address.')
+				Error('Non constant transaction requires a `from` address.')
 			);
 		}
 
 		// first check if the fields required are present and not undefined.
 		if (!tx.gas || (!tx.gasPrice && tx.gasPrice !== 0)) {
 			return Promise.reject(
-				new Error('Transaction `gas` or `gasPrice` not set.')
+				Error('Transaction `gas` or `gasPrice` not set.')
 			);
 		}
 
 		// a transaction has to contain one, both or the other.
 		if (!tx.data && !tx.value) {
 			return Promise.reject(
-				new Error('Transaction does not have a value to send.')
+				Error('Transaction does not have a value to send.')
 			);
 		}
 
 		// make sure transaction is not constant
 		if (tx.constant) {
 			return Promise.reject(
-				new Error(
+				Error(
 					'Constant transactions cannot be sent. ' +
 						'Use `.callTransaction()` instead.'
 				)
@@ -79,7 +79,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 			utils.cleanAddress(account.address) !== utils.cleanAddress(tx.from)
 		) {
 			return Promise.reject(
-				new Error(
+				Error(
 					'Transaction `from` address is not the same as ' +
 						'`account` provided.'
 				)
@@ -97,7 +97,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		tx.signed = await account.signTx(tx);
 		if (!tx.signed) {
 			return Promise.reject(
-				new Error('Transaction has not been signed yet.')
+				Error('Transaction has not been signed yet.')
 			);
 		}
 
@@ -159,7 +159,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		// make sure transaction is constant
 		if (!tx.constant) {
 			return Promise.reject(
-				new Error(
+				Error(
 					'Transaction mutates state. ' +
 						'Use `.sendTransaction()` instead'
 				)
@@ -167,9 +167,9 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		}
 
 		// `value` cannot be set on the transaction
-		if (tx.value) {
+		if (tx.value && tx.value.isGreaterThan(0)) {
 			return Promise.reject(
-				new Error(
+				Error(
 					'Transaction cannot send a `value` if it' +
 						'does not intend to mutate the state.'
 				)
@@ -180,8 +180,18 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		delete tx.from;
 		delete tx.nonce;
 
+		// TODO: temp fix to gasPrice being required to be an into on evm-lite
+		// evm-lite should parse from string
+		const sTx = {
+			...tx,
+			value: 0,
+			gasPrice: Number(tx.gasPrice.format('a').slice(0, -1))
+		};
+
+		delete sTx.constant;
+
 		// send transaction (without signing)
-		const call = await this.client.callTx(JSON.stringify(tx));
+		const call = await this.client.callTx(JSON.stringify(sTx));
 
 		// since the function is constant no transaction hash will be returned
 		// from the submission however the return of the `contract's function`
@@ -189,7 +199,7 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 		// so we need to make sure that function exists
 		if (!tx.unpackfn) {
 			return Promise.reject(
-				new Error('Unpacking function required but not found.')
+				Error('Unpacking function required but not found.')
 			);
 		}
 
@@ -199,16 +209,10 @@ export default class Node<TConsensus extends IAbstractConsensus | undefined> {
 	public async transfer(
 		from: Account,
 		to: string,
-		value: string | number | Currency,
+		value: Currency,
 		gas: number,
-		gasPrice: number
+		gasPrice: Currency
 	): Promise<TxReceipt> {
-		if (value <= 0) {
-			throw new Error(
-				'A transfer of funds must have a `value` greater than 0.'
-			);
-		}
-
 		const tx = new Transaction({
 			from: from.address,
 			to: to.trim(),
