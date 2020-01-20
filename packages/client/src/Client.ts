@@ -52,8 +52,8 @@ export interface IABI {
 	readonly inputs: IInput[];
 	readonly name: string;
 	readonly outputs?: any[];
-	readonly payable: any;
-	readonly stateMutability: any;
+	readonly payable?: any;
+	readonly stateMutability?: any;
 	readonly type: any;
 }
 
